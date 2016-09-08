@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javaslang.collection.Array;
+import javaslang.collection.Seq;
 
 public class Launcher extends Application {
 
@@ -25,11 +27,11 @@ public class Launcher extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        final ToDoEntry[] dummyEntries = new ToDoEntry[]{
+        final Seq<ToDoEntry> dummyEntries = Array.of (
                 new ToDoEntry(0, "Buy milk", false),
                 new ToDoEntry(1, "Buy bread", true),
                 new ToDoEntry(2, "Buy juice", false)
-        };
+        );
 
         final AppModel initialState = new AppModel("Hello World", dummyEntries);
         final ToDos reducer = new ToDos();

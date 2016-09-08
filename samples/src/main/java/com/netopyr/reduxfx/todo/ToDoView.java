@@ -8,8 +8,6 @@ import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import com.netopyr.reduxfx.vscenegraph.elements.VNode;
 import rx.Observer;
 
-import java.util.stream.Collectors;
-
 import static com.netopyr.reduxfx.vscenegraph.VScenegraph.node;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraph.onChange;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraph.onEvent;
@@ -46,9 +44,8 @@ public class ToDoView implements View<AppModel, Action> {
                                         )
                                 ),
                                 node(LIST_VIEW,
-                                        property("items", state.getTodos().stream()
+                                        property("items", state.getTodos()
                                                 .map(ToDoEntry::getText)
-                                                .collect(Collectors.toList())
                                         )
                                 )
                         )

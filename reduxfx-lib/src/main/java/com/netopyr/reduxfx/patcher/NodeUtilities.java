@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javaslang.Tuple2;
 import javaslang.collection.Map;
+import javaslang.collection.Seq;
 import javaslang.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +35,11 @@ class NodeUtilities {
     static void setProperties(Node node, Map<String, Object> properties) {
         for (final Tuple2<String, Object> property : properties) {
 
-            if (java.util.List.class.isAssignableFrom(property._2.getClass())) {
+            if (Seq.class.isAssignableFrom(property._2.getClass())) {
                 final Option<MethodHandle> getter = getGetter(node.getClass(), property._1);
                 if (getter.isDefined()) {
                     try {
-                        ((ObservableList) getter.get().invoke(node)).setAll((java.util.List)property._2);
+                        ((ObservableList) getter.get().invoke(node)).setAll(((Seq)property._2).toJavaList());
                     } catch (Throwable throwable) {
                         LOG.error("Unable to set JavaFX property " + property, throwable);
                     }

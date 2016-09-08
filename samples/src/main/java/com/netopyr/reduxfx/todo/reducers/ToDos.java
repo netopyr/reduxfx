@@ -27,21 +27,22 @@ public class ToDos implements Reducer<AppModel, Action> {
             case ADD_TODO:
                 return new AppModel(
                         "",
-                        new ToDoEntry(
-                                state.getTodos().stream()
-                                        .map(ToDoEntry::getId)
-                                        .max((t1, t2) -> t1 - t2)
-                                        .orElse(-1) + 1,
-                                state.getNewToDoText(),
-                                false
-                        ),
-                        state.getTodos()
+                        state.getTodos().append(
+                                new ToDoEntry(
+                                        state.getTodos()
+                                                .map(ToDoEntry::getId)
+                                                .max()
+                                                .getOrElse(-1) + 1,
+                                        state.getNewToDoText(),
+                                        false
+                                )
+                        )
                 );
 
             case DELETE_TODO:
                 return new AppModel(
                         state.getNewToDoText(),
-                        state.getTodos().stream()
+                        state.getTodos()
                                 .filter(toDoEntry -> toDoEntry.getId() != ((DeleteToDo) action).getId())
                 );
 
@@ -49,7 +50,7 @@ public class ToDos implements Reducer<AppModel, Action> {
                 final EditToDo editToDo = (EditToDo) action;
                 return new AppModel(
                         state.getNewToDoText(),
-                        state.getTodos().stream()
+                        state.getTodos()
                                 .map(entry -> entry.getId() != editToDo.getId() ? entry :
                                         new ToDoEntry(entry.getId(), editToDo.getText(), entry.isCompleted())
                                 )
@@ -58,24 +59,24 @@ public class ToDos implements Reducer<AppModel, Action> {
             case COMPLETE_TODO:
                 return new AppModel(
                         state.getNewToDoText(),
-                        state.getTodos().stream()
+                        state.getTodos()
                                 .map(entry -> entry.getId() != ((CompleteToDo) action).getId() ? entry :
                                         new ToDoEntry(entry.getId(), entry.getText(), !entry.isCompleted())
                                 )
                 );
 
             case COMPLETE_ALL:
-                final boolean areAllMarked = state.getTodos().stream().allMatch(ToDoEntry::isCompleted);
+                final boolean areAllMarked = state.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
                 return new AppModel(
                         state.getNewToDoText(),
-                        state.getTodos().stream()
+                        state.getTodos()
                                 .map(entry -> new ToDoEntry(entry.getId(), entry.getText(), !areAllMarked))
                 );
 
             case CLEAR_COMPLETED:
                 return new AppModel(
                         state.getNewToDoText(),
-                        state.getTodos().stream()
+                        state.getTodos()
                                 .filter(entry -> !entry.isCompleted())
                 );
 

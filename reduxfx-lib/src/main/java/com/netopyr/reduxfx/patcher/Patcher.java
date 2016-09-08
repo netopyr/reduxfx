@@ -48,9 +48,9 @@ public class Patcher {
 
     private static void doReplace(Node oldNode, ReplacePatch patch) {
         final Option<java.util.List<Node>> children = NodeBuilder.getChildren(oldNode.getParent());
-        final VNode vNode = patch.getNewNode();
 
         if (children.isDefined()) {
+            final VNode vNode = patch.getNewNode();
             final Option<Node> newNode = NodeBuilder.create(vNode);
             if (newNode.isDefined()) {
                 final int index = children.get().indexOf(oldNode);
@@ -70,9 +70,9 @@ public class Patcher {
 
     private static void doInsert(Node parent, InsertPatch patch) {
         final Option<java.util.List<Node>> children = NodeBuilder.getChildren(parent);
-        final VNode vNode = patch.getNewNode();
 
         if (children.isDefined()) {
+            final VNode vNode = patch.getNewNode();
             final Option<Node> node = NodeBuilder.create(vNode);
             if (node.isDefined()) {
                 children.get().add(node.get());

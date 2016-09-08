@@ -1,5 +1,7 @@
 package com.netopyr.reduxfx.todo.state;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class ToDoEntry {
 
     private final int id;
@@ -26,11 +28,10 @@ public class ToDoEntry {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ToDoEntry{");
-        sb.append("id=").append(id);
-        sb.append(", text='").append(text).append('\'');
-        sb.append(", completed=").append(completed);
-        sb.append('}');
-        return sb.toString();
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("text", text)
+                .append("completed", completed)
+                .toString();
     }
 }
