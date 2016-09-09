@@ -7,16 +7,16 @@ import java.util.Objects;
 
 public final class VChangeListener<T> implements VElement {
 
-    private final String name;
+    private final VPropertyType type;
     private final ChangeListener<T> listener;
 
-    public VChangeListener(String name, ChangeListener<T> listener) {
-        this.name = Objects.requireNonNull(name, "Name must not be null");
+    public VChangeListener(VPropertyType type, ChangeListener<T> listener) {
+        this.type = Objects.requireNonNull(type, "Type must not be null");
         this.listener = Objects.requireNonNull(listener, "Listener must not be null");
     }
 
-    public String getName() {
-        return name;
+    public VPropertyType getType() {
+        return type;
     }
 
     public ChangeListener<T> getListener() {
@@ -26,7 +26,7 @@ public final class VChangeListener<T> implements VElement {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("name", name)
+                .append("type", type)
                 .toString();
     }
 }

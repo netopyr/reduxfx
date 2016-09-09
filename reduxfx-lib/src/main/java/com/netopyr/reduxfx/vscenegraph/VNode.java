@@ -19,8 +19,8 @@ public final class VNode implements VElement {
     private final List<VNode> children;
     private final Map<VPropertyType, Object> properties;
     private final Map<VEventType, EventHandler<?>> eventHandlers;
-    private final Map<String, ChangeListener<?>> changeListeners;
-    private final Map<String, InvalidationListener> invalidationListeners;
+    private final Map<VPropertyType, ChangeListener<?>> changeListeners;
+    private final Map<VPropertyType, InvalidationListener> invalidationListeners;
     private final int size;
 
 
@@ -41,10 +41,10 @@ public final class VNode implements VElement {
                 .toMap(element -> new Tuple2<>(element.getType(), element.getEventHandler()));
         this.changeListeners = allElements.filter(element -> element instanceof VChangeListener)
                 .map(element -> (VChangeListener<?>) element)
-                .toMap(element -> new Tuple2<>(element.getName(), element.getListener()));
+                .toMap(element -> new Tuple2<>(element.getType(), element.getListener()));
         this.invalidationListeners = allElements.filter(element -> element instanceof VInvalidationListener)
                 .map(element -> (VInvalidationListener) element)
-                .toMap(element -> new Tuple2<>(element.getName(), element.getListener()));
+                .toMap(element -> new Tuple2<>(element.getType(), element.getListener()));
 
         this.size = children.map(VNode::getSize).sum().intValue() + 1;
     }
@@ -74,11 +74,11 @@ public final class VNode implements VElement {
         return eventHandlers;
     }
 
-    public Map<String, ChangeListener<?>> getChangeListeners() {
+    public Map<VPropertyType, ChangeListener<?>> getChangeListeners() {
         return changeListeners;
     }
 
-    public Map<String, InvalidationListener> getInvalidationListeners() {
+    public Map<VPropertyType, InvalidationListener> getInvalidationListeners() {
         return invalidationListeners;
     }
 

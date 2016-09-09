@@ -41,12 +41,12 @@ public class VScenegraphFactory {
         return new VEventHandler<>(type, eventHandler);
     }
 
-    public static <T> VChangeListener<T> onChange(String name, ChangeListener<T> listener) {
-        return new VChangeListener<>(name, listener);
+    public static <T> VChangeListener<T> onChange(VPropertyType type, ChangeListener<T> listener) {
+        return new VChangeListener<>(type, listener);
     }
 
-    public static VInvalidationListener onInvalidation(String name, InvalidationListener listener) {
-        return new VInvalidationListener(name, listener);
+    public static VInvalidationListener onInvalidation(VPropertyType type, InvalidationListener listener) {
+        return new VInvalidationListener(type, listener);
     }
 
 

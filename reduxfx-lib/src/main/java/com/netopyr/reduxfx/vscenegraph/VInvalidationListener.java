@@ -7,16 +7,16 @@ import java.util.Objects;
 
 public final class VInvalidationListener implements VElement {
 
-    private final String name;
+    private final VPropertyType type;
     private final InvalidationListener listener;
 
-    public VInvalidationListener(String name, InvalidationListener listener) {
-        this.name = Objects.requireNonNull(name, "Name must not be null");
+    public VInvalidationListener(VPropertyType type, InvalidationListener listener) {
+        this.type = Objects.requireNonNull(type, "Type must not be null");
         this.listener = Objects.requireNonNull(listener, "Listener must not be null");
     }
 
-    public String getName() {
-        return name;
+    public VPropertyType getType() {
+        return type;
     }
 
     public InvalidationListener getListener() {
@@ -26,7 +26,7 @@ public final class VInvalidationListener implements VElement {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("name", name)
+                .append("type", type)
                 .toString();
     }
 }

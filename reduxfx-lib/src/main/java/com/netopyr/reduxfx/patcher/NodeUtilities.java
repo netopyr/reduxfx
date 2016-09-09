@@ -74,8 +74,8 @@ class NodeUtilities {
     }
 
     @SuppressWarnings("unchecked")
-    public static void setChangeListeners(Node node, Map<String, ChangeListener<?>> changeListeners) {
-        for (final Tuple2<String, ChangeListener<?>> changeListener : changeListeners) {
+    public static void setChangeListeners(Node node, Map<VPropertyType, ChangeListener<?>> changeListeners) {
+        for (final Tuple2<VPropertyType, ChangeListener<?>> changeListener : changeListeners) {
             final Option<MethodHandle> getter = getPropertyGetter(node.getClass(), changeListener._1);
             if (getter.isDefined()) {
                 try {
@@ -96,8 +96,8 @@ class NodeUtilities {
         }
     }
 
-    public static void setInvalidationListeners(Node node, Map<String, InvalidationListener> invalidationListeners) {
-        for (final Tuple2<String, InvalidationListener> invalidationListener : invalidationListeners) {
+    public static void setInvalidationListeners(Node node, Map<VPropertyType, InvalidationListener> invalidationListeners) {
+        for (final Tuple2<VPropertyType, InvalidationListener> invalidationListener : invalidationListeners) {
             final Option<MethodHandle> getter = getPropertyGetter(node.getClass(), invalidationListener._1);
             if (getter.isDefined()) {
                 try {
@@ -209,7 +209,8 @@ class NodeUtilities {
         }
     }
 
-    private static Option<MethodHandle> getPropertyGetter(Class<? extends Node> clazz, String propertyName) {
+    private static Option<MethodHandle> getPropertyGetter(Class<? extends Node> clazz, VPropertyType propertyType) {
+        final String propertyName = propertyType.getName();
         final String getterName = propertyName + "Property";
 
         Method method = null;

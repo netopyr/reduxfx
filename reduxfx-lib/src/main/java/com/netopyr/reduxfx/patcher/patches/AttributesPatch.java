@@ -12,15 +12,15 @@ public class AttributesPatch extends Patch {
 
     private final Map<VPropertyType, Object> properties;
     private final Map<VEventType, EventHandler<?>> eventHandlers;
-    private final Map<String, ChangeListener<?>> changeListeners;
-    private final Map<String, InvalidationListener> invalidationListeners;
+    private final Map<VPropertyType, ChangeListener<?>> changeListeners;
+    private final Map<VPropertyType, InvalidationListener> invalidationListeners;
 
     public AttributesPatch(
             int index,
             Map<VPropertyType, Object> properties,
             Map<VEventType, EventHandler<?>> eventHandlers,
-            Map<String, ChangeListener<?>> changeListeners,
-            Map<String, InvalidationListener> invalidationListenerMaps
+            Map<VPropertyType, ChangeListener<?>> changeListeners,
+            Map<VPropertyType, InvalidationListener> invalidationListenerMaps
             ) {
         super(index);
         this.properties = properties;
@@ -42,11 +42,11 @@ public class AttributesPatch extends Patch {
         return eventHandlers;
     }
 
-    public Map<String, ChangeListener<?>> getChangeListeners() {
+    public Map<VPropertyType, ChangeListener<?>> getChangeListeners() {
         return changeListeners;
     }
 
-    public Map<String, InvalidationListener> getInvalidationListeners() {
+    public Map<VPropertyType, InvalidationListener> getInvalidationListeners() {
         return invalidationListeners;
     }
 

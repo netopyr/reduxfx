@@ -67,13 +67,13 @@ public class Differ {
         final Map<VEventType, EventHandler<?>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));
         final Map<VEventType, EventHandler<?>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
 
-        final Map<String, ChangeListener<?>> removedChangeListeners = a.getChangeListeners().filter(handlerA -> !b.getChangeListeners().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<String, ChangeListener<?>> updatedChangeListeners = b.getChangeListeners().filter(handlerB -> !Option.of(handlerB._2).equals(a.getChangeListeners().get(handlerB._1)));
-        final Map<String, ChangeListener<?>> diffChangeListeners = removedChangeListeners.merge(updatedChangeListeners);
+        final Map<VPropertyType, ChangeListener<?>> removedChangeListeners = a.getChangeListeners().filter(handlerA -> !b.getChangeListeners().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<VPropertyType, ChangeListener<?>> updatedChangeListeners = b.getChangeListeners().filter(handlerB -> !Option.of(handlerB._2).equals(a.getChangeListeners().get(handlerB._1)));
+        final Map<VPropertyType, ChangeListener<?>> diffChangeListeners = removedChangeListeners.merge(updatedChangeListeners);
 
-        final Map<String, InvalidationListener> removedInvalidationListeners = a.getInvalidationListeners().filter(handlerA -> !b.getInvalidationListeners().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<String, InvalidationListener> updatedInvalidationListeners = b.getInvalidationListeners().filter(handlerB -> !Option.of(handlerB._2).equals(a.getInvalidationListeners().get(handlerB._1)));
-        final Map<String, InvalidationListener> diffInvalidationListeners = removedInvalidationListeners.merge(updatedInvalidationListeners);
+        final Map<VPropertyType, InvalidationListener> removedInvalidationListeners = a.getInvalidationListeners().filter(handlerA -> !b.getInvalidationListeners().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<VPropertyType, InvalidationListener> updatedInvalidationListeners = b.getInvalidationListeners().filter(handlerB -> !Option.of(handlerB._2).equals(a.getInvalidationListeners().get(handlerB._1)));
+        final Map<VPropertyType, InvalidationListener> diffInvalidationListeners = removedInvalidationListeners.merge(updatedInvalidationListeners);
 
         return diffProperties.isEmpty() && diffEventHandlers.isEmpty() && diffChangeListeners.isEmpty() && diffInvalidationListeners.isEmpty() ? Vector.empty()
                 : Vector.of(new AttributesPatch(index, diffProperties, diffEventHandlers, diffChangeListeners, diffInvalidationListeners));
