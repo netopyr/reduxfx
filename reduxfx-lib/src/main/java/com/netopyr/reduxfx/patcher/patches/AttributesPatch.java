@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.patcher.patches;
 
+import com.netopyr.reduxfx.vscenegraph.VEventType;
 import com.netopyr.reduxfx.vscenegraph.VPropertyType;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
@@ -10,14 +11,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class AttributesPatch extends Patch {
 
     private final Map<VPropertyType, Object> properties;
-    private final Map<String, EventHandler<?>> eventHandlers;
+    private final Map<VEventType, EventHandler<?>> eventHandlers;
     private final Map<String, ChangeListener<?>> changeListeners;
     private final Map<String, InvalidationListener> invalidationListeners;
 
     public AttributesPatch(
             int index,
             Map<VPropertyType, Object> properties,
-            Map<String, EventHandler<?>> eventHandlers,
+            Map<VEventType, EventHandler<?>> eventHandlers,
             Map<String, ChangeListener<?>> changeListeners,
             Map<String, InvalidationListener> invalidationListenerMaps
             ) {
@@ -37,7 +38,7 @@ public class AttributesPatch extends Patch {
         return properties;
     }
 
-    public Map<String, EventHandler<?>> getEventHandlers() {
+    public Map<VEventType, EventHandler<?>> getEventHandlers() {
         return eventHandlers;
     }
 

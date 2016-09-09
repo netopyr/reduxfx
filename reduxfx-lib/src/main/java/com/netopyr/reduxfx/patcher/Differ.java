@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.patcher;
 
+import com.netopyr.reduxfx.vscenegraph.VEventType;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.patcher.patches.AttributesPatch;
 import com.netopyr.reduxfx.patcher.patches.InsertPatch;
@@ -62,9 +63,9 @@ public class Differ {
         final Map<VPropertyType, Object> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
         final Map<VPropertyType, Object> diffProperties = removedProperties.merge(updatedProperties);
 
-        final Map<String, EventHandler<?>> removedEventHandlers = a.getEventHandlers().filter(handlerA -> !b.getEventHandlers().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<String, EventHandler<?>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));
-        final Map<String, EventHandler<?>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
+        final Map<VEventType, EventHandler<?>> removedEventHandlers = a.getEventHandlers().filter(handlerA -> !b.getEventHandlers().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<VEventType, EventHandler<?>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));
+        final Map<VEventType, EventHandler<?>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
 
         final Map<String, ChangeListener<?>> removedChangeListeners = a.getChangeListeners().filter(handlerA -> !b.getChangeListeners().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
         final Map<String, ChangeListener<?>> updatedChangeListeners = b.getChangeListeners().filter(handlerB -> !Option.of(handlerB._2).equals(a.getChangeListeners().get(handlerB._1)));

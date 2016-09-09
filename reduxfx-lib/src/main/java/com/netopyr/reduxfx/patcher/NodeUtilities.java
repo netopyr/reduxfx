@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.patcher;
 
+import com.netopyr.reduxfx.vscenegraph.VEventType;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.VPropertyType;
 import javafx.beans.InvalidationListener;
@@ -59,8 +60,8 @@ class NodeUtilities {
         }
     }
 
-    static void setEventHandlers(Node node, Map<String, EventHandler<?>> eventHandlers) {
-        for (final Tuple2<String, EventHandler<?>> eventHandler : eventHandlers) {
+    static void setEventHandlers(Node node, Map<VEventType, EventHandler<?>> eventHandlers) {
+        for (final Tuple2<VEventType, EventHandler<?>> eventHandler : eventHandlers) {
             final Option<MethodHandle> setter = getEventSetter(node.getClass(), eventHandler._1);
             if (setter.isDefined()) {
                 try {
@@ -183,8 +184,9 @@ class NodeUtilities {
         }
     }
 
-    private static Option<MethodHandle> getEventSetter(Class<? extends Node> clazz, String propertyName) {
-        final String setterName = "setOn" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+    private static Option<MethodHandle> getEventSetter(Class<? extends Node> clazz, VEventType eventType) {
+        final String eventName = eventType.getName();
+        final String setterName = "setOn" + eventName.substring(0, 1).toUpperCase() + eventName.substring(1);
 
         Method method = null;
         try {
@@ -194,7 +196,7 @@ class NodeUtilities {
         }
 
         if (method == null) {
-            LOG.error("Unable to find setter for EventHandler {} in class {}", propertyName, clazz);
+            LOG.error("Unable to find setter for EventHandler {} in class {}", eventName, clazz);
             return Option.none();
         }
 
@@ -202,7 +204,7 @@ class NodeUtilities {
             final MethodHandle methodHandle = MethodHandles.publicLookup().unreflect(method);
             return Option.of(methodHandle);
         } catch (IllegalAccessException e) {
-            LOG.error("Setter for EventHandler {} in class {} is not accessible", propertyName, clazz);
+            LOG.error("Setter for EventHandler {} in class {} is not accessible", eventName, clazz);
             return Option.none();
         }
     }

@@ -8,16 +8,16 @@ import java.util.Objects;
 
 public final class VEventHandler<T extends Event> implements VElement {
 
-    private final String name;
+    private final VEventType type;
     private final EventHandler<T> eventHandler;
 
-    public VEventHandler(String name, EventHandler<T> eventHandler) {
-        this.name = Objects.requireNonNull(name, "Name must not be null");
+    public VEventHandler(VEventType type, EventHandler<T> eventHandler) {
+        this.type = Objects.requireNonNull(type, "Type must not be null");
         this.eventHandler = Objects.requireNonNull(eventHandler, "EventHandler must not be null");
     }
 
-    public String getName() {
-        return name;
+    public VEventType getType() {
+        return type;
     }
 
     public EventHandler<T> getEventHandler() {
@@ -27,7 +27,7 @@ public final class VEventHandler<T extends Event> implements VElement {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("name", name)
+                .append("type", type)
                 .toString();
     }
 }

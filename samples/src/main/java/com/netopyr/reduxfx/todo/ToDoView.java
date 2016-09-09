@@ -14,7 +14,7 @@ import static com.netopyr.reduxfx.VScenegraphFactory.StackPane;
 import static com.netopyr.reduxfx.VScenegraphFactory.TextField;
 import static com.netopyr.reduxfx.VScenegraphFactory.VBox;
 import static com.netopyr.reduxfx.VScenegraphFactory.items;
-import static com.netopyr.reduxfx.VScenegraphFactory.onEvent;
+import static com.netopyr.reduxfx.VScenegraphFactory.onAction;
 import static com.netopyr.reduxfx.VScenegraphFactory.ref;
 
 public class ToDoView implements View<AppModel, Action> {
@@ -35,7 +35,7 @@ public class ToDoView implements View<AppModel, Action> {
                         VBox(
                                 TextField(
                                         ref(tf -> textField = (TextField) tf),
-                                        onEvent("action", e -> {
+                                        onAction(e -> {
                                             if (textField != null) {
                                                 actions.onNext(Actions.addToDo(textField.getText()));
                                                 textField.setText("");

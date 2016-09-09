@@ -3,6 +3,7 @@ package com.netopyr.reduxfx;
 import com.netopyr.reduxfx.vscenegraph.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.VElement;
 import com.netopyr.reduxfx.vscenegraph.VEventHandler;
+import com.netopyr.reduxfx.vscenegraph.VEventType;
 import com.netopyr.reduxfx.vscenegraph.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.VNodeType;
@@ -15,6 +16,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import java.util.function.Consumer;
+
+import static com.netopyr.reduxfx.vscenegraph.VEventType.ACTION;
 
 public class VScenegraphFactory {
 
@@ -34,8 +37,8 @@ public class VScenegraphFactory {
         return new VProperty(type, value);
     }
 
-    public static <T extends Event> VEventHandler<T> onEvent(String name, EventHandler<T> eventHandler) {
-        return new VEventHandler<>(name, eventHandler);
+    private static <T extends Event> VEventHandler<T> onEvent(VEventType type, EventHandler<T> eventHandler) {
+        return new VEventHandler<>(type, eventHandler);
     }
 
     public static <T> VChangeListener<T> onChange(String name, ChangeListener<T> listener) {
@@ -72,5 +75,11 @@ public class VScenegraphFactory {
 
     public static VProperty items(Object value) {
         return property(VPropertyType.ITEMS, value);
+    }
+
+
+
+    public static <T extends Event> VEventHandler<T> onAction(EventHandler<T> eventHandler) {
+        return onEvent(ACTION, eventHandler);
     }
 }

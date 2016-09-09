@@ -18,7 +18,7 @@ public final class VNode implements VElement {
     private final Option<Consumer<Object>> ref;
     private final List<VNode> children;
     private final Map<VPropertyType, Object> properties;
-    private final Map<String, EventHandler<?>> eventHandlers;
+    private final Map<VEventType, EventHandler<?>> eventHandlers;
     private final Map<String, ChangeListener<?>> changeListeners;
     private final Map<String, InvalidationListener> invalidationListeners;
     private final int size;
@@ -38,7 +38,7 @@ public final class VNode implements VElement {
                 .toMap(element -> new Tuple2<>(element.getType(), element.getValue()));
         this.eventHandlers = allElements.filter(element -> element instanceof VEventHandler)
                 .map(element -> (VEventHandler<?>) element)
-                .toMap(element -> new Tuple2<>(element.getName(), element.getEventHandler()));
+                .toMap(element -> new Tuple2<>(element.getType(), element.getEventHandler()));
         this.changeListeners = allElements.filter(element -> element instanceof VChangeListener)
                 .map(element -> (VChangeListener<?>) element)
                 .toMap(element -> new Tuple2<>(element.getName(), element.getListener()));
@@ -70,7 +70,7 @@ public final class VNode implements VElement {
         return properties;
     }
 
-    public Map<String, EventHandler<?>> getEventHandlers() {
+    public Map<VEventType, EventHandler<?>> getEventHandlers() {
         return eventHandlers;
     }
 
