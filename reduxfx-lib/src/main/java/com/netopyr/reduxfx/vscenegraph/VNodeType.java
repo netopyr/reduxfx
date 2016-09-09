@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.elements;
+package com.netopyr.reduxfx.vscenegraph;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public enum VNodeType {
-    INIT(null),
+    ROOT(null),
     STACK_PANE(StackPane.class),
     V_BOX(VBox.class),
     H_BOX(HBox.class),

@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.patcher.patches;
 
-import com.netopyr.reduxfx.vscenegraph.elements.VNode;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ReplacePatch extends Patch {

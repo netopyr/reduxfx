@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx;
 
-import com.netopyr.reduxfx.vscenegraph.elements.VNode;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import rx.Observer;
 
 public interface View<STATE, ACTION> {

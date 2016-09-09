@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.elements;
+package com.netopyr.reduxfx.vscenegraph;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;

@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.patcher;
 
-import com.netopyr.reduxfx.vscenegraph.elements.VNode;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.patcher.patches.AttributesPatch;
 import com.netopyr.reduxfx.patcher.patches.InsertPatch;
 import com.netopyr.reduxfx.patcher.patches.Patch;

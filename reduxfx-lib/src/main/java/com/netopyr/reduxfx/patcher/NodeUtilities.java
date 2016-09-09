@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.patcher;
 
-import com.netopyr.reduxfx.vscenegraph.elements.VNode;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;

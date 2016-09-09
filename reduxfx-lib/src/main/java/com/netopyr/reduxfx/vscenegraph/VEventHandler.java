@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.elements;
+package com.netopyr.reduxfx.vscenegraph;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;

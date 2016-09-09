@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.elements;
+package com.netopyr.reduxfx.vscenegraph;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

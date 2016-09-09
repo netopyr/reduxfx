@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.patcher;
 
-import com.netopyr.reduxfx.vscenegraph.elements.VNode;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;

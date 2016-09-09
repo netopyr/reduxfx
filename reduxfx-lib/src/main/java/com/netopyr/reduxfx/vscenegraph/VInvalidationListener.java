@@ -1,16 +1,16 @@
-package com.netopyr.reduxfx.vscenegraph.elements;
+package com.netopyr.reduxfx.vscenegraph;
 
-import javafx.beans.value.ChangeListener;
+import javafx.beans.InvalidationListener;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public final class VChangeListener<T> implements VElement {
+public final class VInvalidationListener implements VElement {
 
     private final String name;
-    private final ChangeListener<T> listener;
+    private final InvalidationListener listener;
 
-    public VChangeListener(String name, ChangeListener<T> listener) {
+    public VInvalidationListener(String name, InvalidationListener listener) {
         this.name = Objects.requireNonNull(name, "Name must not be null");
         this.listener = Objects.requireNonNull(listener, "Listener must not be null");
     }
@@ -19,7 +19,7 @@ public final class VChangeListener<T> implements VElement {
         return name;
     }
 
-    public ChangeListener<T> getListener() {
+    public InvalidationListener getListener() {
         return listener;
     }
 

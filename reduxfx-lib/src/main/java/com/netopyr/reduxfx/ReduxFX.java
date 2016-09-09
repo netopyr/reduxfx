@@ -2,9 +2,8 @@ package com.netopyr.reduxfx;
 
 import com.netopyr.reduxfx.patcher.Differ;
 import com.netopyr.reduxfx.patcher.Patcher;
-import com.netopyr.reduxfx.vscenegraph.elements.VNode;
-import com.netopyr.reduxfx.vscenegraph.elements.VNodeType;
 import com.netopyr.reduxfx.patcher.patches.Patch;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -14,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.subjects.ReplaySubject;
-
-import static com.netopyr.reduxfx.vscenegraph.VScenegraph.node;
 
 public class ReduxFX {
 
@@ -32,7 +29,7 @@ public class ReduxFX {
     }
 
     private static VNode addRoot(VNode vNode) {
-        return node(VNodeType.INIT, vNode);
+        return VScenegraphFactory.Root(vNode);
     }
 
     private static <STATE, ACTION> void doStart(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Node root) {
@@ -45,7 +42,7 @@ public class ReduxFX {
         final Observable<VNode> vNodeStream = stateStream
                 .map(state -> view.view(state, actionStream))
                 .map(ReduxFX::addRoot)
-                .startWith(node(VNodeType.INIT));
+                .startWith(VScenegraphFactory.Root());
 
         final Observable<Vector<Patch>> patchStream = vNodeStream.zipWith(vNodeStream.skip(1), Differ::diff);
         vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(root, entry._1, entry._2));
