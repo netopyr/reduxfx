@@ -6,6 +6,7 @@ import com.netopyr.reduxfx.patcher.patches.InsertPatch;
 import com.netopyr.reduxfx.patcher.patches.Patch;
 import com.netopyr.reduxfx.patcher.patches.RemovePatch;
 import com.netopyr.reduxfx.patcher.patches.ReplacePatch;
+import com.netopyr.reduxfx.vscenegraph.VPropertyType;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -57,9 +58,9 @@ public class Differ {
     }
 
     private static Vector<Patch> diffAttributes(int index, VNode a, VNode b) {
-        final Map<String, Object> removedProperties = a.getProperties().filter(propertyA -> !b.getProperties().containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<String, Object> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
-        final Map<String, Object> diffProperties = removedProperties.merge(updatedProperties);
+        final Map<VPropertyType, Object> removedProperties = a.getProperties().filter(propertyA -> !b.getProperties().containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<VPropertyType, Object> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
+        final Map<VPropertyType, Object> diffProperties = removedProperties.merge(updatedProperties);
 
         final Map<String, EventHandler<?>> removedEventHandlers = a.getEventHandlers().filter(handlerA -> !b.getEventHandlers().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
         final Map<String, EventHandler<?>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));

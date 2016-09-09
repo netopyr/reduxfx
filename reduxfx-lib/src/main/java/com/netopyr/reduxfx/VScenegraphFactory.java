@@ -7,6 +7,7 @@ import com.netopyr.reduxfx.vscenegraph.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.VNodeType;
 import com.netopyr.reduxfx.vscenegraph.VProperty;
+import com.netopyr.reduxfx.vscenegraph.VPropertyType;
 import com.netopyr.reduxfx.vscenegraph.VReference;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
@@ -29,8 +30,8 @@ public class VScenegraphFactory {
         return new VReference(ref);
     }
 
-    public static VProperty property(String name, Object value) {
-        return new VProperty(name, value);
+    private static VProperty property(VPropertyType type, Object value) {
+        return new VProperty(type, value);
     }
 
     public static <T extends Event> VEventHandler<T> onEvent(String name, EventHandler<T> eventHandler) {
@@ -65,5 +66,11 @@ public class VScenegraphFactory {
 
     public static VNode ListView(VElement... elements) {
         return node(VNodeType.LIST_VIEW, elements);
+    }
+
+
+
+    public static VProperty items(Object value) {
+        return property(VPropertyType.ITEMS, value);
     }
 }

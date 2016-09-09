@@ -6,16 +6,16 @@ import java.util.Objects;
 
 public final class VProperty implements VElement {
     
-    private final String name;
+    private final VPropertyType type;
     private final Object value;
 
-    public VProperty(String name, Object value) {
-        this.name = Objects.requireNonNull(name, "Name must not be null");
+    public VProperty(VPropertyType type, Object value) {
+        this.type = Objects.requireNonNull(type, "Type must not be null");
         this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public VPropertyType getType() {
+        return type;
     }
 
     public Object getValue() {
@@ -25,7 +25,7 @@ public final class VProperty implements VElement {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("name", name)
+                .append("type", type)
                 .append("value", value)
                 .toString();
     }

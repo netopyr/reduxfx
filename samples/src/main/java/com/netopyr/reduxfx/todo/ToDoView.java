@@ -13,8 +13,8 @@ import static com.netopyr.reduxfx.VScenegraphFactory.ListView;
 import static com.netopyr.reduxfx.VScenegraphFactory.StackPane;
 import static com.netopyr.reduxfx.VScenegraphFactory.TextField;
 import static com.netopyr.reduxfx.VScenegraphFactory.VBox;
+import static com.netopyr.reduxfx.VScenegraphFactory.items;
 import static com.netopyr.reduxfx.VScenegraphFactory.onEvent;
-import static com.netopyr.reduxfx.VScenegraphFactory.property;
 import static com.netopyr.reduxfx.VScenegraphFactory.ref;
 
 public class ToDoView implements View<AppModel, Action> {
@@ -43,7 +43,7 @@ public class ToDoView implements View<AppModel, Action> {
                                         })
                                 ),
                                 ListView(
-                                        property("items", state.getTodos().map(ToDoEntry::getText))
+                                        items(state.getTodos().map(ToDoEntry::getText))
                                 )
                         )
                 );
@@ -62,6 +62,23 @@ public class ToDoView implements View<AppModel, Action> {
                         ),
                         new ListView(
                                 property("items", state.getTodos().map(ToDoEntry::getText))
+                        )
+                        ListView(
+                                property(ITEMS, state.getTodos().map(ToDoEntry::getText))
+                        )
+                        ListView(
+                                items(state.getTodos().map(ToDoEntry::getText))
+                        )
+
+                        ListView(
+                                items(
+                                        value(state.getTodos().map(ToDoEntry::getText)),
+                                        onChange(bla -> blabla)
+                                )
+                        )
+                        ListView(
+                                items(state.getTodos().map(ToDoEntry::getText)),
+                                onItemsChanged(bla -> blabla)
                         )
                 )
         );

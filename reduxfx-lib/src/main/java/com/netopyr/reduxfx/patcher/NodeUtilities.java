@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.patcher;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.VPropertyType;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
@@ -32,8 +33,8 @@ class NodeUtilities {
     }
 
     @SuppressWarnings("unchecked")
-    static void setProperties(Node node, Map<String, Object> properties) {
-        for (final Tuple2<String, Object> property : properties) {
+    static void setProperties(Node node, Map<VPropertyType, Object> properties) {
+        for (final Tuple2<VPropertyType, Object> property : properties) {
 
             if (Seq.class.isAssignableFrom(property._2.getClass())) {
                 final Option<MethodHandle> getter = getGetter(node.getClass(), property._1);
@@ -116,7 +117,8 @@ class NodeUtilities {
         }
     }
 
-    private static Option<MethodHandle> getSetter(Class<? extends Node> clazz, String propertyName, Class<?> paramType) {
+    private static Option<MethodHandle> getSetter(Class<? extends Node> clazz, VPropertyType propertyType, Class<?> paramType) {
+        final String propertyName = propertyType.getName();
         final String setterName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
 
         Method method = null;
@@ -148,7 +150,8 @@ class NodeUtilities {
         }
     }
 
-    private static Option<MethodHandle> getGetter(Class<? extends Node> clazz, String propertyName) {
+    private static Option<MethodHandle> getGetter(Class<? extends Node> clazz, VPropertyType propertyType) {
+        final String propertyName = propertyType.getName();
         final String getterName = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
 
         Method method = null;
