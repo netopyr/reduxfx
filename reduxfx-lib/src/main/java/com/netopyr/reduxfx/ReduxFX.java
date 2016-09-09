@@ -33,23 +33,18 @@ public class ReduxFX {
     }
 
     private static <STATE, ACTION> void doStart(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Node root) {
-        LOG.info("Starting ReactFX");
+        LOG.info("Starting ReduxFX");
 
         final ReplaySubject<ACTION> actionStream = ReplaySubject.create();
 
         final Observable<STATE> stateStream = actionStream.scan(initialState, reducer::reduce);
 
         final Observable<VNode> vNodeStream = stateStream
-                .map(state -> view.view(state, actionStream))
+                .map(state -> view.view(state, actionStream::onNext))
                 .map(ReduxFX::addRoot)
                 .startWith(VScenegraphFactory.Root());
 
         final Observable<Vector<Patch>> patchStream = vNodeStream.zipWith(vNodeStream.skip(1), Differ::diff);
         vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(root, entry._1, entry._2));
-
-//        actionStream.subscribe(item -> LOG.info("Action: {}", item));
-//        stateStream.subscribe(item -> LOG.info("State: {}", item));
-//        vNodeStream.subscribe(item -> LOG.info("VNode: {}", item));
-//        patchStream.subscribe(item -> LOG.info("Patch: {}", item));
     }
 }

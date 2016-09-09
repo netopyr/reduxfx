@@ -7,7 +7,8 @@ import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.control.TextField;
-import rx.Observer;
+
+import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.VScenegraphFactory.ListView;
 import static com.netopyr.reduxfx.VScenegraphFactory.StackPane;
@@ -27,7 +28,7 @@ public class ToDoView implements View<AppModel, Action> {
 
     private javafx.scene.control.TextField textField;
 
-    public VNode view(AppModel state, Observer<Action> actions) {
+    public VNode view(AppModel state, Consumer<Action> dispatcher) {
 
         // TODO: Implement TableView with completed flag and text
         return
@@ -37,7 +38,7 @@ public class ToDoView implements View<AppModel, Action> {
                                         ref(tf -> textField = (TextField) tf),
                                         onAction(e -> {
                                             if (textField != null) {
-                                                actions.onNext(Actions.addToDo(textField.getText()));
+                                                dispatcher.accept(Actions.addToDo(textField.getText()));
                                                 textField.setText("");
                                             }
                                         })
