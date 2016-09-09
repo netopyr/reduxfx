@@ -4,8 +4,8 @@ public class Actions {
 
     private Actions() {}
 
-    public static Action addToDo() {
-        return new AddToDo();
+    public static Action addToDo(String text) {
+        return new AddToDo(text);
     }
 
     public static Action deleteToDo(int id) {
@@ -26,9 +26,5 @@ public class Actions {
 
     public static Action clearCompleted() {
         return new ClearCompleted();
-    }
-
-    public static Action newTextFieldChanged(String text) {
-        return new NewTextFieldChanged(text);
     }
 }

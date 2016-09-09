@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ClearCompleted implements Action {
 
+    ClearCompleted() {}
+
     public ActionType getType() {
         return ActionType.CLEAR_COMPLETED;
     }

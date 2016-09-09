@@ -6,7 +6,7 @@ public class CompleteToDo implements Action {
 
     private final int id;
 
-    public CompleteToDo(int id) {
+    CompleteToDo(int id) {
         this.id = id;
     }
 

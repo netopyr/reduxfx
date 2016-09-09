@@ -6,7 +6,7 @@ public class DeleteToDo implements Action {
 
     private final int id;
 
-    public DeleteToDo(int id) {
+    DeleteToDo(int id) {
         this.id = id;
     }
 

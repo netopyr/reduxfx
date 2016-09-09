@@ -7,16 +7,23 @@ import com.netopyr.reduxfx.vscenegraph.elements.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.elements.VNode;
 import com.netopyr.reduxfx.vscenegraph.elements.VNodeType;
 import com.netopyr.reduxfx.vscenegraph.elements.VProperty;
+import com.netopyr.reduxfx.vscenegraph.elements.VReference;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+
+import java.util.function.Consumer;
 
 public class VScenegraph {
 
 
     public static VNode node(VNodeType type, VElement... elements) {
         return new VNode(type, elements);
+    }
+
+    public static VReference ref(Consumer<Object> ref) {
+        return new VReference(ref);
     }
 
     public static VProperty property(String name, Object value) {

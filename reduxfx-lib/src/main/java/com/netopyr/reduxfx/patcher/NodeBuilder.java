@@ -35,6 +35,9 @@ public class NodeBuilder {
                 }
                 children.get().addAll(vChildren.map(Option::get).toJavaList());
             }
+
+            vNode.getRef().peek(ref -> ref.accept(node));
+
             return Option.of(node);
 
         } catch (InstantiationException | IllegalAccessException e) {

@@ -7,7 +7,7 @@ public class EditToDo implements Action {
     private final int id;
     private final String text;
 
-    public EditToDo(int id, String text) {
+    EditToDo(int id, String text) {
         this.id = id;
         this.text = text;
     }

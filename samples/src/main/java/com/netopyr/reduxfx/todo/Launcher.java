@@ -28,12 +28,12 @@ public class Launcher extends Application {
         primaryStage.show();
 
         final Seq<ToDoEntry> dummyEntries = Array.of (
-                new ToDoEntry(0, "Buy milk", false),
-                new ToDoEntry(1, "Buy bread", true),
-                new ToDoEntry(2, "Buy juice", false)
+                new ToDoEntry(0, "Buy ticket", false),
+                new ToDoEntry(1, "Prepare presentation", true),
+                new ToDoEntry(2, "Travel to JavaOne", false)
         );
 
-        final AppModel initialState = new AppModel("Hello World", dummyEntries);
+        final AppModel initialState = new AppModel(dummyEntries);
         final ToDos reducer = new ToDos();
         final ToDoView toDoView = new ToDoView();
 

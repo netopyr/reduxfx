@@ -6,13 +6,16 @@ import javafx.event.EventHandler;
 import javaslang.Tuple2;
 import javaslang.collection.List;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public final class VNode implements VElement {
 
     private final VNodeType type;
+    private final Option<Consumer<Object>> ref;
     private final List<VNode> children;
     private final Map<String, Object> properties;
     private final Map<String, EventHandler<?>> eventHandlers;
@@ -26,6 +29,8 @@ public final class VNode implements VElement {
 
         final List<VElement> allElements = List.of(elements);
 
+        this.ref = allElements.findLast(element -> element instanceof VReference)
+                .map(element -> ((VReference) element).getRef());
         this.children = allElements.filter(element -> element instanceof VNode)
                 .map(element -> (VNode) element);
         this.properties = allElements.filter(element -> element instanceof VProperty)
@@ -51,6 +56,10 @@ public final class VNode implements VElement {
 
     public VNodeType getType() {
         return type;
+    }
+
+    public Option<Consumer<Object>> getRef() {
+        return ref;
     }
 
     public List<VNode> getChildren() {

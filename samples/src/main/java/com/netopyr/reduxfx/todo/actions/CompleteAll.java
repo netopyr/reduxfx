@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CompleteAll implements Action {
 
+    CompleteAll() {}
+
     public ActionType getType() {
         return ActionType.COMPLETE_ALL;
     }

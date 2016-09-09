@@ -6,14 +6,15 @@ import com.netopyr.reduxfx.todo.actions.Actions;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import com.netopyr.reduxfx.vscenegraph.elements.VNode;
+import javafx.scene.control.TextField;
 import rx.Observer;
 
+import java.util.Optional;
+
 import static com.netopyr.reduxfx.vscenegraph.VScenegraph.node;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraph.onChange;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraph.onEvent;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraph.property;
-import static com.netopyr.reduxfx.vscenegraph.elements.VNodeType.BUTTON;
-import static com.netopyr.reduxfx.vscenegraph.elements.VNodeType.H_BOX;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraph.ref;
 import static com.netopyr.reduxfx.vscenegraph.elements.VNodeType.LIST_VIEW;
 import static com.netopyr.reduxfx.vscenegraph.elements.VNodeType.STACK_PANE;
 import static com.netopyr.reduxfx.vscenegraph.elements.VNodeType.TEXT_FIELD;
@@ -27,26 +28,23 @@ public class ToDoView implements View<AppModel, Action> {
     3. Define later
      */
 
+    private Optional<TextField> textField = Optional.empty();
+
     public VNode view(AppModel state, Observer<Action> actions) {
+
         // TODO: Implement TableView with completed flag and text
         return
                 node(STACK_PANE,
                         node(V_BOX,
-                                node(H_BOX,
-                                        node(TEXT_FIELD,
-                                                property("text", state.getNewToDoText()),
-                                                onChange("text", (source, oldValue, newValue) -> actions.onNext(Actions.newTextFieldChanged((String) newValue)))
-                                        ),
-                                        node(BUTTON,
-                                                property("text", "Create"),
-                                                property("disable", state.getNewToDoText().isEmpty()),
-                                                onEvent("action", e -> actions.onNext(Actions.addToDo()))
-                                        )
+                                node(TEXT_FIELD,
+                                        ref(tf -> textField = Optional.of((TextField) tf)),
+                                        onEvent("action", e -> {
+                                            actions.onNext(Actions.addToDo(textField.map(TextField::getText).orElse("")));
+                                            textField.ifPresent(tf -> tf.setText(""));
+                                        })
                                 ),
                                 node(LIST_VIEW,
-                                        property("items", state.getTodos()
-                                                .map(ToDoEntry::getText)
-                                        )
+                                        property("items", state.getTodos().map(ToDoEntry::getText))
                                 )
                         )
                 );
@@ -58,9 +56,13 @@ public class ToDoView implements View<AppModel, Action> {
             VBox(
                 HBox(
                     TextField(
-                        text(
-                            state.getNewToDoText(),
-                             (source, oldValue, newValue) -> actions.onNext(Actions.newTextFieldChanged((String) newValue))
+                        property("text", text),
+                        onChange("text", onTextChange)
+
+                        text(text),
+                        onTextChange(onTextChange)
+
+                        text(text, onTextChange)
                     ),
                     Button(
                         text("Create"),
@@ -73,10 +75,27 @@ public class ToDoView implements View<AppModel, Action> {
             )
         )
 
+        StackPane()
+            .VBox()
+                .HBox()
+                    .TextField()
+                        .text(text, onTextChange)
+                    .end()
+                    .Button()
+                        .text("Create")
+                        .disable(true)
+                    .end()
+                .end()
+                .ListView()
+                    .items(...)
+                .()
+            .end()
+        .end()
+
         <StackPane>
             <VBox>
                 <HBox>
-                    <TextField/>
+                    <TextField text="${text}" onTextChange="${onTextChange}" />
                     <Button text="Create" disable="true"/>
                 </HBox>
                 <ListView>
