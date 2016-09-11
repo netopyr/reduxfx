@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.vscenegraph;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javaslang.Tuple2;
 import javaslang.collection.List;
 import javaslang.collection.Map;
@@ -15,7 +16,7 @@ import java.util.function.Consumer;
 public final class VNode implements VElement {
 
     private final VNodeType type;
-    private final Option<Consumer<Object>> ref;
+    private final Option<Consumer<? super Node>> ref;
     private final List<VNode> children;
     private final Map<VPropertyType, Object> properties;
     private final Map<VEventType, EventHandler<?>> eventHandlers;
@@ -58,7 +59,7 @@ public final class VNode implements VElement {
         return type;
     }
 
-    public Option<Consumer<Object>> getRef() {
+    public Option<Consumer<? super Node>> getRef() {
         return ref;
     }
 

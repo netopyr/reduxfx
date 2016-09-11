@@ -14,6 +14,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 
 import java.util.function.Consumer;
 
@@ -29,7 +30,7 @@ public class VScenegraphFactory {
         return new VNode(type, elements);
     }
 
-    public static VReference ref(Consumer<Object> ref) {
+    public static VReference ref(Consumer<? super Node> ref) {
         return new VReference(ref);
     }
 
