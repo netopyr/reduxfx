@@ -23,7 +23,7 @@ public class Launcher extends Application {
         root.setMaxWidth(Region.USE_PREF_SIZE);
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
-        primaryStage.setTitle("ReactFX on JavaFX");
+        primaryStage.setTitle("ToDo - ReduxFX");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 

@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.todo.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class AddToDo implements Action {
+public final class AddToDo implements Action {
 
     private final String text;
 

@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.todo.actions;
 
-public class Actions {
+public final class Actions {
 
     private Actions() {}
 
