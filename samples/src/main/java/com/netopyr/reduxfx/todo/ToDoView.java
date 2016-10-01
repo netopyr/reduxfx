@@ -10,7 +10,7 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import static com.netopyr.reduxfx.VScenegraphFactory.*;
 
-public class ToDoView implements View<AppModel, Action> {
+class ToDoView implements View<AppModel, Action> {
 
     public VNode<Action> view(AppModel state) {
 
@@ -18,6 +18,8 @@ public class ToDoView implements View<AppModel, Action> {
                 StackPane(
                         VBox(
                                 HBox(
+                                        padding(10.0, 10.0),
+                                        spacing(10.0),
                                         TextField(
                                                 text(
                                                         state.getNewToDoText(),
@@ -45,129 +47,28 @@ public class ToDoView implements View<AppModel, Action> {
                                                 .map(ToDoEntry::getText))
                                 ),
                                 HBox(
+                                        padding(10.0, 10.0),
+                                        spacing(10.0),
+                                        Label(
+                                                text(String.format("%d item(s) left", state.getTodos().count(toDoEntry -> !toDoEntry.isCompleted())))
+                                        ),
                                         ToggleButton(
                                                 text("All"),
-                                                toggleGroup("filterButtonGroup"),
+                                                toggleGroup("FILTER_BUTTON_GROUP"),
                                                 onAction(e -> Actions.setFilter(Filter.ALL))
                                         ),
                                         ToggleButton(
                                                 text("Active"),
-                                                toggleGroup("filterButtonGroup"),
+                                                toggleGroup("FILTER_BUTTON_GROUP"),
                                                 onAction(e -> Actions.setFilter(Filter.ACTIVE))
                                         ),
                                         ToggleButton(
                                                 text("Completed"),
-                                                toggleGroup("filterButtonGroup"),
+                                                toggleGroup("FILTER_BUTTON_GROUP"),
                                                 onAction(e -> Actions.setFilter(Filter.COMPLETED))
                                         )
                                 )
                         )
                 );
     }
-
-
-        /*
-                StackPane(
-                        VBox(
-                                HBox(
-                                        TextField()
-                                                .text(state.getNewToDoText())
-                                                .onChange((oldValue, newValue) -> Actions.newTextFieldChanged(newValue))
-                                        ),
-                                        Button(
-                                                text("Create"),
-                                                disable(state.getNewToDoText().isEmpty()),
-                                                onAction(e -> Actions.addToDo())
-                                        )
-                                ),
-                                ListView(
-                                        items(state.getTodos().map(ToDoEntry::getText))
-                                )
-                        )
-                );
-
-
-        new StackPane(
-                new VBox(
-                        new TextField(
-                                ref(tf -> textField = Optional.of((TextField) tf)),
-                                onEvent("action", e -> {
-                                    actions.onNext(Actions.addToDo(textField.map(TextField::getText).orElse("")));
-                                    textField.ifPresent(tf -> tf.setText(""));
-                                })
-                        ),
-                        new ListView(
-                                property("items", state.getTodos().map(ToDoEntry::getText))
-                        )
-                        ListView(
-                                property(ITEMS, state.getTodos().map(ToDoEntry::getText))
-                        )
-                        ListView(
-                                items(state.getTodos().map(ToDoEntry::getText))
-                        )
-
-                        ListView(
-                                items(
-                                        value(state.getTodos().map(ToDoEntry::getText)),
-                                        onChange(bla -> blabla)
-                                )
-                        )
-                        ListView(
-                                items(state.getTodos().map(ToDoEntry::getText)),
-                                onItemsChanged(bla -> blabla)
-                        )
-                )
-        );
-
-        StackPane(
-            VBox(
-                HBox(
-                    TextField(
-                        property("text", text),
-                        onChange("text", onTextChange)
-
-                        text(text),
-                        onTextChange(onTextChange)
-
-                        text(text, onTextChange)
-                    ),
-                    Button(
-                        text("Create"),
-                        disable(true)
-                    )
-                ),
-                ListView(
-                    items(...)
-                )
-            )
-        )
-
-        StackPane.create()
-            .VBox()
-                .HBox()
-                    .TextField()
-                        .text(text, onTextChange)
-                    .end()
-                    .Button()
-                        .text("Create")
-                        .disable(true)
-                    .end()
-                .end()
-                .ListView()
-                    .items(...)
-                .()
-            .end()
-        .build()
-
-        <StackPane>
-            <VBox>
-                <HBox>
-                    <TextField text="${text}" onTextChange="${onTextChange}" />
-                    <Button text="Create" disable="true"/>
-                </HBox>
-                <ListView>
-            </VBox>
-        </StackPane>
-         */
-
 }

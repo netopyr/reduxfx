@@ -11,6 +11,7 @@ import com.netopyr.reduxfx.vscenegraph.VProperty;
 import com.netopyr.reduxfx.vscenegraph.VPropertyType;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.geometry.Insets;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
 
@@ -77,10 +78,26 @@ public class VScenegraphFactory {
     }
 
     @SafeVarargs
+    public static <ACTION> VNode<ACTION> Label(VElement<ACTION>... elements) {
+        return node(VNodeType.LABEL, elements);
+    }
+
+    @SafeVarargs
     public static <ACTION> VNode<ACTION> ToggleButton(VElement<ACTION>... elements) {
         return node(VNodeType.TOGGLE_BUTTON, elements);
     }
 
+
+    public static <ACTION> VProperty<Insets, ACTION> padding(double topBottom, double rightLeft) {
+        return property(VPropertyType.PADDING, new Insets(topBottom, rightLeft, topBottom, rightLeft));
+    }
+    public static <ACTION> VProperty<Insets, ACTION> padding(double top, double rightLeft, double bottom) {
+        return property(VPropertyType.PADDING, new Insets(top, rightLeft, bottom, rightLeft));
+    }
+
+    public static <ACTION> VProperty<Double, ACTION> spacing(double value) {
+        return property(VPropertyType.SPACING, value);
+    }
 
     public static <ACTION> VProperty<String, ACTION> text(String value, VChangeListener<? super String, ACTION> listener) {
         return property(VPropertyType.TEXT, value, listener);

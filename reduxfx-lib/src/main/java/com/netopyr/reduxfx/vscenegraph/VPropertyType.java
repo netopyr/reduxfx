@@ -1,6 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph;
 
 public enum VPropertyType {
+    PADDING("padding"),
+    SPACING("spacing"),
     TEXT("text"),
     DISABLE("disable"),
     ITEMS("items"),
