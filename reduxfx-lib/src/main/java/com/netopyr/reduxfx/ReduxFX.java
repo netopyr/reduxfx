@@ -8,12 +8,13 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javaslang.Tuple2;
 import javaslang.collection.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.subjects.ReplaySubject;
+
+import java.util.function.Consumer;
 
 public class ReduxFX {
 
@@ -38,6 +39,7 @@ public class ReduxFX {
         final Env env = new Env();
 
         final ReplaySubject<ACTION> actionStream = ReplaySubject.create();
+        final Consumer<ACTION> dispatcher = actionStream::onNext;
 
         final Observable<STATE> stateStream = actionStream.scan(initialState, reducer::reduce);
 
@@ -47,6 +49,22 @@ public class ReduxFX {
                 .startWith(VScenegraphFactory.Root());
 
         final Observable<Vector<Patch>> patchStream = vNodeStream.zipWith(vNodeStream.skip(1), Differ::diff);
-        vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(env, root, entry._1, entry._2, item -> actionStream.onNext((ACTION) item)));
+
+        vNodeStream
+                .zipWith(patchStream, NodePatchPair::new)
+                .forEach(pair -> {
+                    env.cleanup(pair.node);
+                    Patcher.patch(env, root, pair.node, pair.patches, dispatcher);
+                });
+    }
+
+    private static class NodePatchPair {
+        private final VNode node;
+        private final Vector<Patch> patches;
+
+        private NodePatchPair(VNode node, Vector<Patch> patches) {
+            this.node = node;
+            this.patches = patches;
+        }
     }
 }

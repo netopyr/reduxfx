@@ -4,6 +4,7 @@ public enum VPropertyType {
     PADDING("padding"),
     SPACING("spacing"),
     TEXT("text"),
+    SELECTED("selected"),
     DISABLE("disable"),
     ITEMS("items"),
     TOGGLE_GROUP("toggleGroup");

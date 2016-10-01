@@ -107,6 +107,10 @@ public class VScenegraphFactory {
         return text(value, null);
     }
 
+    public static <ACTION> VProperty<Boolean, ACTION> selected(boolean value) {
+        return property(VPropertyType.SELECTED, value);
+    }
+
     public static <ACTION> VProperty<Boolean, ACTION> disable(boolean value) {
         return property(VPropertyType.DISABLE, value);
     }

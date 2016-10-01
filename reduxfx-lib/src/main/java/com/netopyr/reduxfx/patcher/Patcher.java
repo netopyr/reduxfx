@@ -18,9 +18,6 @@ import static com.netopyr.reduxfx.patcher.NodeUtilities.getChildren;
 
 public class Patcher {
 
-    // TODO: Implement event-handlers
-    // TODO: Implement change-listener
-
     private static final Logger LOG = LoggerFactory.getLogger(Patcher.class);
 
     public static void patch(Env env, Node root, VNode vRoot, Seq<Patch> patches, Consumer dispatcher) {

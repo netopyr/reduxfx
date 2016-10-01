@@ -54,16 +54,19 @@ class ToDoView implements View<AppModel, Action> {
                                         ),
                                         ToggleButton(
                                                 text("All"),
+                                                selected(state.getFilter() == Filter.ALL),
                                                 toggleGroup("FILTER_BUTTON_GROUP"),
                                                 onAction(e -> Actions.setFilter(Filter.ALL))
                                         ),
                                         ToggleButton(
                                                 text("Active"),
+                                                selected(state.getFilter() == Filter.ACTIVE),
                                                 toggleGroup("FILTER_BUTTON_GROUP"),
                                                 onAction(e -> Actions.setFilter(Filter.ACTIVE))
                                         ),
                                         ToggleButton(
                                                 text("Completed"),
+                                                selected(state.getFilter() == Filter.COMPLETED),
                                                 toggleGroup("FILTER_BUTTON_GROUP"),
                                                 onAction(e -> Actions.setFilter(Filter.COMPLETED))
                                         )
