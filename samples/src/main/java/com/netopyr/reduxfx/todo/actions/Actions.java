@@ -1,5 +1,7 @@
 package com.netopyr.reduxfx.todo.actions;
 
+import com.netopyr.reduxfx.todo.state.Filter;
+
 public final class Actions {
 
     private Actions() {}
@@ -30,5 +32,9 @@ public final class Actions {
 
     public static Action newTextFieldChanged(String text) {
         return new NewTextFieldChanged(text);
+    }
+
+    public static Action setFilter(Filter filter) {
+        return new SetFilter(filter);
     }
 }

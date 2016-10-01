@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx;
 
 import com.netopyr.reduxfx.patcher.Differ;
+import com.netopyr.reduxfx.patcher.Env;
 import com.netopyr.reduxfx.patcher.Patcher;
 import com.netopyr.reduxfx.patcher.patches.Patch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
@@ -34,6 +35,8 @@ public class ReduxFX {
     private static <STATE, ACTION> void doStart(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Node root) {
         LOG.info("Starting ReduxFX");
 
+        final Env env = new Env();
+
         final ReplaySubject<ACTION> actionStream = ReplaySubject.create();
 
         final Observable<STATE> stateStream = actionStream.scan(initialState, reducer::reduce);
@@ -44,6 +47,6 @@ public class ReduxFX {
                 .startWith(VScenegraphFactory.Root());
 
         final Observable<Vector<Patch>> patchStream = vNodeStream.zipWith(vNodeStream.skip(1), Differ::diff);
-        vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(root, entry._1, entry._2, item -> actionStream.onNext((ACTION) item)));
+        vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(env, root, entry._1, entry._2, item -> actionStream.onNext((ACTION) item)));
     }
 }

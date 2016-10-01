@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.todo;
 import com.netopyr.reduxfx.ReduxFX;
 import com.netopyr.reduxfx.todo.reducers.ToDos;
 import com.netopyr.reduxfx.todo.state.AppModel;
+import com.netopyr.reduxfx.todo.state.Filter;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -33,7 +34,7 @@ public class Launcher extends Application {
                 new ToDoEntry(2, "Travel to JavaOne", false)
         );
 
-        final AppModel initialState = new AppModel("", dummyEntries);
+        final AppModel initialState = new AppModel("", dummyEntries, Filter.ALL);
         final ToDos reducer = new ToDos();
         final ToDoView toDoView = new ToDoView();
 

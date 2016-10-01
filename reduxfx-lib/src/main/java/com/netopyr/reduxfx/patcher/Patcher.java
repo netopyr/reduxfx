@@ -23,7 +23,7 @@ public class Patcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(Patcher.class);
 
-    public static void patch(Node root, VNode vRoot, Seq<Patch> patches, Consumer dispatcher) {
+    public static void patch(Env env, Node root, VNode vRoot, Seq<Patch> patches, Consumer dispatcher) {
         for (final Patch patch : patches) {
             final Option<Node> optionalNode = findNode(patch.getIndex(), root, vRoot, 0);
             if (optionalNode.isEmpty()) {
@@ -32,15 +32,15 @@ public class Patcher {
                 final Node node = optionalNode.get();
                 switch (patch.getType()) {
                     case REPLACED:
-                        doReplace(node, (ReplacePatch) patch, dispatcher);
+                        doReplace(env, node, (ReplacePatch) patch, dispatcher);
                         break;
                     case ATTRIBUTES:
-                        doAttributes(node, (AttributesPatch) patch, dispatcher);
+                        doAttributes(env, node, (AttributesPatch) patch, dispatcher);
                         break;
                     case ORDER:
                         throw new UnsupportedOperationException("Not implemented yet");
                     case INSERT:
-                        doInsert(node, (InsertPatch) patch, dispatcher);
+                        doInsert(env, node, (InsertPatch) patch, dispatcher);
                         break;
                     case REMOVE:
                         doRemove(node);
@@ -51,12 +51,12 @@ public class Patcher {
     }
 
     @SuppressWarnings("unchecked")
-    private static void doReplace(Node oldNode, ReplacePatch patch, Consumer dispatcher) {
+    private static void doReplace(Env env, Node oldNode, ReplacePatch patch, Consumer dispatcher) {
         final Option<java.util.List<Node>> children = getChildren(oldNode.getParent());
 
         if (children.isDefined()) {
             final VNode vNode = patch.getNewNode();
-            final Option<Node> newNode = NodeBuilder.create(vNode, dispatcher);
+            final Option<Node> newNode = NodeBuilder.create(env, vNode, dispatcher);
             if (newNode.isDefined()) {
                 final int index = children.get().indexOf(oldNode);
                 children.get().set(index, newNode.get());
@@ -67,17 +67,17 @@ public class Patcher {
     }
 
     @SuppressWarnings("unchecked")
-    private static void doAttributes(Node node, AttributesPatch patch, Consumer dispatcher) {
-        NodeUtilities.setProperties(node, patch.getProperties(), dispatcher);
+    private static void doAttributes(Env env, Node node, AttributesPatch patch, Consumer dispatcher) {
+        NodeUtilities.setProperties(env, node, patch.getProperties(), dispatcher);
         NodeUtilities.setEventHandlers(node, patch.getEventHandlers(), dispatcher);
     }
 
-    private static void doInsert(Node parent, InsertPatch patch, Consumer dispatcher) {
+    private static void doInsert(Env env, Node parent, InsertPatch patch, Consumer dispatcher) {
         final Option<java.util.List<Node>> children = getChildren(parent);
 
         if (children.isDefined()) {
             final VNode vNode = patch.getNewNode();
-            final Option<Node> node = NodeBuilder.create(vNode, dispatcher);
+            final Option<Node> node = NodeBuilder.create(env, vNode, dispatcher);
             if (node.isDefined()) {
                 children.get().add(node.get());
                 return;

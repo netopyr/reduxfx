@@ -6,6 +6,7 @@ import com.netopyr.reduxfx.todo.actions.CompleteToDo;
 import com.netopyr.reduxfx.todo.actions.DeleteToDo;
 import com.netopyr.reduxfx.todo.actions.EditToDo;
 import com.netopyr.reduxfx.todo.actions.NewTextFieldChanged;
+import com.netopyr.reduxfx.todo.actions.SetFilter;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 
@@ -21,7 +22,8 @@ public class ToDos implements Reducer<AppModel, Action> {
             case NEW_TEXTFIELD_CHANGED:
                 return new AppModel(
                         ((NewTextFieldChanged) action).getText(),
-                        state.getTodos()
+                        state.getTodos(),
+                        state.getFilter()
                 );
 
             case ADD_TODO:
@@ -36,14 +38,16 @@ public class ToDos implements Reducer<AppModel, Action> {
                                         state.getNewToDoText(),
                                         false
                                 )
-                        )
+                        ),
+                        state.getFilter()
                 );
 
             case DELETE_TODO:
                 return new AppModel(
                         state.getNewToDoText(),
                         state.getTodos()
-                                .filter(toDoEntry -> toDoEntry.getId() != ((DeleteToDo) action).getId())
+                                .filter(toDoEntry -> toDoEntry.getId() != ((DeleteToDo) action).getId()),
+                        state.getFilter()
                 );
 
             case EDIT_TODO:
@@ -53,7 +57,8 @@ public class ToDos implements Reducer<AppModel, Action> {
                         state.getTodos()
                                 .map(entry -> entry.getId() != editToDo.getId() ? entry :
                                         new ToDoEntry(entry.getId(), editToDo.getText(), entry.isCompleted())
-                                )
+                                ),
+                        state.getFilter()
                 );
 
             case COMPLETE_TODO:
@@ -62,7 +67,8 @@ public class ToDos implements Reducer<AppModel, Action> {
                         state.getTodos()
                                 .map(entry -> entry.getId() != ((CompleteToDo) action).getId() ? entry :
                                         new ToDoEntry(entry.getId(), entry.getText(), !entry.isCompleted())
-                                )
+                                ),
+                        state.getFilter()
                 );
 
             case COMPLETE_ALL:
@@ -70,14 +76,24 @@ public class ToDos implements Reducer<AppModel, Action> {
                 return new AppModel(
                         state.getNewToDoText(),
                         state.getTodos()
-                                .map(entry -> new ToDoEntry(entry.getId(), entry.getText(), !areAllMarked))
+                                .map(entry -> new ToDoEntry(entry.getId(), entry.getText(), !areAllMarked)),
+                        state.getFilter()
                 );
 
             case CLEAR_COMPLETED:
                 return new AppModel(
                         state.getNewToDoText(),
                         state.getTodos()
-                                .filter(entry -> !entry.isCompleted())
+                                .filter(entry -> !entry.isCompleted()),
+                        state.getFilter()
+                );
+
+            case SET_FILTER:
+                final SetFilter setFilter = (SetFilter) action;
+                return new AppModel(
+                        state.getNewToDoText(),
+                        state.getTodos(),
+                        setFilter.getFilter()
                 );
 
             default:

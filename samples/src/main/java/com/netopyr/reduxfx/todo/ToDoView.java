@@ -4,19 +4,11 @@ import com.netopyr.reduxfx.View;
 import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.actions.Actions;
 import com.netopyr.reduxfx.todo.state.AppModel;
+import com.netopyr.reduxfx.todo.state.Filter;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
-import static com.netopyr.reduxfx.VScenegraphFactory.Button;
-import static com.netopyr.reduxfx.VScenegraphFactory.HBox;
-import static com.netopyr.reduxfx.VScenegraphFactory.ListView;
-import static com.netopyr.reduxfx.VScenegraphFactory.StackPane;
-import static com.netopyr.reduxfx.VScenegraphFactory.TextField;
-import static com.netopyr.reduxfx.VScenegraphFactory.VBox;
-import static com.netopyr.reduxfx.VScenegraphFactory.disable;
-import static com.netopyr.reduxfx.VScenegraphFactory.items;
-import static com.netopyr.reduxfx.VScenegraphFactory.onAction;
-import static com.netopyr.reduxfx.VScenegraphFactory.text;
+import static com.netopyr.reduxfx.VScenegraphFactory.*;
 
 public class ToDoView implements View<AppModel, Action> {
 
@@ -39,7 +31,35 @@ public class ToDoView implements View<AppModel, Action> {
                                         )
                                 ),
                                 ListView(
-                                        items(state.getTodos().map(ToDoEntry::getText))
+                                        items(state.getTodos()
+                                                .filter(toDoEntry -> {
+                                                    switch (state.getFilter()) {
+                                                        case ACTIVE:
+                                                            return ! toDoEntry.isCompleted();
+                                                        case COMPLETED:
+                                                            return toDoEntry.isCompleted();
+                                                        default:
+                                                            return true;
+                                                    }
+                                                })
+                                                .map(ToDoEntry::getText))
+                                ),
+                                HBox(
+                                        ToggleButton(
+                                                text("All"),
+                                                toggleGroup("filterButtonGroup"),
+                                                onAction(e -> Actions.setFilter(Filter.ALL))
+                                        ),
+                                        ToggleButton(
+                                                text("Active"),
+                                                toggleGroup("filterButtonGroup"),
+                                                onAction(e -> Actions.setFilter(Filter.ACTIVE))
+                                        ),
+                                        ToggleButton(
+                                                text("Completed"),
+                                                toggleGroup("filterButtonGroup"),
+                                                onAction(e -> Actions.setFilter(Filter.COMPLETED))
+                                        )
                                 )
                         )
                 );
@@ -47,6 +67,26 @@ public class ToDoView implements View<AppModel, Action> {
 
 
         /*
+                StackPane(
+                        VBox(
+                                HBox(
+                                        TextField()
+                                                .text(state.getNewToDoText())
+                                                .onChange((oldValue, newValue) -> Actions.newTextFieldChanged(newValue))
+                                        ),
+                                        Button(
+                                                text("Create"),
+                                                disable(state.getNewToDoText().isEmpty()),
+                                                onAction(e -> Actions.addToDo())
+                                        )
+                                ),
+                                ListView(
+                                        items(state.getTodos().map(ToDoEntry::getText))
+                                )
+                        )
+                );
+
+
         new StackPane(
                 new VBox(
                         new TextField(

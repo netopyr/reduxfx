@@ -76,15 +76,30 @@ public class VScenegraphFactory {
         return node(VNodeType.LIST_VIEW, elements);
     }
 
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> ToggleButton(VElement<ACTION>... elements) {
+        return node(VNodeType.TOGGLE_BUTTON, elements);
+    }
 
-    public static <ACTION> VProperty<String, ACTION> text(String value, VChangeListener<? super String, ACTION> listener) { return property(VPropertyType.TEXT, value, listener); }
 
-    public static <ACTION> VProperty<String, ACTION> text(String value) { return text(value, null); }
+    public static <ACTION> VProperty<String, ACTION> text(String value, VChangeListener<? super String, ACTION> listener) {
+        return property(VPropertyType.TEXT, value, listener);
+    }
 
-    public static <ACTION> VProperty<Boolean, ACTION> disable(boolean value) { return property(VPropertyType.DISABLE, value); }
+    public static <ACTION> VProperty<String, ACTION> text(String value) {
+        return text(value, null);
+    }
+
+    public static <ACTION> VProperty<Boolean, ACTION> disable(boolean value) {
+        return property(VPropertyType.DISABLE, value);
+    }
 
     public static <ACTION> VProperty<Seq<String>, ACTION> items(Seq<String> value) {
         return property(VPropertyType.ITEMS, value);
+    }
+
+    public static <ACTION> VProperty<String, ACTION> toggleGroup(String value) {
+        return property(VPropertyType.TOGGLE_GROUP, value);
     }
 
 

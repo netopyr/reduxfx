@@ -3,7 +3,8 @@ package com.netopyr.reduxfx.vscenegraph;
 public enum VPropertyType {
     TEXT("text"),
     DISABLE("disable"),
-    ITEMS("items");
+    ITEMS("items"),
+    TOGGLE_GROUP("toggleGroup");
 
     private final String name;
 

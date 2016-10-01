@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public final class AddToDo implements Action {
 
+    AddToDo() {}
+
     public ActionType getType() {
         return ActionType.ADD_TODO;
     }

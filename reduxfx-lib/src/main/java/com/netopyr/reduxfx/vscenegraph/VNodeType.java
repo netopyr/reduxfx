@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -15,7 +16,8 @@ public enum VNodeType {
     H_BOX(HBox.class),
     LIST_VIEW(ListView.class),
     TEXT_FIELD(TextField.class),
-    BUTTON(Button.class);
+    BUTTON(Button.class),
+    TOGGLE_BUTTON(ToggleButton.class);
 
     private final Class<? extends Node> nodeClass;
 

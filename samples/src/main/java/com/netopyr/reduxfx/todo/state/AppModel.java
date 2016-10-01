@@ -7,11 +7,12 @@ public final class AppModel {
 
     private final String newToDoText;
     private final Seq<ToDoEntry> todos;
+    private final Filter filter;
 
-    @SuppressWarnings("unchecked")
-    public AppModel(String newToDoText, Seq<ToDoEntry> todos) {
+    public AppModel(String newToDoText, Seq<ToDoEntry> todos, Filter filter) {
         this.newToDoText = newToDoText;
         this.todos = todos;
+        this.filter = filter;
     }
 
     public String getNewToDoText() {
@@ -22,11 +23,16 @@ public final class AppModel {
         return todos;
     }
 
+    public Filter getFilter() {
+        return filter;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("newToDoText", newToDoText)
                 .append("todos", todos)
+                .append("filter", filter)
                 .toString();
     }
 }

@@ -42,22 +42,22 @@ class NodeUtilities {
 
 
     @SuppressWarnings("unchecked")
-    static void setAllAttributes(Node node, VNode vNode, Consumer dispatcher) {
-        setProperties(node, vNode.getProperties(), dispatcher);
+    static void setAllAttributes(Env env, Node node, VNode vNode, Consumer dispatcher) {
+        setProperties(env, node, vNode.getProperties(), dispatcher);
         setEventHandlers(node, vNode.getEventHandlers(), dispatcher);
     }
 
 
 
     @SuppressWarnings("unchecked")
-    static void setProperties(Node node, Map<VPropertyType, VProperty> properties, Consumer dispatcher) {
+    static void setProperties(Env env, Node node, Map<VPropertyType, VProperty> properties, Consumer dispatcher) {
         for (final VProperty vProperty : properties.values()) {
             final Option<MethodHandle> propertyGetter = getPropertyGetter(node.getClass(), vProperty.getType());
             if (propertyGetter.isDefined()) {
                 try {
                     final Property property = (Property<?>) propertyGetter.get().invoke(node);
 
-                    setProperty(property, vProperty.getValue());
+                    setProperty(env, property, vProperty.getValue());
 
                     if (vProperty.getChangeListener().isDefined()) {
                         setChangeListener(node, property, (VChangeListener) vProperty.getChangeListener().get(), dispatcher);
@@ -100,19 +100,35 @@ class NodeUtilities {
     }
 
     @SuppressWarnings("unchecked")
-    private static void setProperty(Property property, Object newValue) {
-        final Object oldValue = property.getValue();
-        if (oldValue instanceof ObservableList) {
-            if (newValue instanceof Seq) {
-                ((ObservableList) oldValue).setAll(((Seq) newValue).toJavaList());
-            } else if (newValue instanceof List) {
-                ((ObservableList) oldValue).setAll((List) newValue);
-            } else {
+    private static void setProperty(Env env, Property property, Object newValue) {
+        switch (property.getName()) {
+            case "items":
+                setPropertyList(property, newValue);
+                break;
+            case "toggleGroup":
+                setPropertyToggleGroup(env, property, newValue);
+                break;
+            default:
                 property.setValue(newValue);
-            }
+                break;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void setPropertyList(Property property, Object newValue) {
+        final Object oldValue = property.getValue();
+        if (newValue instanceof Seq) {
+            ((ObservableList) oldValue).setAll(((Seq) newValue).toJavaList());
+        } else if (newValue instanceof List) {
+            ((ObservableList) oldValue).setAll((List) newValue);
         } else {
             property.setValue(newValue);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void setPropertyToggleGroup(Env env, Property property, Object newValue) {
+        property.setValue(newValue != null && String.class.equals(newValue.getClass())? env.getToggleGroup((String) newValue) : null);
     }
 
     @SuppressWarnings("unchecked")

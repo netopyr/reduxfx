@@ -6,7 +6,7 @@ public class NewTextFieldChanged implements Action {
 
     private final String text;
 
-    public NewTextFieldChanged(String text) {
+    NewTextFieldChanged(String text) {
         this.text = text;
     }
 
