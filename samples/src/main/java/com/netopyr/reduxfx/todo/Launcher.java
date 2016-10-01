@@ -33,7 +33,7 @@ public class Launcher extends Application {
                 new ToDoEntry(2, "Travel to JavaOne", false)
         );
 
-        final AppModel initialState = new AppModel(dummyEntries);
+        final AppModel initialState = new AppModel("", dummyEntries);
         final ToDos reducer = new ToDos();
         final ToDoView toDoView = new ToDoView();
 

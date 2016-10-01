@@ -1,51 +1,35 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javaslang.Tuple2;
-import javaslang.collection.List;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
-import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
-public final class VNode implements VElement {
+public final class VNode<ACTION> implements VElement<ACTION> {
 
     private final VNodeType type;
-    private final Option<Consumer<? super Node>> ref;
-    private final List<VNode> children;
-    private final Map<VPropertyType, Object> properties;
-    private final Map<VEventType, EventHandler<?>> eventHandlers;
-    private final Map<VPropertyType, ChangeListener<?>> changeListeners;
-    private final Map<VPropertyType, InvalidationListener> invalidationListeners;
+    private final Array<VNode<ACTION>> children;
+    private final Map<VPropertyType, VProperty<?, ACTION>> properties;
+    private final Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers;
     private final int size;
 
 
-    public VNode(VNodeType type, VElement... elements) {
+    @SafeVarargs
+    public VNode(VNodeType type, VElement<ACTION>... elements) {
         this.type = Objects.requireNonNull(type, "Type must not be null");
 
-        final List<VElement> allElements = List.of(elements);
+        final Array<VElement<ACTION>> allElements = Array.of(elements);
 
-        this.ref = allElements.findLast(element -> element instanceof VReference)
-                .map(element -> ((VReference) element).getRef());
         this.children = allElements.filter(element -> element instanceof VNode)
-                .map(element -> (VNode) element);
+                .map(element -> (VNode<ACTION>) element);
         this.properties = allElements.filter(element -> element instanceof VProperty)
-                .map(element -> (VProperty) element)
-                .toMap(element -> new Tuple2<>(element.getType(), element.getValue()));
-        this.eventHandlers = allElements.filter(element -> element instanceof VEventHandler)
-                .map(element -> (VEventHandler<?>) element)
-                .toMap(element -> new Tuple2<>(element.getType(), element.getEventHandler()));
-        this.changeListeners = allElements.filter(element -> element instanceof VChangeListener)
-                .map(element -> (VChangeListener<?>) element)
-                .toMap(element -> new Tuple2<>(element.getType(), element.getListener()));
-        this.invalidationListeners = allElements.filter(element -> element instanceof VInvalidationListener)
-                .map(element -> (VInvalidationListener) element)
-                .toMap(element -> new Tuple2<>(element.getType(), element.getListener()));
+                .map(element -> (VProperty<?, ACTION>) element)
+                .toMap(element -> new Tuple2<>(element.getType(), element));
+        this.eventHandlers = allElements.filter(element -> element instanceof VEventHandlerElement)
+                .map(element -> (VEventHandlerElement<?, ACTION>) element)
+                .toMap(element -> new Tuple2<>(element.getType(), element));
 
         this.size = children.map(VNode::getSize).sum().intValue() + 1;
     }
@@ -59,28 +43,16 @@ public final class VNode implements VElement {
         return type;
     }
 
-    public Option<Consumer<? super Node>> getRef() {
-        return ref;
-    }
-
-    public List<VNode> getChildren() {
+    public Array<VNode<ACTION>> getChildren() {
         return children;
     }
 
-    public Map<VPropertyType, Object> getProperties() {
+    public Map<VPropertyType, VProperty<?, ACTION>> getProperties() {
         return properties;
     }
 
-    public Map<VEventType, EventHandler<?>> getEventHandlers() {
+    public Map<VEventType, VEventHandlerElement<?, ACTION>> getEventHandlers() {
         return eventHandlers;
-    }
-
-    public Map<VPropertyType, ChangeListener<?>> getChangeListeners() {
-        return changeListeners;
-    }
-
-    public Map<VPropertyType, InvalidationListener> getInvalidationListeners() {
-        return invalidationListeners;
     }
 
     @Override
@@ -90,8 +62,6 @@ public final class VNode implements VElement {
                 .append("children", children)
                 .append("properties", properties)
                 .append("eventHandlers", eventHandlers)
-                .append("changeListeners", changeListeners)
-                .append("invalidationListeners", invalidationListeners)
                 .toString();
     }
 }

@@ -1,32 +1,24 @@
 package com.netopyr.reduxfx.patcher.patches;
 
+import com.netopyr.reduxfx.vscenegraph.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.VEventType;
+import com.netopyr.reduxfx.vscenegraph.VProperty;
 import com.netopyr.reduxfx.vscenegraph.VPropertyType;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class AttributesPatch extends Patch {
+public class AttributesPatch<ACTION> extends Patch {
 
-    private final Map<VPropertyType, Object> properties;
-    private final Map<VEventType, EventHandler<?>> eventHandlers;
-    private final Map<VPropertyType, ChangeListener<?>> changeListeners;
-    private final Map<VPropertyType, InvalidationListener> invalidationListeners;
+    private final Map<VPropertyType, VProperty<?, ACTION>> properties;
+    private final Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers;
 
     public AttributesPatch(
             int index,
-            Map<VPropertyType, Object> properties,
-            Map<VEventType, EventHandler<?>> eventHandlers,
-            Map<VPropertyType, ChangeListener<?>> changeListeners,
-            Map<VPropertyType, InvalidationListener> invalidationListenerMaps
-            ) {
+            Map<VPropertyType, VProperty<?, ACTION>> properties,
+            Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers) {
         super(index);
         this.properties = properties;
         this.eventHandlers = eventHandlers;
-        this.changeListeners = changeListeners;
-        this.invalidationListeners = invalidationListenerMaps;
     }
 
     @Override
@@ -34,20 +26,12 @@ public class AttributesPatch extends Patch {
         return Type.ATTRIBUTES;
     }
 
-    public Map<VPropertyType, Object> getProperties() {
+    public Map<VPropertyType, VProperty<?, ACTION>> getProperties() {
         return properties;
     }
 
-    public Map<VEventType, EventHandler<?>> getEventHandlers() {
+    public Map<VEventType, VEventHandlerElement<?, ACTION>> getEventHandlers() {
         return eventHandlers;
-    }
-
-    public Map<VPropertyType, ChangeListener<?>> getChangeListeners() {
-        return changeListeners;
-    }
-
-    public Map<VPropertyType, InvalidationListener> getInvalidationListeners() {
-        return invalidationListeners;
     }
 
     @Override
@@ -56,8 +40,6 @@ public class AttributesPatch extends Patch {
                 .appendSuper(super.toString())
                 .append("properties", properties)
                 .append("eventHandlers", eventHandlers)
-                .append("changeListeners", changeListeners)
-                .append("invalidationListeners", invalidationListeners)
                 .toString();
     }
 }

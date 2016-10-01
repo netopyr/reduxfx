@@ -1,25 +1,28 @@
 package com.netopyr.reduxfx.patcher;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javaslang.collection.Seq;
+import javaslang.collection.Array;
 import javaslang.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NodeBuilder {
+import java.util.function.Consumer;
+
+import static com.netopyr.reduxfx.patcher.NodeUtilities.getChildren;
+
+class NodeBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeBuilder.class);
 
-    public static Option<Node> create(VNode vNode) {
+    @SuppressWarnings("unchecked")
+    static Option<Node> create(VNode vNode, Consumer dispatcher) {
         try {
             final Class<? extends Node> nodeClass = vNode.getType().getNodeClass();
 
             final Node node = nodeClass.newInstance();
 
-            NodeUtilities.setAllAttributes(node, vNode);
+            NodeUtilities.setAllAttributes(node, vNode, dispatcher);
 
             if (vNode.getChildren().nonEmpty()) {
                 final Option<java.util.List<Node>> children = getChildren(node);
@@ -28,7 +31,7 @@ public class NodeBuilder {
                     return Option.none();
                 }
 
-                final Seq<Option<Node>> vChildren = vNode.getChildren().map(NodeBuilder::create);
+                final Array<Option<Node>> vChildren = vNode.getChildren().map(child -> create((VNode)child, dispatcher));
                 if (vChildren.find(Option::isEmpty).isDefined()) {
                     // one of the children could not be created
                     return Option.none();
@@ -36,19 +39,11 @@ public class NodeBuilder {
                 children.get().addAll(vChildren.map(Option::get).toJavaList());
             }
 
-            vNode.getRef().peek(ref -> ref.accept(node));
-
             return Option.of(node);
 
         } catch (InstantiationException | IllegalAccessException e) {
             LOG.error("Unable to create node", e);
             return Option.none();
         }
-    }
-
-    public static Option<java.util.List<Node>> getChildren(Node node) {
-        return node instanceof Group? Option.of(((Group) node).getChildren())
-                : node instanceof Pane? Option.of(((Pane) node).getChildren())
-                : Option.none();
     }
 }

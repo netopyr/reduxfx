@@ -18,8 +18,6 @@ public class ReduxFX {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReduxFX.class);
 
-    // TODO: Test Todo-example
-
     public static <STATE, ACTION> void start(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Group root) {
         doStart(initialState, reducer, view, root);
     }
@@ -32,6 +30,7 @@ public class ReduxFX {
         return VScenegraphFactory.Root(vNode);
     }
 
+    @SuppressWarnings("unchecked")
     private static <STATE, ACTION> void doStart(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Node root) {
         LOG.info("Starting ReduxFX");
 
@@ -40,11 +39,11 @@ public class ReduxFX {
         final Observable<STATE> stateStream = actionStream.scan(initialState, reducer::reduce);
 
         final Observable<VNode> vNodeStream = stateStream
-                .map(state -> view.view(state, actionStream::onNext))
+                .map(view::view)
                 .map(ReduxFX::addRoot)
                 .startWith(VScenegraphFactory.Root());
 
         final Observable<Vector<Patch>> patchStream = vNodeStream.zipWith(vNodeStream.skip(1), Differ::diff);
-        vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(root, entry._1, entry._2));
+        vNodeStream.zipWith(patchStream, Tuple2::new).forEach(entry -> Patcher.patch(root, entry._1, entry._2, item -> actionStream.onNext((ACTION) item)));
     }
 }

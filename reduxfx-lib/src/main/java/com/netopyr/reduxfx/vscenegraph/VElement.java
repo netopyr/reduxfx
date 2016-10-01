@@ -1,3 +1,3 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-public interface VElement {}
+public interface VElement<ACTION> {}

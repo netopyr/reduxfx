@@ -1,6 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph;
 
 public enum VPropertyType {
+    TEXT("text"),
+    DISABLE("disable"),
     ITEMS("items");
 
     private final String name;

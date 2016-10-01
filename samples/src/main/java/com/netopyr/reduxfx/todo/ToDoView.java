@@ -6,42 +6,37 @@ import com.netopyr.reduxfx.todo.actions.Actions;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javafx.scene.control.TextField;
 
-import java.util.function.Consumer;
-
+import static com.netopyr.reduxfx.VScenegraphFactory.Button;
+import static com.netopyr.reduxfx.VScenegraphFactory.HBox;
 import static com.netopyr.reduxfx.VScenegraphFactory.ListView;
 import static com.netopyr.reduxfx.VScenegraphFactory.StackPane;
 import static com.netopyr.reduxfx.VScenegraphFactory.TextField;
 import static com.netopyr.reduxfx.VScenegraphFactory.VBox;
+import static com.netopyr.reduxfx.VScenegraphFactory.disable;
 import static com.netopyr.reduxfx.VScenegraphFactory.items;
 import static com.netopyr.reduxfx.VScenegraphFactory.onAction;
-import static com.netopyr.reduxfx.VScenegraphFactory.ref;
+import static com.netopyr.reduxfx.VScenegraphFactory.text;
 
 public class ToDoView implements View<AppModel, Action> {
 
-    /*
-    1. Pass Observer
-    2. Pass Callback
-    3. Define later
-     */
+    public VNode<Action> view(AppModel state) {
 
-    private javafx.scene.control.TextField textField;
-
-    public VNode view(AppModel state, Consumer<Action> dispatcher) {
-
-        // TODO: Implement TableView with completed flag and text
         return
                 StackPane(
                         VBox(
-                                TextField(
-                                        ref(tf -> textField = (TextField) tf),
-                                        onAction(e -> {
-                                            if (textField != null) {
-                                                dispatcher.accept(Actions.addToDo(textField.getText()));
-                                                textField.setText("");
-                                            }
-                                        })
+                                HBox(
+                                        TextField(
+                                                text(
+                                                        state.getNewToDoText(),
+                                                        (oldValue, newValue) -> Actions.newTextFieldChanged(newValue)
+                                                )
+                                        ),
+                                        Button(
+                                                text("Create"),
+                                                disable(state.getNewToDoText().isEmpty()),
+                                                onAction(e -> Actions.addToDo())
+                                        )
                                 ),
                                 ListView(
                                         items(state.getTodos().map(ToDoEntry::getText))
