@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Priority;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
@@ -178,6 +179,10 @@ public class VScenegraphFactory {
 
     public static <ACTION> VProperty<ObservableList<String>, ACTION> stylesheets(String... value) {
         return property(VPropertyType.STYLESHEETS, value == null? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
+    }
+
+    public static <ACTION> VProperty<Priority, ACTION> hgrow(Priority value) {
+        return property(VPropertyType.H_GROW, value);
     }
 
 

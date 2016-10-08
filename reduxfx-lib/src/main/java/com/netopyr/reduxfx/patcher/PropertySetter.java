@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.patcher;
 
+import com.netopyr.reduxfx.patcher.property.LayoutConstraintAccessor;
 import com.netopyr.reduxfx.patcher.property.ListAccessor;
 import com.netopyr.reduxfx.patcher.property.ListWithoutListenerAccessor;
 import com.netopyr.reduxfx.patcher.property.PropertyAccessor;
@@ -7,6 +8,8 @@ import com.netopyr.reduxfx.patcher.property.ValueAccessor;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.collection.Map;
@@ -44,6 +47,8 @@ public class PropertySetter<ACTION> {
             case STYLE_CLASS:
             case STYLESHEETS:
                 return new ListWithoutListenerAccessor<>(clazz, type);
+            case H_GROW:
+                return new LayoutConstraintAccessor<>(HBox.class, type, Priority.class);
             case TOGGLE_GROUP:
                 throw new UnsupportedOperationException("ToggleGroup is not supported yet");
             default:

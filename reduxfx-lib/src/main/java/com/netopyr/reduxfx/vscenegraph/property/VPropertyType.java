@@ -15,7 +15,8 @@ public enum VPropertyType {
     STYLE_CLASS("styleClass"),
     MNEMONIC_PARSING("mnemonicParsing"),
     PROMPT_TEXT("promptText"),
-    STYLESHEETS("stylesheets");
+    STYLESHEETS("stylesheets"),
+    H_GROW("hgrow");
 
     private final String name;
 

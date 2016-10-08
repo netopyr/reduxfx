@@ -5,6 +5,7 @@ import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Priority;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
@@ -28,8 +29,8 @@ public class MainView implements View<AppModel, Action> {
                                 ),
                                 TextField(
                                         id("addInput"),
-                                        promptText("What needs to be done?")
-//                                        hrow(ALWAYS)
+                                        promptText("What needs to be done?"),
+                                        hgrow(Priority.ALWAYS)
                                 )
                         ),
                         stylesheets("main.css")

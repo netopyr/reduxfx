@@ -7,8 +7,9 @@ import javafx.scene.Node;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.Collections;
+
+import static java.lang.invoke.MethodType.methodType;
 
 public class ListWithoutListenerAccessor<ACTION> implements PropertyAccessor<ObservableList, ACTION> {
 
@@ -35,17 +36,10 @@ public class ListWithoutListenerAccessor<ACTION> implements PropertyAccessor<Obs
         final String propertyName = propertyType.getName();
         final String getterName = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
 
-        final Method method;
         try {
-            method = clazz.getMethod(getterName);
+            return MethodHandles.publicLookup().findVirtual(clazz, getterName, methodType(ObservableList.class));
         } catch (Exception e) {
             throw new IllegalStateException("Unable to find getter of property " + propertyName + " in class " + clazz, e);
-        }
-
-        try {
-            return MethodHandles.publicLookup().unreflect(method);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Getter of property " + propertyName + " in class " + clazz + " is not accessible", e);
         }
     }
 }
