@@ -185,6 +185,19 @@ public class VScenegraphFactory {
         return property(VPropertyType.H_GROW, value);
     }
 
+    public static <ACTION> VProperty<Double, ACTION> minHeight(double value) {
+        return property(VPropertyType.MIN_HEIGHT, value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> maxHeight(double value) {
+        return property(VPropertyType.MAX_HEIGHT, value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> minWidth(double value) {
+        return property(VPropertyType.MIN_WIDTH, value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> maxWidth(double value) {
+        return property(VPropertyType.MAX_WIDTH, value);
+    }
+
 
 
     public static <ACTION> VEventHandlerElement<ActionEvent, ACTION> onAction(VEventHandler<ActionEvent, ACTION> eventHandler) {

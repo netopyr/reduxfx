@@ -16,7 +16,11 @@ public enum VPropertyType {
     MNEMONIC_PARSING("mnemonicParsing"),
     PROMPT_TEXT("promptText"),
     STYLESHEETS("stylesheets"),
-    H_GROW("hgrow");
+    H_GROW("hgrow"),
+    MIN_HEIGHT("minHeight"),
+    MAX_HEIGHT("maxHeight"),
+    MIN_WIDTH("minWidth"),
+    MAX_WIDTH("maxWidth");
 
     private final String name;
 
