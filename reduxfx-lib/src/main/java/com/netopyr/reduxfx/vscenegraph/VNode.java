@@ -1,5 +1,9 @@
 package com.netopyr.reduxfx.vscenegraph;
 
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javaslang.Tuple2;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
@@ -20,7 +24,7 @@ public final class VNode<ACTION> implements VElement<ACTION> {
     public VNode(VNodeType type, VElement<ACTION>... elements) {
         this.type = Objects.requireNonNull(type, "Type must not be null");
 
-        final Array<VElement<ACTION>> allElements = Array.of(elements);
+        final Array<VElement<ACTION>> allElements = elements != null? Array.of(elements) : Array.empty();
 
         this.children = allElements.filter(element -> element instanceof VNode)
                 .map(element -> (VNode<ACTION>) element);

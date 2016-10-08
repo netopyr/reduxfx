@@ -2,8 +2,10 @@ package com.netopyr.reduxfx.vscenegraph;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
@@ -16,10 +18,13 @@ public enum VNodeType {
     V_BOX(VBox.class),
     H_BOX(HBox.class),
     LIST_VIEW(ListView.class),
+    TABLE_VIEW(TableView.class),
     TEXT_FIELD(TextField.class),
     BUTTON(Button.class),
     LABEL(Label.class),
-    TOGGLE_BUTTON(ToggleButton.class);
+    TOGGLE_BUTTON(ToggleButton.class),
+    CHECK_BOX(CheckBox.class),
+    TABLE_COLUMN(null);
 
     private final Class<? extends Node> nodeClass;
 

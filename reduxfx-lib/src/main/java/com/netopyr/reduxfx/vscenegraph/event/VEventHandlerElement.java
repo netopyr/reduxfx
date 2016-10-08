@@ -1,5 +1,6 @@
-package com.netopyr.reduxfx.vscenegraph;
+package com.netopyr.reduxfx.vscenegraph.event;
 
+import com.netopyr.reduxfx.vscenegraph.VElement;
 import javafx.event.Event;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

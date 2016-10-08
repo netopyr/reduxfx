@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.store;
+package com.netopyr.reduxfx.updater;
 
 public interface Subscription {
 

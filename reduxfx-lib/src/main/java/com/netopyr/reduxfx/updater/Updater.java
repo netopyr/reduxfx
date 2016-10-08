@@ -1,9 +1,9 @@
-package com.netopyr.reduxfx.store;
+package com.netopyr.reduxfx.updater;
 
 import com.netopyr.reduxfx.Reducer;
 import javaslang.collection.Array;
 
-public class Store<STATE, ACTION> {
+public class Updater<STATE, ACTION> {
 
     private final Reducer<STATE, ACTION> reducer;
     private Array<Runnable> listeners = Array.empty();
@@ -11,7 +11,7 @@ public class Store<STATE, ACTION> {
     private STATE currentState;
     private boolean dispatching;
 
-    public Store(Reducer<STATE, ACTION> reducer) {
+    public Updater(Reducer<STATE, ACTION> reducer) {
         this.reducer = reducer;
     }
 

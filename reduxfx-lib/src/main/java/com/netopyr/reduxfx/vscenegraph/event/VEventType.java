@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph;
+package com.netopyr.reduxfx.vscenegraph.event;
 
 public enum VEventType {
     ACTION("action");

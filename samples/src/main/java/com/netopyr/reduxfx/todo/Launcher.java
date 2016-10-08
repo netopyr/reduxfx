@@ -5,6 +5,7 @@ import com.netopyr.reduxfx.todo.reducers.ToDos;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.Filter;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
+import com.netopyr.reduxfx.todo.view.MainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Region;
@@ -16,15 +17,14 @@ import javaslang.collection.Seq;
 public class Launcher extends Application {
 
     public void start(Stage primaryStage) throws Exception {
+
         final StackPane root = new StackPane();
-        root.setPrefWidth(800);
-        root.setPrefHeight(600);
         root.setMinWidth(Region.USE_PREF_SIZE);
         root.setMinHeight(Region.USE_PREF_SIZE);
         root.setMaxWidth(Region.USE_PREF_SIZE);
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
-        primaryStage.setTitle("ToDo - ReduxFX");
+        primaryStage.setTitle("ToDoMVCFX - ReduxFX");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
@@ -36,9 +36,9 @@ public class Launcher extends Application {
 
         final AppModel initialState = new AppModel("", dummyEntries, Filter.ALL);
         final ToDos reducer = new ToDos();
-        final ToDoView toDoView = new ToDoView();
+        final MainView mainView = new MainView();
 
-        ReduxFX.start(initialState, reducer, toDoView, root);
+        ReduxFX.start(initialState, reducer, mainView, root);
     }
 
     public static void main(String[] args) {

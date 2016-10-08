@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph;
+package com.netopyr.reduxfx.vscenegraph.property;
 
 public interface VChangeListener<TYPE, ACTION> {
 

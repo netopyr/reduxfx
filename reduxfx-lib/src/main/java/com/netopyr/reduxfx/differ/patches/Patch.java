@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.patcher.patches;
+package com.netopyr.reduxfx.differ.patches;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

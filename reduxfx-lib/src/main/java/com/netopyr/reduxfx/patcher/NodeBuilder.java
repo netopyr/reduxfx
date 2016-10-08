@@ -11,18 +11,27 @@ import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.patcher.NodeUtilities.getChildren;
 
-class NodeBuilder {
+class NodeBuilder<ACTION> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeBuilder.class);
 
+    private final PropertySetter propertySetter;
+    private final EventSetter eventSetter;
+
+    NodeBuilder(PropertySetter<ACTION> propertySetter, EventSetter<ACTION> eventSetter) {
+        this.propertySetter = propertySetter;
+        this.eventSetter = eventSetter;
+    }
+
     @SuppressWarnings("unchecked")
-    static Option<Node> create(Env env, VNode vNode, Consumer dispatcher) {
+    Option<Node> create(VNode<ACTION> vNode) {
         try {
             final Class<? extends Node> nodeClass = vNode.getType().getNodeClass();
 
             final Node node = nodeClass.newInstance();
 
-            NodeUtilities.setAllAttributes(env, node, vNode, dispatcher);
+            propertySetter.setProperties(node, vNode.getProperties());
+            eventSetter.setEventHandlers(node, vNode.getEventHandlers());
 
             if (vNode.getChildren().nonEmpty()) {
                 final Option<java.util.List<Node>> children = getChildren(node);
@@ -31,7 +40,7 @@ class NodeBuilder {
                     return Option.none();
                 }
 
-                final Array<Option<Node>> vChildren = vNode.getChildren().map(child -> create(env, (VNode)child, dispatcher));
+                final Array<Option<Node>> vChildren = vNode.getChildren().map(child -> create((VNode)child));
                 if (vChildren.find(Option::isEmpty).isDefined()) {
                     // one of the children could not be created
                     return Option.none();

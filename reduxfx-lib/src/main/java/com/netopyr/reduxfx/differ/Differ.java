@@ -1,15 +1,15 @@
-package com.netopyr.reduxfx.patcher;
+package com.netopyr.reduxfx.differ;
 
-import com.netopyr.reduxfx.patcher.patches.AttributesPatch;
-import com.netopyr.reduxfx.patcher.patches.InsertPatch;
-import com.netopyr.reduxfx.patcher.patches.Patch;
-import com.netopyr.reduxfx.patcher.patches.RemovePatch;
-import com.netopyr.reduxfx.patcher.patches.ReplacePatch;
-import com.netopyr.reduxfx.vscenegraph.VEventHandlerElement;
-import com.netopyr.reduxfx.vscenegraph.VEventType;
+import com.netopyr.reduxfx.differ.patches.AttributesPatch;
+import com.netopyr.reduxfx.differ.patches.InsertPatch;
+import com.netopyr.reduxfx.differ.patches.Patch;
+import com.netopyr.reduxfx.differ.patches.RemovePatch;
+import com.netopyr.reduxfx.differ.patches.ReplacePatch;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import com.netopyr.reduxfx.vscenegraph.VProperty;
-import com.netopyr.reduxfx.vscenegraph.VPropertyType;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javaslang.Tuple;
 import javaslang.collection.Array;
 import javaslang.collection.Map;

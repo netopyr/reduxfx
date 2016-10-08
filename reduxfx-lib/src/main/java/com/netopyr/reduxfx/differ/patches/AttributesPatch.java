@@ -1,9 +1,9 @@
-package com.netopyr.reduxfx.patcher.patches;
+package com.netopyr.reduxfx.differ.patches;
 
-import com.netopyr.reduxfx.vscenegraph.VEventHandlerElement;
-import com.netopyr.reduxfx.vscenegraph.VEventType;
-import com.netopyr.reduxfx.vscenegraph.VProperty;
-import com.netopyr.reduxfx.vscenegraph.VPropertyType;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

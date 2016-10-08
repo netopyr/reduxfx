@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.patcher;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import com.netopyr.reduxfx.vscenegraph.VProperty;
-import com.netopyr.reduxfx.vscenegraph.VPropertyType;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javafx.scene.control.ToggleGroup;
 import javaslang.control.Option;
 

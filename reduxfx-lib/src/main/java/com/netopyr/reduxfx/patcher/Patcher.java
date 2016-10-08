@@ -1,9 +1,9 @@
 package com.netopyr.reduxfx.patcher;
 
-import com.netopyr.reduxfx.patcher.patches.AttributesPatch;
-import com.netopyr.reduxfx.patcher.patches.InsertPatch;
-import com.netopyr.reduxfx.patcher.patches.Patch;
-import com.netopyr.reduxfx.patcher.patches.ReplacePatch;
+import com.netopyr.reduxfx.differ.patches.AttributesPatch;
+import com.netopyr.reduxfx.differ.patches.InsertPatch;
+import com.netopyr.reduxfx.differ.patches.Patch;
+import com.netopyr.reduxfx.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -16,11 +16,21 @@ import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.patcher.NodeUtilities.getChildren;
 
-public class Patcher {
+public class Patcher<ACTION> {
 
     private static final Logger LOG = LoggerFactory.getLogger(Patcher.class);
 
-    public static void patch(Env env, Node root, VNode vRoot, Seq<Patch> patches, Consumer dispatcher) {
+    private final NodeBuilder<ACTION> nodeBuilder;
+    private final PropertySetter<ACTION> propertySetter;
+    private final EventSetter<ACTION> eventSetter;
+
+    public Patcher(Consumer<ACTION> dispatcher) {
+        this.propertySetter = new PropertySetter<>(dispatcher);
+        this.eventSetter = new EventSetter<>(dispatcher);
+        this.nodeBuilder = new NodeBuilder<ACTION>(this.propertySetter, this.eventSetter);
+    }
+
+    public void patch(Node root, VNode vRoot, Seq<Patch> patches) {
         for (final Patch patch : patches) {
             final Option<Node> optionalNode = findNode(patch.getIndex(), root, vRoot, 0);
             if (optionalNode.isEmpty()) {
@@ -29,15 +39,15 @@ public class Patcher {
                 final Node node = optionalNode.get();
                 switch (patch.getType()) {
                     case REPLACED:
-                        doReplace(env, node, (ReplacePatch) patch, dispatcher);
+                        doReplace(node, (ReplacePatch) patch);
                         break;
                     case ATTRIBUTES:
-                        doAttributes(env, node, (AttributesPatch) patch, dispatcher);
+                        doAttributes(node, (AttributesPatch) patch);
                         break;
                     case ORDER:
                         throw new UnsupportedOperationException("Not implemented yet");
                     case INSERT:
-                        doInsert(env, node, (InsertPatch) patch, dispatcher);
+                        doInsert(node, (InsertPatch) patch);
                         break;
                     case REMOVE:
                         doRemove(node);
@@ -48,12 +58,12 @@ public class Patcher {
     }
 
     @SuppressWarnings("unchecked")
-    private static void doReplace(Env env, Node oldNode, ReplacePatch patch, Consumer dispatcher) {
+    private void doReplace(Node oldNode, ReplacePatch patch) {
         final Option<java.util.List<Node>> children = getChildren(oldNode.getParent());
 
         if (children.isDefined()) {
             final VNode vNode = patch.getNewNode();
-            final Option<Node> newNode = NodeBuilder.create(env, vNode, dispatcher);
+            final Option<Node> newNode = nodeBuilder.create(vNode);
             if (newNode.isDefined()) {
                 final int index = children.get().indexOf(oldNode);
                 children.get().set(index, newNode.get());
@@ -64,17 +74,17 @@ public class Patcher {
     }
 
     @SuppressWarnings("unchecked")
-    private static void doAttributes(Env env, Node node, AttributesPatch patch, Consumer dispatcher) {
-        NodeUtilities.setProperties(env, node, patch.getProperties(), dispatcher);
-        NodeUtilities.setEventHandlers(node, patch.getEventHandlers(), dispatcher);
+    private void doAttributes(Node node, AttributesPatch patch) {
+        propertySetter.setProperties(node, patch.getProperties());
+        eventSetter.setEventHandlers(node, patch.getEventHandlers());
     }
 
-    private static void doInsert(Env env, Node parent, InsertPatch patch, Consumer dispatcher) {
+    private void doInsert(Node parent, InsertPatch patch) {
         final Option<java.util.List<Node>> children = getChildren(parent);
 
         if (children.isDefined()) {
             final VNode vNode = patch.getNewNode();
-            final Option<Node> node = NodeBuilder.create(env, vNode, dispatcher);
+            final Option<Node> node = nodeBuilder.create(vNode);
             if (node.isDefined()) {
                 children.get().add(node.get());
                 return;

@@ -1,5 +1,6 @@
-package com.netopyr.reduxfx.vscenegraph;
+package com.netopyr.reduxfx.vscenegraph.property;
 
+import com.netopyr.reduxfx.vscenegraph.VElement;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

@@ -1,10 +1,11 @@
 package com.netopyr.reduxfx;
 
-import com.netopyr.reduxfx.patcher.Differ;
+import com.netopyr.reduxfx.differ.Differ;
 import com.netopyr.reduxfx.patcher.Env;
 import com.netopyr.reduxfx.patcher.Patcher;
-import com.netopyr.reduxfx.patcher.patches.Patch;
+import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.VScenegraphFactory;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -50,11 +51,13 @@ public class ReduxFX {
 
         final Observable<Vector<Patch>> patchStream = vNodeStream.zipWith(vNodeStream.skip(1), Differ::diff);
 
+        final Patcher<ACTION> patcher = new Patcher<>(actionStream::onNext);
+
         vNodeStream
                 .zipWith(patchStream, NodePatchPair::new)
                 .forEach(pair -> {
                     env.cleanup(pair.node);
-                    Patcher.patch(env, root, pair.node, pair.patches, dispatcher);
+                    patcher.patch(root, pair.node, pair.patches);
                 });
     }
 
