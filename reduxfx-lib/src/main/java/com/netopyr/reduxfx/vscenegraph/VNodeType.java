@@ -8,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -24,7 +25,8 @@ public enum VNodeType {
     LABEL(Label.class),
     TOGGLE_BUTTON(ToggleButton.class),
     CHECK_BOX(CheckBox.class),
-    TABLE_COLUMN(null);
+    TABLE_COLUMN(null),
+    ANCHOR_PANE(AnchorPane.class);
 
     private final Class<? extends Node> nodeClass;
 

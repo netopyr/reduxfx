@@ -8,6 +8,7 @@ import com.netopyr.reduxfx.patcher.property.ValueAccessor;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javaslang.Tuple;
@@ -49,6 +50,11 @@ public class PropertySetter<ACTION> {
                 return new ListWithoutListenerAccessor<>(clazz, type);
             case H_GROW:
                 return new LayoutConstraintAccessor<>(HBox.class, type, Priority.class);
+            case TOP_ANCHOR:
+            case RIGHT_ANCHOR:
+            case BOTTOM_ANCHOR:
+            case LEFT_ANCHOR:
+                return new LayoutConstraintAccessor<>(AnchorPane.class, type, Double.class);
             case TOGGLE_GROUP:
                 throw new UnsupportedOperationException("ToggleGroup is not supported yet");
             default:

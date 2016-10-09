@@ -17,10 +17,14 @@ public enum VPropertyType {
     PROMPT_TEXT("promptText"),
     STYLESHEETS("stylesheets"),
     H_GROW("hgrow"),
+    MIN_WIDTH("minWidth"),
+    MAX_WIDTH("maxWidth"),
     MIN_HEIGHT("minHeight"),
     MAX_HEIGHT("maxHeight"),
-    MIN_WIDTH("minWidth"),
-    MAX_WIDTH("maxWidth");
+    TOP_ANCHOR("topAnchor"),
+    RIGHT_ANCHOR("rightAnchor"),
+    BOTTOM_ANCHOR("bottomAnchor"),
+    LEFT_ANCHOR("leftAnchor");
 
     private final String name;
 

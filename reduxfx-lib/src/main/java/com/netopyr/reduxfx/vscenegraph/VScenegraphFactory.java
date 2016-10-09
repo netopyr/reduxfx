@@ -68,6 +68,11 @@ public class VScenegraphFactory {
     }
 
     @SafeVarargs
+    public static <ACTION> VNode<ACTION> AnchorPane(VElement<ACTION>... elements) {
+        return node(VNodeType.ANCHOR_PANE, elements);
+    }
+
+    @SafeVarargs
     public static <ACTION> VNode<ACTION> Button(VElement<ACTION>... elements) {
         return node(VNodeType.BUTTON, elements);
     }
@@ -197,6 +202,20 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<Double, ACTION> maxWidth(double value) {
         return property(VPropertyType.MAX_WIDTH, value);
     }
+
+    public static <ACTION> VProperty<Double, ACTION> topAnchor(double value) {
+        return property(VPropertyType.TOP_ANCHOR, value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> rightAnchor(double value) {
+        return property(VPropertyType.RIGHT_ANCHOR, value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> bottomAnchor(double value) {
+        return property(VPropertyType.BOTTOM_ANCHOR, value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> leftAnchor(double value) {
+        return property(VPropertyType.LEFT_ANCHOR, value);
+    }
+
 
 
 
