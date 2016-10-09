@@ -6,10 +6,20 @@ import javafx.scene.Node;
 
 import java.util.function.Consumer;
 
-public class ValueAccessor<TYPE, ACTION> extends AbstractAccessor<TYPE, ACTION> {
+public class ValueAccessor<TYPE, ACTION> extends AbstractAccessor<TYPE, ACTION, TYPE> {
 
     public ValueAccessor(Class<? extends Node> clazz, VPropertyType propertyType, Consumer<ACTION> dispatcher) {
         super(clazz, propertyType, dispatcher);
+    }
+
+    @Override
+    protected TYPE fxToV(TYPE value) {
+        return value;
+    }
+
+    @Override
+    protected TYPE vToFX(TYPE value) {
+        return value;
     }
 
     @Override

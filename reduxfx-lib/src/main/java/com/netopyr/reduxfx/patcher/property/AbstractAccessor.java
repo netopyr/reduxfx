@@ -8,17 +8,13 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-abstract class AbstractAccessor<TYPE, ACTION> implements PropertyAccessor<TYPE, ACTION> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractAccessor.class);
+abstract class AbstractAccessor<V_TYPE, ACTION, FX_TYPE> implements PropertyAccessor<V_TYPE, ACTION> {
 
     private final MethodHandle propertyGetter;
     private final Consumer<ACTION> dispatcher;
@@ -30,16 +26,16 @@ abstract class AbstractAccessor<TYPE, ACTION> implements PropertyAccessor<TYPE, 
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, VProperty<TYPE, ACTION> vProperty) {
+    public void set(Node node, VProperty<V_TYPE, ACTION> vProperty) {
 
-        final Property<TYPE> property;
+        final Property<FX_TYPE> property;
         try {
             property = (Property) propertyGetter.invoke(node);
         } catch (Throwable throwable) {
             throw new IllegalStateException("Unable to read property " + vProperty.getType() + " from Node-class " + node.getClass(), throwable);
         }
 
-        setValue(property, vProperty.getValue());
+        setValue(property, vToFX(vProperty.getValue()));
 
         if (vProperty.getChangeListener().isDefined()) {
             setChangeListener(node, property, vProperty.getChangeListener().get());
@@ -50,17 +46,19 @@ abstract class AbstractAccessor<TYPE, ACTION> implements PropertyAccessor<TYPE, 
         }
     }
 
-    protected abstract void setValue(Property<TYPE> property, TYPE value);
+    protected abstract V_TYPE fxToV(FX_TYPE value);
+    protected abstract FX_TYPE vToFX(V_TYPE value);
+    protected abstract void setValue(Property<FX_TYPE> property, FX_TYPE value);
 
     @SuppressWarnings("unchecked")
-    private void setChangeListener(Node node, Property<TYPE> property, VChangeListener<? super TYPE, ACTION> listener) {
-        final ChangeListener<TYPE> oldListener = (ChangeListener) node.getProperties().get(property.getName() + ".change");
+    private void setChangeListener(Node node, Property<FX_TYPE> property, VChangeListener<? super V_TYPE, ACTION> listener) {
+        final ChangeListener<FX_TYPE> oldListener = (ChangeListener) node.getProperties().get(property.getName() + ".change");
         if (oldListener != null) {
             property.removeListener(oldListener);
         }
 
-        final ChangeListener<TYPE> newListener = (source, oldValue, newValue) -> {
-            final ACTION action = listener.onChange(oldValue, newValue);
+        final ChangeListener<FX_TYPE> newListener = (source, oldValue, newValue) -> {
+            final ACTION action = listener.onChange(fxToV(oldValue), fxToV(newValue));
             dispatcher.accept(action);
         };
         property.addListener(newListener);
@@ -68,7 +66,7 @@ abstract class AbstractAccessor<TYPE, ACTION> implements PropertyAccessor<TYPE, 
     }
 
     @SuppressWarnings("unchecked")
-    private void setInvalidationListener(Node node, Property<TYPE> property, VInvalidationListener<ACTION> listener) {
+    private void setInvalidationListener(Node node, Property<FX_TYPE> property, VInvalidationListener<ACTION> listener) {
         final InvalidationListener oldListener = (InvalidationListener) node.getProperties().get(property.getName() + ".invalidation");
         if (oldListener != null) {
             property.removeListener(oldListener);

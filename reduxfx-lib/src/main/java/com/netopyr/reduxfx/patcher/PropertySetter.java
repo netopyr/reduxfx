@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.patcher.property.LayoutConstraintAccessor;
 import com.netopyr.reduxfx.patcher.property.ListAccessor;
 import com.netopyr.reduxfx.patcher.property.ListWithoutListenerAccessor;
 import com.netopyr.reduxfx.patcher.property.PropertyAccessor;
+import com.netopyr.reduxfx.patcher.property.ToggleGroupAccessor;
 import com.netopyr.reduxfx.patcher.property.ValueAccessor;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
@@ -56,7 +57,7 @@ public class PropertySetter<ACTION> {
             case LEFT_ANCHOR:
                 return new LayoutConstraintAccessor<>(AnchorPane.class, type, Double.class);
             case TOGGLE_GROUP:
-                throw new UnsupportedOperationException("ToggleGroup is not supported yet");
+                return new ToggleGroupAccessor<>(clazz, dispatcher);
             default:
                 return new ValueAccessor<>(clazz, type, dispatcher);
         }

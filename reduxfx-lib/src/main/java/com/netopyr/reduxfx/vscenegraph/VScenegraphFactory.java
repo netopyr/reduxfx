@@ -116,11 +116,14 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<String, ACTION> id(String value) {
         return property(VPropertyType.ID, value);
     }
+    public static <ACTION> VProperty<Insets, ACTION> padding(double top, double rightLeft, double bottom) {
+        return property(VPropertyType.PADDING, new Insets(top, rightLeft, bottom, rightLeft));
+    }
     public static <ACTION> VProperty<Insets, ACTION> padding(double topBottom, double rightLeft) {
         return property(VPropertyType.PADDING, new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
-    public static <ACTION> VProperty<Insets, ACTION> padding(double top, double rightLeft, double bottom) {
-        return property(VPropertyType.PADDING, new Insets(top, rightLeft, bottom, rightLeft));
+    public static <ACTION> VProperty<Insets, ACTION> padding(double value) {
+        return property(VPropertyType.PADDING, new Insets(value, value, value, value));
     }
 
     public static <ACTION> VProperty<Double, ACTION> spacing(double value) {
