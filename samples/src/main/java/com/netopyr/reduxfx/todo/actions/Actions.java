@@ -30,10 +30,6 @@ public final class Actions {
         return new CompleteAll();
     }
 
-    public static Action clearCompleted() {
-        return new ClearCompleted();
-    }
-
     public static Action newTextFieldChanged(String text) {
         return new NewTextFieldChanged(text);
     }
