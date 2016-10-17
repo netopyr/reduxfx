@@ -5,11 +5,10 @@ import com.netopyr.reduxfx.differ.patches.InsertPatch;
 import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.differ.patches.RemovePatch;
 import com.netopyr.reduxfx.differ.patches.ReplacePatch;
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
-import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javaslang.Tuple;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
@@ -18,16 +17,20 @@ import javaslang.control.Option;
 
 public class Differ {
 
-    public static <ACTION> Vector<Patch> diff(VNode<ACTION> a, VNode<ACTION> b) {
-        return doDiff(a, b, 0);
+    public static <ACTION> Vector<Patch> diff(Option<VNode<ACTION>> a, Option<VNode<ACTION>> b) {
+        if (a.isEmpty()) {
+            return b.isEmpty()? Vector.empty() : Vector.of(new InsertPatch(0, b.get()));
+        } else {
+            return b.isEmpty()? Vector.of(new RemovePatch(0)) : doDiff(a.get(), b.get(), 0);
+        }
     }
 
     private static <ACTION> Vector<Patch> doDiff(VNode<ACTION> a, VNode<ACTION> b, int index) {
-        if (a.equals(b)) {
+        if (a == null? b == null : a.equals(b)) {
             return Vector.empty();
         }
 
-        if (a.getType() != b.getType()) {
+        if (a.getNodeClass() != b.getNodeClass()) {
             return Vector.of(new ReplacePatch(index, b));
         }
 
@@ -58,9 +61,9 @@ public class Differ {
     }
 
     private static <ACTION> Vector<Patch> diffAttributes(int index, VNode<ACTION> a, VNode<ACTION> b) {
-        final Map<VPropertyType, VProperty<?, ACTION>> removedProperties = a.getProperties().filter(propertyA -> !b.getProperties().containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<VPropertyType, VProperty<?, ACTION>> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
-        final Map<VPropertyType, VProperty<?, ACTION>> diffProperties = removedProperties.merge(updatedProperties);
+        final Map<String, VProperty<?, ACTION>> removedProperties = a.getProperties().filter(propertyA -> !b.getProperties().containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<String, VProperty<?, ACTION>> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
+        final Map<String, VProperty<?, ACTION>> diffProperties = removedProperties.merge(updatedProperties);
 
         final Map<VEventType, VEventHandlerElement<?, ACTION>> removedEventHandlers = a.getEventHandlers().filter(handlerA -> !b.getEventHandlers().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
         final Map<VEventType, VEventHandlerElement<?, ACTION>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));

@@ -1,21 +1,21 @@
 package com.netopyr.reduxfx.patcher.property;
 
-import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
 import javafx.beans.property.Property;
-import javafx.scene.Node;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.scene.control.ToggleGroup;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 
+import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
 public class ToggleGroupAccessor<ACTION> extends AbstractAccessor<String, ACTION, ToggleGroup> {
 
     private Map<String, ToggleGroup> mapping = HashMap.empty();
 
-    public ToggleGroupAccessor(Class<? extends Node> clazz, Consumer<ACTION> dispatcher) {
-        super(clazz, VPropertyType.TOGGLE_GROUP, dispatcher);
+    public ToggleGroupAccessor(MethodHandle propertyGetter, Consumer<ACTION> dispatcher) {
+        super(propertyGetter, dispatcher);
     }
 
     @Override
@@ -36,8 +36,9 @@ public class ToggleGroupAccessor<ACTION> extends AbstractAccessor<String, ACTION
         return toggleGroup;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(Property<ToggleGroup> property, ToggleGroup value) {
-        property.setValue(value);
+    protected void setValue(ReadOnlyProperty<ToggleGroup> property, ToggleGroup value) {
+        ((Property)property).setValue(value);
     }
 }

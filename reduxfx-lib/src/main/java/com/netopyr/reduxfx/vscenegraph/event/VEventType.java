@@ -1,7 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph.event;
 
 public enum VEventType {
-    ACTION("action");
+    ACTION("action"),
+    MOUSE_CLICKED("mouseClicked");
 
     private final String name;
 

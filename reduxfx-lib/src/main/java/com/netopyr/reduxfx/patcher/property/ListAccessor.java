@@ -1,16 +1,15 @@
 package com.netopyr.reduxfx.patcher.property;
 
-import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
-import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 
+import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
 public class ListAccessor<ACTION> extends AbstractAccessor<ObservableList, ACTION, ObservableList> {
 
-    public ListAccessor(Class<? extends Node> clazz, VPropertyType propertyType, Consumer<ACTION> dispatcher) {
-        super(clazz, propertyType, dispatcher);
+    public ListAccessor(MethodHandle methodHandle, Consumer<ACTION> dispatcher) {
+        super(methodHandle, dispatcher);
     }
 
     @Override
@@ -25,7 +24,7 @@ public class ListAccessor<ACTION> extends AbstractAccessor<ObservableList, ACTIO
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(Property<ObservableList> property, ObservableList value) {
+    protected void setValue(ReadOnlyProperty<ObservableList> property, ObservableList value) {
         property.getValue().setAll(value);
     }
 }

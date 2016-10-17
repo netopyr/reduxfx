@@ -3,26 +3,28 @@ package com.netopyr.reduxfx.vscenegraph;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import com.netopyr.reduxfx.vscenegraph.property.VPropertyType;
+import javafx.scene.Node;
 import javaslang.Tuple2;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
 public final class VNode<ACTION> implements VElement<ACTION> {
 
-    private final VNodeType type;
+    private final Class<? extends Node> nodeClass;
     private final Array<VNode<ACTION>> children;
-    private final Map<VPropertyType, VProperty<?, ACTION>> properties;
+    private final Map<String, VProperty<?, ACTION>> properties;
     private final Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers;
     private final int size;
 
 
     @SafeVarargs
-    public VNode(VNodeType type, VElement<ACTION>... elements) {
-        this.type = Objects.requireNonNull(type, "Type must not be null");
+    public VNode(Class<? extends Node> nodeClass, VElement<ACTION>... elements) {
+        this.nodeClass = Objects.requireNonNull(nodeClass, "Type must not be null");
 
         final Array<VElement<ACTION>> allElements = elements != null? Array.of(elements) : Array.empty();
 
@@ -30,7 +32,7 @@ public final class VNode<ACTION> implements VElement<ACTION> {
                 .map(element -> (VNode<ACTION>) element);
         this.properties = allElements.filter(element -> element instanceof VProperty)
                 .map(element -> (VProperty<?, ACTION>) element)
-                .toMap(element -> new Tuple2<>(element.getType(), element));
+                .toMap(element -> new Tuple2<>(element.getName(), element));
         this.eventHandlers = allElements.filter(element -> element instanceof VEventHandlerElement)
                 .map(element -> (VEventHandlerElement<?, ACTION>) element)
                 .toMap(element -> new Tuple2<>(element.getType(), element));
@@ -43,15 +45,15 @@ public final class VNode<ACTION> implements VElement<ACTION> {
         return size;
     }
 
-    public VNodeType getType() {
-        return type;
+    public Class<? extends Node> getNodeClass() {
+        return nodeClass;
     }
 
     public Array<VNode<ACTION>> getChildren() {
         return children;
     }
 
-    public Map<VPropertyType, VProperty<?, ACTION>> getProperties() {
+    public Map<String, VProperty<?, ACTION>> getProperties() {
         return properties;
     }
 
@@ -60,9 +62,35 @@ public final class VNode<ACTION> implements VElement<ACTION> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VNode<?> vNode = (VNode<?>) o;
+
+        return new EqualsBuilder()
+                .append(nodeClass, vNode.nodeClass)
+                .append(children, vNode.children)
+                .append(properties, vNode.properties)
+                .append(eventHandlers, vNode.eventHandlers)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(nodeClass)
+                .append(children)
+                .append(properties)
+                .append(eventHandlers)
+                .toHashCode();
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("type", type)
+                .append("nodeClass", nodeClass)
                 .append("children", children)
                 .append("properties", properties)
                 .append("eventHandlers", eventHandlers)

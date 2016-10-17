@@ -7,13 +7,18 @@ import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.Filter;
 import com.netopyr.reduxfx.todo.state.ToDoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
 public class MainView implements View<AppModel, Action> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
     public VNode<Action> view(AppModel state) {
 
@@ -33,12 +38,18 @@ public class MainView implements View<AppModel, Action> {
                                 alignment(Pos.CENTER_LEFT),
                                 CheckBox(
                                         id("selectAll"),
-                                        mnemonicParsing(false)
+                                        mnemonicParsing(false),
+                                        selected(state.getTodos()
+                                                .map(ToDoEntry::isCompleted)
+                                                .fold(true, (a, b) -> a && b)),
+                                        onAction(e -> Actions.completeAll())
                                 ),
                                 TextField(
                                         id("addInput"),
+                                        text(state.getNewToDoText(), (oldValue, newValue) -> Actions.newTextFieldChanged(newValue)),
                                         promptText("What needs to be done?"),
-                                        hgrow(Priority.ALWAYS)
+                                        hgrow(Priority.ALWAYS),
+                                        onAction(e -> Actions.addToDo())
                                 )
                         ),
                         AnchorPane(
@@ -47,6 +58,7 @@ public class MainView implements View<AppModel, Action> {
                                 maxWidth(Double.MAX_VALUE),
                                 maxHeight(Double.MAX_VALUE),
                                 ListView(
+                                        ToDoEntry.class,
                                         id("items"),
                                         topAnchor(0.0),
                                         rightAnchor(0.0),
@@ -58,12 +70,50 @@ public class MainView implements View<AppModel, Action> {
                                                         case COMPLETED:
                                                             return toDoEntry.isCompleted();
                                                         case ACTIVE:
-                                                            return ! toDoEntry.isCompleted();
+                                                            return !toDoEntry.isCompleted();
                                                         default:
                                                             return true;
                                                     }
                                                 })
-                                                .map(ToDoEntry::getText))
+                                        ),
+                                        cellFactory(toDoEntry ->
+                                                HBox(
+                                                        alignment(Pos.CENTER_LEFT),
+                                                        minWidth(Region.USE_PREF_SIZE),
+                                                        minHeight(Region.USE_PREF_SIZE),
+                                                        styleClass("item_root"),
+                                                        CheckBox(
+                                                                mnemonicParsing(false),
+                                                                selected(((ToDoEntry) toDoEntry).isCompleted()),
+                                                                onAction(e -> Actions.completeToDo(((ToDoEntry) toDoEntry).getId()))
+                                                        ),
+                                                        StackPane(
+                                                                alignment(Pos.CENTER_LEFT),
+                                                                hgrow(Priority.ALWAYS),
+                                                                HBox(
+                                                                        styleClass("content_box"),
+                                                                        hover((oldValue, newValue) -> Actions.setToDoHover(((ToDoEntry) toDoEntry).getId(), Boolean.TRUE.equals(newValue))),
+                                                                        Label(
+                                                                                maxWidth(Double.MAX_VALUE),
+                                                                                maxHeight(Double.MAX_VALUE),
+                                                                                text(((ToDoEntry) toDoEntry).getText()),
+                                                                                hgrow(Priority.ALWAYS)
+                                                                        ),
+                                                                        Button(
+                                                                                visible(((ToDoEntry)toDoEntry).isHover()),
+                                                                                graphic(
+                                                                                        node(FontAwesomeIconView.class,
+                                                                                                property("glyphName", "CLOSE"),
+                                                                                                property("size", "1.5em"),
+                                                                                                styleClass("close_icon")
+                                                                                        )
+                                                                                ),
+                                                                                onAction(e -> Actions.deleteToDo(((ToDoEntry) toDoEntry).getId()))
+                                                                        )
+                                                                )
+                                                        )
+                                                )
+                                        )
                                 )
                         ),
                         HBox(
@@ -72,7 +122,7 @@ public class MainView implements View<AppModel, Action> {
                                 padding(5.0),
                                 Label(
                                         text(String.format("%d items left",
-                                                state.getTodos().count(toDoEntry ->  ! toDoEntry.isCompleted()))
+                                                state.getTodos().count(toDoEntry -> !toDoEntry.isCompleted()))
                                         )
                                 ),
                                 HBox(

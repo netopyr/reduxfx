@@ -7,11 +7,13 @@ public class ToDoEntry {
     private final int id;
     private final String text;
     private final boolean completed;
+    private final boolean hover;
 
-    public ToDoEntry(int id, String text, boolean completed) {
+    public ToDoEntry(int id, String text, boolean completed, boolean hover) {
         this.id = id;
         this.text = text;
         this.completed = completed;
+        this.hover = hover;
     }
 
     public int getId() {
@@ -26,12 +28,17 @@ public class ToDoEntry {
         return completed;
     }
 
+    public boolean isHover() {
+        return hover;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
                 .append("text", text)
                 .append("completed", completed)
+                .append("hover", hover)
                 .toString();
     }
 }

@@ -25,16 +25,17 @@ public class Launcher extends Application {
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
         final Seq<ToDoEntry> dummyEntries = Array.of (
-                new ToDoEntry(0, "Buy ticket", false),
-                new ToDoEntry(1, "Prepare presentation", true),
-                new ToDoEntry(2, "Travel to JavaOne", false)
+                new ToDoEntry(0, "Buy ticket", false, false),
+                new ToDoEntry(1, "Prepare presentation", true, false),
+                new ToDoEntry(2, "Travel to JavaOne", false, false)
         );
 
         final AppModel initialState = new AppModel("", dummyEntries, Filter.ALL);
         final ToDos reducer = new ToDos();
         final MainView mainView = new MainView();
 
-        ReduxFX.start(initialState, reducer, mainView, root);
+        final ReduxFX reduxFX = new ReduxFX();
+        reduxFX.start(initialState, reducer, mainView, root);
 
         primaryStage.setTitle("ToDoMVCFX - ReduxFX");
         final Scene scene = new Scene(root);

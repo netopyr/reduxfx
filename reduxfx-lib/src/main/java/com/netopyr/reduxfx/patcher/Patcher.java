@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.differ.patches.AttributesPatch;
 import com.netopyr.reduxfx.differ.patches.InsertPatch;
 import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.differ.patches.ReplacePatch;
+import com.netopyr.reduxfx.patcher.property.Accessors;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -21,38 +22,34 @@ public class Patcher<ACTION> {
     private static final Logger LOG = LoggerFactory.getLogger(Patcher.class);
 
     private final NodeBuilder<ACTION> nodeBuilder;
-    private final PropertySetter<ACTION> propertySetter;
-    private final EventSetter<ACTION> eventSetter;
 
     public Patcher(Consumer<ACTION> dispatcher) {
-        this.propertySetter = new PropertySetter<>(dispatcher);
-        this.eventSetter = new EventSetter<>(dispatcher);
-        this.nodeBuilder = new NodeBuilder<ACTION>(this.propertySetter, this.eventSetter);
+        final Accessors<ACTION> accessors = new Accessors<>(dispatcher);
+        this.nodeBuilder = new NodeBuilder<>(dispatcher, accessors);
+        accessors.init(this, nodeBuilder);
+
+        INSTANCE = this;
     }
 
-    public void patch(Node root, VNode vRoot, Seq<Patch> patches) {
+    public void patch(Parent root, Option<VNode<ACTION>> vRoot, Seq<Patch> patches) {
         for (final Patch patch : patches) {
-            final Option<Node> optionalNode = findNode(patch.getIndex(), root, vRoot, 0);
-            if (optionalNode.isEmpty()) {
-                LOG.error("Unable to find node with index {}", patch.getIndex());
-            } else {
-                final Node node = optionalNode.get();
-                switch (patch.getType()) {
-                    case REPLACED:
-                        doReplace(node, (ReplacePatch) patch);
-                        break;
-                    case ATTRIBUTES:
-                        doAttributes(node, (AttributesPatch) patch);
-                        break;
-                    case ORDER:
-                        throw new UnsupportedOperationException("Not implemented yet");
-                    case INSERT:
-                        doInsert(node, (InsertPatch) patch);
-                        break;
-                    case REMOVE:
-                        doRemove(node);
-                        break;
-                }
+            final Node node = vRoot.flatMap(vNode -> findNode(patch.getIndex(), root.getChildrenUnmodifiable().get(0), vNode, 0)).getOrElse(root);
+
+            switch (patch.getType()) {
+                case REPLACED:
+                    doReplace(node, (ReplacePatch) patch);
+                    break;
+                case ATTRIBUTES:
+                    doAttributes(node, (AttributesPatch) patch);
+                    break;
+                case ORDER:
+                    throw new UnsupportedOperationException("Not implemented yet");
+                case INSERT:
+                    doInsert(node, (InsertPatch) patch);
+                    break;
+                case REMOVE:
+                    doRemove(node);
+                    break;
             }
         }
     }
@@ -67,6 +64,7 @@ public class Patcher<ACTION> {
             if (newNode.isDefined()) {
                 final int index = children.get().indexOf(oldNode);
                 children.get().set(index, newNode.get());
+                nodeBuilder.init(newNode.get(), vNode);
                 return;
             }
         }
@@ -75,10 +73,11 @@ public class Patcher<ACTION> {
 
     @SuppressWarnings("unchecked")
     private void doAttributes(Node node, AttributesPatch patch) {
-        propertySetter.setProperties(node, patch.getProperties());
-        eventSetter.setEventHandlers(node, patch.getEventHandlers());
+        nodeBuilder.setProperties(node, patch.getProperties().values());
+        nodeBuilder.setEventHandlers(node, patch.getEventHandlers());
     }
 
+    @SuppressWarnings("unchecked")
     private void doInsert(Node parent, InsertPatch patch) {
         final Option<java.util.List<Node>> children = getChildren(parent);
 
@@ -87,6 +86,7 @@ public class Patcher<ACTION> {
             final Option<Node> node = nodeBuilder.create(vNode);
             if (node.isDefined()) {
                 children.get().add(node.get());
+                nodeBuilder.init(node.get(), vNode);
                 return;
             }
         }
@@ -121,4 +121,10 @@ public class Patcher<ACTION> {
         return findNode(needle, ((Parent) node).getChildrenUnmodifiable().get(child), vNode.getChildren().get(child), sizes.last());
     }
 
+
+
+    private static Patcher INSTANCE;
+    public static <ACTION> Patcher<ACTION> getInstance() {
+        return INSTANCE;
+    }
 }
