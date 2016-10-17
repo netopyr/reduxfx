@@ -93,11 +93,13 @@ public class MainView implements View<AppModel, Action> {
                                                                 HBox(
                                                                         styleClass("content_box"),
                                                                         hover((oldValue, newValue) -> Actions.setToDoHover(((ToDoEntry) toDoEntry).getId(), Boolean.TRUE.equals(newValue))),
+                                                                        visible(! ((ToDoEntry) toDoEntry).isEditMode()),
                                                                         Label(
                                                                                 maxWidth(Double.MAX_VALUE),
                                                                                 maxHeight(Double.MAX_VALUE),
                                                                                 text(((ToDoEntry) toDoEntry).getText()),
-                                                                                hgrow(Priority.ALWAYS)
+                                                                                hgrow(Priority.ALWAYS),
+                                                                                onMouseClicked(e -> e.getClickCount() > 1? Actions.setEditMode(((ToDoEntry) toDoEntry).getId(), true) : null)
                                                                         ),
                                                                         Button(
                                                                                 visible(((ToDoEntry)toDoEntry).isHover()),
@@ -110,6 +112,13 @@ public class MainView implements View<AppModel, Action> {
                                                                                 ),
                                                                                 onAction(e -> Actions.deleteToDo(((ToDoEntry) toDoEntry).getId()))
                                                                         )
+                                                                ),
+                                                                TextField(
+                                                                        promptText("What needs to be done?"),
+                                                                        visible(((ToDoEntry) toDoEntry).isEditMode()),
+                                                                        focused((oldValue, newValue) -> newValue? null : Actions.setEditMode(((ToDoEntry) toDoEntry).getId(), false)),
+                                                                        text(((ToDoEntry) toDoEntry).getText(), ((oldValue, newValue) -> Actions.editToDo(((ToDoEntry) toDoEntry).getId(), newValue))),
+                                                                        onAction(e -> Actions.setEditMode(((ToDoEntry) toDoEntry).getId(), false))
                                                                 )
                                                         )
                                                 )

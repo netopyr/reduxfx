@@ -25,9 +25,9 @@ public class Launcher extends Application {
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
         final Seq<ToDoEntry> dummyEntries = Array.of (
-                new ToDoEntry(0, "Buy ticket", false, false),
-                new ToDoEntry(1, "Prepare presentation", true, false),
-                new ToDoEntry(2, "Travel to JavaOne", false, false)
+                new ToDoEntry(0, "Buy ticket", false, false, false),
+                new ToDoEntry(1, "Prepare presentation", true, false, false),
+                new ToDoEntry(2, "Travel to JavaOne", false, false, false)
         );
 
         final AppModel initialState = new AppModel("", dummyEntries, Filter.ALL);

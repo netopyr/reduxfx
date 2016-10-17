@@ -8,12 +8,14 @@ public class ToDoEntry {
     private final String text;
     private final boolean completed;
     private final boolean hover;
+    private final boolean editMode;
 
-    public ToDoEntry(int id, String text, boolean completed, boolean hover) {
+    public ToDoEntry(int id, String text, boolean completed, boolean hover, boolean editMode) {
         this.id = id;
         this.text = text;
         this.completed = completed;
         this.hover = hover;
+        this.editMode = editMode;
     }
 
     public int getId() {
@@ -30,6 +32,10 @@ public class ToDoEntry {
 
     public boolean isHover() {
         return hover;
+    }
+
+    public boolean isEditMode() {
+        return editMode;
     }
 
     @Override

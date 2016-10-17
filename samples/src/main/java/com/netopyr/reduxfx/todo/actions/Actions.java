@@ -45,4 +45,8 @@ public final class Actions {
     public static Action setToDoHover(int id, boolean value) {
         return new SetToDoHover(id, value);
     }
+
+    public static Action setEditMode(int id, boolean value) {
+        return new SetEditMode(id, value);
+    }
 }
