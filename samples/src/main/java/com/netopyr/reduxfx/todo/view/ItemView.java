@@ -19,6 +19,7 @@ class ItemView {
                 minWidth(Region.USE_PREF_SIZE),
                 minHeight(Region.USE_PREF_SIZE),
                 styleClass("item_root"),
+                stylesheets("itemview.css"),
                 CheckBox(
                         mnemonicParsing(false),
                         selected(toDoEntry.isCompleted()),

@@ -16,6 +16,7 @@ class AddItemView {
         return HBox(
                 styleClass("add_item_root"),
                 alignment(Pos.CENTER_LEFT),
+                stylesheets("additem.css"),
                 CheckBox(
                         id("selectAll"),
                         mnemonicParsing(false),
