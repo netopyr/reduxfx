@@ -6,20 +6,10 @@ import javafx.collections.ObservableList;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class ListAccessor<ACTION> extends AbstractAccessor<ObservableList, ACTION, ObservableList> {
+public class ListAccessor<ACTION> extends AbstractNoConversionAccessor<ObservableList, ACTION> {
 
     public ListAccessor(MethodHandle methodHandle, Consumer<ACTION> dispatcher) {
         super(methodHandle, dispatcher);
-    }
-
-    @Override
-    protected ObservableList fxToV(ObservableList value) {
-        return value;
-    }
-
-    @Override
-    protected ObservableList vToFX(ObservableList value) {
-        return value;
     }
 
     @SuppressWarnings("unchecked")

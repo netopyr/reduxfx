@@ -5,21 +5,10 @@ import javafx.beans.property.ReadOnlyProperty;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class ReadOnlyPropertyAccessor<TYPE, ACTION> extends AbstractAccessor<TYPE, ACTION, TYPE> {
+public class ReadOnlyPropertyAccessor<TYPE, ACTION> extends AbstractNoConversionAccessor<TYPE, ACTION> {
 
     ReadOnlyPropertyAccessor(MethodHandle propertyGetter, Consumer<ACTION> dispatcher) {
         super(propertyGetter, dispatcher);
-    }
-
-    @Override
-    protected TYPE fxToV(TYPE value) {
-        return value;
-    }
-
-
-    @Override
-    protected TYPE vToFX(TYPE value) {
-        return value;
     }
 
     @Override

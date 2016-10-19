@@ -12,7 +12,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javaslang.collection.Array;
-import javaslang.collection.Seq;
 
 public class Launcher extends Application {
 
@@ -24,13 +23,12 @@ public class Launcher extends Application {
         root.setMaxWidth(Region.USE_PREF_SIZE);
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
-        final Seq<ToDoEntry> dummyEntries = Array.of (
-                new ToDoEntry(0, "Buy ticket", false, false, false),
-                new ToDoEntry(1, "Prepare presentation", true, false, false),
-                new ToDoEntry(2, "Travel to JavaOne", false, false, false)
+        final Array<ToDoEntry> entries = Array.of(
+                new ToDoEntry(1, "Visit Java Basel", true, false, false),
+                new ToDoEntry(2, "Visit Javaland", false, false, false)
         );
 
-        final AppModel initialState = new AppModel("", dummyEntries, Filter.ALL);
+        final AppModel initialState = new AppModel("", entries, Filter.ALL);
         final ToDos reducer = new ToDos();
         final MainView mainView = new MainView();
 

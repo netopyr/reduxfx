@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.todo.state;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ToDoEntry {
+public final class ToDoEntry {
 
     private final int id;
     private final String text;

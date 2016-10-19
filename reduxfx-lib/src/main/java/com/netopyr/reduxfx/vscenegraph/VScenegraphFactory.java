@@ -261,8 +261,8 @@ public class VScenegraphFactory {
         return property("visible", value);
     }
 
-    public static <ACTION> VProperty<Boolean, ACTION> focused(VChangeListener<? super Boolean, ACTION> listener) {
-        return property("focused", null, listener);
+    public static <ACTION> VProperty<Boolean, ACTION> focused(boolean value, VChangeListener<? super Boolean, ACTION> listener) {
+        return property("focused", value, listener);
     }
 
 

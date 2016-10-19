@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javaslang.collection.Array;
@@ -32,8 +33,8 @@ public class Accessors<ACTION> {
 
     public void init(Patcher<ACTION> patcher, NodeBuilder<ACTION> nodeBuilder) {
         registerAccessor(new PropertyKey(ToggleButton.class, "toggleGroup"), new ToggleGroupAccessor<>(getPropertyGetter(ToggleButton.class, "toggleGroup").get(), dispatcher));
-//        registerAccessor(new PropertyKey(ListView.class, "cell"), new ListViewCellAccessor<>(patcher));
         registerAccessor(new PropertyKey(Button.class, "graphic"), new NodeAccessor<>(getPropertyGetter(Button.class, "graphic").get(), dispatcher, nodeBuilder));
+        registerAccessor(new PropertyKey(TextField.class, "focused"), new FocusedAccessor<>(getPropertyGetter(TextField.class, "focused").get(), dispatcher));
     }
 
     public void registerAccessor(PropertyKey propertyKey, Accessor<?, ACTION> accessor) {

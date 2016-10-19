@@ -9,6 +9,7 @@ import javafx.scene.layout.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.netopyr.reduxfx.todo.view.AddItemView.AddItemView;
 import static com.netopyr.reduxfx.todo.view.ControlsView.ControlsView;
 import static com.netopyr.reduxfx.todo.view.ItemOverviewView.ItemOverviewView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
@@ -42,7 +43,7 @@ public class MainView implements View<AppModel, Action> {
                                 text("todos")
                         ),
 
-                        AddItemView.AddItemView(state),
+                        AddItemView(state),
                         ItemOverviewView(state),
                         ControlsView(state)
                 );

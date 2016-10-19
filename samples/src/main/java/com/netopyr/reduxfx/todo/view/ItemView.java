@@ -37,6 +37,7 @@ class ItemView {
                                         maxHeight(Double.MAX_VALUE),
                                         text(toDoEntry.getText()),
                                         hgrow(Priority.ALWAYS),
+                                        styleClass(toDoEntry.isCompleted()? "strikethrough" : ""),
                                         onMouseClicked(e -> e.getClickCount() > 1 ? Actions.setEditMode(toDoEntry.getId(), true) : null)
                                 ),
                                 Button(
@@ -54,7 +55,7 @@ class ItemView {
                         TextField(
                                 promptText("What needs to be done?"),
                                 visible(toDoEntry.isEditMode()),
-                                focused((oldValue, newValue) -> newValue ? null : Actions.setEditMode(toDoEntry.getId(), false)),
+                                focused(toDoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(toDoEntry.getId(), false)),
                                 text(toDoEntry.getText(), ((oldValue, newValue) -> Actions.editToDo(toDoEntry.getId(), newValue))),
                                 onAction(e -> Actions.setEditMode(toDoEntry.getId(), false))
                         )
