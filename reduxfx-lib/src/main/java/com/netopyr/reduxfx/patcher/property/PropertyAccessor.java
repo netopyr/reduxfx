@@ -14,7 +14,10 @@ public class PropertyAccessor<TYPE, ACTION> extends AbstractNoConversionAccessor
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty<TYPE> property, TYPE value) {
-        ((Property)property).setValue(value);
+    protected void setValue(ReadOnlyProperty<TYPE> readOnlyProperty, TYPE value) {
+        final Property property = (Property) readOnlyProperty;
+        if (property.getValue() == null? value != null : ! property.getValue().equals(value)) {
+            property.setValue(value);
+        }
     }
 }
