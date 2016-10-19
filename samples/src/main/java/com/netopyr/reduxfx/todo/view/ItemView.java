@@ -28,37 +28,37 @@ class ItemView {
                 StackPane(
                         alignment(Pos.CENTER_LEFT),
                         hgrow(Priority.ALWAYS),
-                        toDoEntry.isEditMode() ?
-                                TextField(
-                                        promptText("What needs to be done?"),
-                                        text(toDoEntry.getText(), ((oldValue, newValue) -> Actions.editToDo(toDoEntry.getId(), newValue))),
-                                        focused(toDoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(toDoEntry.getId(), false)),
-                                        onAction(e -> Actions.setEditMode(toDoEntry.getId(), false))
-                                )
-                                :
-                                HBox(
-                                        styleClass("content_box"),
-                                        hover((oldValue, newValue) -> Actions.setToDoHover(toDoEntry.getId(), Boolean.TRUE.equals(newValue))),
-                                        Label(
-                                                maxWidth(Double.MAX_VALUE),
-                                                maxHeight(Double.MAX_VALUE),
-                                                text(toDoEntry.getText()),
-                                                hgrow(Priority.ALWAYS),
-                                                styleClass("label", toDoEntry.isCompleted() ? "strikethrough" : ""),
-                                                onMouseClicked(e -> e.getClickCount() > 1 ? Actions.setEditMode(toDoEntry.getId(), true) : null)
+                        HBox(
+                                visible(! toDoEntry.isEditMode()),
+                                styleClass("content_box"),
+                                hover((oldValue, newValue) -> Actions.setToDoHover(toDoEntry.getId(), Boolean.TRUE.equals(newValue))),
+                                Label(
+                                        maxWidth(Double.MAX_VALUE),
+                                        maxHeight(Double.MAX_VALUE),
+                                        text(toDoEntry.getText()),
+                                        hgrow(Priority.ALWAYS),
+                                        styleClass("label", toDoEntry.isCompleted() ? "strikethrough" : ""),
+                                        onMouseClicked(e -> e.getClickCount() > 1 ? Actions.setEditMode(toDoEntry.getId(), true) : null)
+                                ),
+                                Button(
+                                        visible(toDoEntry.isHover()),
+                                        graphic(
+                                                node(FontAwesomeIconView.class,
+                                                        property("glyphName", "CLOSE"),
+                                                        property("size", "1.5em"),
+                                                        styleClass("close_icon")
+                                                )
                                         ),
-                                        Button(
-                                                visible(toDoEntry.isHover()),
-                                                graphic(
-                                                        node(FontAwesomeIconView.class,
-                                                                property("glyphName", "CLOSE"),
-                                                                property("size", "1.5em"),
-                                                                styleClass("close_icon")
-                                                        )
-                                                ),
-                                                onAction(e -> Actions.deleteToDo(toDoEntry.getId()))
-                                        )
+                                        onAction(e -> Actions.deleteToDo(toDoEntry.getId()))
                                 )
+                        ),
+                        TextField(
+                                visible(toDoEntry.isEditMode()),
+                                promptText("What needs to be done?"),
+                                focused(toDoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(toDoEntry.getId(), false)),
+                                text(toDoEntry.getText(), ((oldValue, newValue) -> Actions.editToDo(toDoEntry.getId(), newValue))),
+                                onAction(e -> Actions.setEditMode(toDoEntry.getId(), false))
+                        )
                 )
         );
     }
