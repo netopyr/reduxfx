@@ -3,9 +3,9 @@ ReduxFX
 
 [Redux][]-Architecture for JavaFX
 
-ReduxFX is an experiment to apply patterns from functional reactive UI programming to JavaFX. Modern frameworks like Redux for [React.js][], [Elm][], and [Cycle.js][] introduced a new approach to building user interfaces. This approach has many [advantages](#Advantages) and it is worth exploring how it can be applied to JavaFX.
+ReduxFX is an experiment to apply patterns from functional reactive UI programming to JavaFX. Modern frameworks like Redux for [React.js][], [Elm][], and [Cycle.js][] introduced a new approach to building user interfaces. This approach has many [advantages](#advantages) and it is worth exploring how it can be applied to JavaFX.
 
-The following section is a brief introduction of the core concepts of functional reactive UI programming taken from my article ["MVC is dead - what comes next?"][mvc is dead] If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#TodoMVC JavaFX Example).
+The following section is a brief introduction of the core concepts of functional reactive UI programming taken from my article ["MVC is dead - what comes next?"][mvc is dead] If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#todomvc-javafx-example).
 
 Functional Reactive UI Programming
 ----------------------------------
@@ -312,9 +312,9 @@ If you have any comments, suggestions or questions, please [create a new issue][
 [cycle.js]: https://cycle.js.org
 [mvc is dead]: http://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
-[state package]: samples/src/main/java/com/netopyr/reduxfx/todo/state
-[view package]: samples/src/main/java/com/netopyr/reduxfx/todo/view
-[actions package]: samples/src/main/java/com/netopyr/reduxfx/todo/actions
-[todos class]: samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
-[launcher class]: samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
-[issue tracking]: https://github.com/netopyr/reduxfx/issues
+[state package]: tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
+[view package]: tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/view
+[actions package]: tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/actions
+[todos class]: blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
+[launcher class]: blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
+[issue tracking]: issues
