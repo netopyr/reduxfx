@@ -1,6 +1,5 @@
 package com.netopyr.reduxfx.todo.view;
 
-import com.netopyr.reduxfx.View;
 import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
@@ -21,9 +20,11 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.minWidth;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.stylesheets;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.text;
 
-public class MainView implements View<AppModel, Action> {
+public class MainView {
 
-    public VNode<Action> view(AppModel state) {
+    private MainView() {}
+
+    public static VNode<Action> view(AppModel state) {
 
         return
                 VBox(

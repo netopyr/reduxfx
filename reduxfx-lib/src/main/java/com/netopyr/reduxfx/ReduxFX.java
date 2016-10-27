@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javaslang.Function2;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.slf4j.Logger;
@@ -19,42 +20,45 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 public class ReduxFX  {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReduxFX.class);
 
     private ReduxFX() {}
 
-    public static <STATE, ACTION> void start(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Stage stage) {
+    public static <STATE, ACTION> void start(STATE initialState, Function2<STATE, ACTION, STATE> update, Function<STATE, VNode<ACTION>> view, Stage stage) {
         final StackPane root = new StackPane();
         root.setMinWidth(Region.USE_PREF_SIZE);
         root.setMinHeight(Region.USE_PREF_SIZE);
         root.setMaxWidth(Region.USE_PREF_SIZE);
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
-        start(initialState, reducer, view, root);
+        start(initialState, update, view, root);
 
         final Scene scene = new Scene(root);
         stage.setScene(scene);
     }
 
-    public static <STATE, ACTION> void start(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Group root) {
-        doStart(initialState, reducer, view, root);
+    public static <STATE, ACTION> void start(STATE initialState, Function2<STATE, ACTION, STATE> update, Function<STATE, VNode<ACTION>> view, Group root) {
+        doStart(initialState, update, view, root);
     }
 
-    public static <STATE, ACTION> void start(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Pane root) {
-        doStart(initialState, reducer, view, root);
+    public static <STATE, ACTION> void start(STATE initialState, Function2<STATE, ACTION, STATE> update, Function<STATE, VNode<ACTION>> view, Pane root) {
+        doStart(initialState, update, view, root);
     }
 
-    private static <STATE, ACTION> void doStart(STATE initialState, Reducer<STATE, ACTION> reducer, View<STATE, ACTION> view, Parent root) {
+    private static <STATE, ACTION> void doStart(STATE initialState, BiFunction<STATE, ACTION, STATE> update, Function<STATE, VNode<ACTION>> view, Parent root) {
         LOG.info("Starting ReduxFX");
 
         final Subject<ACTION, ACTION> actionStream = PublishSubject.create();
 
-        final Observable<STATE> stateStream = actionStream.scan(initialState, reducer::reduce);
+        final Observable<STATE> stateStream = actionStream.scan(initialState, update::apply);
 
         final Observable<Option<VNode<ACTION>>> vScenegraphStream = stateStream
-                .map(view::view)
+                .map(view::apply)
                 .map(Option::of)
                 .startWith(Option.<VNode<ACTION>>none());
 

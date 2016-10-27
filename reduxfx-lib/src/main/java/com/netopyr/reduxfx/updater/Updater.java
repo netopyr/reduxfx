@@ -1,18 +1,19 @@
 package com.netopyr.reduxfx.updater;
 
-import com.netopyr.reduxfx.Reducer;
 import javaslang.collection.Array;
+
+import java.util.function.BiFunction;
 
 public class Updater<STATE, ACTION> {
 
-    private final Reducer<STATE, ACTION> reducer;
+    private final BiFunction<STATE, ACTION, STATE> update;
     private Array<Runnable> listeners = Array.empty();
 
     private STATE currentState;
     private boolean dispatching;
 
-    public Updater(Reducer<STATE, ACTION> reducer) {
-        this.reducer = reducer;
+    public Updater(BiFunction<STATE, ACTION, STATE> update) {
+        this.update = update;
     }
 
     public STATE getState() {
@@ -26,7 +27,7 @@ public class Updater<STATE, ACTION> {
 
         try {
             dispatching = true;
-            currentState = reducer.reduce(currentState, action);
+            currentState = update.apply(currentState, action);
         } finally {
             dispatching = false;
         }

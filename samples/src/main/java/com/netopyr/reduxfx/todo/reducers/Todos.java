@@ -1,19 +1,25 @@
 package com.netopyr.reduxfx.todo.reducers;
 
-import com.netopyr.reduxfx.Reducer;
 import com.netopyr.reduxfx.todo.actions.Action;
-import com.netopyr.reduxfx.todo.actions.Actions.*;
+import com.netopyr.reduxfx.todo.actions.Actions.CompleteTodo;
+import com.netopyr.reduxfx.todo.actions.Actions.DeleteTodo;
+import com.netopyr.reduxfx.todo.actions.Actions.EditTodo;
+import com.netopyr.reduxfx.todo.actions.Actions.NewTextFieldChanged;
+import com.netopyr.reduxfx.todo.actions.Actions.SetEditMode;
+import com.netopyr.reduxfx.todo.actions.Actions.SetFilter;
+import com.netopyr.reduxfx.todo.actions.Actions.SetTodoHover;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.TodoEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Todos implements Reducer<AppModel, Action> {
+public class Todos {
 
     private static final Logger LOG = LoggerFactory.getLogger(Todos.class);
 
-    @Override
-    public AppModel reduce(AppModel oldState, Action action) {
+    private Todos() {}
+
+    public static AppModel update(AppModel oldState, Action action) {
         if (action == null) {
             return oldState;
         }

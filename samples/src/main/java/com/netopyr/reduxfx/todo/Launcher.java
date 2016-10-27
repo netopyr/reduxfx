@@ -14,10 +14,8 @@ public class Launcher extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         final AppModel initialState = new AppModel("", Array.empty(), Filter.ALL);
-        final Todos reducer = new Todos();
-        final MainView mainView = new MainView();
 
-        ReduxFX.start(initialState, reducer, mainView, primaryStage);
+        ReduxFX.start(initialState, Todos::update, MainView::view, primaryStage);
 
         primaryStage.setTitle("TodoMVCFX - ReduxFX");
         primaryStage.show();
