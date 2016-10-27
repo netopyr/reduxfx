@@ -52,8 +52,44 @@ Functional reactive applications allow you to travel back and forth in time – 
 
 TodoMVC JavaFX Example
 ----------------------
+All data structures in the TodoMVC JavaFX Example are immutable. Unfortunately the standard collections in the JDK are problematic, if you want to enforce immutability. Therefore in the example makes heavy use of [Javaslang](javaslang) and its truly immutable collections.
 
 ### State
+The package [com.netopyr.reduxfx.todo.state](state package) contains all classes related to the state of the TodoMVC JavaFX Example. The main class is AppModel.
+
+```java
+public final class AppModel {
+
+    private final String newTodoText;
+    private final Seq<TodoEntry> todos;
+    private final Filter filter;
+    
+    // constructor, getters, and toString()
+    // ...
+
+}
+```
+
+The property todos is of type Seq, which is part of Javaslang. Seq is similar to Iterable in the JDK, because it is the supertype of all sequential data structures in Javaslang, though Seq offers much more functionality. In other words todos is a list of TodoEntries.
+
+The property newTodoText contains the text stored in the TextField for new todo-entries. Last but not least, the property filter stores the filter which is currently set (ALL, ACTIVE or COMPLETED).
+
+```java
+public final class TodoEntry {
+
+    private final int id;
+    private final String text;
+    private final boolean completed;
+    private final boolean hover;
+    private final boolean editMode;
+    
+    // constructor, getters, and toString()
+    // ...
+
+}    
+```
+
+A TodoEntry has five properties, which store the id, the text describing the todo-item, a flag to signal if it is completed, and two flags that define if the user is currently hovering over the entry and if the todo-item is in edit mode.
 
 ### View-Function
 
@@ -65,4 +101,6 @@ TodoMVC JavaFX Example
 [react.js]: https://facebook.github.io/react/
 [elm]: http://elm-lang.org
 [cycle.js]: https://cycle.js.org
+[blog]: http://blog.netopyr.com
 [fruip cycle]: doc/frp_cycle.jpg
+[state package]: samples/src/main/java/com/netopyr/reduxfx/todo/state
