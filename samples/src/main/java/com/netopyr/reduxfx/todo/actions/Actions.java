@@ -2,12 +2,8 @@ package com.netopyr.reduxfx.todo.actions;
 
 import com.netopyr.reduxfx.todo.state.Filter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class Actions {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Actions.class);
 
     private Actions() {}
 
@@ -239,8 +235,6 @@ public final class Actions {
     }
 
     public static class SetTodoHover implements Action {
-
-        private static final Logger LOG = LoggerFactory.getLogger(SetTodoHover.class);
 
         private final int id;
         private final boolean value;

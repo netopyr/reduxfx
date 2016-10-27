@@ -28,8 +28,6 @@ import javafx.scene.layout.VBox;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
@@ -37,8 +35,6 @@ import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
 public class VScenegraphFactory {
-
-    private static final Logger LOG = LoggerFactory.getLogger(VScenegraphFactory.class);
 
     private VScenegraphFactory() {}
 

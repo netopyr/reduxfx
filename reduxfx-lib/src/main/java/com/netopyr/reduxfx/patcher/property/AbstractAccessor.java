@@ -7,15 +7,11 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
 abstract class AbstractAccessor<V_TYPE, ACTION, FX_TYPE> implements Accessor<V_TYPE, ACTION> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractAccessor.class);
 
     private final MethodHandle propertyGetter;
     private final Consumer<ACTION> dispatcher;

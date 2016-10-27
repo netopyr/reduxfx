@@ -6,8 +6,6 @@ import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.netopyr.reduxfx.todo.view.AddItemView.AddItemView;
 import static com.netopyr.reduxfx.todo.view.ControlsView.ControlsView;
@@ -24,8 +22,6 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.stylesheets;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.text;
 
 public class MainView implements View<AppModel, Action> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
     public VNode<Action> view(AppModel state) {
 
