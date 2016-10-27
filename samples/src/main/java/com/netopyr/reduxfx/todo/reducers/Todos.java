@@ -2,13 +2,7 @@ package com.netopyr.reduxfx.todo.reducers;
 
 import com.netopyr.reduxfx.Reducer;
 import com.netopyr.reduxfx.todo.actions.Action;
-import com.netopyr.reduxfx.todo.actions.CompleteTodo;
-import com.netopyr.reduxfx.todo.actions.DeleteTodo;
-import com.netopyr.reduxfx.todo.actions.EditTodo;
-import com.netopyr.reduxfx.todo.actions.NewTextFieldChanged;
-import com.netopyr.reduxfx.todo.actions.SetEditMode;
-import com.netopyr.reduxfx.todo.actions.SetFilter;
-import com.netopyr.reduxfx.todo.actions.SetTodoHover;
+import com.netopyr.reduxfx.todo.actions.Actions.*;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.TodoEntry;
 import org.slf4j.Logger;
