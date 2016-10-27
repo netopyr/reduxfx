@@ -47,6 +47,7 @@ public final class Actions {
 
         private AddTodo() {}
 
+        @Override
         public ActionType getType() {
             return ActionType.ADD_TODO;
         }
@@ -81,6 +82,7 @@ public final class Actions {
             this.id = id;
         }
 
+        @Override
         public ActionType getType() {
             return ActionType.COMPLETE_TODO;
         }
@@ -105,6 +107,7 @@ public final class Actions {
             this.id = id;
         }
 
+        @Override
         public ActionType getType() {
             return ActionType.DELETE_TODO;
         }
@@ -131,6 +134,7 @@ public final class Actions {
             this.text = text;
         }
 
+        @Override
         public ActionType getType() {
             return ActionType.EDIT_TODO;
         }
