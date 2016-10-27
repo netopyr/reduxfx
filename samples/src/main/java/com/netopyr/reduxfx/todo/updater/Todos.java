@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.todo.reducers;
+package com.netopyr.reduxfx.todo.updater;
 
 import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.actions.Actions.CompleteTodo;

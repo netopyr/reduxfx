@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.todo;
 
 import com.netopyr.reduxfx.ReduxFX;
-import com.netopyr.reduxfx.todo.reducers.Todos;
+import com.netopyr.reduxfx.todo.updater.Todos;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.Filter;
 import com.netopyr.reduxfx.todo.view.MainView;
