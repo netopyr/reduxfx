@@ -312,9 +312,9 @@ If you have any comments, suggestions or questions, please [create a new issue][
 [cycle.js]: https://cycle.js.org
 [mvc is dead]: http://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
-[state package]: tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
-[view package]: tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/view
-[actions package]: tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/actions
-[todos class]: blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
-[launcher class]: blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
-[issue tracking]: issues
+[state package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
+[view package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/view
+[actions package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/actions
+[todos class]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
+[launcher class]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
+[issue tracking]: https://github.com/netopyr/reduxfx/issues
