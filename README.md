@@ -93,7 +93,7 @@ A TodoEntry has five properties, which store the id, the text describing the tod
 
 ### View-Function
 
-The View-Function kept in the package [com.netopyr.reduxfx.todo.view](state view) defines the view of the TodoMVC JavaFX example. This is the least stable part of ReduxFX and you can expect significant changes in the future in this area.
+The View-Function kept in the package [com.netopyr.reduxfx.todo.view](view package) defines the view of the TodoMVC JavaFX example. This is the least stable part of ReduxFX and you can expect significant changes in the future in this area.
 
 The view in a functional reactive UI application is defined as a mapping from the application state (AppModel in this example) to the corresponding VirtualScenegraph. The VirtualScenegraph is an immutable data structure that defines what the real JavaFX should look like.
 
@@ -165,7 +165,7 @@ The property items contains the list of todo-items that should be shown. Dependi
 
 With the cellFactory, we can setup a mapping between an entry in the items-list and the VirtualScenegraph. In the example we want to show an ItemView for each entry, which is another custom component.
 
-#### Some Thoughts
+#### Some Thoughts for the Future
 
 1. In Redux-applications we usually split components into presentational components and container components. Does it make sense to do the same here?
 2. Can we set properties of our components similar to JavaFX components instead of passing the state?
@@ -173,6 +173,62 @@ With the cellFactory, we can setup a mapping between an entry in the items-list 
 4. How can we apply memoization transparently? Large parts of the AppModel do not change and the corresponding parts of the VirtualScenegraph should be reused, too.
 
 ### Action Creators
+
+Action Creators map UI-events to application specific actions. The package [com.netopyr.reduxfx.todo.actions](actions package) contains everything related to actions.
+
+All Actions in this example implement the interface Action.
+
+```java
+public interface Action {
+
+    enum ActionType {
+        ADD_TODO,
+        NEW_TEXTFIELD_CHANGED,
+        DELETE_TODO,
+        EDIT_TODO,
+        COMPLETE_TODO,
+        COMPLETE_ALL,
+        CLEAR_COMPLETED,
+        SET_FILTER,
+        SET_EDIT_MODE,
+        SET_TODO_HOVER
+    }
+
+    ActionType getType();
+}
+```
+
+The interface Action contains a single method getType(). It returns an ActionType, which is an enum of all possible kind of actions. This makes it easier to find the appropriate action later in the updater.
+
+Each actions requires two parts, a builder method and an implementation. Both are defined in the Actions class. The following code snippet shows the builder method and implementation of the DeleteTodoAction.
+
+```java
+public final class Actions {
+
+    private Actions() {}
+    
+    public static Action deleteTodo(int id) {
+        return new DeleteTodo(id);
+    }
+    
+    public static final class DeleteTodo implements Action {
+
+        private final int id;
+
+        public ActionType getType() {
+            return ActionType.DELETE_TODO;
+        }
+
+        // constructor, getter, and toString()
+        // ...
+    }
+
+    // more builder methods and Action-classes
+    // ...
+}
+```
+
+DeleteTodo is immutable and contains a single property id, which references the todo-entry that needs to be deleted. It also implements the method getType() and returns the appropriate type from the enum ActionType. Adding the builder method helps to hide the actual Actions implementation from the event-handlers.
 
 ### Updater
 
