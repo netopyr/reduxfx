@@ -98,10 +98,11 @@ The implementation of the View-Function is the least stable area for now. Curren
 The entry point is the class MainView.
 
 ```java
-public class MainView implements View<AppModel, Action> {
+public class MainView {
 
-    public VNode<Action> view(AppModel state) {
+    private MainView() {}
 
+    public static VNode<Action> view(AppModel state) {
         return
                 VBox(
                         alignment(Pos.CENTER),
@@ -122,6 +123,7 @@ public class MainView implements View<AppModel, Action> {
                 );
     }
 }
+
 ```
 
 
