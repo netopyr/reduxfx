@@ -232,7 +232,79 @@ DeleteTodo is immutable and contains a single property id, which references the 
 
 ### Updater
 
+The heart of every ReduxFX-application is the updater. It is a BiFunction, which takes the old state and an action and calculates the new state. In this application, it is defined in the class [odos][todos class].
+
+Usually the updater is implemented as a huge switch-case statement with one branch per action-type. Below you can see an excerpt from the updater of the example application. It shows the cases of the actions NewTextfieldChanged and AddTodo.
+
+The action NewTextFieldChanged is triggered when the text in the textfield above the todo-list is changed. The action has a single property text which contains the new value. A new AppModel is created with the updated value for newTodoText, while the todo-entries and filter are copied from the old state. This is a typical implementation of the updater. Only a small section is changed, while most parts are just copied.
+
+```java
+switch (action.getType()) {
+    case NEW_TEXTFIELD_CHANGED:
+        newState = new AppModel(
+                ((NewTextFieldChanged) action).getText(),
+                oldState.getTodos(),
+                oldState.getFilter()
+        );
+        break;
+
+    case ADD_TODO:
+        newState = new AppModel(
+                "",
+                oldState.getTodos().append(
+                        new TodoEntry(
+                                oldState.getTodos()
+                                        .map(TodoEntry::getId)
+                                        .max()
+                                        .getOrElse(-1) + 1,
+                                oldState.getNewTodoText(),
+                                false,
+                                false,
+                                false
+                        )
+                ),
+                oldState.getFilter()
+        );
+        break;
+        
+    // more branches
+    // ...
+```
+
+The AddTodo-action is slightly more complex. We define the new state, for which we clear the newTodoText, i.e. we clear the Textfield. For the todo-entries we take the old list and add a new TodoEntry. The collection returned from oldState.getTodos() is a Javaslang collection. Calling append() does not modify the original list, but returns the new list.
+
+The id of the new TodoEntry is the current maximum id + 1. The text is taken from newTodoText of the old state. (The newTodoText of the new state is cleared, while the old state still points to the current value.) All flags are set to false initially. The filter is again just copied from the old state.
+
 ### Launcher
+
+The [Launcher][launcher class] is the last part of the example. As usual in JavaFX, we extend the Application class. To start a ReduxFX application, we need to define the initial state. In our case it has an empty newTodoText, zero todo-items, and the filter is set to show all entries. Next we need to call ReduxFX.start with the initial state, the updater-function, the view-function, and the stage where the SceneGraph should be shown.
+
+```
+public class Launcher extends Application {
+
+    public void start(Stage primaryStage) throws Exception {
+
+        final AppModel initialState = new AppModel("", Array.empty(), Filter.ALL);
+
+        ReduxFX.start(initialState, Todos::update, MainView::view, primaryStage);
+
+        primaryStage.setTitle("TodoMVCFX - ReduxFX");
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+```
+
+### Summary
+
+The experiment was successful. Not only did it show that one is able to write a JavaFX application with a functional reactive approach, but it even turned out to be quite a lot of fun. 
+
+There are certainly still areas that need improvement. Sometimes Java's verbosity is annoying. On the other hand being able to define truly immutable data structures and to take advantage of static types makes some parts even more suitable for this approach than a JavaScript implementation.
+
+If you have any comments, suggestions or questions, please [create a new issue][issue tracking]. If you want to help spread the word, I am certainly also happy about any tweet, post or other mentioning of ReduxFX.
 
 [redux]: https://github.com/reactjs/redux/
 [react.js]: https://facebook.github.io/react/
@@ -242,3 +314,7 @@ DeleteTodo is immutable and contains a single property id, which references the 
 [fruip cycle]: doc/frp_cycle.jpg
 [state package]: samples/src/main/java/com/netopyr/reduxfx/todo/state
 [view package]: samples/src/main/java/com/netopyr/reduxfx/todo/view
+[actions package]: samples/src/main/java/com/netopyr/reduxfx/todo/actions
+[todos class]: samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
+[launcher class]: samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
+[issue tracking]: https://github.com/netopyr/reduxfx/issues
