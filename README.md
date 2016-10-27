@@ -1,11 +1,11 @@
 ReduxFX
 =======
 
-[Redux]("Redux.js GitHub Page")-Architecture for JavaFX
+[Redux][]-Architecture for JavaFX
 
-ReduxFX is an experiment to apply patterns from funtional reactive UI programming to JavaFX. Modern frameworks like Redux for [React.js], [Elm], and [Cycle.js] introduced a new approach to building user interfaces. This approach has many [advantages](#Advantages) and it is worth exploring how it can be applied to JavaFX.
+ReduxFX is an experiment to apply patterns from functional reactive UI programming to JavaFX. Modern frameworks like Redux for [React.js][], [Elm][], and [Cycle.js][] introduced a new approach to building user interfaces. This approach has many [advantages](#Advantages) and it is worth exploring how it can be applied to JavaFX.
 
-If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#TodoMVC JavaFX Example).
+The following section is a brief introduction of the core concepts of functional reactive UI programming taken from my article ["MVC is dead - what comes next?"][mvc is dead] If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#TodoMVC JavaFX Example).
 
 Functional Reactive UI Programming
 ----------------------------------
@@ -93,6 +93,38 @@ A TodoEntry has five properties, which store the id, the text describing the tod
 
 ### View-Function
 
+The implementation of the View-Function is the least stable area for now. Currently it is based on a new API which is an attempt to combine the readability of a template-liek approach with the expressiveness of a functional approach.
+
+The entry point is the class MainView.
+
+```java
+public class MainView implements View<AppModel, Action> {
+
+    public VNode<Action> view(AppModel state) {
+
+        return
+                VBox(
+                        alignment(Pos.CENTER),
+                        minWidth(Region.USE_PREF_SIZE),
+                        minHeight(Region.USE_PREF_SIZE),
+                        maxWidth(Region.USE_PREF_SIZE),
+                        maxHeight(Region.USE_PREF_SIZE),
+                        stylesheets("main.css"),
+
+                        Label(
+                                id("title"),
+                                text("todos")
+                        ),
+
+                        AddItemView(state),
+                        ItemOverviewView(state),
+                        ControlsView(state)
+                );
+    }
+}
+```
+
+
 ### Action Creators
 
 ### Updater
@@ -101,6 +133,6 @@ A TodoEntry has five properties, which store the id, the text describing the tod
 [react.js]: https://facebook.github.io/react/
 [elm]: http://elm-lang.org
 [cycle.js]: https://cycle.js.org
-[blog]: http://blog.netopyr.com
+[mvc is dead]: http://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
 [state package]: samples/src/main/java/com/netopyr/reduxfx/todo/state
