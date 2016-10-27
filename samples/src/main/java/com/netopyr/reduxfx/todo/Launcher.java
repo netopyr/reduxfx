@@ -4,7 +4,6 @@ import com.netopyr.reduxfx.ReduxFX;
 import com.netopyr.reduxfx.todo.reducers.Todos;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.Filter;
-import com.netopyr.reduxfx.todo.state.TodoEntry;
 import com.netopyr.reduxfx.todo.view.MainView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,12 +22,7 @@ public class Launcher extends Application {
         root.setMaxWidth(Region.USE_PREF_SIZE);
         root.setMaxHeight(Region.USE_PREF_SIZE);
 
-        final Array<TodoEntry> entries = Array.of(
-                new TodoEntry(1, "Visit Java Basel", true, false, false),
-                new TodoEntry(2, "Visit Javaland", false, false, false)
-        );
-
-        final AppModel initialState = new AppModel("", entries, Filter.ALL);
+        final AppModel initialState = new AppModel("", Array.empty(), Filter.ALL);
         final Todos reducer = new Todos();
         final MainView mainView = new MainView();
 
