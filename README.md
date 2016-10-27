@@ -93,9 +93,11 @@ A TodoEntry has five properties, which store the id, the text describing the tod
 
 ### View-Function
 
-The implementation of the View-Function is the least stable area for now. Currently it is based on a new API which is an attempt to combine the readability of a template-liek approach with the expressiveness of a functional approach.
+The View-Function kept in the package [com.netopyr.reduxfx.todo.view](state view) defines the view of the TodoMVC JavaFX example. This is the least stable part of ReduxFX and you can expect significant changes in the future in this area.
 
-The entry point is the class MainView.
+The view in a functional reactive UI application is defined as a mapping from the application state (AppModel in this example) to the corresponding VirtualScenegraph. The VirtualScenegraph is an immutable data structure that defines what the real JavaFX should look like.
+
+The current API of ReduxFX is an attempt to combine the readability of a template-like approach with the expressiveness of a functional approach. The entry point is the class MainView.
 
 ```java
 public class MainView {
@@ -104,32 +106,77 @@ public class MainView {
 
     public static VNode<Action> view(AppModel state) {
         return
-                VBox(
-                        alignment(Pos.CENTER),
-                        minWidth(Region.USE_PREF_SIZE),
-                        minHeight(Region.USE_PREF_SIZE),
-                        maxWidth(Region.USE_PREF_SIZE),
-                        maxHeight(Region.USE_PREF_SIZE),
-                        stylesheets("main.css"),
+            VBox(
+                alignment(Pos.CENTER),
+                minWidth(Region.USE_PREF_SIZE),
+                minHeight(Region.USE_PREF_SIZE),
+                maxWidth(Region.USE_PREF_SIZE),
+                maxHeight(Region.USE_PREF_SIZE),
+                stylesheets("main.css"),
 
-                        Label(
-                                id("title"),
-                                text("todos")
-                        ),
+                Label(
+                        id("title"),
+                        text("todos")
+                ),
 
-                        AddItemView(state),
-                        ItemOverviewView(state),
-                        ControlsView(state)
-                );
+                AddItemView(state),
+                ItemOverviewView(state),
+                ControlsView(state)
+            );
     }
 }
-
 ```
 
+There is just one method view(), which takes an AppModel and returns a VNode, the root node of the VirtualScenegraph. Within the view()-method three kind of methods to define the VirtualScenegraph are used. VBox() and Label() define regular JavaFX Nodes. The methods alignment(), stylesheets(), minWidth() etc. set properties of these nodes. Last but not least there are AddItemView(), ItemOverviewView(), and ControlsView() which specify custom components of the application. The most interesting custom component is probably ItemOverviewView.
+
+```java
+class ItemOverviewView {
+
+    static VNode<Action> ItemOverviewView(AppModel state) {
+        return AnchorPane(
+            minWidth(Region.USE_PREF_SIZE),
+            // more properties
+            // ...
+            ListView(
+                // more properties
+                // ...
+                items(state.getTodos()
+                    .filter(todoEntry -> {
+                        switch (state.getFilter()) {
+                            case COMPLETED:
+                                return todoEntry.isCompleted();
+                            case ACTIVE:
+                                return !todoEntry.isCompleted();
+                            default:
+                                return true;
+                        }
+                    })
+                ),
+                cellFactory(todoEntry -> ItemView((TodoEntry) todoEntry))
+            )
+        );
+    }
+}
+```
+
+The method ItemOverviewView() is very similar to the MainView-method. It takes the current application state AppModel and returns the root node of that part of the VirtualScenegraph that specifies the list of items. The interesting part is the definition of a ListView. There are two main properties items and cellFactory.
+
+The property items contains the list of todo-items that should be shown. Depending on the filter setting, we want to show all items or filter either the completed or active entries. As you can see, using a declarative approach makes it pretty simple to define such a filtered list.
+
+With the cellFactory, we can setup a mapping between an entry in the items-list and the VirtualScenegraph. In the example we want to show an ItemView for each entry, which is another custom component.
+
+#### Some Thoughts
+
+1. In Redux-applications we usually split components into presentational components and container components. Does it make sense to do the same here?
+2. Can we set properties of our components similar to JavaFX components instead of passing the state?
+3. Can we limit the allowed properties to only those that are defined for a JavaFX component? For example the compiler should warn us, if we try to use text() within VBox().
+4. How can we apply memoization transparently? Large parts of the AppModel do not change and the corresponding parts of the VirtualScenegraph should be reused, too.
 
 ### Action Creators
 
 ### Updater
+
+### Launcher
 
 [redux]: https://github.com/reactjs/redux/
 [react.js]: https://facebook.github.io/react/
@@ -138,3 +185,4 @@ public class MainView {
 [mvc is dead]: http://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
 [state package]: samples/src/main/java/com/netopyr/reduxfx/todo/state
+[view package]: samples/src/main/java/com/netopyr/reduxfx/todo/view
