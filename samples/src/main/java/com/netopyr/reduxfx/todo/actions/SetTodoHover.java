@@ -4,14 +4,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SetToDoHover implements Action {
+public class SetTodoHover implements Action {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SetToDoHover.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SetTodoHover.class);
 
     private final int id;
     private final boolean value;
 
-    public SetToDoHover(int id, boolean value) {
+    public SetTodoHover(int id, boolean value) {
         this.id = id;
         this.value = value;
     }

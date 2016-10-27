@@ -2,21 +2,21 @@ package com.netopyr.reduxfx.todo.reducers;
 
 import com.netopyr.reduxfx.Reducer;
 import com.netopyr.reduxfx.todo.actions.Action;
-import com.netopyr.reduxfx.todo.actions.CompleteToDo;
-import com.netopyr.reduxfx.todo.actions.DeleteToDo;
-import com.netopyr.reduxfx.todo.actions.EditToDo;
+import com.netopyr.reduxfx.todo.actions.CompleteTodo;
+import com.netopyr.reduxfx.todo.actions.DeleteTodo;
+import com.netopyr.reduxfx.todo.actions.EditTodo;
 import com.netopyr.reduxfx.todo.actions.NewTextFieldChanged;
 import com.netopyr.reduxfx.todo.actions.SetEditMode;
 import com.netopyr.reduxfx.todo.actions.SetFilter;
-import com.netopyr.reduxfx.todo.actions.SetToDoHover;
+import com.netopyr.reduxfx.todo.actions.SetTodoHover;
 import com.netopyr.reduxfx.todo.state.AppModel;
-import com.netopyr.reduxfx.todo.state.ToDoEntry;
+import com.netopyr.reduxfx.todo.state.TodoEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ToDos implements Reducer<AppModel, Action> {
+public class Todos implements Reducer<AppModel, Action> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ToDos.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Todos.class);
 
     @Override
     public AppModel reduce(AppModel oldState, Action action) {
@@ -40,12 +40,12 @@ public class ToDos implements Reducer<AppModel, Action> {
                 newState = new AppModel(
                         "",
                         oldState.getTodos().append(
-                                new ToDoEntry(
+                                new TodoEntry(
                                         oldState.getTodos()
-                                                .map(ToDoEntry::getId)
+                                                .map(TodoEntry::getId)
                                                 .max()
                                                 .getOrElse(-1) + 1,
-                                        oldState.getNewToDoText(),
+                                        oldState.getNewTodoText(),
                                         false,
                                         false,
                                         false
@@ -57,20 +57,20 @@ public class ToDos implements Reducer<AppModel, Action> {
 
             case DELETE_TODO:
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
-                                .filter(toDoEntry -> toDoEntry.getId() != ((DeleteToDo) action).getId()),
+                                .filter(todoEntry -> todoEntry.getId() != ((DeleteTodo) action).getId()),
                         oldState.getFilter()
                 );
                 break;
 
             case EDIT_TODO:
-                final EditToDo editToDo = (EditToDo) action;
+                final EditTodo editTodo = (EditTodo) action;
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
-                                .map(entry -> entry.getId() != editToDo.getId() ? entry :
-                                        new ToDoEntry(entry.getId(), editToDo.getText(), entry.isCompleted(), entry.isHover(), entry.isEditMode())
+                                .map(entry -> entry.getId() != editTodo.getId() ? entry :
+                                        new TodoEntry(entry.getId(), editTodo.getText(), entry.isCompleted(), entry.isHover(), entry.isEditMode())
                                 ),
                         oldState.getFilter()
                 );
@@ -78,10 +78,10 @@ public class ToDos implements Reducer<AppModel, Action> {
 
             case COMPLETE_TODO:
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
-                                .map(entry -> entry.getId() != ((CompleteToDo) action).getId() ? entry :
-                                        new ToDoEntry(entry.getId(), entry.getText(), !entry.isCompleted(), entry.isHover(), entry.isEditMode())
+                                .map(entry -> entry.getId() != ((CompleteTodo) action).getId() ? entry :
+                                        new TodoEntry(entry.getId(), entry.getText(), !entry.isCompleted(), entry.isHover(), entry.isEditMode())
                                 ),
                         oldState.getFilter()
                 );
@@ -90,16 +90,16 @@ public class ToDos implements Reducer<AppModel, Action> {
             case COMPLETE_ALL:
                 final boolean areAllMarked = oldState.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
-                                .map(entry -> new ToDoEntry(entry.getId(), entry.getText(), !areAllMarked, entry.isHover(), entry.isEditMode())),
+                                .map(entry -> new TodoEntry(entry.getId(), entry.getText(), !areAllMarked, entry.isHover(), entry.isEditMode())),
                         oldState.getFilter()
                 );
                 break;
 
             case CLEAR_COMPLETED:
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
                                 .filter(entry -> !entry.isCompleted()),
                         oldState.getFilter()
@@ -109,19 +109,19 @@ public class ToDos implements Reducer<AppModel, Action> {
             case SET_FILTER:
                 final SetFilter setFilter = (SetFilter) action;
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos(),
                         setFilter.getFilter()
                 );
                 break;
 
             case SET_TODO_HOVER:
-                final SetToDoHover setToDoHover = (SetToDoHover) action;
+                final SetTodoHover setTodoHover = (SetTodoHover) action;
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
-                                .map(entry -> entry.getId() != setToDoHover.getId() ? entry :
-                                        new ToDoEntry(entry.getId(), entry.getText(), entry.isCompleted(), setToDoHover.isValue(), entry.isEditMode())
+                                .map(entry -> entry.getId() != setTodoHover.getId() ? entry :
+                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), setTodoHover.isValue(), entry.isEditMode())
                                 ),
                         oldState.getFilter()
                 );
@@ -130,10 +130,10 @@ public class ToDos implements Reducer<AppModel, Action> {
             case SET_EDIT_MODE:
                 final SetEditMode setEditMode = (SetEditMode) action;
                 newState = new AppModel(
-                        oldState.getNewToDoText(),
+                        oldState.getNewTodoText(),
                         oldState.getTodos()
                                 .map(entry -> entry.getId() != setEditMode.getId() ? entry :
-                                        new ToDoEntry(entry.getId(), entry.getText(), entry.isCompleted(), entry.isHover(), setEditMode.isValue())
+                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), entry.isHover(), setEditMode.isValue())
                                 ),
                         oldState.getFilter()
                 );

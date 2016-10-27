@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.todo.view;
 
 import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.state.AppModel;
-import com.netopyr.reduxfx.todo.state.ToDoEntry;
+import com.netopyr.reduxfx.todo.state.TodoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.layout.Region;
 
@@ -18,25 +18,25 @@ class ItemOverviewView {
                 maxWidth(Double.MAX_VALUE),
                 maxHeight(Double.MAX_VALUE),
                 ListView(
-                        ToDoEntry.class,
+                        TodoEntry.class,
                         id("items"),
                         topAnchor(0.0),
                         rightAnchor(0.0),
                         bottomAnchor(0.0),
                         leftAnchor(0.0),
                         items(state.getTodos()
-                                .filter(toDoEntry -> {
+                                .filter(todoEntry -> {
                                     switch (state.getFilter()) {
                                         case COMPLETED:
-                                            return toDoEntry.isCompleted();
+                                            return todoEntry.isCompleted();
                                         case ACTIVE:
-                                            return !toDoEntry.isCompleted();
+                                            return !todoEntry.isCompleted();
                                         default:
                                             return true;
                                     }
                                 })
                         ),
-                        cellFactory(toDoEntry -> ItemView((ToDoEntry) toDoEntry))
+                        cellFactory(todoEntry -> ItemView((TodoEntry) todoEntry))
                 )
         );
     }

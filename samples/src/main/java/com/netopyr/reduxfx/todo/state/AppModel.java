@@ -5,21 +5,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public final class AppModel {
 
-    private final String newToDoText;
-    private final Seq<ToDoEntry> todos;
+    private final String newTodoText;
+    private final Seq<TodoEntry> todos;
     private final Filter filter;
 
-    public AppModel(String newToDoText, Seq<ToDoEntry> todos, Filter filter) {
-        this.newToDoText = newToDoText;
+    public AppModel(String newTodoText, Seq<TodoEntry> todos, Filter filter) {
+        this.newTodoText = newTodoText;
         this.todos = todos;
         this.filter = filter;
     }
 
-    public String getNewToDoText() {
-        return newToDoText;
+    public String getNewTodoText() {
+        return newTodoText;
     }
 
-    public Seq<ToDoEntry> getTodos() {
+    public Seq<TodoEntry> getTodos() {
         return todos;
     }
 
@@ -30,7 +30,7 @@ public final class AppModel {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("newToDoText", newToDoText)
+                .append("newTodoText", newTodoText)
                 .append("todos", todos)
                 .append("filter", filter)
                 .toString();

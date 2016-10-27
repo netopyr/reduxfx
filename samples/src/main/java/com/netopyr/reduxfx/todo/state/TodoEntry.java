@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.todo.state;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public final class ToDoEntry {
+public final class TodoEntry {
 
     private final int id;
     private final String text;
@@ -10,7 +10,7 @@ public final class ToDoEntry {
     private final boolean hover;
     private final boolean editMode;
 
-    public ToDoEntry(int id, String text, boolean completed, boolean hover, boolean editMode) {
+    public TodoEntry(int id, String text, boolean completed, boolean hover, boolean editMode) {
         this.id = id;
         this.text = text;
         this.completed = completed;

@@ -2,9 +2,9 @@ package com.netopyr.reduxfx.todo.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public final class AddToDo implements Action {
+public final class AddTodo implements Action {
 
-    AddToDo() {}
+    AddTodo() {}
 
     public ActionType getType() {
         return ActionType.ADD_TODO;

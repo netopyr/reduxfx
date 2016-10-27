@@ -3,7 +3,7 @@ package com.netopyr.reduxfx.todo.view;
 import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.actions.Actions;
 import com.netopyr.reduxfx.todo.state.AppModel;
-import com.netopyr.reduxfx.todo.state.ToDoEntry;
+import com.netopyr.reduxfx.todo.state.TodoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
@@ -21,16 +21,16 @@ class AddItemView {
                         id("selectAll"),
                         mnemonicParsing(false),
                         selected(state.getTodos()
-                                .map(ToDoEntry::isCompleted)
+                                .map(TodoEntry::isCompleted)
                                 .fold(true, (a, b) -> a && b)),
                         onAction(e -> Actions.completeAll())
                 ),
                 TextField(
                         id("addInput"),
-                        text(state.getNewToDoText(), (oldValue, newValue) -> Actions.newTextFieldChanged(newValue)),
+                        text(state.getNewTodoText(), (oldValue, newValue) -> Actions.newTextFieldChanged(newValue)),
                         promptText("What needs to be done?"),
                         hgrow(Priority.ALWAYS),
-                        onAction(e -> Actions.addToDo())
+                        onAction(e -> Actions.addTodo())
                 )
         );
     }

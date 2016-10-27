@@ -19,7 +19,7 @@ class ControlsView {
                 padding(5.0),
                 Label(
                         text(String.format("%d items left",
-                                state.getTodos().count(toDoEntry -> !toDoEntry.isCompleted()))
+                                state.getTodos().count(todoEntry -> !todoEntry.isCompleted()))
                         )
                 ),
                 HBox(

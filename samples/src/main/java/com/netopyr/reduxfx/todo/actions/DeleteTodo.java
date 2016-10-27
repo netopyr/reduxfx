@@ -2,16 +2,16 @@ package com.netopyr.reduxfx.todo.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public final class CompleteToDo implements Action {
+public final class DeleteTodo implements Action {
 
     private final int id;
 
-    CompleteToDo(int id) {
+    DeleteTodo(int id) {
         this.id = id;
     }
 
     public ActionType getType() {
-        return ActionType.COMPLETE_TODO;
+        return ActionType.DELETE_TODO;
     }
 
     public int getId() {

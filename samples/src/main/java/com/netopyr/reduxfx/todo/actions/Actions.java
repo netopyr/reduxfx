@@ -10,20 +10,20 @@ public final class Actions {
 
     private Actions() {}
 
-    public static Action addToDo() {
-        return new AddToDo();
+    public static Action addTodo() {
+        return new AddTodo();
     }
 
-    public static Action deleteToDo(int id) {
-        return new DeleteToDo(id);
+    public static Action deleteTodo(int id) {
+        return new DeleteTodo(id);
     }
 
-    public static Action editToDo(int id, String text) {
-        return new EditToDo(id, text);
+    public static Action editTodo(int id, String text) {
+        return new EditTodo(id, text);
     }
 
-    public static Action completeToDo(int id) {
-        return new CompleteToDo(id);
+    public static Action completeTodo(int id) {
+        return new CompleteTodo(id);
     }
 
     public static Action completeAll() {
@@ -38,8 +38,8 @@ public final class Actions {
         return new SetFilter(filter);
     }
 
-    public static Action setToDoHover(int id, boolean value) {
-        return new SetToDoHover(id, value);
+    public static Action setTodoHover(int id, boolean value) {
+        return new SetTodoHover(id, value);
     }
 
     public static Action setEditMode(int id, boolean value) {

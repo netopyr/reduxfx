@@ -2,33 +2,26 @@ package com.netopyr.reduxfx.todo.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public final class EditToDo implements Action {
+public final class CompleteTodo implements Action {
 
     private final int id;
-    private final String text;
 
-    EditToDo(int id, String text) {
+    CompleteTodo(int id) {
         this.id = id;
-        this.text = text;
     }
 
     public ActionType getType() {
-        return ActionType.EDIT_TODO;
+        return ActionType.COMPLETE_TODO;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getText() {
-        return text;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
-                .append("text", text)
                 .toString();
     }
 }
