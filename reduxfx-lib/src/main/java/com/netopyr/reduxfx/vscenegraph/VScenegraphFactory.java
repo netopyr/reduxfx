@@ -49,6 +49,9 @@ public class VScenegraphFactory {
     public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, TYPE value, VChangeListener<? super TYPE, ACTION> listener) {
         return new VProperty<>(name, value, Option.of(listener), Option.none());
     }
+    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, VChangeListener<? super TYPE, ACTION> listener) {
+        return new VProperty<>(name, Option.of(listener), Option.none());
+    }
     public static <T, ACTION> VProperty<T, ACTION> property(String name, T value) {
         return new VProperty<>(name, value, Option.none(), Option.none());
     }
@@ -154,6 +157,10 @@ public class VScenegraphFactory {
         return property("text", value, listener);
     }
 
+    public static <ACTION> VProperty<String, ACTION> text(VChangeListener<? super String, ACTION> listener) {
+        return property("text", listener);
+    }
+
     public static <ACTION> VProperty<String, ACTION> text(String value) {
         return text(value, null);
     }
@@ -250,7 +257,7 @@ public class VScenegraphFactory {
     }
 
     public static <ACTION> VProperty<Boolean, ACTION> hover(VChangeListener<? super Boolean, ACTION> listener) {
-        return property("hover", null, listener);
+        return property("hover", listener);
     }
 
     public static <ACTION> VProperty<Boolean, ACTION> visible(boolean value) {

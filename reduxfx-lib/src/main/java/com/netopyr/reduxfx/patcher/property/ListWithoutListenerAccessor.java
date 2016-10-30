@@ -18,13 +18,15 @@ public class ListWithoutListenerAccessor<ACTION> implements Accessor<ObservableL
     @SuppressWarnings("unchecked")
     @Override
     public void set(Node node, VProperty<ObservableList, ACTION> vProperty) {
-        final ObservableList list;
-        try {
-            list = (ObservableList) getter.invoke(node);
-        } catch (Throwable throwable) {
-            throw new IllegalStateException("Unable to read value of property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
-        }
+        if (vProperty.isValueDefined()) {
+            final ObservableList list;
+            try {
+                list = (ObservableList) getter.invoke(node);
+            } catch (Throwable throwable) {
+                throw new IllegalStateException("Unable to read value of property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+            }
 
-        list.setAll(vProperty.getValue() == null? Collections.emptyList() : vProperty.getValue());
+            list.setAll(vProperty.getValue() == null ? Collections.emptyList() : vProperty.getValue());
+        }
     }
 }

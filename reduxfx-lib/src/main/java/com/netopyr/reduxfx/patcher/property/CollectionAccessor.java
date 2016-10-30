@@ -17,13 +17,15 @@ public class CollectionAccessor<TYPE extends Collection, ACTION> implements Acce
     @SuppressWarnings("unchecked")
     @Override
     public void set(Node node, VProperty<TYPE, ACTION> vProperty) {
-        final Collection collection;
-        try {
-            collection = (Collection) getter.invoke(node);
-        } catch (Throwable throwable) {
-            throw new IllegalStateException("Unable to read property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+        if (vProperty.isValueDefined()) {
+            final Collection collection;
+            try {
+                collection = (Collection) getter.invoke(node);
+            } catch (Throwable throwable) {
+                throw new IllegalStateException("Unable to read property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+            }
+            collection.clear();
+            collection.addAll(vProperty.getValue());
         }
-        collection.clear();
-        collection.addAll(vProperty.getValue());
     }
 }

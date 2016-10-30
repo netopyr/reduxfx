@@ -15,11 +15,13 @@ public class LayoutConstraintAccessor<ACTION> implements Accessor<Object, ACTION
 
     @Override
     public void set(Node node, VProperty<Object, ACTION> vProperty) {
-        try {
-            setter.invoke(node, vProperty.getValue());
-        } catch (Throwable e) {
-            throw new IllegalStateException(String.format("Unable to set the value %s of property %s in class %s",
-                    vProperty.getValue(), vProperty.getName(), node.getParent().getClass()), e);
+        if (vProperty.isValueDefined()) {
+            try {
+                setter.invoke(node, vProperty.getValue());
+            } catch (Throwable e) {
+                throw new IllegalStateException(String.format("Unable to set the value %s of property %s in class %s",
+                        vProperty.getValue(), vProperty.getName(), node.getParent().getClass()), e);
+            }
         }
     }
 }

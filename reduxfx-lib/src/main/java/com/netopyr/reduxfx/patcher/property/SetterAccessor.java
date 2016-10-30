@@ -15,10 +15,12 @@ public class SetterAccessor<TYPE, ACTION> implements Accessor<TYPE, ACTION> {
 
     @Override
     public void set(Node node, VProperty<TYPE, ACTION> vProperty) {
-        try {
-            setter.invoke(node, vProperty.getValue());
-        } catch (Throwable throwable) {
-            throw new IllegalStateException("Unable to set property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+        if (vProperty.isValueDefined()) {
+            try {
+                setter.invoke(node, vProperty.getValue());
+            } catch (Throwable throwable) {
+                throw new IllegalStateException("Unable to set property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+            }
         }
     }
 }

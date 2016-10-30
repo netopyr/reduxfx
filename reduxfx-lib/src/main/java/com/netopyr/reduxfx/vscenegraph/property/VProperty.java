@@ -9,7 +9,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Objects;
 
 public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
-    
+
+    private static final Object NONE = new Object();
+
     private final String name;
     private final TYPE value;
     private final Option<VChangeListener<? super TYPE, ACTION>> changeListener;
@@ -25,10 +27,20 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
         this.invalidationListener = invalidationListener;
     }
 
+    @SuppressWarnings("unchecked")
+    public VProperty(String name,
+                     Option<VChangeListener<? super TYPE, ACTION>> changeListener,
+                     Option<VInvalidationListener<ACTION>> invalidationListener) {
+        this(name, (TYPE) NONE, changeListener, invalidationListener);
+    }
+
     public String getName() {
         return name;
     }
 
+    public boolean isValueDefined() {
+        return NONE != value;
+    }
     public TYPE getValue() {
         return value;
     }
