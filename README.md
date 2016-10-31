@@ -52,7 +52,7 @@ Functional reactive applications allow you to travel back and forth in time – 
 
 TodoMVC JavaFX Example
 ----------------------
-All data structures in the TodoMVC JavaFX Example are immutable. Unfortunately the standard collections in the JDK are problematic, if you want to enforce immutability. Therefore in the example makes heavy use of [Javaslang](javaslang) and its truly immutable collections.
+All data structures in the TodoMVC JavaFX Example are immutable. Unfortunately the standard collections in the JDK are problematic, if you want to enforce immutability. Therefore in the example makes heavy use of [Javaslang][javaslang] and its truly immutable collections.
 
 ### State
 The package [com.netopyr.reduxfx.todo.state](state package) contains all classes related to the state of the TodoMVC JavaFX Example. The main class is AppModel.
@@ -232,7 +232,7 @@ DeleteTodo is immutable and contains a single property id, which references the 
 
 ### Updater
 
-The heart of every ReduxFX-application is the updater. It is a BiFunction, which takes the old state and an action and calculates the new state. In this application, it is defined in the class [odos][todos class].
+The heart of every ReduxFX-application is the updater. It is a BiFunction, which takes the old state and an action and calculates the new state. In this application, it is defined in the class [Todos][todos class].
 
 Usually the updater is implemented as a huge switch-case statement with one branch per action-type. Below you can see an excerpt from the updater of the example application. It shows the cases of the actions NewTextfieldChanged and AddTodo.
 
@@ -312,6 +312,7 @@ If you have any comments, suggestions or questions, please [create a new issue][
 [cycle.js]: https://cycle.js.org
 [mvc is dead]: http://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
+[javaslang]: http://www.javaslang.io/
 [state package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
 [view package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/view
 [actions package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/actions
