@@ -139,6 +139,7 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<String, ACTION> id(String value) {
         return property("id", value);
     }
+
     public static <ACTION> VProperty<Insets, ACTION> padding(double top, double rightLeft, double bottom) {
         return property("padding", new Insets(top, rightLeft, bottom, rightLeft));
     }
@@ -147,6 +148,16 @@ public class VScenegraphFactory {
     }
     public static <ACTION> VProperty<Insets, ACTION> padding(double value) {
         return property("padding", new Insets(value, value, value, value));
+    }
+
+    public static <ACTION> VProperty<Insets, ACTION> margin(double top, double rightLeft, double bottom) {
+        return property("margin", new Insets(top, rightLeft, bottom, rightLeft));
+    }
+    public static <ACTION> VProperty<Insets, ACTION> margin(double topBottom, double rightLeft) {
+        return property("margin", new Insets(topBottom, rightLeft, topBottom, rightLeft));
+    }
+    public static <ACTION> VProperty<Insets, ACTION> margin(double value) {
+        return property("margin", new Insets(value, value, value, value));
     }
 
     public static <ACTION> VProperty<Double, ACTION> spacing(double value) {
@@ -210,6 +221,10 @@ public class VScenegraphFactory {
         return property("styleClass", value == null? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
     }
 
+    public static <ACTION> VProperty<String, ACTION> style(String value) {
+        return property("style", value);
+    }
+
     public static <ACTION> VProperty<Boolean, ACTION> mnemonicParsing(boolean value) {
         return property("mnemonicParsing", value);
     }
@@ -229,11 +244,17 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<Double, ACTION> minHeight(double value) {
         return property("minHeight", value);
     }
+    public static <ACTION> VProperty<Double, ACTION> prefHeight(double value) {
+        return property("prefHeight", value);
+    }
     public static <ACTION> VProperty<Double, ACTION> maxHeight(double value) {
         return property("maxHeight", value);
     }
     public static <ACTION> VProperty<Double, ACTION> minWidth(double value) {
         return property("minWidth", value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> prefWidth(double value) {
+        return property("prefWidth", value);
     }
     public static <ACTION> VProperty<Double, ACTION> maxWidth(double value) {
         return property("maxWidth", value);
