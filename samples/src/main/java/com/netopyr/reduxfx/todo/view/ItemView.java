@@ -15,12 +15,14 @@ class ItemView {
 
     static VNode<Action> ItemView(TodoEntry todoEntry) {
         return HBox(
+                id("root"),
                 alignment(Pos.CENTER_LEFT),
                 minWidth(Region.USE_PREF_SIZE),
                 minHeight(Region.USE_PREF_SIZE),
                 styleClass("item_root"),
                 stylesheets("itemview.css"),
                 CheckBox(
+                        id("completed"),
                         mnemonicParsing(false),
                         selected(todoEntry.isCompleted()),
                         onAction(e -> Actions.completeTodo(todoEntry.getId()))
@@ -29,6 +31,7 @@ class ItemView {
                         alignment(Pos.CENTER_LEFT),
                         hgrow(Priority.ALWAYS),
                         HBox(
+                                id("contentBox"),
                                 visible(! todoEntry.isEditMode()),
                                 styleClass("content_box"),
                                 hover((oldValue, newValue) -> Actions.setTodoHover(todoEntry.getId(), Boolean.TRUE.equals(newValue))),
@@ -42,6 +45,8 @@ class ItemView {
                                         onMouseClicked(e -> e.getClickCount() > 1 ? Actions.setEditMode(todoEntry.getId(), true) : null)
                                 ),
                                 Button(
+                                        id("deleteButton"),
+                                        mnemonicParsing(false),
                                         visible(todoEntry.isHover()),
                                         graphic(
                                                 node(FontAwesomeIconView.class,
@@ -54,6 +59,7 @@ class ItemView {
                                 )
                         ),
                         TextField(
+                                id("contentInput"),
                                 visible(todoEntry.isEditMode()),
                                 promptText("What needs to be done?"),
                                 focused(todoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(todoEntry.getId(), false)),

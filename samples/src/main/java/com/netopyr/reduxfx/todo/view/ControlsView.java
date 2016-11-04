@@ -13,14 +13,17 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 class ControlsView {
 
     static VNode<Action> ControlsView(AppModel state) {
+        final int countActive = state.getTodos().count(todoEntry -> !todoEntry.isCompleted());
         return HBox(
                 alignment(Pos.CENTER),
                 spacing(20.0),
                 padding(5.0),
                 Label(
-                        text(String.format("%d items left",
-                                state.getTodos().count(todoEntry -> !todoEntry.isCompleted()))
-                        )
+                        id("itemsLeftLabel"),
+                        text(String.format("%d %s left",
+                                countActive,
+                                countActive == 1? "item" : "items"
+                        ))
                 ),
                 HBox(
                         minWidth(Region.USE_PREF_SIZE),
@@ -30,18 +33,21 @@ class ControlsView {
                         spacing(10.0),
                         padding(5.0),
                         ToggleButton(
+                                id("showAll"),
                                 text("All"),
                                 selected(state.getFilter() == Filter.ALL),
                                 toggleGroup("FILTER_BUTTON_GROUP"),
                                 onAction(e -> Actions.setFilter(Filter.ALL))
                         ),
                         ToggleButton(
+                                id("showActive"),
                                 text("Active"),
                                 selected(state.getFilter() == Filter.ACTIVE),
                                 toggleGroup("FILTER_BUTTON_GROUP"),
                                 onAction(e -> Actions.setFilter(Filter.ACTIVE))
                         ),
                         ToggleButton(
+                                id("showCompleted"),
                                 text("Completed"),
                                 selected(state.getFilter() == Filter.COMPLETED),
                                 toggleGroup("FILTER_BUTTON_GROUP"),

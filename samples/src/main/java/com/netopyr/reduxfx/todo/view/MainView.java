@@ -31,8 +31,8 @@ public class MainView {
                         alignment(Pos.CENTER),
                         minWidth(Region.USE_PREF_SIZE),
                         minHeight(Region.USE_PREF_SIZE),
-                        maxWidth(Region.USE_PREF_SIZE),
-                        maxHeight(Region.USE_PREF_SIZE),
+                        maxWidth(Double.MAX_VALUE),
+                        maxHeight(Double.MAX_VALUE),
                         stylesheets("main.css"),
 
                         Label(

@@ -20,7 +20,9 @@ class AddItemView {
                 CheckBox(
                         id("selectAll"),
                         mnemonicParsing(false),
-                        selected(state.getTodos()
+                        visible(state.getTodos().nonEmpty()),
+                        selected(state.getTodos().nonEmpty() &&
+                                state.getTodos()
                                 .map(TodoEntry::isCompleted)
                                 .fold(true, (a, b) -> a && b)),
                         onAction(e -> Actions.completeAll())

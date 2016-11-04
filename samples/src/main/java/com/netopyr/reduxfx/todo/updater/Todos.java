@@ -24,7 +24,7 @@ public class Todos {
             return oldState;
         }
 
-        LOG.info("\n\n\n\nReducer Old State: " + oldState + "\n\nReducer Action: " + action);
+        LOG.trace("\n\n\n\nReducer Old State: " + oldState + "\n\nReducer Action: " + action);
 
         final AppModel newState;
         switch (action.getType()) {
@@ -144,7 +144,7 @@ public class Todos {
                 break;
         }
 
-        LOG.info("\n\nReducer New State: " + newState);
+        LOG.trace("\n\nReducer New State: " + newState);
         return newState;
     }
 }
