@@ -3,7 +3,6 @@ package com.netopyr.reduxfx.patcher;
 import com.netopyr.reduxfx.differ.Differ;
 import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javafx.animation.PauseTransition;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -12,10 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.TransformationList;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.util.Duration;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
 
@@ -67,16 +64,6 @@ public class ReduxFXListView<ACTION> extends ListView<Object> {
         mappingProperty().addListener(((observable, oldValue, newValue) -> {
             setItems(new ReduxFXTransformationList(newValue));
         }));
-        final PauseTransition transition = new PauseTransition(Duration.seconds(10));
-        transition.setOnFinished(e ->
-                ((Parent)((Group)((Parent)((Parent)getChildren().get(0)).getChildrenUnmodifiable().get(0)).getChildrenUnmodifiable().get(0)).getChildrenUnmodifiable().get(0)).getChildrenUnmodifiable().addListener(new ListChangeListener<Node>() {
-                    @Override
-                    public void onChanged(Change<? extends Node> c) {
-                        System.out.println("Changes: " + c);
-                    }
-                })
-        );
-        transition.play();
     }
 
 

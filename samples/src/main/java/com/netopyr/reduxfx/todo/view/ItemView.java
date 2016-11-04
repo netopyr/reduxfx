@@ -33,6 +33,7 @@ class ItemView {
                                 styleClass("content_box"),
                                 hover((oldValue, newValue) -> Actions.setTodoHover(todoEntry.getId(), Boolean.TRUE.equals(newValue))),
                                 Label(
+                                        id("contentLabel"),
                                         maxWidth(Double.MAX_VALUE),
                                         maxHeight(Double.MAX_VALUE),
                                         text(todoEntry.getText()),

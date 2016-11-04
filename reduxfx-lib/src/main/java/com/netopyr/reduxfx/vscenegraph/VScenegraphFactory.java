@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -133,6 +134,10 @@ public class VScenegraphFactory {
     @SafeVarargs
     public static <ACTION> VNode<ACTION> CheckBox(VElement<ACTION>... elements) {
         return node(CheckBox.class, elements);
+    }
+
+    public static <ACTION> VNode<ACTION> BorderPane(VElement<ACTION>... elements) {
+        return node(BorderPane.class, elements);
     }
 
 
@@ -289,6 +294,25 @@ public class VScenegraphFactory {
         return property("focused", value, listener);
     }
 
+    public static <ACTION> VProperty<Double, ACTION> progress(double value) {
+        return property("progress", value);
+    }
+
+    public static <ACTION> VProperty<VNode, ACTION> top(VNode value) {
+        return property("top", value);
+    }
+    public static <ACTION> VProperty<VNode, ACTION> right(VNode value) {
+        return property("right", value);
+    }
+    public static <ACTION> VProperty<VNode, ACTION> bottom(VNode value) {
+        return property("bottom", value);
+    }
+    public static <ACTION> VProperty<VNode, ACTION> left(VNode value) {
+        return property("left", value);
+    }
+    public static <ACTION> VProperty<VNode, ACTION> center(VNode value) {
+        return property("center", value);
+    }
 
 
 

@@ -7,7 +7,7 @@
     <groupId>com.netopyr.reduxfx</groupId>
     <artifactId>reduxfx-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>samples</module>
         <module>reduxfx-lib</module>
