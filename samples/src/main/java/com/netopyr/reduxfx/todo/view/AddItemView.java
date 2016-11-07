@@ -16,7 +16,7 @@ class AddItemView {
         return HBox(
                 styleClass("add_item_root"),
                 alignment(Pos.CENTER_LEFT),
-                stylesheets("additem.css"),
+                stylesheets(AddItemView.class.getResource("additem.css").toString()),
                 CheckBox(
                         id("selectAll"),
                         mnemonicParsing(false),

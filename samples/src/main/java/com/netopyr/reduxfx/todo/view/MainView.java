@@ -33,7 +33,7 @@ public class MainView {
                         minHeight(Region.USE_PREF_SIZE),
                         maxWidth(Double.MAX_VALUE),
                         maxHeight(Double.MAX_VALUE),
-                        stylesheets("main.css"),
+                        stylesheets(MainView.class.getResource("main.css").toString()),
 
                         Label(
                                 id("title"),

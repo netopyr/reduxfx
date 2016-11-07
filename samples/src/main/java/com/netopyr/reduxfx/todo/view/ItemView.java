@@ -20,7 +20,7 @@ class ItemView {
                 minWidth(Region.USE_PREF_SIZE),
                 minHeight(Region.USE_PREF_SIZE),
                 styleClass("item_root"),
-                stylesheets("itemview.css"),
+                stylesheets(ItemView.class.getResource("itemview.css").toString()),
                 CheckBox(
                         id("completed"),
                         mnemonicParsing(false),
