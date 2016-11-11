@@ -13,18 +13,18 @@ import com.netopyr.reduxfx.todo.state.TodoEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Todos {
+public class Updater {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Todos.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Updater.class);
 
-    private Todos() {}
+    private Updater() {}
 
     public static AppModel update(AppModel oldState, Action action) {
         if (action == null) {
             return oldState;
         }
 
-        LOG.trace("\n\n\n\nReducer Old State: " + oldState + "\n\nReducer Action: " + action);
+        LOG.trace("\n\n\n\nUpdater Old State: " + oldState + "\n\nUpdater Action: " + action);
 
         final AppModel newState;
         switch (action.getType()) {
@@ -144,7 +144,7 @@ public class Todos {
                 break;
         }
 
-        LOG.trace("\n\nReducer New State: " + newState);
+        LOG.trace("\n\nUpdater New State: " + newState);
         return newState;
     }
 }
