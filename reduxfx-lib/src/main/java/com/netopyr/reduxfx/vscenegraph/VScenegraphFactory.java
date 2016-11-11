@@ -10,8 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -22,6 +24,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -136,9 +139,16 @@ public class VScenegraphFactory {
         return node(CheckBox.class, elements);
     }
 
+    @SafeVarargs
     public static <ACTION> VNode<ACTION> BorderPane(VElement<ACTION>... elements) {
         return node(BorderPane.class, elements);
     }
+
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> GridPane(VElement<ACTION>... elements) {
+        return node(GridPane.class, elements);
+    }
+
 
 
     public static <ACTION> VProperty<String, ACTION> id(String value) {
@@ -312,6 +322,35 @@ public class VScenegraphFactory {
     }
     public static <ACTION> VProperty<VNode, ACTION> center(VNode value) {
         return property("center", value);
+    }
+
+    public static <ACTION> VProperty<Double, ACTION> hgap(double value) {
+        return property("hgap", value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> vgap(double value) {
+        return property("vgap", value);
+    }
+
+    public static <ACTION> VProperty<Integer, ACTION> columnIndex(int value) {
+        return property("columnIndex", value);
+    }
+    public static <ACTION> VProperty<Integer, ACTION> rowIndex(int value) {
+        return property("rowIndex", value);
+    }
+
+    public static <ACTION> VProperty<Integer, ACTION> columnSpan(int value) {
+        return property("columnSpan", value);
+    }
+    public static <ACTION> VProperty<Integer, ACTION> rowSpan(int value) {
+        return property("rowSpan", value);
+    }
+
+
+    public static <ACTION> VProperty<HPos, ACTION> halignment(HPos value) {
+        return property("halignment", value);
+    }
+    public static <ACTION> VProperty<VPos, ACTION> valignment(VPos value) {
+        return property("valignment", value);
     }
 
 
