@@ -18,17 +18,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
@@ -149,6 +146,20 @@ public class VScenegraphFactory {
         return node(GridPane.class, elements);
     }
 
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> ProgressBar(VElement<ACTION>... elements) {
+        return node(ProgressBar.class, elements);
+    }
+
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> Slider(VElement<ACTION>... elements) {
+        return node(Slider.class, elements);
+    }
+
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> Region(VElement<ACTION>... elements) {
+        return node(Region.class, elements);
+    }
 
 
     public static <ACTION> VProperty<String, ACTION> id(String value) {
@@ -304,8 +315,18 @@ public class VScenegraphFactory {
         return property("focused", value, listener);
     }
 
+    public static <ACTION> VProperty<Double, ACTION> progress(double value, VChangeListener<? super Double, ACTION> listener) {
+        return property("progress", value, listener);
+    }
     public static <ACTION> VProperty<Double, ACTION> progress(double value) {
         return property("progress", value);
+    }
+
+    public static <ACTION> VProperty<Double, ACTION> value(double value, VChangeListener<? super Double, ACTION> listener) {
+        return property("value", value, listener);
+    }
+    public static <ACTION> VProperty<Double, ACTION> value(double value) {
+        return property("value", value);
     }
 
     public static <ACTION> VProperty<VNode, ACTION> top(VNode value) {
@@ -352,6 +373,28 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<VPos, ACTION> valignment(VPos value) {
         return property("valignment", value);
     }
+
+    public static <ACTION> VProperty<Border, ACTION> border(Border value) {
+        return property("border", value);
+    }
+    public static <ACTION> VProperty<Border, ACTION> border(Color color, double width) {
+        return border(new Border(new BorderStroke(color, null, null, new BorderWidths(width))));
+    }
+
+    public static <ACTION> VProperty<Background, ACTION> background(Background value) {
+        return property("background", value);
+    }
+    public static <ACTION> VProperty<Background, ACTION> background(Color fill) {
+        return background(new Background(new BackgroundFill(fill, null, null)));
+    }
+
+    public static <ACTION> VProperty<Double, ACTION> max(double value) {
+        return property("max", value);
+    }
+    public static <ACTION> VProperty<Double, ACTION> min(double value) {
+        return property("min", value);
+    }
+
 
 
 
