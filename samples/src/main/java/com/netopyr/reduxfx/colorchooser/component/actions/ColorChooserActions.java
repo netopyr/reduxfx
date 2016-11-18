@@ -1,5 +1,7 @@
 package com.netopyr.reduxfx.colorchooser.component.actions;
 
+import javafx.scene.paint.Color;
+
 public final class ColorChooserActions {
 
     private ColorChooserActions() {}
@@ -14,5 +16,9 @@ public final class ColorChooserActions {
 
     public static ColorChooserAction updateBlue(double value) {
         return new UpdateBlue(value);
+    }
+
+    public static ColorChooserAction colorChanged(Color value) {
+        return new ColorChanged(value);
     }
 }

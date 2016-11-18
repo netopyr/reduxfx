@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.colorchooser.component.updater;
 
+import com.netopyr.reduxfx.colorchooser.component.actions.ColorChanged;
 import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserAction;
 import com.netopyr.reduxfx.colorchooser.component.actions.UpdateBlue;
 import com.netopyr.reduxfx.colorchooser.component.actions.UpdateGreen;
@@ -15,14 +16,13 @@ public class ColorChooserUpdater {
 
     private static final Logger LOG = LoggerFactory.getLogger(ColorChooserUpdater.class);
 
-    private ColorChooserUpdater() {}
+    private ColorChooserUpdater() {
+    }
 
     public static Update<ColorChooserModel> update(ColorChooserModel state, ColorChooserAction action) {
         if (action == null) {
             return Update.of(state);
         }
-
-        LOG.trace("\n\n\n\nColorChooserUpdater Old State:\n" + state + "\n\nColorChooserUpdater Action: " + action);
 
         final Update<ColorChooserModel> update;
         switch (action.getType()) {
@@ -35,7 +35,7 @@ public class ColorChooserUpdater {
                         new ObjectChangedCommand<>("color", color)
                 );
             }
-                break;
+            break;
 
             case UPDATE_GREEN: {
                 final double green = ((UpdateGreen) action).getValue();
@@ -45,7 +45,7 @@ public class ColorChooserUpdater {
                         new ObjectChangedCommand<>("color", color)
                 );
             }
-                break;
+            break;
 
             case UPDATE_BLUE: {
                 final double blue = ((UpdateBlue) action).getValue();
@@ -55,14 +55,25 @@ public class ColorChooserUpdater {
                         new ObjectChangedCommand<>("color", color)
                 );
             }
-                break;
+            break;
+
+            case COLOR_CHANGED: {
+                final Color color = ((ColorChanged) action).getValue();
+                update = Update.of(
+                        state.withRed(color.getRed())
+                                .withGreen(color.getGreen())
+                                .withBlue(color.getBlue())
+                );
+            }
+            break;
 
             default:
                 update = Update.of(state);
                 break;
         }
 
-        LOG.trace("\n\nColorChooserUpdater Update:\n" + update);
+        LOG.trace("\nColorChooserUpdater Old State:\n{}\nColorChooserUpdater Action:\n{}\nColorChooserUpdater Update:\n{}\n",
+                state, action, update);
         return update;
     }
 }

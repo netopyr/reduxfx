@@ -8,7 +8,13 @@ import javafx.scene.paint.Color;
 
 import static com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent.ColorChooser;
 import static com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent.color;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.HBox;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Region;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.background;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.minHeight;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.minWidth;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.padding;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.spacing;
 
 public class MainView {
 
@@ -20,11 +26,10 @@ public class MainView {
                 padding(50.0),
                 spacing(20.0),
                 ColorChooser(
-                        color((oldValue, newValue) -> Actions.updateColor(newValue))
+                        color(Color.VIOLET, (oldValue, newValue) -> Actions.updateColor(newValue))
                 ),
                 Region(
                         background(state.getColor()),
-                        border(Color.BLACK, 3.0),
                         minWidth(100.0),
                         minHeight(100.0)
                 )

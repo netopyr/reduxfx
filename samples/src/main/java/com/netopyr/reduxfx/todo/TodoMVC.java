@@ -1,9 +1,9 @@
 package com.netopyr.reduxfx.todo;
 
 import com.netopyr.reduxfx.ReduxFX;
-import com.netopyr.reduxfx.todo.updater.Updater;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.Filter;
+import com.netopyr.reduxfx.todo.updater.Updater;
 import com.netopyr.reduxfx.todo.view.MainView;
 import javafx.application.Application;
 import javafx.stage.Stage;

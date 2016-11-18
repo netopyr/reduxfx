@@ -17,8 +17,6 @@ public class Updater {
             return oldState;
         }
 
-        LOG.trace("\n\n\n\nUpdater Old State: " + oldState + "\n\nUpdater Action: " + action);
-
         final AppModel newState;
         switch (action.getType()) {
 
@@ -31,7 +29,8 @@ public class Updater {
                 break;
         }
 
-        LOG.trace("\n\nUpdater New State: " + newState);
+        LOG.trace("\nUpdater Old State:\n{}\nUpdater Action:\n{}\nUpdater New State:\n{}\n\n",
+                oldState, action, newState);
         return newState;
     }
 }

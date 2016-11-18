@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.colorchooser.component;
 
 import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserAction;
+import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions;
 import com.netopyr.reduxfx.colorchooser.component.state.ColorChooserModel;
 import com.netopyr.reduxfx.colorchooser.component.updater.ColorChooserUpdater;
 import com.netopyr.reduxfx.colorchooser.component.view.ColorChooserView;
@@ -9,7 +10,7 @@ import com.netopyr.reduxfx.vscenegraph.VElement;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -23,6 +24,9 @@ public class ColorChooserComponent extends VBox {
         return node(ColorChooserComponent.class, elements);
     }
 
+    public static <ACTION> VProperty<Color, ACTION> color(Color value, VChangeListener<? super Color, ACTION> listener) {
+        return property("color", value, listener);
+    }
     public static <ACTION> VProperty<Color, ACTION> color(VChangeListener<? super Color, ACTION> listener) {
         return property("color", listener);
     }
@@ -33,18 +37,21 @@ public class ColorChooserComponent extends VBox {
         final ColorChooserModel initialData = new ColorChooserModel();
         final ComponentDriver<ColorChooserAction> driver = new ComponentDriver<>(initialData, ColorChooserUpdater::update, ColorChooserView::view, this);
 
-        color = driver.createReadOnlyObjectProperty(this, "color");
+        color = driver.createObjectProperty(this, "color", (oldValue, newValue) -> ColorChooserActions.colorChanged(newValue));
 
     }
 
 
 
-    private final ReadOnlyObjectProperty<Color> color;
+    private final ObjectProperty<Color> color;
 
     public final Color getColor() {
         return color.get();
     }
-    public final ReadOnlyObjectProperty<Color> colorProperty() {
+    public final void setColor(Color value) {
+        color.set(value);
+    }
+    public final ObjectProperty<Color> colorProperty() {
         return color;
     }
 }
