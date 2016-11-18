@@ -7,7 +7,11 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateBlue;
 import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateGreen;
 import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateRed;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Slider;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.max;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.spacing;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.value;
 
 public class ColorChooserView {
 

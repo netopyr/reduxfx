@@ -35,7 +35,7 @@ public class ColorChooserComponent extends VBox {
 
     public ColorChooserComponent() {
         final ColorChooserModel initialData = new ColorChooserModel();
-        final ComponentDriver<ColorChooserAction> driver = new ComponentDriver<>(initialData, ColorChooserUpdater::update, ColorChooserView::view, this);
+        final ComponentDriver<ColorChooserAction> driver = new ComponentDriver<>(this, initialData, ColorChooserUpdater::update, ColorChooserView::view);
 
         color = driver.createObjectProperty(this, "color", (oldValue, newValue) -> ColorChooserActions.colorChanged(newValue));
 

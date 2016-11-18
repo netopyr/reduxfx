@@ -3,14 +3,14 @@ package com.netopyr.reduxfx.timer;
 import com.netopyr.reduxfx.timer.command.StartTimerCommand;
 import com.netopyr.reduxfx.timer.command.StopTimerCommand;
 import com.netopyr.reduxfx.updater.Command;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
-import rx.Observable;
-import rx.Observer;
 
 public class TimerDriver<T> {
 

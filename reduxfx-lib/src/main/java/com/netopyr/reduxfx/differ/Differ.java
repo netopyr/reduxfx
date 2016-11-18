@@ -14,19 +14,25 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Differ {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Differ.class);
+
     public static <ACTION> Vector<Patch> diff(Option<VNode<ACTION>> a, Option<VNode<ACTION>> b) {
-        if (a.isEmpty()) {
-            return b.isEmpty()? Vector.empty() : Vector.of(new InsertPatch(0, b.get()));
-        } else {
-            return b.isEmpty()? Vector.of(new RemovePatch(0)) : doDiff(a.get(), b.get(), 0);
-        }
+        final Vector<Patch> patches =
+                a.isEmpty() ?
+                        b.isEmpty() ? Vector.empty() : Vector.of(new InsertPatch(0, b.get()))
+                        :
+                        b.isEmpty() ? Vector.of(new RemovePatch(0)) : doDiff(a.get(), b.get(), 0);
+        LOG.trace("Diff:\na:\n{}\nb:\n{}\nresult:\n{}", a, b, patches);
+        return patches;
     }
 
     private static <ACTION> Vector<Patch> doDiff(VNode<ACTION> a, VNode<ACTION> b, int index) {
-        if (a == null? b == null : a.equals(b)) {
+        if (a == null ? b == null : a.equals(b)) {
             return Vector.empty();
         }
 
@@ -69,7 +75,7 @@ public class Differ {
         final Map<VEventType, VEventHandlerElement<?, ACTION>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));
         final Map<VEventType, VEventHandlerElement<?, ACTION>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
 
-        return diffProperties.isEmpty() && diffEventHandlers.isEmpty()? Vector.empty()
+        return diffProperties.isEmpty() && diffEventHandlers.isEmpty() ? Vector.empty()
                 : Vector.of(new AttributesPatch<>(index, diffProperties, diffEventHandlers));
     }
 

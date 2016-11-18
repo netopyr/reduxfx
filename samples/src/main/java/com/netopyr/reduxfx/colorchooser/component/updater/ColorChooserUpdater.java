@@ -62,7 +62,8 @@ public class ColorChooserUpdater {
                 update = Update.of(
                         state.withRed(color.getRed())
                                 .withGreen(color.getGreen())
-                                .withBlue(color.getBlue())
+                                .withBlue(color.getBlue()),
+                        new ObjectChangedCommand<>("color", color)
                 );
             }
             break;

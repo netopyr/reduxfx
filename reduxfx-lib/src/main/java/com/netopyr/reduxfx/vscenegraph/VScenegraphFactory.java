@@ -102,24 +102,12 @@ public class VScenegraphFactory {
     public static <ACTION> VNode<ACTION> ListView(Class<?> clazz, VElement<ACTION>... elements) {
         return node(ReduxFXListView.class, elements);
     }
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> ListView(VElement<ACTION>... elements) {
-//        return node(ListView.class, elements);
-//    }
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> ListView(Class<?> clazz, VElement<ACTION>... elements) {
-//        return node(ListView.class, elements);
-//    }
 
     @SafeVarargs
     public static <ACTION> VNode<ACTION> TableView(Class<?> clazz, VElement<ACTION>... elements) {
         return node(TableView.class, elements);
     }
 
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> TableColumn(VElement<ACTION>... elements) {
-//        return node(VNodeType.TABLE_COLUMN, elements);
-//    }
 
     @SafeVarargs
     public static <ACTION> VNode<ACTION> Label(VElement<ACTION>... elements) {
@@ -213,15 +201,6 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<ObservableList<?>, ACTION> items(Seq<?> value) {
         return property("data", value == null? FXCollections.emptyObservableList() : FXCollections.observableList(value.toJavaList()));
     }
-//    public static <ACTION> VProperty<ObservableList<?>, ACTION> items(Seq<?> value) {
-//        return property("items", value == null? FXCollections.emptyObservableList() : FXCollections.observableList(value.toJavaList()));
-//    }
-//    public static <ACTION> VProperty<ObservableList<?>, ACTION> items(List<?> value) {
-//        return property("items", value == null? FXCollections.emptyObservableList() : value instanceof ObservableList? (ObservableList<?>) value : FXCollections.observableList(value));
-//    }
-//    public static <ACTION> VProperty<ObservableList<?>, ACTION> items(Object... value) {
-//        return property("items", value == null? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
-//    }
 
     public static <ACTION> VProperty<String, ACTION> toggleGroup(String value) {
         return property("toggleGroup", value);
@@ -235,9 +214,6 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<Function<Object, Object>, ACTION> cellFactory(Function<Object, Object> value) {
         return property("mapping", value);
     }
-//    public static <ACTION> VProperty<Function<Object, Object>, ACTION> cellFactory(Function<Object, Object> value) {
-//        return property("cell", value);
-//    }
 
     public static <ACTION> VProperty<Pos, ACTION> alignment(Pos value) {
         return property("alignment", value);

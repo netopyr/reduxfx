@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.component.property;
 
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
+import io.reactivex.Observable;
 import javafx.beans.property.ReadOnlyIntegerPropertyBase;
-import rx.Observable;
 
 public final class ReduxFXReadOnlyIntegerProperty extends ReadOnlyIntegerPropertyBase {
 

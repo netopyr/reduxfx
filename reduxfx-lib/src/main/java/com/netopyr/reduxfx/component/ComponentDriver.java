@@ -6,12 +6,12 @@ import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
 import com.netopyr.reduxfx.component.property.ReduxFXObjectProperty;
 import com.netopyr.reduxfx.component.property.ReduxFXReadOnlyIntegerProperty;
 import com.netopyr.reduxfx.component.property.ReduxFXReadOnlyObjectProperty;
-import com.netopyr.reduxfx.differ.Differ;
-import com.netopyr.reduxfx.differ.patches.Patch;
-import com.netopyr.reduxfx.patcher.Patcher;
-import com.netopyr.reduxfx.updater.Command;
+import com.netopyr.reduxfx.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -19,84 +19,78 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
-import javaslang.Tuple;
-import javaslang.collection.Vector;
-import javaslang.control.Option;
-import rx.Observable;
-import rx.Observer;
-import rx.subjects.PublishSubject;
-import rx.subjects.Subject;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class ComponentDriver<ACTION> {
 
-    private final Observable<Command> commandObservable;
+    private final MainLoop<ACTION> mainLoop;
     private Observable<FireEventCommand<? extends Event>> fireEventCommandObservable;
     private Observable<IntegerChangedCommand> integerChangedCommandObservable;
     private Observable<ObjectChangedCommand<?>> objectChangedCommandObservable;
-    private Observer<ACTION> actionObserver;
 
     public <STATE> ComponentDriver(
+            Parent component,
             STATE initialState,
             BiFunction<STATE, ACTION, Update<STATE>> updater,
-            Function<STATE, VNode<ACTION>> view,
-            Parent root
+            Function<STATE, VNode<ACTION>> view
     ) {
-
-        final Subject<ACTION, ACTION> actionSubject = PublishSubject.create();
-
-        final Observable<Update<STATE>> updatesObservable = actionSubject
-                .scan(Update.of(initialState), (update, action) -> updater.apply(update.getState(), action));
-
-        final Observable<STATE> stateObservable = updatesObservable.map(Update::getState);
-
-        final Observable<Option<VNode<ACTION>>> vScenegraphObservable = stateObservable
-                .map(view::apply)
-                .map(Option::of)
-                .startWith(Option.<VNode<ACTION>>none());
-
-        final Observable<Vector<Patch>> patchObservable = vScenegraphObservable.zipWith(vScenegraphObservable.skip(1), Differ::diff);
-
-        final Patcher<ACTION> patcher = new Patcher<>(actionSubject::onNext);
-
-        vScenegraphObservable
-                .zipWith(patchObservable, Tuple::of)
-                .forEach(tuple -> patcher.patch(root, tuple._1, tuple._2));
-
-
-        commandObservable = updatesObservable
-                .map(Update::getCommands)
-                .flatMapIterable(commands -> commands);
-
-        actionObserver = actionSubject;
+        mainLoop = new MainLoop<>(initialState, updater, view, component);
+        component.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                mainLoop.start();
+            } else {
+                mainLoop.stop();
+            }
+        });
     }
 
-
-
-    public Observable<Command> getCommandObservable() {
-        return commandObservable;
+    private Observable<IntegerChangedCommand> getIntegerChangedCommandObservable() {
+        if (integerChangedCommandObservable == null) {
+            final Subject<IntegerChangedCommand> subject = PublishSubject.create();
+            mainLoop.getCommandObservable()
+                    .filter(command -> command instanceof IntegerChangedCommand)
+                    .map(command -> (IntegerChangedCommand) command)
+                    .subscribe(subject);
+            integerChangedCommandObservable = subject;
+        }
+        return integerChangedCommandObservable;
     }
 
-    public Observer<ACTION> getActionObserver() {
-        return actionObserver;
+    private Observable<ObjectChangedCommand<?>> getObjectChangedCommandObservable() {
+        if (objectChangedCommandObservable == null) {
+            final Subject<ObjectChangedCommand<?>> subject = PublishSubject.create();
+            mainLoop.getCommandObservable()
+                    .filter(command -> command instanceof ObjectChangedCommand)
+                    .map(command -> (ObjectChangedCommand<?>) command)
+                    .subscribe(subject);
+            objectChangedCommandObservable = subject;
+        }
+        return objectChangedCommandObservable;
     }
 
+    private Observable<FireEventCommand<? extends Event>> getFireEventCommandObservable() {
+        if (fireEventCommandObservable == null) {
+            final Subject<FireEventCommand<? extends Event>> subject = PublishSubject.create();
+            mainLoop.getCommandObservable()
+                    .filter(command -> command instanceof FireEventCommand)
+                    .map(command -> (FireEventCommand<? extends Event>) command)
+                    .subscribe(subject);
+            fireEventCommandObservable = subject;
+        }
+        return fireEventCommandObservable;
+    }
 
 
     public ReadOnlyIntegerProperty createReadOnlyIntegerProperty(Object bean, String name) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
 
-        if (integerChangedCommandObservable == null) {
-            integerChangedCommandObservable = commandObservable
-                    .filter(command -> command instanceof IntegerChangedCommand)
-                    .cast(IntegerChangedCommand.class);
-        }
         final Observable<IntegerChangedCommand> propertyObervable =
-                integerChangedCommandObservable.filter(command -> name.equals(command.getPropertyName()));
+                getIntegerChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
         return new ReduxFXReadOnlyIntegerProperty(bean, name, propertyObervable);
     }
 
@@ -104,16 +98,10 @@ public class ComponentDriver<ACTION> {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
 
-        if (objectChangedCommandObservable == null) {
-            objectChangedCommandObservable = commandObservable
-                    .filter(command -> command instanceof ObjectChangedCommand)
-                    .map(command -> (ObjectChangedCommand<?>) command);
-        }
         final Observable<ObjectChangedCommand<?>> propertyObervable =
-                objectChangedCommandObservable.filter(command -> name.equals(command.getPropertyName()));
+                getObjectChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
         return new ReduxFXReadOnlyObjectProperty<>(bean, name, propertyObervable);
     }
-
 
 
     public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, BiFunction<T, T, ACTION> mapper) {
@@ -121,30 +109,20 @@ public class ComponentDriver<ACTION> {
         Objects.requireNonNull(name, "Name must not be null");
         Objects.requireNonNull(mapper, "Mapper must not be null");
 
-        if (objectChangedCommandObservable == null) {
-            objectChangedCommandObservable = commandObservable
-                    .filter(command -> command instanceof ObjectChangedCommand)
-                    .map(command -> (ObjectChangedCommand<?>) command);
-        }
         final Observable<ObjectChangedCommand<?>> propertyObervable =
-                objectChangedCommandObservable.filter(command -> name.equals(command.getPropertyName()));
-        return new ReduxFXObjectProperty<>(bean, name, propertyObervable, mapper, actionObserver);
+                getObjectChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
+        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> mainLoop.dispatch(mapper.apply(oldValue, newValue));
+        return new ReduxFXObjectProperty<>(bean, name, propertyObervable, dispatcher);
     }
-
 
 
     public <EVENT extends Event> ObjectProperty<EventHandler<EVENT>> createEventHandlerProperty(Object bean, String name) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
 
-        if (fireEventCommandObservable == null) {
-            fireEventCommandObservable = commandObservable
-                    .filter(command -> command instanceof FireEventCommand)
-                    .map(command -> (FireEventCommand<? extends Event>) command);
-        }
-
         final ObjectProperty<EventHandler<EVENT>> property = new SimpleObjectProperty<>(bean, name);
-        fireEventCommandObservable.filter(command -> name.equals(command.getEventName()))
+        getFireEventCommandObservable()
+                .filter(command -> name.equals(command.getEventName()))
                 .forEach(command -> {
                     final EventHandler<EVENT> eventHandler = property.get();
                     if (eventHandler != null) {
