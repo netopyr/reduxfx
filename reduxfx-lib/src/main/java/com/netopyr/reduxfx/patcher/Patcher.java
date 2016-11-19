@@ -26,7 +26,7 @@ public class Patcher<ACTION> {
     public Patcher(Consumer<ACTION> dispatcher) {
         final Accessors<ACTION> accessors = new Accessors<>(dispatcher);
         this.nodeBuilder = new NodeBuilder<>(dispatcher, accessors);
-        accessors.init(this, nodeBuilder);
+        accessors.init(nodeBuilder);
 
         INSTANCE = this;
     }

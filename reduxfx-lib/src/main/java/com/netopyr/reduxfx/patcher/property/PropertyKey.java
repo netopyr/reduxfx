@@ -1,21 +1,20 @@
 package com.netopyr.reduxfx.patcher.property;
 
-import javafx.scene.Node;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public final class PropertyKey {
 
-    private final Class<? extends Node> nodeClass;
+    private final Class<?> nodeClass;
     private final String name;
 
-    public PropertyKey(Class<? extends Node> nodeClass, String name) {
+    public PropertyKey(Class<?> nodeClass, String name) {
         this.nodeClass = nodeClass;
         this.name = name;
     }
 
-    public Class<? extends Node> getNodeClass() {
+    public Class<?> getNodeClass() {
         return nodeClass;
     }
 

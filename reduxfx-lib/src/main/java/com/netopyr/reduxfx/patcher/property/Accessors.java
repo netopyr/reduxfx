@@ -1,12 +1,10 @@
 package com.netopyr.reduxfx.patcher.property;
 
 import com.netopyr.reduxfx.patcher.NodeBuilder;
-import com.netopyr.reduxfx.patcher.Patcher;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -32,19 +30,19 @@ public class Accessors<ACTION> {
         this.dispatcher = dispatcher;
     }
 
-    public void init(Patcher<ACTION> patcher, NodeBuilder<ACTION> nodeBuilder) {
+    public void init(NodeBuilder<ACTION> nodeBuilder) {
         registerAccessor(new PropertyKey(ToggleButton.class, "toggleGroup"), new ToggleGroupAccessor<>(getPropertyGetter(ToggleButton.class, "toggleGroup").get(), dispatcher));
-        registerAccessor(new PropertyKey(Button.class, "graphic"), new NodeAccessor<>(getPropertyGetter(Button.class, "graphic").get(), dispatcher, nodeBuilder));
+        registerAccessor(new PropertyKey(Labeled.class, "graphic"), new NodeAccessor<>(getPropertyGetter(Labeled.class, "graphic").get(), dispatcher, nodeBuilder));
         registerAccessor(new PropertyKey(BorderPane.class, "top"), new NodeAccessor<>(getPropertyGetter(BorderPane.class, "top").get(), dispatcher, nodeBuilder));
         registerAccessor(new PropertyKey(BorderPane.class, "right"), new NodeAccessor<>(getPropertyGetter(BorderPane.class, "right").get(), dispatcher, nodeBuilder));
         registerAccessor(new PropertyKey(BorderPane.class, "bottom"), new NodeAccessor<>(getPropertyGetter(BorderPane.class, "bottom").get(), dispatcher, nodeBuilder));
         registerAccessor(new PropertyKey(BorderPane.class, "left"), new NodeAccessor<>(getPropertyGetter(BorderPane.class, "left").get(), dispatcher, nodeBuilder));
         registerAccessor(new PropertyKey(BorderPane.class, "center"), new NodeAccessor<>(getPropertyGetter(BorderPane.class, "center").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(TextField.class, "focused"), new FocusedAccessor<>(getPropertyGetter(TextField.class, "focused").get(), dispatcher));
+        registerAccessor(new PropertyKey(Node.class, "focused"), new FocusedAccessor<>(getPropertyGetter(Node.class, "focused").get(), dispatcher));
     }
 
     public void registerAccessor(PropertyKey propertyKey, Accessor<?, ACTION> accessor) {
-        accessorMap = accessorMap.put(propertyKey, accessor);
+        cacheAccessor(propertyKey, accessor);
     }
 
     public Option<Accessor<?, ACTION>> getAccessor(Node node, String propertyName) {
@@ -52,7 +50,10 @@ public class Accessors<ACTION> {
         final PropertyKey propertyKey = new PropertyKey(nodeClass, propertyName);
 
         return accessorMap.get(propertyKey)
-                .orElse(() -> createAccessor(nodeClass, propertyName).map(accessor -> cacheAccessor(propertyKey, accessor)))
+                .orElse(() -> searchInCache(accessorMap, propertyKey)
+                        .orElse(() -> createAccessor(nodeClass, propertyName))
+                        .map(accessor -> cacheAccessor(propertyKey, accessor))
+                )
                 .orElse(() -> {
                     if (node.getParent() == null) {
                         return Option.none();
@@ -61,19 +62,46 @@ public class Accessors<ACTION> {
                     final PropertyKey layoutKey = new PropertyKey(parentClass, propertyName);
                     return Pane.class.isAssignableFrom(parentClass) ?
                             layoutAccessorMap.get(layoutKey)
-                                    .orElse(() -> createLayoutAccessor(parentClass, propertyName).map(accessor -> cacheLayoutAccessor(layoutKey, accessor)))
+                                    .orElse(() -> searchInCache(layoutAccessorMap, layoutKey)
+                                            .orElse(() -> createLayoutAccessor(parentClass, propertyName))
+                                            .map(accessor -> cacheLayoutAccessor(layoutKey, accessor))
+                                    )
                             : Option.none();
                 });
     }
 
+    private Option<Accessor<?, ACTION>> searchInCache(Map<PropertyKey, Accessor<?, ACTION>> map, PropertyKey propertyKey) {
+        final String propertyName = propertyKey.getName();
+        for (Class<?> clazz = propertyKey.getNodeClass().getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
+            final Option<Accessor<?, ACTION>> accessor = map.get(new PropertyKey(clazz, propertyName));
+            if (accessor.isDefined()) {
+                return accessor;
+            }
+        }
+        return Option.none();
+    }
+
     private Accessor<?, ACTION> cacheAccessor(PropertyKey propertyKey, Accessor<?, ACTION> accessor) {
-        accessorMap = accessorMap.put(propertyKey, accessor);
+        accessorMap = doCacheAccessor(accessorMap, propertyKey, accessor);
         return accessor;
     }
 
     private Accessor<?, ACTION> cacheLayoutAccessor(PropertyKey propertyKey, Accessor<?, ACTION> accessor) {
-        layoutAccessorMap = layoutAccessorMap.put(propertyKey, accessor);
+        layoutAccessorMap = doCacheAccessor(layoutAccessorMap, propertyKey, accessor);
         return accessor;
+    }
+
+    private Map<PropertyKey, Accessor<?, ACTION>> doCacheAccessor(Map<PropertyKey, Accessor<?, ACTION>> map, PropertyKey propertyKey, Accessor<?, ACTION> accessor) {
+        final Option<Method> getter = getGetterMethod(propertyKey.getNodeClass(), propertyKey.getName());
+        if (getter.isDefined()) {
+            final Class<?> declaringClass = getter.get().getDeclaringClass();
+            final String propertyName = propertyKey.getName();
+            for (Class<?> clazz = propertyKey.getNodeClass(); !declaringClass.equals(clazz); clazz = clazz.getSuperclass()) {
+                map = map.put(new PropertyKey(clazz, propertyName), accessor);
+            }
+            map = map.put(new PropertyKey(declaringClass, propertyName), accessor);
+        }
+        return map;
     }
 
     private Option<Accessor<?, ACTION>> createAccessor(Class<? extends Node> nodeClass, String propertyName) {
@@ -104,7 +132,7 @@ public class Accessors<ACTION> {
         return layoutSetter.isEmpty() ? Option.none() : Option.of(new LayoutConstraintAccessor<ACTION>(layoutSetter.get()));
     }
 
-    private Option<Method> getGetterMethod(Class<? extends Node> nodeClass, String propertyName) {
+    private Option<Method> getGetterMethod(Class<?> nodeClass, String propertyName) {
         final String getterNameSuffix = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         try {
             return Option.of(nodeClass.getMethod("is" + getterNameSuffix));
@@ -119,7 +147,7 @@ public class Accessors<ACTION> {
         }
     }
 
-    private Option<Method> getPropertyGetterMethod(Class<? extends Node> nodeClass, String propertyName) {
+    private Option<Method> getPropertyGetterMethod(Class<?> nodeClass, String propertyName) {
         final String propertyGetterName = propertyName + "Property";
         try {
             return Option.of(nodeClass.getMethod(propertyGetterName));
@@ -128,7 +156,7 @@ public class Accessors<ACTION> {
         }
     }
 
-    private Option<MethodHandle> getPropertyGetter(Class<? extends Node> nodeClass, String propertyName) {
+    private Option<MethodHandle> getPropertyGetter(Class<?> nodeClass, String propertyName) {
         final String propertyGetterName = propertyName + "Property";
         try {
             return convertToMethodHandle(nodeClass.getMethod(propertyGetterName));
@@ -145,7 +173,7 @@ public class Accessors<ACTION> {
         }
     }
 
-    private Option<MethodHandle> getSetter(Class<? extends Node> nodeClass, String propertyName) {
+    private Option<MethodHandle> getSetter(Class<?> nodeClass, String propertyName) {
         final String setterName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         try {
             return Array.of(nodeClass.getMethods())
@@ -158,7 +186,7 @@ public class Accessors<ACTION> {
         }
     }
 
-    private Option<MethodHandle> getLayoutSetter(Class<? extends Parent> parentClass, String propertyName) {
+    private Option<MethodHandle> getLayoutSetter(Class<?> parentClass, String propertyName) {
         final String setterName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         try {
             return Array.of(parentClass.getMethods())
