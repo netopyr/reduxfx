@@ -33,7 +33,7 @@ public class Patcher<ACTION> {
 
     public void patch(Parent root, Option<VNode<ACTION>> vRoot, Seq<Patch> patches) {
 
-        LOG.trace("Patches: {}", patches);
+        LOG.trace("Patches:\n{}", patches);
 
         for (final Patch patch : patches) {
             final Node node = vRoot.flatMap(vNode -> findNode(patch.getIndex(), root.getChildrenUnmodifiable().get(0), vNode, 0)).getOrElse(root);
