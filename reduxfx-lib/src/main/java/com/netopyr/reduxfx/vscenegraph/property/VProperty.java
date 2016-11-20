@@ -2,15 +2,16 @@ package com.netopyr.reduxfx.vscenegraph.property;
 
 import com.netopyr.reduxfx.vscenegraph.VElement;
 import javaslang.control.Option;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
 public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
 
-    private static final Object NONE = new Object();
+    private static final Object NO_VALUE = new Object();
+    @SuppressWarnings("unchecked")
+    public static <TYPE> TYPE getNoValue() { return (TYPE) NO_VALUE; }
+
 
     private final String name;
     private final TYPE value;
@@ -31,7 +32,7 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
     public VProperty(String name,
                      Option<VChangeListener<? super TYPE, ACTION>> changeListener,
                      Option<VInvalidationListener<ACTION>> invalidationListener) {
-        this(name, (TYPE) NONE, changeListener, invalidationListener);
+        this(name, getNoValue(), changeListener, invalidationListener);
     }
 
     public String getName() {
@@ -39,9 +40,13 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
     }
 
     public boolean isValueDefined() {
-        return NONE != value;
+        return NO_VALUE != value;
     }
+
     public TYPE getValue() {
+        if (! isValueDefined()) {
+            throw new IllegalStateException("No value defined");
+        }
         return value;
     }
 
@@ -51,32 +56,6 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
 
     public Option<VInvalidationListener<ACTION>> getInvalidationListener() {
         return invalidationListener;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        VProperty<?, ?> vProperty = (VProperty<?, ?>) o;
-
-        return new EqualsBuilder()
-                .append(name, vProperty.name)
-                .append(value, vProperty.value)
-                .append(changeListener, vProperty.changeListener)
-                .append(invalidationListener, vProperty.invalidationListener)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(name)
-                .append(value)
-                .append(changeListener)
-                .append(invalidationListener)
-                .toHashCode();
     }
 
     @Override

@@ -4,7 +4,11 @@ import com.netopyr.reduxfx.patcher.ReduxFXListView;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
+import com.netopyr.reduxfx.vscenegraph.factories.VEventHandlerFactory;
+import com.netopyr.reduxfx.vscenegraph.factories.VNodeFactory;
+import com.netopyr.reduxfx.vscenegraph.factories.VPropertyFactory;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
+import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +32,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
-import javaslang.control.Option;
 
 import java.util.function.Function;
 
@@ -37,29 +40,39 @@ import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
 public class VScenegraphFactory {
 
+    private static final VNodeFactory NODE_FACTORY = new VNodeFactory();
+    private static final VPropertyFactory PROPERTY_FACTORY = new VPropertyFactory();
+    private static final VEventHandlerFactory EVENT_HANDLER_FACTORY = new VEventHandlerFactory();
+
     private VScenegraphFactory() {}
 
-
-
     @SafeVarargs
+    @SuppressWarnings("unchecked")
     public static <ACTION> VNode<ACTION> node(Class<? extends Node> nodeClass, VElement<ACTION>... elements) {
-        return new VNode<>(nodeClass, elements);
+        return NODE_FACTORY.create(nodeClass, elements);
     }
 
 
+    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, TYPE value, VChangeListener<? super TYPE, ACTION> changeListener, VInvalidationListener<ACTION> invalidationListener) {
+        return PROPERTY_FACTORY.create(name, value, changeListener, invalidationListener);
+    }
     public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, TYPE value, VChangeListener<? super TYPE, ACTION> listener) {
-        return new VProperty<>(name, value, Option.of(listener), Option.none());
+        return PROPERTY_FACTORY.create(name, value, listener);
+    }
+
+    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, VChangeListener<? super TYPE, ACTION> changeListener, VInvalidationListener<ACTION> invalidationListener) {
+        return PROPERTY_FACTORY.create(name, changeListener, invalidationListener);
     }
     public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, VChangeListener<? super TYPE, ACTION> listener) {
-        return new VProperty<>(name, Option.of(listener), Option.none());
+        return PROPERTY_FACTORY.create(name, listener);
     }
     public static <T, ACTION> VProperty<T, ACTION> property(String name, T value) {
-        return new VProperty<>(name, value, Option.none(), Option.none());
+        return PROPERTY_FACTORY.create(name, value);
     }
 
 
     public static <EVENT extends Event, ACTION> VEventHandlerElement<EVENT, ACTION> onEvent(VEventType type, VEventHandler<EVENT, ACTION> eventHandler) {
-        return new VEventHandlerElement<>(type, eventHandler);
+        return EVENT_HANDLER_FACTORY.create(type, eventHandler);
     }
 
 
