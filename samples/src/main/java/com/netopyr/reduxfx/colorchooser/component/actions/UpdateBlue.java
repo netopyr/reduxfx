@@ -2,17 +2,12 @@ package com.netopyr.reduxfx.colorchooser.component.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class UpdateBlue implements ColorChooserAction {
+public final class UpdateBlue implements ColorChooserAction {
 
     private final double value;
 
     UpdateBlue(double value) {
         this.value = value;
-    }
-
-    @Override
-    public ActionType getType() {
-        return ActionType.UPDATE_BLUE;
     }
 
     public double getValue() {
