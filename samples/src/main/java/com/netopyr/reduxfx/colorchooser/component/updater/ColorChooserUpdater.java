@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.colorchooser.component.updater;
 
+import com.netopyr.reduxfx.colorchooser.component.actions.ColorChanged;
 import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserAction;
 import com.netopyr.reduxfx.colorchooser.component.actions.UpdateBlue;
 import com.netopyr.reduxfx.colorchooser.component.actions.UpdateGreen;
@@ -55,6 +56,16 @@ public class ColorChooserUpdater {
                                     return Update.of(
                                             state.withBlue(updateBlue.getValue()),
                                             new ObjectChangedCommand<>("color", color)
+                                    );
+                                }),
+
+                        Case(instanceOf(ColorChanged.class),
+                                colorChanged -> {
+                                    final Color color = colorChanged.getValue();
+                                    return Update.of(
+                                            state.withRed(color.getRed())
+                                                    .withGreen(color.getGreen())
+                                                    .withBlue(color.getBlue())
                                     );
                                 }),
 
