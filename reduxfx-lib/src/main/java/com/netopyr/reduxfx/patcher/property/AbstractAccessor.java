@@ -34,16 +34,16 @@ abstract class AbstractAccessor<V_TYPE, ACTION, FX_TYPE> implements Accessor<V_T
 
         clearListeners(node, property);
 
+        if (vProperty.isValueDefined()) {
+            setValue(property, vToFX(vProperty.getValue()));
+        }
+
         if (vProperty.getChangeListener().isDefined()) {
             setChangeListener(node, property, vProperty.getChangeListener().get(), dispatcher);
         }
 
         if (vProperty.getInvalidationListener().isDefined()) {
             setInvalidationListener(node, property, vProperty.getInvalidationListener().get(), dispatcher);
-        }
-
-        if (vProperty.isValueDefined()) {
-            setValue(property, vToFX(vProperty.getValue()));
         }
     }
 
