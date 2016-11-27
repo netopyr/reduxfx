@@ -13,13 +13,21 @@ public final class TodoEntry {
     private final boolean hover;
     private final boolean editMode;
 
-    public TodoEntry(int id, String text, boolean completed, boolean hover, boolean editMode) {
+
+
+    public TodoEntry() {
+        this(0, "", false, false, false);
+    }
+
+    private TodoEntry(int id, String text, boolean completed, boolean hover, boolean editMode) {
         this.id = id;
         this.text = text;
         this.completed = completed;
         this.hover = hover;
         this.editMode = editMode;
     }
+
+
 
     /**
      * This is the getter of the entry's id.
@@ -31,6 +39,18 @@ public final class TodoEntry {
     }
 
     /**
+     * The method {@code withId} creates a copy of this {@code TodoEntry} with the {@code id} set to the given value.
+     *
+     * @param newId the new {@code id}
+     * @return the created {@code TodoEntry}
+     */
+    public TodoEntry withId(int newId) {
+        return new TodoEntry(newId, this.text, this.completed, this.hover, this.editMode);
+    }
+
+
+
+    /**
      * This is the getter of the text that is displayed.
      *
      * @return the text
@@ -38,6 +58,18 @@ public final class TodoEntry {
     public String getText() {
         return text;
     }
+
+    /**
+     * The method {@code withText} creates a copy of this {@code TodoEntry} with the {@code text} set to the given value.
+     *
+     * @param newText the new {@code text}
+     * @return the created {@code TodoEntry}
+     */
+    public TodoEntry withText(String newText) {
+        return new TodoEntry(this.id, newText, this.completed, this.hover, this.editMode);
+    }
+
+
 
     /**
      * This is the getter of the {@code completed}-flag, which signals if the todo-item has been completed already.
@@ -49,6 +81,19 @@ public final class TodoEntry {
     }
 
     /**
+     * The method {@code withCompleted} creates a copy of this {@code TodoEntry} with the {@code completed}-flag set to
+     * the given value.
+     *
+     * @param newCompleted the new {@code completed}-flag
+     * @return the created {@code TodoEntry}
+     */
+    public TodoEntry withCompleted(boolean newCompleted) {
+        return new TodoEntry(this.id, this.text, newCompleted, this.hover, this.editMode);
+    }
+
+
+
+    /**
      * This is the getter of the {@code hover}-flag, which signals if the user is hovering over this todo-item.
      *
      * @return the {@code hover}-flag
@@ -58,6 +103,19 @@ public final class TodoEntry {
     }
 
     /**
+     * The method {@code withHover} creates a copy of this {@code TodoEntry} with the {@code hover}-flag set to
+     * the given value.
+     *
+     * @param newHover the new {@code hover}-flag
+     * @return the created {@code TodoEntry}
+     */
+    public TodoEntry withHover(boolean newHover) {
+        return new TodoEntry(this.id, this.text, this.completed, newHover, this.editMode);
+    }
+
+
+
+    /**
      * This is the getter of the {@code editMode}-flag, which signals if the todo-item is currently being edited.
      *
      * @return the {@code editMode}-flag
@@ -65,6 +123,19 @@ public final class TodoEntry {
     public boolean isEditMode() {
         return editMode;
     }
+
+    /**
+     * The method {@code withEditMode} creates a copy of this {@code TodoEntry} with the {@code editMode}-flag set to
+     * the given value.
+     *
+     * @param newEditMode the new {@code editMode}-flag
+     * @return the created {@code TodoEntry}
+     */
+    public TodoEntry withEditMode(boolean newEditMode) {
+        return new TodoEntry(this.id, this.text, this.completed, this.hover, newEditMode);
+    }
+
+
 
     @Override
     public String toString() {

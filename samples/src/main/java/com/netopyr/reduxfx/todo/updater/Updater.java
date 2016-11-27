@@ -36,103 +36,79 @@ public class Updater {
                 Match(action).of(
 
                         Case(instanceOf(NewTextFieldChangedAction.class),
-                                newTextFieldChangedAction -> new AppModel(
-                                        newTextFieldChangedAction.getText(),
-                                        oldState.getTodos(),
-                                        oldState.getFilter()
-                                )
+                                newTextFieldChangedAction ->
+                                        oldState.withNewTodoText(newTextFieldChangedAction.getText())
                         ),
 
                         Case(instanceOf(AddTodoAction.class),
-                                new AppModel(
-                                        "",
-                                        oldState.getTodos().append(
-                                                new TodoEntry(
-                                                        oldState.getTodos()
-                                                                .map(TodoEntry::getId)
-                                                                .max()
-                                                                .getOrElse(-1) + 1,
-                                                        oldState.getNewTodoText(),
-                                                        false,
-                                                        false,
-                                                        false
+                                oldState.withNewTodoText("")
+                                        .withTodos(
+                                                oldState.getTodos().append(
+                                                        new TodoEntry()
+                                                                .withId(
+                                                                        oldState.getTodos()
+                                                                                .map(TodoEntry::getId)
+                                                                                .max()
+                                                                                .getOrElse(-1) + 1
+                                                                )
+                                                                .withText(oldState.getNewTodoText())
                                                 )
-                                        ),
-                                        oldState.getFilter()
-                                )
+                                        )
                         ),
 
                         Case(instanceOf(DeleteTodoAction.class),
-                                deleteToDoAction -> new AppModel(
-                                        oldState.getNewTodoText(),
-                                        oldState.getTodos()
-                                                .filter(todoEntry -> todoEntry.getId() != deleteToDoAction.getId()),
-                                        oldState.getFilter()
+                                deleteTodoAction -> oldState.withTodos(
+                                        oldState.getTodos().filter(
+                                                todoEntry -> todoEntry.getId() != deleteTodoAction.getId()
+                                        )
                                 )
                         ),
 
                         Case(instanceOf(EditTodoAction.class),
-                                editTodoAction -> new AppModel(
-                                        oldState.getNewTodoText(),
+                                editTodoAction -> oldState.withTodos(
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != editTodoAction.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), editTodoAction.getText(), entry.isCompleted(), entry.isHover(), entry.isEditMode())
-                                                ),
-                                        oldState.getFilter()
+                                                .map(entry -> entry.getId() != editTodoAction.getId() ?
+                                                        entry : entry.withText(editTodoAction.getText())
+                                                )
                                 )
                         ),
 
                         Case(instanceOf(CompleteTodoAction.class),
-                                completeTodoAction -> new AppModel(
-                                        oldState.getNewTodoText(),
+                                completeTodoAction -> oldState.withTodos(
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != completeTodoAction.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), entry.getText(), !entry.isCompleted(), entry.isHover(), entry.isEditMode())
-                                                ),
-                                        oldState.getFilter()
+                                                .map(entry -> entry.getId() != completeTodoAction.getId() ?
+                                                        entry : entry.withCompleted(!entry.isCompleted())
+                                                )
                                 )
                         ),
 
                         Case(instanceOf(CompleteAllAction.class),
-                                completeAll -> {
+                                completeAllAction -> {
                                     final boolean areAllMarked = oldState.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
-                                    return new AppModel(
-                                            oldState.getNewTodoText(),
+                                    return oldState.withTodos(
                                             oldState.getTodos()
-                                                    .map(entry -> new TodoEntry(entry.getId(), entry.getText(), !areAllMarked, entry.isHover(), entry.isEditMode())),
-                                            oldState.getFilter()
-                                    );
-
+                                                    .map(entry -> entry.withCompleted(! areAllMarked)));
                                 }
                         ),
 
                         Case(instanceOf(SetFilterAction.class),
-                                setFilterAction -> new AppModel(
-                                        oldState.getNewTodoText(),
-                                        oldState.getTodos(),
-                                        setFilterAction.getFilter()
-                                )
+                                setFilterAction -> oldState.withFilter(setFilterAction.getFilter())
                         ),
 
                         Case(instanceOf(SetTodoHoverAction.class),
-                                setTodoHoverAction -> new AppModel(
-                                        oldState.getNewTodoText(),
+                                setTodoHoverAction -> oldState.withTodos(
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != setTodoHoverAction.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), setTodoHoverAction.isValue(), entry.isEditMode())
-                                                ),
-                                        oldState.getFilter()
-                                )
+                                                .map(entry -> entry.getId() != setTodoHoverAction.getId() ?
+                                                        entry : entry.withHover(setTodoHoverAction.isValue())
+                                                )                                )
                         ),
 
                         Case(instanceOf(SetEditModeAction.class),
-                                setEditModeAction -> new AppModel(
-                                        oldState.getNewTodoText(),
+                                setEditModeAction -> oldState.withTodos(
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != setEditModeAction.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), entry.isHover(), setEditModeAction.isValue())
-                                                ),
-                                        oldState.getFilter()
+                                                .map(entry -> entry.getId() != setEditModeAction.getId() ?
+                                                        entry : entry.withEditMode(setEditModeAction.isValue())
+                                                )
                                 )
                         ),
 

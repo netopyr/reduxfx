@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.todo.state;
 
+import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -16,7 +17,10 @@ public final class AppModel {
     private final Seq<TodoEntry> todos;
     private final Filter filter;
 
-    public AppModel(String newTodoText, Seq<TodoEntry> todos, Filter filter) {
+    public AppModel() {
+        this("", Array.empty(), Filter.ALL);
+    }
+    private AppModel(String newTodoText, Seq<TodoEntry> todos, Filter filter) {
         this.newTodoText = newTodoText;
         this.todos = todos;
         this.filter = filter;
@@ -26,12 +30,24 @@ public final class AppModel {
         return newTodoText;
     }
 
+    public AppModel withNewTodoText(String newNewTodoText) {
+        return new AppModel(newNewTodoText, this.todos, this.filter);
+    }
+
     public Seq<TodoEntry> getTodos() {
         return todos;
     }
 
+    public AppModel withTodos(Seq<TodoEntry> newTodos) {
+        return new AppModel(this.newTodoText, newTodos, this.filter);
+    }
+
     public Filter getFilter() {
         return filter;
+    }
+
+    public AppModel withFilter(Filter newFilter) {
+        return new AppModel(this.newTodoText, this.todos, newFilter);
     }
 
     @Override
