@@ -4,7 +4,6 @@ import com.netopyr.reduxfx.colorchooser.app.actions.Action;
 import com.netopyr.reduxfx.colorchooser.app.actions.Actions;
 import com.netopyr.reduxfx.colorchooser.app.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javafx.scene.paint.Color;
 
 import static com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent.ColorChooser;
 import static com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent.color;
@@ -26,7 +25,7 @@ public class MainView {
                 padding(50.0),
                 spacing(20.0),
                 ColorChooser(
-                        color(Color.VIOLET, (oldValue, newValue) -> Actions.updateColor(newValue))
+                        color(state.getColor(), (oldValue, newValue) -> Actions.updateColor(newValue))
                 ),
                 Region(
                         background(state.getColor()),
