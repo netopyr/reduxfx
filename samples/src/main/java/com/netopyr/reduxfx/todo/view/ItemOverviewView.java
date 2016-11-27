@@ -6,12 +6,16 @@ import com.netopyr.reduxfx.todo.state.TodoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.layout.Region;
 
+import java.util.Objects;
+
 import static com.netopyr.reduxfx.todo.view.ItemView.ItemView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
 class ItemOverviewView {
 
     static VNode<Action> ItemOverviewView(AppModel state) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
+
         return AnchorPane(
                 minWidth(Region.USE_PREF_SIZE),
                 minHeight(Region.USE_PREF_SIZE),

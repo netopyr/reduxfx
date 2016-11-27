@@ -9,11 +9,15 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
+import java.util.Objects;
+
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
 class ItemView {
 
     static VNode<Action> ItemView(TodoEntry todoEntry) {
+        Objects.requireNonNull(todoEntry, "The parameter 'todoEntry' must not be null");
+
         return HBox(
                 id("root"),
                 alignment(Pos.CENTER_LEFT),

@@ -2,6 +2,8 @@ package com.netopyr.reduxfx.todo.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * A {@code NewTextFieldChangedAction} is passed to the {@link com.netopyr.reduxfx.todo.updater.Updater} when the value
  * of the {@link javafx.scene.control.TextField} for new {@link com.netopyr.reduxfx.todo.state.TodoEntry}s has changed.
@@ -11,6 +13,7 @@ public final class NewTextFieldChangedAction implements Action {
     private final String text;
 
     NewTextFieldChangedAction(String text) {
+        Objects.requireNonNull(text, "The parameter 'text' must not be null");
         this.text = text;
     }
 

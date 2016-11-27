@@ -2,6 +2,8 @@ package com.netopyr.reduxfx.todo.state;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * An instance of the class {@code TodoEntry} contains all state of a single entry in the todo-list.
  */
@@ -64,8 +66,10 @@ public final class TodoEntry {
      *
      * @param newText the new {@code text}
      * @return the created {@code TodoEntry}
+     * @throws NullPointerException if {@code newText} is {@code null}
      */
     public TodoEntry withText(String newText) {
+        Objects.requireNonNull(newText, "The parameter 'newText' must not be null");
         return new TodoEntry(this.id, newText, this.completed, this.hover, this.editMode);
     }
 

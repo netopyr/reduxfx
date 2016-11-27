@@ -6,6 +6,8 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 
+import java.util.Objects;
+
 import static com.netopyr.reduxfx.todo.view.AddItemView.AddItemView;
 import static com.netopyr.reduxfx.todo.view.ControlsView.ControlsView;
 import static com.netopyr.reduxfx.todo.view.ItemOverviewView.ItemOverviewView;
@@ -25,6 +27,7 @@ public class MainView {
     private MainView() {}
 
     public static VNode<Action> view(AppModel state) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return
                 VBox(

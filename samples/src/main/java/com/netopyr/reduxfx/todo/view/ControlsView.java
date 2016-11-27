@@ -8,11 +8,15 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
 
+import java.util.Objects;
+
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
 class ControlsView {
 
     static VNode<Action> ControlsView(AppModel state) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
+
         final int countActive = state.getTodos().count(todoEntry -> !todoEntry.isCompleted());
         return HBox(
                 alignment(Pos.CENTER),

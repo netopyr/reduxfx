@@ -2,6 +2,8 @@ package com.netopyr.reduxfx.todo.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * An {@code EditTodoAction} is passed to the {@link com.netopyr.reduxfx.todo.updater.Updater} when the {@code text} of
  * a {@link com.netopyr.reduxfx.todo.state.TodoEntry} needs to be changed
@@ -12,6 +14,7 @@ public final class EditTodoAction implements Action {
     private final String text;
 
     EditTodoAction(int id, String text) {
+        Objects.requireNonNull(text, "The parameter 'text' must not be null");
         this.id = id;
         this.text = text;
     }

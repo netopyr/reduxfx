@@ -4,6 +4,8 @@ import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
+
 /**
  * An instance of the class {@code AppModel} is the root node of the state-tree.
  *
@@ -31,6 +33,7 @@ public final class AppModel {
     }
 
     public AppModel withNewTodoText(String newNewTodoText) {
+        Objects.requireNonNull(newNewTodoText, "The parameter 'newNewTodoText' must not be null");
         return new AppModel(newNewTodoText, this.todos, this.filter);
     }
 
@@ -39,6 +42,7 @@ public final class AppModel {
     }
 
     public AppModel withTodos(Seq<TodoEntry> newTodos) {
+        Objects.requireNonNull(newTodos, "The parameter 'newTodos' must not be null");
         return new AppModel(this.newTodoText, newTodos, this.filter);
     }
 
@@ -47,6 +51,7 @@ public final class AppModel {
     }
 
     public AppModel withFilter(Filter newFilter) {
+        Objects.requireNonNull(newFilter, "The parameter 'newFilter' must not be null");
         return new AppModel(this.newTodoText, this.todos, newFilter);
     }
 

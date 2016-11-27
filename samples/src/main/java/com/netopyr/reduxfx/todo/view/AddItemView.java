@@ -8,11 +8,15 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
 
+import java.util.Objects;
+
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
 class AddItemView {
 
     static VNode<Action> AddItemView(AppModel state) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
+
         return HBox(
                 styleClass("add_item_root"),
                 alignment(Pos.CENTER_LEFT),

@@ -15,6 +15,8 @@ import com.netopyr.reduxfx.todo.state.TodoEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 import static javaslang.API.$;
 import static javaslang.API.Case;
 import static javaslang.API.Match;
@@ -27,46 +29,45 @@ public class Updater {
     private Updater() {
     }
 
-    public static AppModel update(AppModel oldState, Action action) {
-        if (action == null) {
-            return oldState;
-        }
+    public static AppModel update(AppModel state, Action action) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
+        Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
         final AppModel newState =
                 Match(action).of(
 
                         Case(instanceOf(NewTextFieldChangedAction.class),
                                 newTextFieldChangedAction ->
-                                        oldState.withNewTodoText(newTextFieldChangedAction.getText())
+                                        state.withNewTodoText(newTextFieldChangedAction.getText())
                         ),
 
                         Case(instanceOf(AddTodoAction.class),
-                                oldState.withNewTodoText("")
+                                state.withNewTodoText("")
                                         .withTodos(
-                                                oldState.getTodos().append(
+                                                state.getTodos().append(
                                                         new TodoEntry()
                                                                 .withId(
-                                                                        oldState.getTodos()
+                                                                        state.getTodos()
                                                                                 .map(TodoEntry::getId)
                                                                                 .max()
                                                                                 .getOrElse(-1) + 1
                                                                 )
-                                                                .withText(oldState.getNewTodoText())
+                                                                .withText(state.getNewTodoText())
                                                 )
                                         )
                         ),
 
                         Case(instanceOf(DeleteTodoAction.class),
-                                deleteTodoAction -> oldState.withTodos(
-                                        oldState.getTodos().filter(
+                                deleteTodoAction -> state.withTodos(
+                                        state.getTodos().filter(
                                                 todoEntry -> todoEntry.getId() != deleteTodoAction.getId()
                                         )
                                 )
                         ),
 
                         Case(instanceOf(EditTodoAction.class),
-                                editTodoAction -> oldState.withTodos(
-                                        oldState.getTodos()
+                                editTodoAction -> state.withTodos(
+                                        state.getTodos()
                                                 .map(entry -> entry.getId() != editTodoAction.getId() ?
                                                         entry : entry.withText(editTodoAction.getText())
                                                 )
@@ -74,8 +75,8 @@ public class Updater {
                         ),
 
                         Case(instanceOf(CompleteTodoAction.class),
-                                completeTodoAction -> oldState.withTodos(
-                                        oldState.getTodos()
+                                completeTodoAction -> state.withTodos(
+                                        state.getTodos()
                                                 .map(entry -> entry.getId() != completeTodoAction.getId() ?
                                                         entry : entry.withCompleted(!entry.isCompleted())
                                                 )
@@ -84,39 +85,39 @@ public class Updater {
 
                         Case(instanceOf(CompleteAllAction.class),
                                 completeAllAction -> {
-                                    final boolean areAllMarked = oldState.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
-                                    return oldState.withTodos(
-                                            oldState.getTodos()
+                                    final boolean areAllMarked = state.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
+                                    return state.withTodos(
+                                            state.getTodos()
                                                     .map(entry -> entry.withCompleted(! areAllMarked)));
                                 }
                         ),
 
                         Case(instanceOf(SetFilterAction.class),
-                                setFilterAction -> oldState.withFilter(setFilterAction.getFilter())
+                                setFilterAction -> state.withFilter(setFilterAction.getFilter())
                         ),
 
                         Case(instanceOf(SetTodoHoverAction.class),
-                                setTodoHoverAction -> oldState.withTodos(
-                                        oldState.getTodos()
+                                setTodoHoverAction -> state.withTodos(
+                                        state.getTodos()
                                                 .map(entry -> entry.getId() != setTodoHoverAction.getId() ?
                                                         entry : entry.withHover(setTodoHoverAction.isValue())
                                                 )                                )
                         ),
 
                         Case(instanceOf(SetEditModeAction.class),
-                                setEditModeAction -> oldState.withTodos(
-                                        oldState.getTodos()
+                                setEditModeAction -> state.withTodos(
+                                        state.getTodos()
                                                 .map(entry -> entry.getId() != setEditModeAction.getId() ?
                                                         entry : entry.withEditMode(setEditModeAction.isValue())
                                                 )
                                 )
                         ),
 
-                        Case($(), oldState)
+                        Case($(), state)
                 );
 
         LOG.trace("\nUpdater Old State:\n{}\nUpdater Action:\n{}\nUpdater New State:\n{}\n\n",
-                oldState, action, newState);
+                state, action, newState);
         return newState;
     }
 }

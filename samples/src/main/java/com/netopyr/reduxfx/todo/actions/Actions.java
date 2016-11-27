@@ -49,6 +49,7 @@ public final class Actions {
      * @param id the {@code id} of the {@code TodoEntry} which {@code text} needs to be changed
      * @param text the new {@code text}
      * @return the {@code EditTodoAction}
+     * @throws NullPointerException if {@code text} is {@code null}
      */
     public static Action editTodo(int id, String text) {
         return new EditTodoAction(id, text);
@@ -93,6 +94,7 @@ public final class Actions {
      *
      * @param text the new value of the {@code TextField}
      * @return the {@code NewTextFieldChangedAction}
+     * @throws NullPointerException if {@code text} is {@code null}
      */
     public static Action newTextFieldChanged(String text) {
         return new NewTextFieldChangedAction(text);
@@ -108,6 +110,7 @@ public final class Actions {
      *
      * @param filter the new {@link Filter}-value
      * @return the {@code SetFilterAction}
+     * @throws NullPointerException if {@code filter} is {@code null}
      */
     public static Action setFilter(Filter filter) {
         return new SetFilterAction(filter);
