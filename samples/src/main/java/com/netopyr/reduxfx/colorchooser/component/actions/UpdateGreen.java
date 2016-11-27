@@ -4,13 +4,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public final class UpdateGreen implements ColorChooserAction {
 
-    private final double value;
+    private final int value;
 
-    UpdateGreen(double value) {
+    UpdateGreen(int value) {
         this.value = value;
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 

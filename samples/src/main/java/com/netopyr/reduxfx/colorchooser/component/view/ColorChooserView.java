@@ -22,16 +22,16 @@ public class ColorChooserView {
         return VBox(
                 spacing(10.0),
                 Slider(
-                        value(state.getRed(), (oldValue, newValue) -> updateRed(newValue)),
-                        max(1.0)
+                        value(state.getRed(), (oldValue, newValue) -> updateRed(newValue.intValue())),
+                        max(255.0)
                 ),
                 Slider(
-                        value(state.getGreen(), (oldValue, newValue) -> updateGreen(newValue)),
-                        max(1.0)
+                        value(state.getGreen(), (oldValue, newValue) -> updateGreen(newValue.intValue())),
+                        max(255.0)
                 ),
                 Slider(
-                        value(state.getBlue(), (oldValue, newValue) -> updateBlue(newValue)),
-                        max(1.0)
+                        value(state.getBlue(), (oldValue, newValue) -> updateBlue(newValue.intValue())),
+                        max(255.0)
                 )
         );
     }

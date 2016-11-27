@@ -4,49 +4,47 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public final class ColorChooserModel {
 
-    private final double red;
-    private final double green;
-    private final double blue;
+    private final int red;
+    private final int green;
+    private final int blue;
 
     public ColorChooserModel() {
-        this(0.0, 0.0, 0.0);
+        this(0, 0, 0);
     }
-    private ColorChooserModel(double red, double green, double blue) {
+    private ColorChooserModel(int red, int green, int blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
     }
 
-    public final double getRed() {
+    public final int getRed() {
         return red;
     }
 
-    public final ColorChooserModel withRed(double newRed) {
+    public final ColorChooserModel withRed(int newRed) {
         return new ColorChooserModel(newRed, green, blue);
     }
 
-    public final double getGreen() {
+    public final int getGreen() {
         return green;
     }
 
-    public final ColorChooserModel withGreen(double newGreen) {
+    public final ColorChooserModel withGreen(int newGreen) {
         return new ColorChooserModel(red, newGreen, blue);
     }
 
-    public final double getBlue() {
+    public final int getBlue() {
         return blue;
     }
 
-    public final ColorChooserModel withBlue(double newBlue) {
+    public final ColorChooserModel withBlue(int newBlue) {
         return new ColorChooserModel(red, green, newBlue);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("red", red)
-                .append("green", green)
-                .append("blue", blue)
+                .append("color", String.format("0x%02x%02x%02x", red, green, blue))
                 .toString();
     }
 }

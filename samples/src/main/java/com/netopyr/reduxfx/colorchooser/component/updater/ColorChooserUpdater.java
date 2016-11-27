@@ -34,7 +34,7 @@ public class ColorChooserUpdater {
 
                         Case(instanceOf(UpdateRed.class),
                                 updateRed -> {
-                                    final Color color = Color.color(updateRed.getValue(), state.getGreen(), state.getBlue());
+                                    final Color color = Color.rgb(updateRed.getValue(), state.getGreen(), state.getBlue());
                                     return Update.of(
                                             state.withRed(updateRed.getValue()),
                                             new ObjectChangedCommand<>("color", color)
@@ -43,7 +43,7 @@ public class ColorChooserUpdater {
 
                         Case(instanceOf(UpdateGreen.class),
                                 updateGreen -> {
-                                    final Color color = Color.color(state.getRed(), updateGreen.getValue(), state.getBlue());
+                                    final Color color = Color.rgb(state.getRed(), updateGreen.getValue(), state.getBlue());
                                     return Update.of(
                                             state.withGreen(updateGreen.getValue()),
                                             new ObjectChangedCommand<>("color", color)
@@ -52,7 +52,7 @@ public class ColorChooserUpdater {
 
                         Case(instanceOf(UpdateBlue.class),
                                 updateBlue -> {
-                                    final Color color = Color.color(state.getRed(), state.getGreen(), updateBlue.getValue());
+                                    final Color color = Color.rgb(state.getRed(), state.getGreen(), updateBlue.getValue());
                                     return Update.of(
                                             state.withBlue(updateBlue.getValue()),
                                             new ObjectChangedCommand<>("color", color)
@@ -63,9 +63,9 @@ public class ColorChooserUpdater {
                                 colorChanged -> {
                                     final Color color = colorChanged.getValue();
                                     return Update.of(
-                                            state.withRed(color.getRed())
-                                                    .withGreen(color.getGreen())
-                                                    .withBlue(color.getBlue())
+                                            state.withRed((int) (255 * color.getRed()))
+                                                    .withGreen((int) (255 * color.getGreen()))
+                                                    .withBlue((int) (255 * color.getBlue()))
                                     );
                                 }),
 

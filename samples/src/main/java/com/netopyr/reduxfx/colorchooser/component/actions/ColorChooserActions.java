@@ -6,15 +6,15 @@ public final class ColorChooserActions {
 
     private ColorChooserActions() {}
 
-    public static ColorChooserAction updateRed(double value) {
+    public static ColorChooserAction updateRed(int value) {
         return new UpdateRed(value);
     }
 
-    public static ColorChooserAction updateGreen(double value) {
+    public static ColorChooserAction updateGreen(int value) {
         return new UpdateGreen(value);
     }
 
-    public static ColorChooserAction updateBlue(double value) {
+    public static ColorChooserAction updateBlue(int value) {
         return new UpdateBlue(value);
     }
 
