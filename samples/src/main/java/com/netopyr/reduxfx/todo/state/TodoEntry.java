@@ -17,6 +17,11 @@ public final class TodoEntry {
 
 
 
+    /**
+     * The default constructor creates a new instance of {@code TodoEntry} with all properties set to default values.
+     *
+     * Default values are: {id: 0, text: "", completed: false, hover: false, editMode: false}
+     */
     public TodoEntry() {
         this(0, "", false, false, false);
     }
