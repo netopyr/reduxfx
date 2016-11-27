@@ -1,15 +1,15 @@
 package com.netopyr.reduxfx.todo.updater;
 
 import com.netopyr.reduxfx.todo.actions.Action;
-import com.netopyr.reduxfx.todo.actions.AddTodo;
-import com.netopyr.reduxfx.todo.actions.CompleteAll;
-import com.netopyr.reduxfx.todo.actions.CompleteTodo;
-import com.netopyr.reduxfx.todo.actions.DeleteTodo;
-import com.netopyr.reduxfx.todo.actions.EditTodo;
-import com.netopyr.reduxfx.todo.actions.NewTextFieldChanged;
-import com.netopyr.reduxfx.todo.actions.SetEditMode;
-import com.netopyr.reduxfx.todo.actions.SetFilter;
-import com.netopyr.reduxfx.todo.actions.SetTodoHover;
+import com.netopyr.reduxfx.todo.actions.AddTodoAction;
+import com.netopyr.reduxfx.todo.actions.CompleteAllAction;
+import com.netopyr.reduxfx.todo.actions.CompleteTodoAction;
+import com.netopyr.reduxfx.todo.actions.DeleteTodoAction;
+import com.netopyr.reduxfx.todo.actions.EditTodoAction;
+import com.netopyr.reduxfx.todo.actions.NewTextFieldChangedAction;
+import com.netopyr.reduxfx.todo.actions.SetEditModeAction;
+import com.netopyr.reduxfx.todo.actions.SetFilterAction;
+import com.netopyr.reduxfx.todo.actions.SetTodoHoverAction;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.todo.state.TodoEntry;
 import org.slf4j.Logger;
@@ -35,15 +35,15 @@ public class Updater {
         final AppModel newState =
                 Match(action).of(
 
-                        Case(instanceOf(NewTextFieldChanged.class),
-                                newTextFieldChanged -> new AppModel(
-                                        newTextFieldChanged.getText(),
+                        Case(instanceOf(NewTextFieldChangedAction.class),
+                                newTextFieldChangedAction -> new AppModel(
+                                        newTextFieldChangedAction.getText(),
                                         oldState.getTodos(),
                                         oldState.getFilter()
                                 )
                         ),
 
-                        Case(instanceOf(AddTodo.class),
+                        Case(instanceOf(AddTodoAction.class),
                                 new AppModel(
                                         "",
                                         oldState.getTodos().append(
@@ -62,38 +62,38 @@ public class Updater {
                                 )
                         ),
 
-                        Case(instanceOf(DeleteTodo.class),
-                                deleteToDo -> new AppModel(
+                        Case(instanceOf(DeleteTodoAction.class),
+                                deleteToDoAction -> new AppModel(
                                         oldState.getNewTodoText(),
                                         oldState.getTodos()
-                                                .filter(todoEntry -> todoEntry.getId() != deleteToDo.getId()),
+                                                .filter(todoEntry -> todoEntry.getId() != deleteToDoAction.getId()),
                                         oldState.getFilter()
                                 )
                         ),
 
-                        Case(instanceOf(EditTodo.class),
-                                editTodo -> new AppModel(
+                        Case(instanceOf(EditTodoAction.class),
+                                editTodoAction -> new AppModel(
                                         oldState.getNewTodoText(),
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != editTodo.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), editTodo.getText(), entry.isCompleted(), entry.isHover(), entry.isEditMode())
+                                                .map(entry -> entry.getId() != editTodoAction.getId() ? entry :
+                                                        new TodoEntry(entry.getId(), editTodoAction.getText(), entry.isCompleted(), entry.isHover(), entry.isEditMode())
                                                 ),
                                         oldState.getFilter()
                                 )
                         ),
 
-                        Case(instanceOf(CompleteTodo.class),
-                                completeTodo -> new AppModel(
+                        Case(instanceOf(CompleteTodoAction.class),
+                                completeTodoAction -> new AppModel(
                                         oldState.getNewTodoText(),
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != completeTodo.getId() ? entry :
+                                                .map(entry -> entry.getId() != completeTodoAction.getId() ? entry :
                                                         new TodoEntry(entry.getId(), entry.getText(), !entry.isCompleted(), entry.isHover(), entry.isEditMode())
                                                 ),
                                         oldState.getFilter()
                                 )
                         ),
 
-                        Case(instanceOf(CompleteAll.class),
+                        Case(instanceOf(CompleteAllAction.class),
                                 completeAll -> {
                                     final boolean areAllMarked = oldState.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
                                     return new AppModel(
@@ -106,31 +106,31 @@ public class Updater {
                                 }
                         ),
 
-                        Case(instanceOf(SetFilter.class),
-                                setFilter -> new AppModel(
+                        Case(instanceOf(SetFilterAction.class),
+                                setFilterAction -> new AppModel(
                                         oldState.getNewTodoText(),
                                         oldState.getTodos(),
-                                        setFilter.getFilter()
+                                        setFilterAction.getFilter()
                                 )
                         ),
 
-                        Case(instanceOf(SetTodoHover.class),
-                                setTodoHover -> new AppModel(
+                        Case(instanceOf(SetTodoHoverAction.class),
+                                setTodoHoverAction -> new AppModel(
                                         oldState.getNewTodoText(),
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != setTodoHover.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), setTodoHover.isValue(), entry.isEditMode())
+                                                .map(entry -> entry.getId() != setTodoHoverAction.getId() ? entry :
+                                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), setTodoHoverAction.isValue(), entry.isEditMode())
                                                 ),
                                         oldState.getFilter()
                                 )
                         ),
 
-                        Case(instanceOf(SetEditMode.class),
-                                setEditMode -> new AppModel(
+                        Case(instanceOf(SetEditModeAction.class),
+                                setEditModeAction -> new AppModel(
                                         oldState.getNewTodoText(),
                                         oldState.getTodos()
-                                                .map(entry -> entry.getId() != setEditMode.getId() ? entry :
-                                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), entry.isHover(), setEditMode.isValue())
+                                                .map(entry -> entry.getId() != setEditModeAction.getId() ? entry :
+                                                        new TodoEntry(entry.getId(), entry.getText(), entry.isCompleted(), entry.isHover(), setEditModeAction.isValue())
                                                 ),
                                         oldState.getFilter()
                                 )

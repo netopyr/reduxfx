@@ -3,6 +3,13 @@ package com.netopyr.reduxfx.todo.state;
 import javaslang.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * An instance of the class {@code AppModel} is the root node of the state-tree.
+ *
+ * In ReduxFX the whole application state is kept in a single data structure. The
+ * {@link com.netopyr.reduxfx.todo.updater.Updater} keeps a reference to the state and passed to the {@link com.netopyr.reduxfx.colorchooser.app.view.MainView}
+ *
+ */
 public final class AppModel {
 
     private final String newTodoText;
