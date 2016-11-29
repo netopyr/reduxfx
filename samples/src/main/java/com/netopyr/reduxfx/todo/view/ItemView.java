@@ -13,8 +13,22 @@ import java.util.Objects;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.*;
 
+/**
+ * The class {@code ItemView} defines how a single entry in the todo-list should be visualized.
+ */
 class ItemView {
 
+    /**
+     * The method {@code ItemView} calculates a new visual component for the given {@link TodoEntry}.
+     *
+     * It consists of an {@code HBox} with two parts: a {@code CheckBox} with which the completed-flag can be updated
+     * and a {@code StackPane} that either shows a {@code Label} with the text of the {@code TodoEntry} and a
+     * delete-button (which is only visible while the mouse hovers over the element). Or the {@code StackPane} shows
+     * a {@code TextField}, if the text of the current {@code TodoEntry} is being edited at the moment.
+     *
+     * @param todoEntry the {@code TodoEntry} that contains the data of this element
+     * @return the root {@link VNode} of the created VirtualScenegraph
+     */
     static VNode<Action> ItemView(TodoEntry todoEntry) {
         Objects.requireNonNull(todoEntry, "The parameter 'todoEntry' must not be null");
 
@@ -29,6 +43,9 @@ class ItemView {
                         id("completed"),
                         mnemonicParsing(false),
                         selected(todoEntry.isCompleted()),
+                        // This is how an event-lister is defined. The EventListener get the event and has to return
+                        // the Action that should be dispatched to the Updater.
+                        // If the onAction-event is fired, we want to dispatch a CompleteTodoAction with the id of this element.
                         onAction(e -> Actions.completeTodo(todoEntry.getId()))
                 ),
                 StackPane(
@@ -38,6 +55,11 @@ class ItemView {
                                 id("contentBox"),
                                 visible(! todoEntry.isEditMode()),
                                 styleClass("content_box"),
+                                // This is how a ChangeListener can be set.
+                                // The ChangeListener gets the old value and the new value and has to return the
+                                // Action that should be dispatched.
+                                // Here we want to set the hover-flag of this item, while the user hovers over this
+                                // item with the mouse.
                                 hover((oldValue, newValue) -> Actions.setTodoHover(todoEntry.getId(), Boolean.TRUE.equals(newValue))),
                                 Label(
                                         id("contentLabel"),
@@ -46,6 +68,8 @@ class ItemView {
                                         text(todoEntry.getText()),
                                         hgrow(Priority.ALWAYS),
                                         styleClass("label", todoEntry.isCompleted() ? "strikethrough" : ""),
+                                        // If the onMouseClicked-event is fired, we want to dispatch a SetEditModeAction
+                                        // to enable editing of this item (but only if it was a single click).
                                         onMouseClicked(e -> e.getClickCount() > 1 ? Actions.setEditMode(todoEntry.getId(), true) : null)
                                 ),
                                 Button(
@@ -59,6 +83,8 @@ class ItemView {
                                                         styleClass("close_icon")
                                                 )
                                         ),
+                                        // If the onAction-event is fired, we want to dispatch a DeleteTodoAction
+                                        // to delete the current item.
                                         onAction(e -> Actions.deleteTodo(todoEntry.getId()))
                                 )
                         ),
@@ -66,8 +92,15 @@ class ItemView {
                                 id("contentInput"),
                                 visible(todoEntry.isEditMode()),
                                 promptText("What needs to be done?"),
+                                // The focus-property is somewhat special. Setting it results in a focus-request for
+                                // this component. We want to try to grab the focus, if we are in edit-mode.
+                                // If the TextField loses focus, we have to clear the editMode-flag.
                                 focused(todoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(todoEntry.getId(), false)),
+                                // We set the text of this component to the value that is stored in the state and
+                                // we create an EditTodoAction to change the value of the todo-entry.
                                 text(todoEntry.getText(), ((oldValue, newValue) -> Actions.editTodo(todoEntry.getId(), newValue))),
+                                // If the onAction-event is fired, we want to dispatch an EditModeAction to leave the
+                                // edit mode.
                                 onAction(e -> Actions.setEditMode(todoEntry.getId(), false))
                         )
                 )
