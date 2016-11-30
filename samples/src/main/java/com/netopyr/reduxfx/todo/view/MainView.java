@@ -36,8 +36,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.text;
  * and eventual state changes, which is a lot simpler than working with a mutable Scenegraph directly.
  *
  * The ReduxFX-API dealing with creating the creation of the VirtualScenegraph was designed to allow a declarative
- * definition of the VirtualScenegraph. Methods starting with a capital letter create Nodes while methods with
- *
+ * definition of the VirtualScenegraph. Methods starting with a capital letter create {@code Node}s while methods starting
+ * with a small letter setup properties of the {@code Node}s.
  */
 public class MainView {
 

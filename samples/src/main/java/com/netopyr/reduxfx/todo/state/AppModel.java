@@ -25,7 +25,7 @@ public final class AppModel {
 
 
     /**
-     * The default constructor creates a new instance of {@code AppModel} with all properties set with sensible values.
+     * The default constructor creates a new instance of {@code AppModel} with all properties set to their default values.
      *
      * Default values are: {newTodoText: "", todos: Array.empty(), filter: Filter.ALL}
      */

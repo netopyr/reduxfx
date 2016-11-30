@@ -54,7 +54,7 @@ public class Updater {
      * @param state the current state
      * @param action the {@code Action} that needs to be performed
      * @return the new state
-     * @throws NullPointerException if state of action are {@code null}
+     * @throws NullPointerException if state or action are {@code null}
      */
     public static AppModel update(AppModel state, Action action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
@@ -180,6 +180,8 @@ public class Updater {
                                 )
                         ),
 
+                        // This is the default branch of this switch-case. If an unknown Action was passed to the
+                        // updater, we simple return the old state.
                         Case($(), state)
                 );
 
