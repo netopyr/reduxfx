@@ -1,15 +1,15 @@
-package com.netopyr.reduxfx.component;
+package com.netopyr.reduxfx.component.driver;
 
+import com.netopyr.reduxfx.Driver;
 import com.netopyr.reduxfx.component.command.FireEventCommand;
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
 import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
 import com.netopyr.reduxfx.component.property.ReduxFXObjectProperty;
 import com.netopyr.reduxfx.component.property.ReduxFXReadOnlyIntegerProperty;
 import com.netopyr.reduxfx.component.property.ReduxFXReadOnlyObjectProperty;
-import com.netopyr.reduxfx.mainloop.MainLoop;
-import com.netopyr.reduxfx.updater.Update;
-import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import javafx.beans.property.ObjectProperty;
@@ -18,40 +18,36 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
-public class ComponentDriver<ACTION> {
+public class ComponentDriver<ACTION> implements Driver<ACTION> {
 
-    private final MainLoop<ACTION> mainLoop;
+    private final Subject<Command> commandSubject = PublishSubject.create();
+    private final Subject<ACTION> actionSubject = PublishSubject.create();
+
     private Observable<FireEventCommand<? extends Event>> fireEventCommandObservable;
     private Observable<IntegerChangedCommand> integerChangedCommandObservable;
     private Observable<ObjectChangedCommand<?>> objectChangedCommandObservable;
 
-    public <STATE> ComponentDriver(
-            Parent component,
-            STATE initialState,
-            BiFunction<STATE, ACTION, Update<STATE>> updater,
-            Function<STATE, VNode<ACTION>> view
-    ) {
-        mainLoop = new MainLoop<>(initialState, updater, view, component);
-        component.sceneProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                mainLoop.start();
-            } else {
-                mainLoop.stop();
-            }
-        });
+
+    @Override
+    public Observer<Command> getCommandObserver() {
+        return commandSubject;
     }
+
+    @Override
+    public Observable<ACTION> getActionObservable() {
+        return actionSubject;
+    }
+
 
     private Observable<IntegerChangedCommand> getIntegerChangedCommandObservable() {
         if (integerChangedCommandObservable == null) {
             final Subject<IntegerChangedCommand> subject = PublishSubject.create();
-            mainLoop.getCommandObservable()
+            commandSubject
                     .filter(command -> command instanceof IntegerChangedCommand)
                     .map(command -> (IntegerChangedCommand) command)
                     .subscribe(subject);
@@ -63,7 +59,7 @@ public class ComponentDriver<ACTION> {
     private Observable<ObjectChangedCommand<?>> getObjectChangedCommandObservable() {
         if (objectChangedCommandObservable == null) {
             final Subject<ObjectChangedCommand<?>> subject = PublishSubject.create();
-            mainLoop.getCommandObservable()
+            commandSubject
                     .filter(command -> command instanceof ObjectChangedCommand)
                     .map(command -> (ObjectChangedCommand<?>) command)
                     .subscribe(subject);
@@ -75,7 +71,7 @@ public class ComponentDriver<ACTION> {
     private Observable<FireEventCommand<? extends Event>> getFireEventCommandObservable() {
         if (fireEventCommandObservable == null) {
             final Subject<FireEventCommand<? extends Event>> subject = PublishSubject.create();
-            mainLoop.getCommandObservable()
+            commandSubject
                     .filter(command -> command instanceof FireEventCommand)
                     .map(command -> (FireEventCommand<? extends Event>) command)
                     .subscribe(subject);
@@ -111,7 +107,7 @@ public class ComponentDriver<ACTION> {
 
         final Observable<ObjectChangedCommand<?>> propertyObervable =
                 getObjectChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
-        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> mainLoop.dispatch(mapper.apply(oldValue, newValue));
+        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> actionSubject.onNext(mapper.apply(oldValue, newValue));
         return new ReduxFXObjectProperty<>(bean, name, propertyObervable, dispatcher);
     }
 
