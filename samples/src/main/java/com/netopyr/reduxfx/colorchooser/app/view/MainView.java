@@ -26,7 +26,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.spacing;
  * being aware of it.
  *
  * The advantage of this approach is, that the user does not have to worry about the current state of the Scenegraph
- * and eventual state changes, which is a lot simpler than working with a mutable Scenegraph directly.
+ * and eventual state changes, but can simply define a fresh UI with no past. This is a lot simpler than working with
+ * a mutable Scenegraph directly.
  *
  * The ReduxFX-API dealing with creating the creation of the VirtualScenegraph was designed to allow a declarative
  * definition of the VirtualScenegraph. Methods starting with a capital letter create {@code Node}s while methods starting

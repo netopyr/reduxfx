@@ -19,8 +19,8 @@ import static javaslang.Predicates.instanceOf;
  * An {@code Updater} consists of a single function ({@link #update(AppModel, Action)} in this class), which takes
  * the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the new state from that.
  *
- * Note that {@code Updater} has no internal state. Everything that is needed for {@code update} is passed in the
- * parameters.
+ * Please note that {@code Updater} has no internal state. Everything that is needed for {@code update} is passed in
+ * the parameters.
  */
 public class Updater {
 
@@ -36,10 +36,10 @@ public class Updater {
      * This method takes the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the
      * new state from that.
      *
-     * Note that {@code update} does not require any internal state. Everything that is needed, is passed in the
+     * Please note that {@code update} does not require any internal state. Everything that is needed, is passed in the
      * parameters. Also {@code update} has no side effects. It is a pure function.
      *
-     * Also note, that {@code AppModel} is an immutable data structure. This means that {@code update} does not
+     * Also please note, that {@code AppModel} is an immutable data structure. This means that {@code update} does not
      * modify the old state, but instead creates a new instance of {@code AppModel}, if anything changes.
      *
      * @param state the current state
@@ -61,13 +61,14 @@ public class Updater {
                 Match(action).of(
 
                         // If the action is a UpdateColorAction, we return a new AppModel with the
-                        // property color set to the new value
+                        // property color set to the new value.
                         Case(instanceOf(UpdateColorAction.class),
                                 updateColorAction -> state.withColor(updateColorAction.getValue())
                         ),
 
                         // This is the default branch of this switch-case. If an unknown Action was passed to the
-                        // updater, we simple return the old state.
+                        // updater, we simple return the old state. This is a convention, that is not needed right
+                        // now, but will help once you start to decompose your updater.
                         Case($(), state)
                 );
 

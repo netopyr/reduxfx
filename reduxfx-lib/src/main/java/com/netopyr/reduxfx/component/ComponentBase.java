@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.ReduxFX;
 import com.netopyr.reduxfx.component.driver.ComponentDriver;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -45,8 +46,8 @@ public class ComponentBase<STATE, ACTION> extends ReduxFX<STATE, ACTION> {
     }
 
 
-    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, BiFunction<T, T, ACTION> mapper) {
-        return componentDriver.createObjectProperty(bean, name, mapper);
+    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T, ACTION> listener) {
+        return componentDriver.createObjectProperty(bean, name, listener);
     }
 
 

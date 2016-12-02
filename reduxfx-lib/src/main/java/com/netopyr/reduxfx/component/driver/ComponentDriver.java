@@ -8,6 +8,7 @@ import com.netopyr.reduxfx.component.property.ReduxFXObjectProperty;
 import com.netopyr.reduxfx.component.property.ReduxFXReadOnlyIntegerProperty;
 import com.netopyr.reduxfx.component.property.ReduxFXReadOnlyObjectProperty;
 import com.netopyr.reduxfx.updater.Command;
+import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.subjects.PublishSubject;
@@ -21,7 +22,6 @@ import javafx.event.EventHandler;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 
 public class ComponentDriver<ACTION> implements Driver<ACTION> {
 
@@ -100,14 +100,14 @@ public class ComponentDriver<ACTION> implements Driver<ACTION> {
     }
 
 
-    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, BiFunction<T, T, ACTION> mapper) {
+    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T, ACTION> listener) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
-        Objects.requireNonNull(mapper, "Mapper must not be null");
+        Objects.requireNonNull(listener, "Listener must not be null");
 
         final Observable<ObjectChangedCommand<?>> propertyObervable =
                 getObjectChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
-        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> actionSubject.onNext(mapper.apply(oldValue, newValue));
+        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> actionSubject.onNext(listener.onChange(oldValue, newValue));
         return new ReduxFXObjectProperty<>(bean, name, propertyObervable, dispatcher);
     }
 

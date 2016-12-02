@@ -2,14 +2,23 @@ package com.netopyr.reduxfx.colorchooser.component.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public final class UpdateGreen implements ColorChooserAction {
+/**
+ * An {@code UpdateGreenAction} is passed to the
+ * {@link com.netopyr.reduxfx.colorchooser.component.updater.ColorChooserUpdater} when the slider for green
+ * has changed.
+ */
+public final class UpdateGreenAction implements ColorChooserAction {
 
     private final int value;
 
-    UpdateGreen(int value) {
+    UpdateGreenAction(int value) {
         this.value = value;
     }
 
+    /**
+     * The getter of the new value for green
+     * @return the new value
+     */
     public int getValue() {
         return value;
     }

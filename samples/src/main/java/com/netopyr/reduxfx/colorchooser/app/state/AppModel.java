@@ -22,7 +22,6 @@ public final class AppModel {
      * The default constructor creates a new instance of {@code AppModel} with the color set to the default value
      * {@code Color.BLACK}.
      */
-
     public AppModel() {
         this(Color.BLACK);
     }
