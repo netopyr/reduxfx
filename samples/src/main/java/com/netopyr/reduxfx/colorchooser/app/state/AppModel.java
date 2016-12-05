@@ -18,17 +18,18 @@ public final class AppModel {
 
     private final Color color;
 
-    /**
-     * The default constructor creates a new instance of {@code AppModel} with the color set to the default value
-     * {@code Color.BLACK}.
-     */
-    public AppModel() {
-        this(Color.BLACK);
-    }
     private AppModel(Color color) {
         this.color = color;
     }
 
+
+    /**
+     * The method {@code create} returns a new instance of {@code AppModel} with the color set to the default value
+     * {@code Color.BLACK}.
+     */
+    public static AppModel create() {
+        return new AppModel(Color.BLACK);
+    }
 
 
     /**

@@ -16,7 +16,7 @@ public class TodoMVC extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // Setup the initial state
-        final AppModel initialState = new AppModel();
+        final AppModel initialState = AppModel.create();
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.

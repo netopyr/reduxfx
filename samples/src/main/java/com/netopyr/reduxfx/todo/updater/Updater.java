@@ -84,7 +84,7 @@ public class Updater {
                                 state.withNewTodoText("")
                                         .withTodos(
                                                 state.getTodos().append(
-                                                        new TodoEntry()
+                                                        TodoEntry.create()
                                                                 .withId(
                                                                         state.getTodos()
                                                                                 .map(TodoEntry::getId)

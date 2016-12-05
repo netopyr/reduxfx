@@ -22,23 +22,21 @@ public final class AppModel {
     private final Seq<TodoEntry> todos;
     private final Filter filter;
 
-
-
-    /**
-     * The default constructor creates a new instance of {@code AppModel} with all properties set to their default values.
-     *
-     * Default values are: {newTodoText: "", todos: Array.empty(), filter: Filter.ALL}
-     */
-    public AppModel() {
-        this("", Array.empty(), Filter.ALL);
-    }
-
     private AppModel(String newTodoText, Seq<TodoEntry> todos, Filter filter) {
         this.newTodoText = newTodoText;
         this.todos = todos;
         this.filter = filter;
     }
 
+
+    /**
+     * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
+     *
+     * Default values are: {newTodoText: "", todos: Array.empty(), filter: Filter.ALL}
+     */
+    public static AppModel create() {
+        return new AppModel("", Array.empty(), Filter.ALL);
+    }
 
 
     /**

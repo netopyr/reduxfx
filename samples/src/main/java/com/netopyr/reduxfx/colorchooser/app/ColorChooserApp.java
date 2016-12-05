@@ -17,7 +17,7 @@ public class ColorChooserApp extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // Setup the initial state
-        final AppModel initialState = new AppModel().withColor(Color.VIOLET);
+        final AppModel initialState = AppModel.create().withColor(Color.VIOLET);
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.
