@@ -34,13 +34,13 @@ public class NodeAccessor<ACTION> extends AbstractAccessor<VNode<ACTION>, ACTION
 
         final Node node = nodeOption.get();
         node.setUserData(value);
-        nodeBuilder.init(node, value);
         return node;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty<Node> property, Node value) {
-        ((Property)property).setValue(value);
+    protected void setValue(ReadOnlyProperty<Node> property, Node node) {
+        ((Property)property).setValue(node);
+        nodeBuilder.init(node, fxToV(node));
     }
 }

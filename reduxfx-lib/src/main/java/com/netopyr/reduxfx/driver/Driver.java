@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx;
+package com.netopyr.reduxfx.driver;
 
 import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.Observable;

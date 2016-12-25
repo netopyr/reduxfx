@@ -22,7 +22,7 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.property;
  *
  * It extends {@code VBox} and adds one additional JavaFX property {@link #colorProperty()}. As usual in ReduxFX,
  * we do not want to modify state directly and this also applies to JavaFX properties of the public interface.
- * Instead we use a {@link com.netopyr.reduxfx.Driver} for that. We can send commands to the driver to update
+ * Instead we use a {@link com.netopyr.reduxfx.driver.Driver} for that. We can send commands to the driver to update
  * the value of the JavaFX property. Commands are created in the {@link ColorChooserUpdater} together with the state
  * changes. If the value of a JavaFX property changes, our updater receives an action, which can be specified here.
  */

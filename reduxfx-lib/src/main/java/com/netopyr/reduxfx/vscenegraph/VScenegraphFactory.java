@@ -30,6 +30,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
 
@@ -161,6 +163,13 @@ public class VScenegraphFactory {
     public static <ACTION> VNode<ACTION> Region(VElement<ACTION>... elements) {
         return node(Region.class, elements);
     }
+
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> Circle(VElement<ACTION>... elements) {
+        return node(Circle.class, elements);
+    }
+
+
 
 
     public static <ACTION> VProperty<String, ACTION> id(String value) {
@@ -303,6 +312,9 @@ public class VScenegraphFactory {
     public static <ACTION> VProperty<Boolean, ACTION> focused(boolean value, VChangeListener<? super Boolean, ACTION> listener) {
         return property("focused", value, listener);
     }
+    public static <ACTION> VProperty<Boolean, ACTION> focused(boolean value) {
+        return property("focused", value);
+    }
 
     public static <ACTION> VProperty<Double, ACTION> progress(double value, VChangeListener<? super Double, ACTION> listener) {
         return property("progress", value, listener);
@@ -384,6 +396,22 @@ public class VScenegraphFactory {
         return property("min", value);
     }
 
+
+    public static <ACTION> VProperty<Double, ACTION> opacity(double value) {
+        return property("opacity", value);
+    }
+
+
+    public static <ACTION> VProperty<Paint, ACTION> fill(Paint value) {
+        return property("fill", value);
+    }
+    public static <ACTION> VProperty<Paint, ACTION> textFill(Paint value) {
+        return property("textFill", value);
+    }
+
+    public static <ACTION> VProperty<Boolean, ACTION> defaultButton(boolean value) {
+        return property("defaultButton", value);
+    }
 
 
 

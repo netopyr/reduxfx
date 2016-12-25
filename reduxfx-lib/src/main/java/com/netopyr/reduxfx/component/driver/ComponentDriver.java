@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.component.driver;
 
-import com.netopyr.reduxfx.Driver;
+import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.component.command.FireEventCommand;
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
 import com.netopyr.reduxfx.component.command.ObjectChangedCommand;

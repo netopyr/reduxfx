@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx;
 
+import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
@@ -49,6 +50,10 @@ public class ReduxFX<STATE, ACTION> {
 
     public void stop() {
         mainLoop.stop();
+    }
+
+    public void dispatch(ACTION action) {
+        mainLoop.dispatch(action);
     }
 
     public void registerDriver(Driver<ACTION> driver) {

@@ -29,7 +29,7 @@ import static javaslang.Predicates.instanceOf;
  * {@link ColorChooserAction} and calculates the new state from that.
  *
  * Optionally it can also create an arbitrary number of commands, which are processed by a
- * {@link com.netopyr.reduxfx.Driver}. Usually such a {@code Driver} has to be registered with the
+ * {@link com.netopyr.reduxfx.driver.Driver}. Usually such a {@code Driver} has to be registered with the
  * {@link com.netopyr.reduxfx.ReduxFX}-instance explicitly, but {@code ColorChooserComponent} uses a
  * {@link ComponentBase} which registers a driver for component-specific commands and actions automatically.
  * See {@link com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent} for more details.
