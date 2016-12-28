@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public final class VNode<ACTION> implements VElement<ACTION> {
+public class VNode<ACTION> implements VElement<ACTION> {
 
     private final Class<? extends Node> nodeClass;
     private final Array<VNode<ACTION>> children;
