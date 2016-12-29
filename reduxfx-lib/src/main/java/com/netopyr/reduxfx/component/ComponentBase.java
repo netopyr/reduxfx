@@ -34,7 +34,7 @@ public class ComponentBase<STATE, ACTION> extends ReduxFX<STATE, ACTION> {
             }
         });
 
-        registerDriver(componentDriver);
+        register(componentDriver);
     }
 
     public ReadOnlyIntegerProperty createReadOnlyIntegerProperty(Object bean, String name) {

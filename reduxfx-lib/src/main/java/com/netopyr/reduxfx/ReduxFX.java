@@ -1,5 +1,7 @@
 package com.netopyr.reduxfx;
 
+import com.netopyr.reduxfx.driver.ActionSupplier;
+import com.netopyr.reduxfx.driver.CommandConsumer;
 import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
@@ -56,9 +58,17 @@ public class ReduxFX<STATE, ACTION> {
         mainLoop.dispatch(action);
     }
 
-    public void registerDriver(Driver<ACTION> driver) {
+    public void register(Driver<ACTION> driver) {
         mainLoop.getCommandObservable().subscribe(driver.getCommandObserver());
         driver.getActionObservable().forEach(mainLoop::dispatch);
+    }
+
+    public void register(ActionSupplier<ACTION> actionSupplier) {
+        actionSupplier.getActionObservable().forEach(mainLoop::dispatch);
+    }
+
+    public void register(CommandConsumer commandConsumer) {
+        mainLoop.getCommandObservable().subscribe(commandConsumer.getCommandObserver());
     }
 
 }
