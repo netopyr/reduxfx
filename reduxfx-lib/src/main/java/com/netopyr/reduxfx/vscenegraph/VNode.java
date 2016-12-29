@@ -4,14 +4,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
-import javaslang.Tuple2;
 import javaslang.collection.Array;
+import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public class VNode<ACTION> implements VElement<ACTION> {
+public class VNode<ACTION> {
 
     private final Class<? extends Node> nodeClass;
     private final Array<VNode<ACTION>> children;
@@ -20,17 +20,14 @@ public class VNode<ACTION> implements VElement<ACTION> {
     private final int size;
 
 
-    public VNode(Class<? extends Node> nodeClass, Array<VElement<ACTION>> elements) {
+    public VNode(Class<? extends Node> nodeClass,
+                 Array<VNode<ACTION>> children,
+                 Map<String, VProperty<?, ACTION>> properties,
+                 Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers) {
         this.nodeClass = Objects.requireNonNull(nodeClass, "Type must not be null");
-
-        this.children = elements.filter(element -> element instanceof VNode)
-                .map(element -> (VNode<ACTION>) element);
-        this.properties = elements.filter(element -> element instanceof VProperty)
-                .map(element -> (VProperty<?, ACTION>) element)
-                .toMap(element -> new Tuple2<>(element.getName(), element));
-        this.eventHandlers = elements.filter(element -> element instanceof VEventHandlerElement)
-                .map(element -> (VEventHandlerElement<?, ACTION>) element)
-                .toMap(element -> new Tuple2<>(element.getType(), element));
+        this.children = children == null? Array.empty() : children;
+        this.properties = properties == null? HashMap.empty() : properties;
+        this.eventHandlers = eventHandlers == null? HashMap.empty() : eventHandlers;
 
         this.size = children.map(VNode::getSize).sum().intValue() + 1;
     }
