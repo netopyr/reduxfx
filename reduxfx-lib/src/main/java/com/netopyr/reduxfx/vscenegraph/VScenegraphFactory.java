@@ -27,6 +27,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -169,6 +171,10 @@ public class VScenegraphFactory {
         return node(Circle.class, elements);
     }
 
+    @SafeVarargs
+    public static <ACTION> VNode<ACTION> ImageView(VElement<ACTION>... elements) {
+        return node(ImageView.class, elements);
+    }
 
 
 
@@ -411,6 +417,14 @@ public class VScenegraphFactory {
 
     public static <ACTION> VProperty<Boolean, ACTION> defaultButton(boolean value) {
         return property("defaultButton", value);
+    }
+
+    public static <ACTION> VProperty<Image, ACTION> image(Image value) {
+        return property("image", value);
+    }
+
+    public static <ACTION> VProperty<Boolean, ACTION> wrapText(Boolean value) {
+        return property("wrapText", value);
     }
 
 
