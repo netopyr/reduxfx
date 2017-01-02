@@ -4,27 +4,18 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
+import javafx.scene.Node;
 import javaslang.collection.Map;
 
 public class VBox<ACTION> extends VNode<ACTION> {
 
-    public static VBox VBox() {
-        return new VBox();
+    public VBox(Class<? extends Node> nodeClass,
+                 Map<String, VProperty> properties,
+                 Map<VEventType, VEventHandlerElement> eventHandlers) {
+        super(nodeClass, properties, eventHandlers);
     }
 
-    private VBox() {
-        super(javafx.scene.layout.VBox.class, Array.empty());
-    }
-    private VBox(javafx.scene.layout.VBox nodeClass,
-                 Array<VNode<ACTION>> children,
-                 Map<String, VProperty<?, ACTION>> properties,
-                 Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers) {
-        super(nodeClass, children, properties, eventHandlers)
-    }
-    private VBox(Array<>)
-
-    public VBox spacing(double value) {
-        return new VBox();
+    public VBox<ACTION> spacing(double value) {
+        return this.<VBox<ACTION>>addProperty(VBox::new, "spacing", value);
     }
 }

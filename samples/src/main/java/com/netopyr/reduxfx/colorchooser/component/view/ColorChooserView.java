@@ -7,7 +7,7 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateBlue;
 import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateGreen;
 import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateRed;
-import static com.netopyr.reduxfx.vscenegraph.node.VBox.VBox;
+import static com.netopyr.reduxfx.vscenegraph.VNodeFactory.VBox;
 
 /**
  * The class {@code ColorChooserView} is responsible for mapping the current state of the component, an instance of
