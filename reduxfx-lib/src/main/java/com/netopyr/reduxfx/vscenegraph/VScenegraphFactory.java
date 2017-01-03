@@ -1,57 +1,28 @@
-//package com.netopyr.reduxfx.vscenegraph;
-//
-//import com.netopyr.reduxfx.patcher.ReduxFXListView;
-//import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
-//import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
-//import com.netopyr.reduxfx.vscenegraph.event.VEventType;
-//import com.netopyr.reduxfx.vscenegraph.factories.VEventHandlerFactory;
-//import com.netopyr.reduxfx.vscenegraph.factories.VNodeFactory;
-//import com.netopyr.reduxfx.vscenegraph.factories.VPropertyFactory;
-//import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
-//import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
-//import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
-//import javafx.event.ActionEvent;
-//import javafx.event.Event;
-//import javafx.geometry.HPos;
-//import javafx.geometry.Insets;
-//import javafx.geometry.Pos;
-//import javafx.geometry.VPos;
-//import javafx.scene.Node;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.CheckBox;
-//import javafx.scene.control.Label;
-//import javafx.scene.control.ProgressBar;
-//import javafx.scene.control.Slider;
-//import javafx.scene.control.TableView;
-//import javafx.scene.control.TextField;
-//import javafx.scene.control.ToggleButton;
-//import javafx.scene.input.MouseEvent;
-//import javafx.scene.layout.*;
-//import javafx.scene.paint.Color;
-//import javafx.scene.paint.Paint;
-//import javafx.scene.shape.Circle;
-//import javaslang.collection.Array;
-//import javaslang.collection.Seq;
-//
-//import java.util.function.Function;
-//
-//import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
-//import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
-//
-//public class VScenegraphFactory {
-//
-//    private static final VNodeFactory NODE_FACTORY = new VNodeFactory();
-//    private static final VPropertyFactory PROPERTY_FACTORY = new VPropertyFactory();
-//    private static final VEventHandlerFactory EVENT_HANDLER_FACTORY = new VEventHandlerFactory();
-//
-//    private VScenegraphFactory() {}
-//
+package com.netopyr.reduxfx.vscenegraph;
+
+import com.netopyr.reduxfx.vscenegraph.node.SliderBuilder;
+import com.netopyr.reduxfx.vscenegraph.node.VBoxBuilder;
+import javaslang.collection.HashMap;
+
+public class VScenegraphFactory {
+
+    private VScenegraphFactory() {}
+
+
+    public static <CLASS extends VBoxBuilder<CLASS, ACTION>, ACTION> VBoxBuilder<CLASS, ACTION> VBox() {
+        return new VBoxBuilder<>(javafx.scene.layout.VBox.class, HashMap.empty(), HashMap.empty());
+    }
+
+    public static <CLASS extends SliderBuilder<CLASS, ACTION>, ACTION> SliderBuilder<CLASS, ACTION> Slider() {
+        return new SliderBuilder<>(javafx.scene.control.Slider.class, HashMap.empty(), HashMap.empty());
+    }
+
+
+
 //    @SafeVarargs
 //    @SuppressWarnings("unchecked")
 //    public static <ACTION> VNode<ACTION> node(Class<? extends Node> nodeClass, VElement<ACTION>... elements) {
-//        return NODE_FACTORY.create(nodeClass, elements);
+//        return NODE_CACHE.create(nodeClass, elements);
 //    }
 //
 //
@@ -422,4 +393,4 @@
 //    public static <ACTION> VEventHandlerElement<MouseEvent, ACTION> onMouseClicked(VEventHandler<MouseEvent, ACTION> eventHandler) {
 //        return onEvent(MOUSE_CLICKED, eventHandler);
 //    }
-//}
+}

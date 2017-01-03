@@ -7,11 +7,6 @@ import java.util.Objects;
 
 public final class VProperty<TYPE, ACTION> {
 
-    public VProperty(String name, TYPE value) {
-        this(name, value, Option.none(), Option.none());
-    }
-
-
     private final String name;
     private final boolean isValueDefined;
     private final TYPE value;

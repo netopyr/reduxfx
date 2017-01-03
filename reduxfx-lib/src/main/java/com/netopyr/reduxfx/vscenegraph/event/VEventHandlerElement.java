@@ -1,12 +1,11 @@
 package com.netopyr.reduxfx.vscenegraph.event;
 
-import com.netopyr.reduxfx.vscenegraph.VElement;
 import javafx.event.Event;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public final class VEventHandlerElement<EVENT extends Event, ACTION> implements VElement<ACTION> {
+public final class VEventHandlerElement<EVENT extends Event, ACTION> {
 
     private final VEventType type;
     private final VEventHandler<EVENT, ACTION> eventHandler;

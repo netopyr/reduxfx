@@ -3,11 +3,10 @@ package com.netopyr.reduxfx.colorchooser.component.view;
 import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserAction;
 import com.netopyr.reduxfx.colorchooser.component.state.ColorChooserModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.VScenegraphFactory;
+import com.netopyr.reduxfx.vscenegraph.node.VBoxBuilder;
 
-import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateBlue;
-import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateGreen;
-import static com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions.updateRed;
-import static com.netopyr.reduxfx.vscenegraph.VNodeFactory.VBox;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
 /**
  * The class {@code ColorChooserView} is responsible for mapping the current state of the component, an instance of
@@ -42,27 +41,28 @@ public class ColorChooserView {
      */
     public static VNode<ColorChooserAction> view(ColorChooserModel state) {
 
-        return VBox()
+        return (VNode<ColorChooserAction>) VBox()
                 .spacing(10.0)
-                .children(
-                        Slider()
-                                // This is how a property value and a ChangeListener can be set.
-                                // The ChangeListener gets the old and the new value and has to return the Action that should
-                                // be dispatched to the Updater.
-                                // Here we want to set the value of the red color value (first parameter) and fire an
-                                // UpdateRedAction, if the property of the component changes (second parameter).
-                                .value(state.getRed(), (oldValue, newValue) -> updateRed(newValue.intValue()))
-                                .max(255.0),
-                        Slider()
-                                // We set the value of the Slider to the value that is stored in the state and
-                                // we create an updateGreenAction to change the respective property in the state.
-                                .value(state.getGreen(), (oldValue, newValue) -> updateGreen(newValue.intValue()))
-                                .max(255.0),
-                        Slider()
-                                // We set the value of the Slider to the value that is stored in the state and
-                                // we create an updateBluenAction to change the respective property in the state.
-                                .value(state.getBlue(), (oldValue, newValue) -> updateBlue(newValue.intValue()))
-                                .max(255.0)
-                );
+//                .children(
+//                        Slider()
+//                                // This is how a property value and a ChangeListener can be set.
+//                                // The ChangeListener gets the old and the new value and has to return the Action that should
+//                                // be dispatched to the Updater.
+//                                // Here we want to set the value of the red color value (first parameter) and fire an
+//                                // UpdateRedAction, if the property of the component changes (second parameter).
+//                                .value(state.getRed(), (oldValue, newValue) -> updateRed(newValue.intValue()))
+//                                .max(255.0),
+//                        Slider()
+//                                // We set the value of the Slider to the value that is stored in the state and
+//                                // we create an updateGreenAction to change the respective property in the state.
+//                                .value(state.getGreen(), (oldValue, newValue) -> updateGreen(newValue.intValue()))
+//                                .max(255.0),
+//                        Slider()
+//                                // We set the value of the Slider to the value that is stored in the state and
+//                                // we create an updateBluenAction to change the respective property in the state.
+//                                .value(state.getBlue(), (oldValue, newValue) -> updateBlue(newValue.intValue()))
+//                                .max(255.0)
+//                );
+        ;
     }
 }
