@@ -10,11 +10,11 @@ import javaslang.control.Option;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class ToggleGroupAccessor<ACTION> extends AbstractAccessor<String, ACTION, ToggleGroup> {
+public class ToggleGroupAccessor extends AbstractAccessor<String, ToggleGroup> {
 
     private Map<String, ToggleGroup> mapping = HashMap.empty();
 
-    public ToggleGroupAccessor(MethodHandle propertyGetter, Consumer<ACTION> dispatcher) {
+    public ToggleGroupAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
         super(propertyGetter, dispatcher);
     }
 

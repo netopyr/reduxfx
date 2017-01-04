@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph.property;
 
 @FunctionalInterface
-public interface VInvalidationListener<ACTION> {
+public interface VInvalidationListener {
 
-    ACTION onInvalidation();
+    Object onInvalidation();
 
 }

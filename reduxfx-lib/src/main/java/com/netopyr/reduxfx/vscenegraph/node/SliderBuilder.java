@@ -1,24 +1,23 @@
 package com.netopyr.reduxfx.vscenegraph.node;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
-import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
-import javaslang.collection.Map;
+import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SliderBuilder<CLASS extends SliderBuilder<CLASS, ACTION>, ACTION> extends NodeBuilder<CLASS, ACTION> {
+public class SliderBuilder<CLASS extends SliderBuilder<CLASS>> extends NodeBuilder<CLASS> {
 
     public SliderBuilder(Class<? extends Node> nodeClass,
-                         Map<String, VProperty> properties,
-                         Map<VEventType, VEventHandlerElement> eventHandlers) {
+                         Array<VProperty<?>> properties,
+                         Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
-    protected CLASS create(Class<? extends Node> nodeClass, Map<String, VProperty> properties, Map<VEventType, VEventHandlerElement> eventHandlers) {
+    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
         return (CLASS) new SliderBuilder<>(nodeClass, properties, eventHandlers);
     }
 
@@ -26,26 +25,26 @@ public class SliderBuilder<CLASS extends SliderBuilder<CLASS, ACTION>, ACTION> e
     public CLASS max(double value) {
         return this.addProperty("max", value);
     }
-    public CLASS max(double value, VChangeListener<Double, ACTION> changeListener) {
+    public CLASS max(double value, VChangeListener<Double> changeListener) {
         return this.addProperty("max", value, changeListener);
     }
-    public CLASS max(double value, VInvalidationListener<ACTION> invalidationListener) {
+    public CLASS max(double value, VInvalidationListener invalidationListener) {
         return this.addProperty("max", value, invalidationListener);
     }
-    public CLASS max(double value, VChangeListener<Double, ACTION> changeListener, VInvalidationListener<ACTION> invalidationListener) {
+    public CLASS max(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
         return this.addProperty("max", value, changeListener, invalidationListener);
     }
 
     public CLASS value(double value) {
         return this.addProperty("value", value);
     }
-    public CLASS value(double value, VChangeListener<Double, ACTION> changeListener) {
+    public CLASS value(double value, VChangeListener<Double> changeListener) {
         return this.addProperty("value", value, changeListener);
     }
-    public CLASS value(double value, VInvalidationListener<ACTION> invalidationListener) {
+    public CLASS value(double value, VInvalidationListener invalidationListener) {
         return this.addProperty("value", value, invalidationListener);
     }
-    public CLASS value(double value, VChangeListener<Double, ACTION> changeListener, VInvalidationListener<ACTION> invalidationListener) {
+    public CLASS value(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
         return this.addProperty("value", value, changeListener, invalidationListener);
     }
 

@@ -1,26 +1,11 @@
 package com.netopyr.reduxfx.todo.view;
 
-import com.netopyr.reduxfx.todo.actions.Action;
 import com.netopyr.reduxfx.todo.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javafx.geometry.Pos;
-import javafx.scene.layout.Region;
 
 import java.util.Objects;
 
-import static com.netopyr.reduxfx.todo.view.AddItemView.AddItemView;
-import static com.netopyr.reduxfx.todo.view.ControlsView.ControlsView;
-import static com.netopyr.reduxfx.todo.view.ItemOverviewView.ItemOverviewView;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.alignment;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.id;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.maxHeight;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.maxWidth;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.minHeight;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.minWidth;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.stylesheets;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.text;
 
 /**
  * The class {@code MainView} is responsible for mapping the current state of the application, an instance of
@@ -55,26 +40,26 @@ public class MainView {
      * @param state the current state
      * @return the root {@link VNode} of the created VirtualScenegraph
      */
-    public static VNode<Action> view(AppModel state) {
+    public static VNode view(AppModel state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return
                 VBox(
-                        alignment(Pos.CENTER),
-                        minWidth(Region.USE_PREF_SIZE),
-                        minHeight(Region.USE_PREF_SIZE),
-                        maxWidth(Double.MAX_VALUE),
-                        maxHeight(Double.MAX_VALUE),
-                        stylesheets(MainView.class.getResource("main.css").toString()),
-
-                        Label(
-                                id("title"),
-                                text("todos")
-                        ),
-
-                        AddItemView(state),
-                        ItemOverviewView(state),
-                        ControlsView(state)
+//                        alignment(Pos.CENTER),
+//                        minWidth(Region.USE_PREF_SIZE),
+//                        minHeight(Region.USE_PREF_SIZE),
+//                        maxWidth(Double.MAX_VALUE),
+//                        maxHeight(Double.MAX_VALUE),
+//                        stylesheets(MainView.class.getResource("main.css").toString()),
+//
+//                        Label(
+//                                id("title"),
+//                                text("todos")
+//                        ),
+//
+//                        AddItemView(state),
+//                        ItemOverviewView(state),
+//                        ControlsView(state)
                 );
     }
 }

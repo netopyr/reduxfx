@@ -1,20 +1,34 @@
 package com.netopyr.reduxfx.vscenegraph;
 
+import com.netopyr.reduxfx.vscenegraph.node.HBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.node.RegionBuilder;
 import com.netopyr.reduxfx.vscenegraph.node.SliderBuilder;
 import com.netopyr.reduxfx.vscenegraph.node.VBoxBuilder;
-import javaslang.collection.HashMap;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javaslang.collection.Array;
 
 public class VScenegraphFactory {
 
     private VScenegraphFactory() {}
 
 
-    public static <CLASS extends VBoxBuilder<CLASS, ACTION>, ACTION> VBoxBuilder<CLASS, ACTION> VBox() {
-        return new VBoxBuilder<>(javafx.scene.layout.VBox.class, HashMap.empty(), HashMap.empty());
+    public static <CLASS extends HBoxBuilder<CLASS>> HBoxBuilder<CLASS> HBox() {
+        return new HBoxBuilder<>(HBox.class, Array.empty(), Array.empty());
     }
 
-    public static <CLASS extends SliderBuilder<CLASS, ACTION>, ACTION> SliderBuilder<CLASS, ACTION> Slider() {
-        return new SliderBuilder<>(javafx.scene.control.Slider.class, HashMap.empty(), HashMap.empty());
+    public static <CLASS extends RegionBuilder<CLASS>> RegionBuilder<CLASS> Region() {
+        return new RegionBuilder<>(Region.class, Array.empty(), Array.empty());
+    }
+
+    public static <CLASS extends SliderBuilder<CLASS>> SliderBuilder<CLASS> Slider() {
+        return new SliderBuilder<>(Slider.class, Array.empty(), Array.empty());
+    }
+
+    public static <CLASS extends VBoxBuilder<CLASS>> VBoxBuilder<CLASS> VBox() {
+        return new VBoxBuilder<>(VBox.class, Array.empty(), Array.empty());
     }
 
 

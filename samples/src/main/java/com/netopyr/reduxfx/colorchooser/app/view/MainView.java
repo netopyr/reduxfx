@@ -1,12 +1,12 @@
 package com.netopyr.reduxfx.colorchooser.app.view;
 
-import com.netopyr.reduxfx.colorchooser.app.actions.Action;
 import com.netopyr.reduxfx.colorchooser.app.actions.Actions;
 import com.netopyr.reduxfx.colorchooser.app.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import static com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent.ColorChooser;
-import static com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent.color;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.HBox;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Region;
 
 /**
  * The class {@code MainView} is responsible for mapping the current state of the application, an instance of
@@ -41,7 +41,7 @@ public class MainView {
      * @param state the current state
      * @return the root {@link VNode} of the created VirtualScenegraph
      */
-    public static VNode<Action> view(AppModel state) {
+    public static VNode view(AppModel state) {
 
         return HBox()
                 .padding(50.0)

@@ -15,15 +15,15 @@ import javafx.scene.Parent;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class ComponentBase<STATE, ACTION> extends ReduxFX<STATE, ACTION> {
+public class ComponentBase<STATE> extends ReduxFX<STATE> {
 
-    private final ComponentDriver<ACTION> componentDriver = new ComponentDriver<>();
+    private final ComponentDriver componentDriver = new ComponentDriver();
 
     public ComponentBase(
             Parent component,
             STATE initialState,
-            BiFunction<STATE, ACTION, Update<STATE>> updater,
-            Function<STATE, VNode<ACTION>> view
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view
     ) {
         super(initialState, updater, view, component);
         component.sceneProperty().addListener((observable, oldValue, newValue) -> {
@@ -46,7 +46,7 @@ public class ComponentBase<STATE, ACTION> extends ReduxFX<STATE, ACTION> {
     }
 
 
-    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T, ACTION> listener) {
+    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T> listener) {
         return componentDriver.createObjectProperty(bean, name, listener);
     }
 

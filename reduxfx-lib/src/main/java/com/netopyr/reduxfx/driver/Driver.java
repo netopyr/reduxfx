@@ -4,10 +4,10 @@ import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 
-public interface Driver<ACTION> {
+public interface Driver {
 
     Observer<Command> getCommandObserver();
 
-    Observable<ACTION> getActionObservable();
+    Observable<Object> getActionObservable();
 
 }

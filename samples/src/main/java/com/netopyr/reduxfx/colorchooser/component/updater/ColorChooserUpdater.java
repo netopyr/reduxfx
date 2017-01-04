@@ -63,7 +63,7 @@ public class ColorChooserUpdater {
      * @return the new state
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static Update<ColorChooserModel> update(ColorChooserModel state, ColorChooserAction action) {
+    public static Update<ColorChooserModel> update(ColorChooserModel state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 

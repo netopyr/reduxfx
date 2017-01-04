@@ -14,25 +14,25 @@ import javafx.stage.Stage;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class SimpleReduxFX<STATE, ACTION> {
+public class SimpleReduxFX<STATE> {
 
-    private final MainLoop<ACTION> mainLoop;
+    private final MainLoop mainLoop;
 
-    private SimpleReduxFX(STATE initialState, BiFunction<STATE, ACTION, STATE> simpleUpdater, Function<STATE, VNode<ACTION>> view, Parent root) {
-        final BiFunction<STATE, ACTION, Update<STATE>> updater = (state, action) -> Update.of(simpleUpdater.apply(state, action));
-        mainLoop = new MainLoop<>(initialState, updater, view, root);
+    private SimpleReduxFX(STATE initialState, BiFunction<STATE, Object, STATE> simpleUpdater, Function<STATE, VNode> view, Parent root) {
+        final BiFunction<STATE, Object, Update<STATE>> updater = (state, action) -> Update.of(simpleUpdater.apply(state, action));
+        mainLoop = new MainLoop(initialState, updater, view, root);
     }
 
-    public static <STATE, ACTION> SimpleReduxFX<STATE, ACTION> start(STATE initialState, BiFunction<STATE, ACTION, STATE> updater, Function<STATE, VNode<ACTION>> view, Stage stage) {
-        return new SimpleReduxFX<>(initialState, updater, view, setupRoot(stage));
+    public static <STATE, ACTION> SimpleReduxFX<STATE> start(STATE initialState, BiFunction<STATE, ACTION, STATE> updater, Function<STATE, VNode> view, Stage stage) {
+        return new SimpleReduxFX(initialState, updater, view, setupRoot(stage));
     }
 
-    public static <STATE, ACTION> SimpleReduxFX<STATE, ACTION> start(STATE initialState, BiFunction<STATE, ACTION, STATE> updater, Function<STATE, VNode<ACTION>> view, Group root) {
-        return new SimpleReduxFX<>(initialState, updater, view, root);
+    public static <STATE, ACTION> SimpleReduxFX<STATE> start(STATE initialState, BiFunction<STATE, ACTION, STATE> updater, Function<STATE, VNode> view, Group root) {
+        return new SimpleReduxFX(initialState, updater, view, root);
     }
 
-    public static <STATE, ACTION> SimpleReduxFX<STATE, ACTION> start(STATE initialState, BiFunction<STATE, ACTION, STATE> updater, Function<STATE, VNode<ACTION>> view, Pane root) {
-        return new SimpleReduxFX<>(initialState, updater, view, root);
+    public static <STATE, ACTION> SimpleReduxFX<STATE> start(STATE initialState, BiFunction<STATE, ACTION, STATE> updater, Function<STATE, VNode> view, Pane root) {
+        return new SimpleReduxFX(initialState, updater, view, root);
     }
 
     private static Parent setupRoot(Stage stage) {

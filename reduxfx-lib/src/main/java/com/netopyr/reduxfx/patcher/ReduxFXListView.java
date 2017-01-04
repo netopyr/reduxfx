@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class ReduxFXListView<ACTION> extends ListView<Object> {
+public class ReduxFXListView extends ListView<Object> {
 
-    private final Patcher<ACTION> patcher;
+    private final Patcher patcher;
 
-    Patcher<ACTION> getPatcher() {
+    Patcher getPatcher() {
         return patcher;
     }
 
@@ -59,7 +59,7 @@ public class ReduxFXListView<ACTION> extends ListView<Object> {
 
     {
         this.patcher = Patcher.getInstance();
-        setCellFactory(listView -> new ReduxFXListCell<>((ReduxFXListView<ACTION>) listView));
+        setCellFactory(listView -> new ReduxFXListCell((ReduxFXListView) listView));
         setItems(new ReduxFXTransformationList(null));
         mappingProperty().addListener(((observable, oldValue, newValue) -> {
             setItems(new ReduxFXTransformationList(newValue));
@@ -67,11 +67,11 @@ public class ReduxFXListView<ACTION> extends ListView<Object> {
     }
 
 
-    private static class ReduxFXListCell<ACTION> extends ListCell<Object> {
+    private static class ReduxFXListCell extends ListCell<Object> {
 
-        private final ReduxFXListView<ACTION> listView;
+        private final ReduxFXListView listView;
 
-        public ReduxFXListCell(ReduxFXListView<ACTION> listView) {
+        public ReduxFXListCell(ReduxFXListView listView) {
             this.listView = listView;
         }
 
@@ -86,8 +86,8 @@ public class ReduxFXListView<ACTION> extends ListView<Object> {
             } else {
                 if (item instanceof VNode) {
                     final Option<Node> oldNode = getGraphic() == null ? Option.none() : Option.of(getGraphic());
-                    final Option<VNode<ACTION>> oldVNode = oldNode.flatMap(node -> (Option<VNode<ACTION>>) node.getUserData());
-                    final Option<VNode<ACTION>> newVNode = Option.of((VNode<ACTION>) item);
+                    final Option<VNode> oldVNode = oldNode.flatMap(node -> (Option<VNode>) node.getUserData());
+                    final Option<VNode> newVNode = Option.of((VNode) item);
                     final Vector<Patch> patches = Differ.diff(oldVNode, newVNode);
                     if (oldNode.isEmpty()) {
                         final Group parent = new Group();

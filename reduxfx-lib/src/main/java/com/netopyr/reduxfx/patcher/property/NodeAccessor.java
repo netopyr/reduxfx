@@ -10,23 +10,23 @@ import javaslang.control.Option;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class NodeAccessor<ACTION> extends AbstractAccessor<VNode<ACTION>, ACTION, Node> {
+public class NodeAccessor extends AbstractAccessor<VNode, Node> {
 
-    private final NodeBuilder<ACTION> nodeBuilder;
+    private final NodeBuilder nodeBuilder;
 
-    NodeAccessor(MethodHandle propertyGetter, Consumer<ACTION> dispatcher, NodeBuilder<ACTION> nodeBuilder) {
+    NodeAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher, NodeBuilder nodeBuilder) {
         super(propertyGetter, dispatcher);
         this.nodeBuilder = nodeBuilder;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected VNode<ACTION> fxToV(Node value) {
-        return (VNode<ACTION>) value.getUserData();
+    protected VNode fxToV(Node value) {
+        return (VNode) value.getUserData();
     }
 
     @Override
-    protected Node vToFX(VNode<ACTION> value) {
+    protected Node vToFX(VNode value) {
         final Option<Node> nodeOption = nodeBuilder.create(value);
         if (nodeOption.isEmpty()) {
             return null;

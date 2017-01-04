@@ -5,12 +5,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public final class VEventHandlerElement<EVENT extends Event, ACTION> {
+public final class VEventHandlerElement<EVENT extends Event> {
 
     private final VEventType type;
-    private final VEventHandler<EVENT, ACTION> eventHandler;
+    private final VEventHandler<EVENT> eventHandler;
 
-    public VEventHandlerElement(VEventType type, VEventHandler<EVENT, ACTION> eventHandler) {
+    public VEventHandlerElement(VEventType type, VEventHandler<EVENT> eventHandler) {
         this.type = Objects.requireNonNull(type, "Type must not be null");
         this.eventHandler = Objects.requireNonNull(eventHandler, "EventHandler must not be null");
     }
@@ -19,7 +19,7 @@ public final class VEventHandlerElement<EVENT extends Event, ACTION> {
         return type;
     }
 
-    public VEventHandler<EVENT, ACTION> getEventHandler() {
+    public VEventHandler<EVENT> getEventHandler() {
         return eventHandler;
     }
 

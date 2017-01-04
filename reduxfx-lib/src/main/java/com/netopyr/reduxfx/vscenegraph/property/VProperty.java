@@ -5,18 +5,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public final class VProperty<TYPE, ACTION> {
+public final class VProperty<TYPE> {
 
     private final String name;
     private final boolean isValueDefined;
     private final TYPE value;
-    private final Option<VChangeListener<? super TYPE, ACTION>> changeListener;
-    private final Option<VInvalidationListener<ACTION>> invalidationListener;
+    private final Option<VChangeListener<? super TYPE>> changeListener;
+    private final Option<VInvalidationListener> invalidationListener;
 
     public VProperty(String name,
                      TYPE value,
-                     Option<VChangeListener<? super TYPE, ACTION>> changeListener,
-                     Option<VInvalidationListener<ACTION>> invalidationListener) {
+                     Option<VChangeListener<? super TYPE>> changeListener,
+                     Option<VInvalidationListener> invalidationListener) {
         this.name = Objects.requireNonNull(name, "Name must not be null");
         this.isValueDefined = true;
         this.value = value;
@@ -26,8 +26,8 @@ public final class VProperty<TYPE, ACTION> {
 
     @SuppressWarnings("unchecked")
     public VProperty(String name,
-                     Option<VChangeListener<? super TYPE, ACTION>> changeListener,
-                     Option<VInvalidationListener<ACTION>> invalidationListener) {
+                     Option<VChangeListener<? super TYPE>> changeListener,
+                     Option<VInvalidationListener> invalidationListener) {
         this.name = Objects.requireNonNull(name, "Name must not be null");
         this.isValueDefined = false;
         this.value = null;
@@ -50,11 +50,11 @@ public final class VProperty<TYPE, ACTION> {
         return value;
     }
 
-    public Option<VChangeListener<? super TYPE, ACTION>> getChangeListener() {
+    public Option<VChangeListener<? super TYPE>> getChangeListener() {
         return changeListener;
     }
 
-    public Option<VInvalidationListener<ACTION>> getInvalidationListener() {
+    public Option<VInvalidationListener> getInvalidationListener() {
         return invalidationListener;
     }
 
