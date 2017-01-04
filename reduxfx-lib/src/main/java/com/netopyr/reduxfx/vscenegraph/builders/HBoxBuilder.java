@@ -1,16 +1,15 @@
-package com.netopyr.reduxfx.vscenegraph.node;
+package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class PaneBuilder<CLASS extends PaneBuilder<CLASS>> extends RegionBuilder<CLASS> {
+public class HBoxBuilder<CLASS extends HBoxBuilder<CLASS>> extends PaneBuilder<CLASS> {
 
-    public PaneBuilder(Class<? extends Pane> nodeClass,
+    public HBoxBuilder(Class<? extends HBox> nodeClass,
                        Array<VProperty<?>> properties,
                        Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
@@ -19,12 +18,11 @@ public class PaneBuilder<CLASS extends PaneBuilder<CLASS>> extends RegionBuilder
     @SuppressWarnings("unchecked")
     @Override
     protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new PaneBuilder<>((Class<? extends Pane>) nodeClass, properties, eventHandlers);
+        return (CLASS) new HBoxBuilder<>((Class<? extends HBox>) nodeClass, properties, eventHandlers);
     }
 
-    public final CLASS children(VNode... nodes) {
-        final Array<VNode> children = nodes == null? Array.empty() : Array.of(nodes);
-        return this.addProperty("children", children);
+    public CLASS spacing(double value) {
+        return property("spacing", value);
     }
 
     @Override

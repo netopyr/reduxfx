@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.colorchooser.component;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
-import com.netopyr.reduxfx.vscenegraph.node.VBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.VBoxBuilder;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
@@ -32,7 +32,7 @@ public class ColorChooserBuilder<CLASS extends ColorChooserBuilder<CLASS>> exten
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
     public CLASS color(Color value, VChangeListener<? super Color> listener) {
-        return addProperty("color", value, listener);
+        return property("color", value, listener);
     }
 
     /**
@@ -42,7 +42,7 @@ public class ColorChooserBuilder<CLASS extends ColorChooserBuilder<CLASS>> exten
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
     public CLASS color(VChangeListener<? super Color> listener) {
-        return addProperty("color", listener);
+        return property("color", listener);
     }
 
 

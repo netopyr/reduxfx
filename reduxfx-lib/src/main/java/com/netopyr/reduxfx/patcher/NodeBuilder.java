@@ -83,7 +83,7 @@ public class NodeBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    void setEventHandlers(Node node, Array<VEventHandlerElement<? extends Event>> eventHandlers) {
+    void setEventHandlers(Node node, Array<VEventHandlerElement<?>> eventHandlers) {
         for (final VEventHandlerElement eventHandlerElement : eventHandlers) {
             final Option<MethodHandle> setter = getEventSetter(node.getClass(), eventHandlerElement.getType());
             if (setter.isDefined()) {
@@ -115,7 +115,7 @@ public class NodeBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    void updateEventHandlers(Node node, Map<VEventType, VEventHandlerElement<? extends Event>> eventHandlers) {
+    void updateEventHandlers(Node node, Map<VEventType, VEventHandlerElement<?>> eventHandlers) {
         for (final VEventHandlerElement eventHandlerElement : eventHandlers.values()) {
             final Option<MethodHandle> setter = getEventSetter(node.getClass(), eventHandlerElement.getType());
             if (setter.isDefined()) {

@@ -1,9 +1,9 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-import com.netopyr.reduxfx.vscenegraph.node.HBoxBuilder;
-import com.netopyr.reduxfx.vscenegraph.node.RegionBuilder;
-import com.netopyr.reduxfx.vscenegraph.node.SliderBuilder;
-import com.netopyr.reduxfx.vscenegraph.node.VBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.HBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.RegionBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.SliderBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.VBoxBuilder;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;

@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.node;
+package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
@@ -23,29 +23,29 @@ public class SliderBuilder<CLASS extends SliderBuilder<CLASS>> extends NodeBuild
 
 
     public CLASS max(double value) {
-        return this.addProperty("max", value);
+        return property("max", value);
     }
     public CLASS max(double value, VChangeListener<Double> changeListener) {
-        return this.addProperty("max", value, changeListener);
+        return property("max", value, changeListener);
     }
     public CLASS max(double value, VInvalidationListener invalidationListener) {
-        return this.addProperty("max", value, invalidationListener);
+        return property("max", value, invalidationListener);
     }
     public CLASS max(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
-        return this.addProperty("max", value, changeListener, invalidationListener);
+        return property("max", value, changeListener, invalidationListener);
     }
 
     public CLASS value(double value) {
-        return this.addProperty("value", value);
+        return property("value", value);
     }
     public CLASS value(double value, VChangeListener<Double> changeListener) {
-        return this.addProperty("value", value, changeListener);
+        return property("value", value, changeListener);
     }
     public CLASS value(double value, VInvalidationListener invalidationListener) {
-        return this.addProperty("value", value, invalidationListener);
+        return property("value", value, invalidationListener);
     }
     public CLASS value(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
-        return this.addProperty("value", value, changeListener, invalidationListener);
+        return property("value", value, changeListener, invalidationListener);
     }
 
 

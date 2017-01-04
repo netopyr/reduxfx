@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.node;
+package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
@@ -26,44 +26,44 @@ public class RegionBuilder<CLASS extends RegionBuilder<CLASS>> extends NodeBuild
 
 
     public CLASS background(Background value) {
-        return addProperty("background", value);
+        return property("background", value);
     }
     public CLASS background(Color fill) {
         return background(new Background(new BackgroundFill(fill, null, null)));
     }
 
     public CLASS maxHeight(double value) {
-        return addProperty("maxHeight", value);
+        return property("maxHeight", value);
     }
 
     public CLASS maxWidth(double value) {
-        return addProperty("maxWidth", value);
+        return property("maxWidth", value);
     }
 
     public CLASS minHeight(double value) {
-        return addProperty("minHeight", value);
+        return property("minHeight", value);
     }
 
     public CLASS minWidth(double value) {
-        return addProperty("minWidth", value);
+        return property("minWidth", value);
     }
 
     public CLASS prefHeight(double value) {
-        return addProperty("prefHeight", value);
+        return property("prefHeight", value);
     }
 
     public CLASS prefWidth(double value) {
-        return addProperty("prefWidth", value);
+        return property("prefWidth", value);
     }
 
     public CLASS padding(double top, double rightLeft, double bottom) {
-        return addProperty("padding", new Insets(top, rightLeft, bottom, rightLeft));
+        return property("padding", new Insets(top, rightLeft, bottom, rightLeft));
     }
     public CLASS padding(double topBottom, double rightLeft) {
-        return addProperty("padding", new Insets(topBottom, rightLeft, topBottom, rightLeft));
+        return property("padding", new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
     public CLASS padding(double value) {
-        return addProperty("padding", new Insets(value, value, value, value));
+        return property("padding", new Insets(value, value, value, value));
     }
 
 

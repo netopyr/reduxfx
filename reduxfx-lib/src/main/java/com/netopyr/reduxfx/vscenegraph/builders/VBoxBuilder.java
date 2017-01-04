@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.vscenegraph.node;
+package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
@@ -22,7 +22,7 @@ public class VBoxBuilder<CLASS extends VBoxBuilder<CLASS>> extends PaneBuilder<C
     }
 
     public CLASS spacing(double value) {
-        return this.addProperty("spacing", value);
+        return property("spacing", value);
     }
 
     @Override
