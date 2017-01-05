@@ -9,6 +9,7 @@ import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
@@ -29,6 +30,10 @@ public class NodeBuilder<CLASS extends NodeBuilder<CLASS>> extends VNode {
     private static final String RIGHT_ANCHOR = "rightAnchor";
     private static final String HOVER = "hover";
     private static final String FOCUSED = "focused";
+    private static final String MARGIN = "margin";
+    private static final String OPACITY = "opacity";
+    private static final String DISABLE = "disable";
+    private static final String STYLE = "style";
 
     public NodeBuilder(Class<? extends Node> nodeClass,
                        Array<VProperty<?>> properties,
@@ -43,6 +48,10 @@ public class NodeBuilder<CLASS extends NodeBuilder<CLASS>> extends VNode {
     }
 
 
+    public CLASS disable(boolean value) {
+        return property(DISABLE, value);
+    }
+
     public CLASS focused(boolean value, VChangeListener<? super Boolean> listener) {
         return property(FOCUSED, value, listener);
     }
@@ -56,6 +65,14 @@ public class NodeBuilder<CLASS extends NodeBuilder<CLASS>> extends VNode {
 
     public CLASS id(String value) {
         return property(ID, value);
+    }
+
+    public CLASS opacity(double value) {
+        return property(OPACITY, value);
+    }
+
+    public CLASS style(String value) {
+        return property(STYLE, value);
     }
 
     public CLASS styleClass(String... value) {
@@ -89,6 +106,15 @@ public class NodeBuilder<CLASS extends NodeBuilder<CLASS>> extends VNode {
         return property(TOP_ANCHOR, value);
     }
 
+    public CLASS margin(double top, double rightLeft, double bottom) {
+        return property(MARGIN, new Insets(top, rightLeft, bottom, rightLeft));
+    }
+    public CLASS margin(double topBottom, double rightLeft) {
+        return property(MARGIN, new Insets(topBottom, rightLeft, topBottom, rightLeft));
+    }
+    public CLASS margin(double value) {
+        return property(MARGIN, new Insets(value, value, value, value));
+    }
 
 
     @SuppressWarnings("unchecked")

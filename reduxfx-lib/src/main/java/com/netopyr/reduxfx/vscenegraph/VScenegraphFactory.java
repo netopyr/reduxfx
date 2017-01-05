@@ -2,24 +2,30 @@ package com.netopyr.reduxfx.vscenegraph;
 
 import com.netopyr.reduxfx.patcher.ReduxFXListView;
 import com.netopyr.reduxfx.vscenegraph.builders.*;
+import com.netopyr.reduxfx.vscenegraph.builders.ButtonBaseBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ButtonBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.CheckBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ControlBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.LabelBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.LabeledBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ListViewBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ProgressBarBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ProgressIndicatorBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.SliderBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TextFieldBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TextInputControlBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ToggleButtonBuilder;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javaslang.collection.Array;
 
 public class VScenegraphFactory {
@@ -37,13 +43,21 @@ public class VScenegraphFactory {
     }
 
     @SuppressWarnings("unchecked")
+    public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane() {
+        return (BorderPaneBuilder<CLASS>) Factory.node(BorderPane.class, Array.empty(), Array.empty(), BorderPaneBuilder::new);
+    }
+
+    @SuppressWarnings("unchecked")
     public static <CLASS extends ButtonBaseBuilder<CLASS>> ButtonBaseBuilder<CLASS> ButtonBase() {
         return (ButtonBaseBuilder<CLASS>) Factory.node(ButtonBase.class, Array.empty(), Array.empty(), ButtonBaseBuilder::new);
     }
 
     @SuppressWarnings("unchecked")
+    public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button(Class<? extends Button> nodeClass) {
+        return (ButtonBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), ButtonBuilder::new);
+    }
     public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button() {
-        return (ButtonBuilder<CLASS>) Factory.node(Button.class, Array.empty(), Array.empty(), ButtonBuilder::new);
+        return Button(Button.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -92,6 +106,20 @@ public class VScenegraphFactory {
     }
 
     @SuppressWarnings("unchecked")
+    public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar(Class<? extends ProgressBar> nodeClass) {
+        return (ProgressBarBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), ProgressBarBuilder::new);
+    }
+    @SuppressWarnings("unchecked")
+    public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar() {
+        return ProgressBar(ProgressBar.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <CLASS extends ProgressIndicatorBuilder<CLASS>> ProgressIndicatorBuilder<CLASS> ProgressIndicator() {
+        return (ProgressIndicatorBuilder<CLASS>) Factory.node(ProgressIndicator.class, Array.empty(), Array.empty(), ProgressIndicatorBuilder::new);
+    }
+
+    @SuppressWarnings("unchecked")
     public static <CLASS extends RegionBuilder<CLASS>> RegionBuilder<CLASS> Region() {
         return (RegionBuilder<CLASS>) Factory.node(Region.class, Array.empty(), Array.empty(), RegionBuilder::new);
     }
@@ -107,8 +135,19 @@ public class VScenegraphFactory {
     }
 
     @SuppressWarnings("unchecked")
+    public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text(Class<? extends Text> nodeClass) {
+        return (TextBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), TextBuilder::new);
+    }
+    public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text() {
+        return Text(Text.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField(Class<? extends TextField> nodeClass) {
+        return (TextFieldBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), TextFieldBuilder::new);
+    }
     public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField() {
-        return (TextFieldBuilder<CLASS>) Factory.node(TextField.class, Array.empty(), Array.empty(), TextFieldBuilder::new);
+        return TextField(TextField.class);
     }
 
     @SuppressWarnings("unchecked")

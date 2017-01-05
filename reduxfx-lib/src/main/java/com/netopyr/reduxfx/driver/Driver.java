@@ -8,6 +8,6 @@ public interface Driver {
 
     Observer<Command> getCommandObserver();
 
-    Observable<Object> getActionObservable();
+    Observable<?> getActionObservable();
 
 }

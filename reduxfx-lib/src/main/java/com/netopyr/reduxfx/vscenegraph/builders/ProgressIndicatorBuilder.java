@@ -6,25 +6,25 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ButtonBuilder<CLASS extends ButtonBuilder<CLASS>> extends ButtonBaseBuilder<CLASS> {
+public class ProgressIndicatorBuilder<CLASS extends ProgressIndicatorBuilder<CLASS>> extends ControlBuilder<CLASS> {
 
-    public static final String DEFAULT_BUTTON = "defaultButton";
+    private static final String PROGRESS = "progress";
 
-    public ButtonBuilder(Class<? extends Node> nodeClass,
-                         Array<VProperty<?>> properties,
-                         Array<VEventHandlerElement<?>> eventHandlers) {
+    public ProgressIndicatorBuilder(Class<? extends Node> nodeClass,
+                                    Array<VProperty<?>> properties,
+                                    Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ButtonBuilder<>(nodeClass, properties, eventHandlers);
+        return (CLASS) new ProgressIndicatorBuilder<>(nodeClass, properties, eventHandlers);
     }
 
 
-    public CLASS defaultButton(boolean value) {
-        return property(DEFAULT_BUTTON, value);
+    public CLASS progress(double value) {
+        return property(PROGRESS, value);
     }
 
 

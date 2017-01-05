@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
+import javafx.scene.paint.Paint;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -12,6 +13,8 @@ public class LabeledBuilder<CLASS extends LabeledBuilder<CLASS>> extends Control
     private static final String MNEMONIC_PARSING = "mnemonicParsing";
     private static final String TEXT = "text";
     private static final String GRAPHIC = "graphic";
+    private static final String TEXT_FILL = "textFill";
+    private static final String WRAP_TEXT = "wrapText";
 
     public LabeledBuilder(Class<? extends Node> nodeClass,
                           Array<VProperty<?>> properties,
@@ -36,6 +39,14 @@ public class LabeledBuilder<CLASS extends LabeledBuilder<CLASS>> extends Control
 
     public CLASS text(String value) {
         return property(TEXT, value);
+    }
+
+    public CLASS textFill(Paint value) {
+        return property(TEXT_FILL, value);
+    }
+
+    public CLASS wrapText(boolean value) {
+        return property(WRAP_TEXT, value);
     }
 
 
