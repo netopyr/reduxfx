@@ -91,22 +91,22 @@ class ItemView {
                                                                 // If the onAction-event is fired, we want to dispatch a DeleteTodoAction
                                                                 // to delete the current item.
                                                                 .onAction(e -> Actions.deleteTodo(todoEntry.getId()))
-                                                )
-                                ),
-                        TextField()
-                                .id("contentInput")
-                                .visible(todoEntry.isEditMode())
-                                .promptText("What needs to be done?")
-                                // The focus-property is somewhat special. Setting it results in a focus-request for
-                                // this component. We want to try to grab the focus, if we are in edit-mode.
-                                // If the TextField loses focus, we have to clear the editMode-flag.
-                                .focused(todoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(todoEntry.getId(), false))
-                                // We set the text of this component to the value that is stored in the state and
-                                // we create an EditTodoAction to change the value of the todo-entry.
-                                .text(todoEntry.getText(), ((oldValue, newValue) -> Actions.editTodo(todoEntry.getId(), newValue)))
-                                // If the onAction-event is fired, we want to dispatch an EditModeAction to leave the
-                                // edit mode.
-                                .onAction(e -> Actions.setEditMode(todoEntry.getId(), false))
+                                                ),
+                                        TextField()
+                                                .id("contentInput")
+                                                .visible(todoEntry.isEditMode())
+                                                .promptText("What needs to be done?")
+                                                // The focus-property is somewhat special. Setting it results in a focus-request for
+                                                // this component. We want to try to grab the focus, if we are in edit-mode.
+                                                // If the TextField loses focus, we have to clear the editMode-flag.
+                                                .focused(todoEntry.isEditMode(), (oldValue, newValue) -> newValue ? null : Actions.setEditMode(todoEntry.getId(), false))
+                                                // We set the text of this component to the value that is stored in the state and
+                                                // we create an EditTodoAction to change the value of the todo-entry.
+                                                .text(todoEntry.getText(), ((oldValue, newValue) -> Actions.editTodo(todoEntry.getId(), newValue)))
+                                                // If the onAction-event is fired, we want to dispatch an EditModeAction to leave the
+                                                // edit mode.
+                                                .onAction(e -> Actions.setEditMode(todoEntry.getId(), false))
+                                )
                 );
     }
 }
