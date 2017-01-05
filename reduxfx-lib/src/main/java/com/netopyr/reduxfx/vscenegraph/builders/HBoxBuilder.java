@@ -2,14 +2,17 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class HBoxBuilder<CLASS extends HBoxBuilder<CLASS>> extends PaneBuilder<CLASS> {
 
-    public HBoxBuilder(Class<? extends HBox> nodeClass,
+    private static final String SPACING = "spacing";
+    private static final String ALIGNMENT = "alignment";
+
+    public HBoxBuilder(Class<? extends Node> nodeClass,
                        Array<VProperty<?>> properties,
                        Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
@@ -18,11 +21,15 @@ public class HBoxBuilder<CLASS extends HBoxBuilder<CLASS>> extends PaneBuilder<C
     @SuppressWarnings("unchecked")
     @Override
     protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new HBoxBuilder<>((Class<? extends HBox>) nodeClass, properties, eventHandlers);
+        return (CLASS) new HBoxBuilder<>(nodeClass, properties, eventHandlers);
+    }
+
+    public CLASS alignment(Pos value) {
+        return property(ALIGNMENT, value);
     }
 
     public CLASS spacing(double value) {
-        return property("spacing", value);
+        return property(SPACING, value);
     }
 
     @Override

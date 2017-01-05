@@ -74,16 +74,19 @@ public class Factory {
         );
     }
 
-    public static <TYPE> VProperty<TYPE> property(String name, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
-        return new VProperty<>(name, Option.of(changeListener), Option.of(invalidationListener));
+    @SuppressWarnings("unchecked")
+    public static VProperty property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
+        return new VProperty(name, Option.of(changeListener), Option.of(invalidationListener));
     }
 
-    public static <TYPE> VProperty<TYPE> property(String name, VChangeListener<? super TYPE> changeListener) {
-        return new VProperty<>(name, Option.of(changeListener), Option.none());
+    @SuppressWarnings("unchecked")
+    public static VProperty property(String name, VChangeListener<?> changeListener) {
+        return new VProperty(name, Option.of(changeListener), Option.none());
     }
 
-    public static <TYPE> VProperty<TYPE> property(String name, VInvalidationListener invalidationListener) {
-        return new VProperty<>(name, Option.none(), Option.of(invalidationListener));
+    @SuppressWarnings("unchecked")
+    public static VProperty property(String name, VInvalidationListener invalidationListener) {
+        return new VProperty(name, Option.none(), Option.of(invalidationListener));
     }
 
     @SuppressWarnings("unchecked")

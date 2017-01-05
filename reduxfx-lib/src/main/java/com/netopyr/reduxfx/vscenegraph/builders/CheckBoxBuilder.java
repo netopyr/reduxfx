@@ -2,35 +2,29 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class VBoxBuilder<CLASS extends VBoxBuilder<CLASS>> extends PaneBuilder<CLASS> {
+public class CheckBoxBuilder<CLASS extends CheckBoxBuilder<CLASS>> extends ButtonBaseBuilder<CLASS> {
 
-    private static final String ALIGNMENT = "alignment";
-    private static final String SPACING = "spacing";
+    private static final String SELECTED = "selected";
 
-    public VBoxBuilder(Class<? extends Node> nodeClass,
-                       Array<VProperty<?>> properties,
-                       Array<VEventHandlerElement<?>> eventHandlers) {
+    public CheckBoxBuilder(Class<? extends Node> nodeClass,
+                           Array<VProperty<?>> properties,
+                           Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new VBoxBuilder<>(nodeClass, properties, eventHandlers);
+        return (CLASS) new CheckBoxBuilder<>(nodeClass, properties, eventHandlers);
     }
 
 
-    public CLASS alignment(Pos value) {
-        return property(ALIGNMENT, value);
-    }
-
-    public CLASS spacing(double value) {
-        return property(SPACING, value);
+    public CLASS selected(boolean value) {
+        return property(SELECTED, value);
     }
 
 

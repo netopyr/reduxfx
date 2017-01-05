@@ -10,7 +10,16 @@ import javafx.scene.paint.Color;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class RegionBuilder<CLASS extends RegionBuilder<CLASS>> extends NodeBuilder<CLASS> {
+public class RegionBuilder<CLASS extends RegionBuilder<CLASS>> extends ParentBuilder<CLASS> {
+
+    private static final String BACKGROUND = "background";
+    private static final String MAX_HEIGHT = "maxHeight";
+    private static final String MAX_WIDTH = "maxWidth";
+    private static final String MIN_HEIGHT = "minHeight";
+    private static final String MIN_WIDTH = "minWidth";
+    private static final String PREF_HEIGHT = "prefHeight";
+    private static final String PREF_WIDTH = "prefWidth";
+    private static final String PADDING = "padding";
 
     public RegionBuilder(Class<? extends Node> nodeClass,
                          Array<VProperty<?>> properties,
@@ -26,44 +35,44 @@ public class RegionBuilder<CLASS extends RegionBuilder<CLASS>> extends NodeBuild
 
 
     public CLASS background(Background value) {
-        return property("background", value);
+        return property(BACKGROUND, value);
     }
     public CLASS background(Color fill) {
-        return background(new Background(new BackgroundFill(fill, null, null)));
+        return property(BACKGROUND, new Background(new BackgroundFill(fill, null, null)));
     }
 
     public CLASS maxHeight(double value) {
-        return property("maxHeight", value);
+        return property(MAX_HEIGHT, value);
     }
 
     public CLASS maxWidth(double value) {
-        return property("maxWidth", value);
+        return property(MAX_WIDTH, value);
     }
 
     public CLASS minHeight(double value) {
-        return property("minHeight", value);
+        return property(MIN_HEIGHT, value);
     }
 
     public CLASS minWidth(double value) {
-        return property("minWidth", value);
+        return property(MIN_WIDTH, value);
     }
 
     public CLASS prefHeight(double value) {
-        return property("prefHeight", value);
+        return property(PREF_HEIGHT, value);
     }
 
     public CLASS prefWidth(double value) {
-        return property("prefWidth", value);
+        return property(PREF_WIDTH, value);
     }
 
     public CLASS padding(double top, double rightLeft, double bottom) {
-        return property("padding", new Insets(top, rightLeft, bottom, rightLeft));
+        return property(PADDING, new Insets(top, rightLeft, bottom, rightLeft));
     }
     public CLASS padding(double topBottom, double rightLeft) {
-        return property("padding", new Insets(topBottom, rightLeft, topBottom, rightLeft));
+        return property(PADDING, new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
     public CLASS padding(double value) {
-        return property("padding", new Insets(value, value, value, value));
+        return property(PADDING, new Insets(value, value, value, value));
     }
 
 

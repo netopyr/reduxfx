@@ -163,7 +163,8 @@ public class Updater {
                                         state.getTodos()
                                                 .map(entry -> entry.getId() != setTodoHoverAction.getId() ?
                                                         entry : entry.withHover(setTodoHoverAction.isValue())
-                                                )                                )
+                                                )
+                                )
                         ),
 
                         // If the action is an SetEditModeAction, we need to replace the TodoEntry with the given id

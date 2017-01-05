@@ -7,30 +7,25 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class VBoxBuilder<CLASS extends VBoxBuilder<CLASS>> extends PaneBuilder<CLASS> {
+public class StackPaneBuilder<CLASS extends StackPaneBuilder<CLASS>> extends PaneBuilder<CLASS> {
 
     private static final String ALIGNMENT = "alignment";
-    private static final String SPACING = "spacing";
 
-    public VBoxBuilder(Class<? extends Node> nodeClass,
-                       Array<VProperty<?>> properties,
-                       Array<VEventHandlerElement<?>> eventHandlers) {
+    public StackPaneBuilder(Class<? extends Node> nodeClass,
+                            Array<VProperty<?>> properties,
+                            Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new VBoxBuilder<>(nodeClass, properties, eventHandlers);
+        return (CLASS) new StackPaneBuilder<>(nodeClass, properties, eventHandlers);
     }
 
 
     public CLASS alignment(Pos value) {
         return property(ALIGNMENT, value);
-    }
-
-    public CLASS spacing(double value) {
-        return property(SPACING, value);
     }
 
 
