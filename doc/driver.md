@@ -14,6 +14,10 @@ It has the advantage, that the benefits of the Redux-architecture (e.g. the simp
 Basic Concept
 -------------
 An overview of the concept can be seen in the following picture.
+
+![alt Overview driver communication][driver]
+
+
 The basic idea is, that the updater not only calculates the new state of the application upon receiving an action, but it can also produce one or more commands, which are sent to drivers.
 For every outside component, that we need to communicate with, exists a driver that takes the command and calls the required action on the component.
 If the outside component needs to communicate with the ReduxFX application, it goes through the driver, too.
@@ -40,3 +44,4 @@ But after leaving the Updater, the event flow forms another cycle again, going t
 > Arguably the whole ReduxFX architecture can be viewed as just one of many cycles, where the view()-method, the DOM-Driver and the ActionCreator together form a driver that reacts on state-change commands.
 > Event though this is an intriguing idea, we do not follow it any further, because the view is the central part of the application and deserves to be treated special.
 
+[driver]: driver.jpg
