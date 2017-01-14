@@ -11,7 +11,7 @@ Functional Reactive UI Programming
 ----------------------------------
 On the face of it, frameworks like React.js with the Redux-architecture, Elm, and Cycle.js seem quite different. But under the hood, all of them share a simple idea, which is sketched in the following picture:
 
-![alt text][fruip cycle]
+![alt Overview functional reactive UI programming][fruip cycle]
 
 The first thing to note when looking at the picture is that everything – all changes, events, and updates – flow in a single direction to form a cycle. The cycle consists of four data-structures (State, Virtual DOM, Event, and Action) and four components (View()-Function, DOM-Driver, ActionCreator, and Updater). The DOM-Driver is provided by the framework, while the other components have to be implemented by the application developer.
 
@@ -306,11 +306,15 @@ There are certainly still areas that need improvement. Sometimes Java's verbosit
 
 If you have any comments, suggestions or questions, please [create a new issue][issue tracking]. If you want to help spread the word, I am certainly also happy about any tweet, post or other mentioning of ReduxFX.
 
+### Further Reading
+
+[ReduxFX and the outside world][article driver]
+
 [redux]: https://github.com/reactjs/redux/
 [react.js]: https://facebook.github.io/react/
 [elm]: http://elm-lang.org
 [cycle.js]: https://cycle.js.org
-[mvc is dead]: http://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
+[mvc is dead]: https://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
 [javaslang]: http://www.javaslang.io/
 [state package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
@@ -319,3 +323,4 @@ If you have any comments, suggestions or questions, please [create a new issue][
 [todos class]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
 [launcher class]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
 [issue tracking]: https://github.com/netopyr/reduxfx/issues
+[article driver]: doc/driver.md
