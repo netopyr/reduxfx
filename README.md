@@ -165,42 +165,18 @@ The property items contains the list of todo-items that should be shown. Dependi
 
 With the cellFactory, we can setup a mapping between an entry in the items-list and the VirtualScenegraph. In the example we want to show an ItemView for each entry, which is another custom component.
 
-#### Some Thoughts for the Future
-
-1. In Redux-applications we usually split components into presentational components and container components. Does it make sense to do the same here?
-2. Can we set properties of our components similar to JavaFX components instead of passing the state?
-3. Can we limit the allowed properties to only those that are defined for a JavaFX component? For example the compiler should warn us, if we try to use text() within VBox().
-4. How can we apply memoization transparently? Large parts of the AppModel do not change and the corresponding parts of the VirtualScenegraph should be reused, too.
-
 ### Action Creators
 
 Action Creators map UI-events to application specific actions. The package [com.netopyr.reduxfx.todo.actions][package actions] contains everything related to actions.
 
-All Actions in this example implement the interface Action.
+All Actions in this example implement the marker interface Action.
 
 ```java
 public interface Action {
-
-    enum ActionType {
-        ADD_TODO,
-        NEW_TEXTFIELD_CHANGED,
-        DELETE_TODO,
-        EDIT_TODO,
-        COMPLETE_TODO,
-        COMPLETE_ALL,
-        CLEAR_COMPLETED,
-        SET_FILTER,
-        SET_EDIT_MODE,
-        SET_TODO_HOVER
-    }
-
-    ActionType getType();
 }
 ```
 
-The interface Action contains a single method getType(). It returns an ActionType, which is an enum of all possible kind of actions. This makes it easier to find the appropriate action later in the updater.
-
-Each actions requires two parts, a builder method and an implementation. Both are defined in the Actions class. The following code snippet shows the builder method and implementation of the DeleteTodoAction.
+Each action has two parts, a factory method and an implementation. The factory methods of all actions are defined in the Actions class. The following code snippet shows the factory method for DeleteTodoAction.
 
 ```java
 public final class Actions {
@@ -210,65 +186,60 @@ public final class Actions {
     public static Action deleteTodo(int id) {
         return new DeleteTodo(id);
     }
-    
-    public static final class DeleteTodo implements Action {
 
-        private final int id;
-
-        public ActionType getType() {
-            return ActionType.DELETE_TODO;
-        }
-
-        // constructor, getter, and toString()
-        // ...
-    }
-
-    // more builder methods and Action-classes
+    // more factory methods and Action-classes
     // ...
 }
 ```
 
-DeleteTodo is immutable and contains a single property id, which references the todo-entry that needs to be deleted. It also implements the method getType() and returns the appropriate type from the enum ActionType. Adding the builder method helps to hide the actual Actions implementation from the event-handlers.
+DeleteTodo is immutable and contains a single property id, which references the todo-entry that needs to be deleted. Adding the factory method helps to hide the actual Actions implementation from the event-handlers.
+
+```java
+public static final class DeleteTodo implements Action {
+
+    private final int id;
+
+    // constructor, getter, and toString()
+    // ...
+}
+```
 
 ### Updater
 
 The heart of every ReduxFX-application is the updater. It is a BiFunction, which takes the old state and an action and calculates the new state. In this application, it is defined in the class [Updater][class updater].
 
-Usually the updater is implemented as a huge switch-case statement with one branch per action-type. Below you can see an excerpt from the updater of the example application. It shows the cases of the actions NewTextfieldChanged and AddTodo.
+The example uses the pattern-matching API of Javaslang. Each branch handles one specific action-type. Below you can see an excerpt from the updater of the example application. It shows the cases of the actions NewTextfieldChanged and AddTodo.
 
 The action NewTextFieldChanged is triggered when the text in the textfield above the todo-list is changed. The action has a single property text which contains the new value. A new AppModel is created with the updated value for newTodoText, while the todo-entries and filter are copied from the old state. This is a typical implementation of the updater. Only a small section is changed, while most parts are just copied.
 
 ```java
-switch (action.getType()) {
-    case NEW_TEXTFIELD_CHANGED:
-        newState = new AppModel(
-                ((NewTextFieldChanged) action).getText(),
-                oldState.getTodos(),
-                oldState.getFilter()
-        );
-        break;
+final AppModel newState =
 
-    case ADD_TODO:
-        newState = new AppModel(
-                "",
-                oldState.getTodos().append(
-                        new TodoEntry(
-                                oldState.getTodos()
-                                        .map(TodoEntry::getId)
-                                        .max()
-                                        .getOrElse(-1) + 1,
-                                oldState.getNewTodoText(),
-                                false,
-                                false,
-                                false
-                        )
+        Match(action).of(
+
+                Case(instanceOf(NewTextFieldChangedAction.class),
+                        newTextFieldChangedAction ->
+                                state.withNewTodoText(newTextFieldChangedAction.getText())
                 ),
-                oldState.getFilter()
-        );
-        break;
+
+                Case(instanceOf(AddTodoAction.class),
+                        state.withNewTodoText("")
+                                .withTodos(
+                                        state.getTodos().append(
+                                                TodoEntry.create()
+                                                        .withId(
+                                                                state.getTodos()
+                                                                        .map(TodoEntry::getId)
+                                                                        .max()
+                                                                        .getOrElse(-1) + 1
+                                                        )
+                                                        .withText(state.getNewTodoText())
+                                        )
+                                )
+                ),
         
-    // more branches
-    // ...
+                // more branches
+                // ...
 ```
 
 The AddTodo-action is slightly more complex. We define the new state, for which we clear the newTodoText, i.e. we clear the Textfield. For the todo-entries we take the old list and add a new TodoEntry. The collection returned from oldState.getTodos() is a Javaslang collection. Calling append() does not modify the original list, but returns the new list.
