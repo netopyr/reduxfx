@@ -13,6 +13,7 @@ The following picture shows the architecture of a custom component implemented w
 This may sound like a lot of work, but most of the boiler-plate is already conveniently provided in the class [ComponentBase][class componentbase].
 
 _Insert picture_
+![alt Overview ReduxFX component][reduxfx component]
 
 As you can see the heart of a ReduxFX component is a regular event cycle.
 But in addition we have a class that implements the actual JavaFX component.
@@ -55,6 +56,7 @@ Further Reading
 
 
 [class componentbase]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/component/ComponentBase.java
+[reduxfx component]: component.jpg
 [class colorchoosercomponent]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/colorchooser/component/ColorChooserComponent.java
 [class reduxfx]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/ReduxFX.java
 [class vchangelistener]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/vscenegraph/property/VChangeListener.java
