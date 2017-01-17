@@ -277,7 +277,7 @@ The id of the new TodoEntry is the current maximum id + 1. The text is taken fro
 
 ### Launcher
 
-The [Launcher][class todomvc] is the last part of the example. As usual in JavaFX, we extend the Application class. To start a ReduxFX application, we need to define the initial state. In our case it has an empty newTodoText, zero todo-items, and the filter is set to show all entries. Next we need to call ReduxFX.start with the initial state, the updater-function, the view-function, and the stage where the SceneGraph should be shown.
+The launcher [TodoMVC][class todomvc] is the last part of the example. As usual in JavaFX, we extend the Application class. To start a ReduxFX application, we need to define the initial state. In our case it has an empty newTodoText, zero todo-items, and the filter is set to show all entries. Next we need to call ReduxFX.start with the initial state, the updater-function, the view-function, and the stage where the SceneGraph should be shown.
 
 ```
 public class Launcher extends Application {
