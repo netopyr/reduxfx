@@ -55,7 +55,7 @@ TodoMVC JavaFX Example
 All data structures in the TodoMVC JavaFX Example are immutable. Unfortunately the standard collections in the JDK are problematic, if you want to enforce immutability. Therefore in the example makes heavy use of [Javaslang][javaslang] and its truly immutable collections.
 
 ### State
-The package [com.netopyr.reduxfx.todo.state](state package) contains all classes related to the state of the TodoMVC JavaFX Example. The main class is AppModel.
+The package [com.netopyr.reduxfx.todo.state][package state] contains all classes related to the state of the TodoMVC JavaFX Example. The main class is AppModel.
 
 ```java
 public final class AppModel {
@@ -93,7 +93,7 @@ A TodoEntry has five properties, which store the id, the text describing the tod
 
 ### View-Function
 
-The View-Function kept in the package [com.netopyr.reduxfx.todo.view](view package) defines the view of the TodoMVC JavaFX example. This is the least stable part of ReduxFX and you can expect significant changes in the future in this area.
+The View-Function kept in the package [com.netopyr.reduxfx.todo.view][package view] defines the view of the TodoMVC JavaFX example. This is the least stable part of ReduxFX and you can expect significant changes in the future in this area.
 
 The view in a functional reactive UI application is defined as a mapping from the application state (AppModel in this example) to the corresponding VirtualScenegraph. The VirtualScenegraph is an immutable data structure that defines what the real JavaFX should look like.
 
@@ -174,7 +174,7 @@ With the cellFactory, we can setup a mapping between an entry in the items-list 
 
 ### Action Creators
 
-Action Creators map UI-events to application specific actions. The package [com.netopyr.reduxfx.todo.actions](actions package) contains everything related to actions.
+Action Creators map UI-events to application specific actions. The package [com.netopyr.reduxfx.todo.actions][package actions] contains everything related to actions.
 
 All Actions in this example implement the interface Action.
 
@@ -232,7 +232,7 @@ DeleteTodo is immutable and contains a single property id, which references the 
 
 ### Updater
 
-The heart of every ReduxFX-application is the updater. It is a BiFunction, which takes the old state and an action and calculates the new state. In this application, it is defined in the class [Todos][todos class].
+The heart of every ReduxFX-application is the updater. It is a BiFunction, which takes the old state and an action and calculates the new state. In this application, it is defined in the class [Updater][class updater].
 
 Usually the updater is implemented as a huge switch-case statement with one branch per action-type. Below you can see an excerpt from the updater of the example application. It shows the cases of the actions NewTextfieldChanged and AddTodo.
 
@@ -277,7 +277,7 @@ The id of the new TodoEntry is the current maximum id + 1. The text is taken fro
 
 ### Launcher
 
-The [Launcher][launcher class] is the last part of the example. As usual in JavaFX, we extend the Application class. To start a ReduxFX application, we need to define the initial state. In our case it has an empty newTodoText, zero todo-items, and the filter is set to show all entries. Next we need to call ReduxFX.start with the initial state, the updater-function, the view-function, and the stage where the SceneGraph should be shown.
+The [Launcher][class todomvc] is the last part of the example. As usual in JavaFX, we extend the Application class. To start a ReduxFX application, we need to define the initial state. In our case it has an empty newTodoText, zero todo-items, and the filter is set to show all entries. Next we need to call ReduxFX.start with the initial state, the updater-function, the view-function, and the stage where the SceneGraph should be shown.
 
 ```
 public class Launcher extends Application {
@@ -317,10 +317,10 @@ If you have any comments, suggestions or questions, please [create a new issue][
 [mvc is dead]: https://blog.netopyr.com/2016/10/11/mvc-dead-comes-next/
 [fruip cycle]: doc/frp_cycle.jpg
 [javaslang]: http://www.javaslang.io/
-[state package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
-[view package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/view
-[actions package]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/actions
-[todos class]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/updater/Todos.java
-[launcher class]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/Launcher.java
+[package state]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/state
+[package view]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/view
+[package actions]: https://github.com/netopyr/reduxfx/tree/master/samples/src/main/java/com/netopyr/reduxfx/todo/actions
+[class updater]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/updater/Updater.java
+[class todomvc]: https://github.com/netopyr/reduxfx/blob/master/samples/src/main/java/com/netopyr/reduxfx/todo/TodoMVC.java
 [issue tracking]: https://github.com/netopyr/reduxfx/issues
 [article driver]: doc/driver.md
