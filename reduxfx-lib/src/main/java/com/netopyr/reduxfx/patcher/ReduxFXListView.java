@@ -85,7 +85,7 @@ public class ReduxFXListView extends ListView<Object> {
                 setGraphic(null);
             } else {
                 if (item instanceof VNode) {
-                    final Option<Node> oldNode = getGraphic() == null ? Option.none() : Option.of(getGraphic());
+                    final Option<Node> oldNode = Option.of(getGraphic());
                     final Option<VNode> oldVNode = oldNode.flatMap(node -> (Option<VNode>) node.getUserData());
                     final Option<VNode> newVNode = Option.of((VNode) item);
                     final Vector<Patch> patches = Differ.diff(oldVNode, newVNode);
