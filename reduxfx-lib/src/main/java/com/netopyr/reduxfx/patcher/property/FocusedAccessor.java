@@ -6,9 +6,9 @@ import javafx.scene.Node;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class FocusedAccessor<ACTION> extends AbstractNoConversionAccessor<Boolean, ACTION> {
+public class FocusedAccessor extends AbstractNoConversionAccessor<Boolean> {
 
-    FocusedAccessor(MethodHandle propertyGetter, Consumer<ACTION> dispatcher) {
+    FocusedAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
         super(propertyGetter, dispatcher);
     }
 

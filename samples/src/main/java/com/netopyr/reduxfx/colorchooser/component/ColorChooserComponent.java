@@ -1,21 +1,15 @@
 package com.netopyr.reduxfx.colorchooser.component;
 
-import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserAction;
+import com.netopyr.reduxfx.colorchooser.app.state.AppModel;
 import com.netopyr.reduxfx.colorchooser.component.actions.ColorChooserActions;
 import com.netopyr.reduxfx.colorchooser.component.state.ColorChooserModel;
 import com.netopyr.reduxfx.colorchooser.component.updater.ColorChooserUpdater;
 import com.netopyr.reduxfx.colorchooser.component.view.ColorChooserView;
 import com.netopyr.reduxfx.component.ComponentBase;
-import com.netopyr.reduxfx.vscenegraph.VElement;
-import com.netopyr.reduxfx.vscenegraph.VNode;
-import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
-import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.node;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.property;
+import javaslang.collection.Array;
 
 /**
  * The class {@code ColorChooserComponent} is the main class of this component.
@@ -29,34 +23,12 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.property;
 public class ColorChooserComponent extends VBox {
 
     /**
-     * This is a helper function, to make the code in {@link ColorChooserView#view(ColorChooserModel)} more readable.
+     * This is a helper function, to make the code in {@link com.netopyr.reduxfx.colorchooser.app.view.MainView#view(AppModel)} more readable.
      *
-     * @param elements the properties we want to set for this component
-     * @return the VirtualScenegraph-node of a {@code ColorChooserComponent}
+     * @return the VirtualScenegraph-node of a {@code ColorChooserComponent}, which is also a {@link ColorChooserBuilder}
      */
-    @SafeVarargs
-    public static <ACTION> VNode<ACTION> ColorChooser(VElement<ACTION>... elements) {
-        return node(ColorChooserComponent.class, elements);
-    }
-
-    /**
-     * This is a helper function, to make the code in {@link ColorChooserView#view(ColorChooserModel)} more readable.
-     *
-     * @param value the value that the {@code color} property should be set to
-     * @param listener the {@link VChangeListener} that should be called if the value of {@code color} changes
-     * @return the {@link VProperty} that describes the {@code color} property
-     */
-    public static <ACTION> VProperty<Color, ACTION> color(Color value, VChangeListener<? super Color, ACTION> listener) {
-        return property("color", value, listener);
-    }
-    /**
-     * This is a helper function, to make the code in {@link ColorChooserView#view(ColorChooserModel)} more readable.
-     *
-     * @param listener the {@link VChangeListener} that should be called if the value of {@code color} changes
-     * @return the {@link VProperty} that describes the {@code color} property
-     */
-    public static <ACTION> VProperty<Color, ACTION> color(VChangeListener<? super Color, ACTION> listener) {
-        return property("color", listener);
+    public static <CLASS extends ColorChooserBuilder<CLASS>> ColorChooserBuilder<CLASS> ColorChooser() {
+        return new ColorChooserBuilder<>(ColorChooserComponent.class, Array.empty(), Array.empty());
     }
 
 
@@ -72,7 +44,7 @@ public class ColorChooserComponent extends VBox {
 
         // A ComponentBase is the central piece of every component implemented with ReduxFX. It creates a separate
         // event-cycle for the component and acts as the factory for all JavaFX properties.
-        final ComponentBase<ColorChooserModel, ColorChooserAction> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, ColorChooserView::view);
+        final ComponentBase<ColorChooserModel> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, ColorChooserView::view);
 
         // This sets up the JavaFX property of this component. The value can be changed by dispatching
         // ObjectChangedCommands in the ColorChooserUpdater (alongside any required state changes). The VChangeListener

@@ -5,7 +5,7 @@ import javafx.scene.Node;
 
 import java.lang.invoke.MethodHandle;
 
-public class SetterAccessor<TYPE, ACTION> implements Accessor<TYPE, ACTION> {
+public class SetterAccessor<TYPE> implements Accessor<TYPE> {
 
     private final MethodHandle setter;
 
@@ -14,7 +14,7 @@ public class SetterAccessor<TYPE, ACTION> implements Accessor<TYPE, ACTION> {
     }
 
     @Override
-    public void set(Node node, VProperty<TYPE, ACTION> vProperty) {
+    public void set(Node node, VProperty<TYPE> vProperty) {
         if (vProperty.isValueDefined()) {
             try {
                 setter.invoke(node, vProperty.getValue());

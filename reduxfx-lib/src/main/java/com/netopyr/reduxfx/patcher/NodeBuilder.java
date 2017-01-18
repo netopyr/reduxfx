@@ -9,8 +9,8 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
-import javaslang.collection.Seq;
 import javaslang.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +22,20 @@ import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.patcher.NodeUtilities.getChildren;
 
-public class NodeBuilder<ACTION> {
+public class NodeBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeBuilder.class);
 
-    private final Accessors<ACTION> accessors;
-    private final Consumer<ACTION> dispatcher;
+    private final Accessors accessors;
+    private final Consumer<Object> dispatcher;
 
-    NodeBuilder(Consumer<ACTION> dispatcher, Accessors<ACTION> accessors) {
+    NodeBuilder(Consumer<Object> dispatcher, Accessors accessors) {
         this.dispatcher = dispatcher;
         this.accessors = accessors;
     }
 
     @SuppressWarnings("unchecked")
-    public Option<Node> create(VNode<ACTION> vNode) {
+    public Option<Node> create(VNode vNode) {
         try {
             final Class<? extends Node> nodeClass = vNode.getNodeClass();
             final Node node = nodeClass.newInstance();
@@ -48,7 +48,7 @@ public class NodeBuilder<ACTION> {
 
     @SuppressWarnings("unchecked")
     public void init(Node node, VNode vNode) {
-        setProperties(node, vNode.getProperties().values());
+        setProperties(node, vNode.getProperties());
         setEventHandlers(node, vNode.getEventHandlers());
 
         if (vNode.getChildren().nonEmpty()) {
@@ -59,10 +59,10 @@ public class NodeBuilder<ACTION> {
             }
 
             vNode.getChildren().forEach(vChild -> {
-                final Option<Node> child = create((VNode) vChild);
+                final Option<Node> child = create(vChild);
                 if (child.isDefined()) {
                     children.get().add(child.get());
-                    init(child.get(), (VNode) vChild);
+                    init(child.get(), vChild);
                 }
             });
         }
@@ -71,9 +71,9 @@ public class NodeBuilder<ACTION> {
     }
 
     @SuppressWarnings("unchecked")
-    void setProperties(Node node, Seq<VProperty<?, ACTION>> properties) {
-        for (final VProperty<?, ACTION> vProperty : properties) {
-            final Option<Accessor<?, ACTION>> accessor = accessors.getAccessor(node, vProperty.getName());
+    void setProperties(Node node, Array<VProperty<?>> properties) {
+        for (final VProperty<?> vProperty : properties) {
+            final Option<Accessor<?>> accessor = accessors.getAccessor(node, vProperty.getName());
             if (accessor.isDefined()) {
                 accessor.get().set(node, (VProperty) vProperty);
             } else {
@@ -83,13 +83,45 @@ public class NodeBuilder<ACTION> {
     }
 
     @SuppressWarnings("unchecked")
-    void setEventHandlers(Node node, Map<VEventType, VEventHandlerElement<? extends Event, ACTION>> eventHandlers) {
+    void setEventHandlers(Node node, Array<VEventHandlerElement<?>> eventHandlers) {
+        for (final VEventHandlerElement eventHandlerElement : eventHandlers) {
+            final Option<MethodHandle> setter = getEventSetter(node.getClass(), eventHandlerElement.getType());
+            if (setter.isDefined()) {
+                try {
+                    final EventHandler<? extends Event> eventHandler = e -> {
+                        final Object action = eventHandlerElement.getEventHandler().onChange(e);
+                        if (action != null) {
+                            dispatcher.accept(action);
+                        }
+                    };
+                    setter.get().invoke(node, eventHandler);
+                } catch (Throwable throwable) {
+                    LOG.error("Unable to set JavaFX EventHandler " + eventHandlerElement.getType() + " for class " + node.getClass(), throwable);
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    void updateProperties(Node node, Map<String, VProperty<?>> properties) {
+        for (final VProperty<?> vProperty : properties.values()) {
+            final Option<Accessor<?>> accessor = accessors.getAccessor(node, vProperty.getName());
+            if (accessor.isDefined()) {
+                accessor.get().set(node, (VProperty) vProperty);
+            } else {
+                LOG.warn("Accessor not found for property {} in class {}", vProperty.getName(), node.getClass());
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    void updateEventHandlers(Node node, Map<VEventType, VEventHandlerElement<?>> eventHandlers) {
         for (final VEventHandlerElement eventHandlerElement : eventHandlers.values()) {
             final Option<MethodHandle> setter = getEventSetter(node.getClass(), eventHandlerElement.getType());
             if (setter.isDefined()) {
                 try {
                     final EventHandler<? extends Event> eventHandler = e -> {
-                        final ACTION action = (ACTION) eventHandlerElement.getEventHandler().onChange(e);
+                        final Object action = eventHandlerElement.getEventHandler().onChange(e);
                         if (action != null) {
                             dispatcher.accept(action);
                         }

@@ -5,7 +5,7 @@ import javafx.scene.Node;
 
 import java.lang.invoke.MethodHandle;
 
-public class LayoutConstraintAccessor<ACTION> implements Accessor<Object, ACTION> {
+public class LayoutConstraintAccessor implements Accessor<Object> {
 
     private final MethodHandle setter;
 
@@ -14,7 +14,7 @@ public class LayoutConstraintAccessor<ACTION> implements Accessor<Object, ACTION
     }
 
     @Override
-    public void set(Node node, VProperty<Object, ACTION> vProperty) {
+    public void set(Node node, VProperty<Object> vProperty) {
         if (vProperty.isValueDefined()) {
             try {
                 setter.invoke(node, vProperty.getValue());

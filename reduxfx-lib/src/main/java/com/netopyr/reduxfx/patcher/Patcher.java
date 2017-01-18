@@ -17,21 +17,21 @@ import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.patcher.NodeUtilities.getChildren;
 
-public class Patcher<ACTION> {
+public class Patcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(Patcher.class);
 
-    private final NodeBuilder<ACTION> nodeBuilder;
+    private final NodeBuilder nodeBuilder;
 
-    public Patcher(Consumer<ACTION> dispatcher) {
-        final Accessors<ACTION> accessors = new Accessors<>(dispatcher);
-        this.nodeBuilder = new NodeBuilder<>(dispatcher, accessors);
+    public Patcher(Consumer<Object> dispatcher) {
+        final Accessors accessors = new Accessors(dispatcher);
+        this.nodeBuilder = new NodeBuilder(dispatcher, accessors);
         accessors.init(nodeBuilder);
 
         INSTANCE = this;
     }
 
-    public void patch(Parent root, Option<VNode<ACTION>> vRoot, Seq<Patch> patches) {
+    public void patch(Parent root, Option<VNode> vRoot, Seq<Patch> patches) {
 
         LOG.trace("Patches:\n{}", patches);
 
@@ -76,8 +76,8 @@ public class Patcher<ACTION> {
 
     @SuppressWarnings("unchecked")
     private void doAttributes(Node node, AttributesPatch patch) {
-        nodeBuilder.setProperties(node, patch.getProperties().values());
-        nodeBuilder.setEventHandlers(node, patch.getEventHandlers());
+        nodeBuilder.updateProperties(node, patch.getProperties());
+        nodeBuilder.updateEventHandlers(node, patch.getEventHandlers());
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +106,7 @@ public class Patcher<ACTION> {
         }
     }
 
-    private static Option<Node> findNode(int needle, Node node, VNode<?> vNode, int index) {
+    private static Option<Node> findNode(int needle, Node node, VNode vNode, int index) {
         if (needle == index) {
             return Option.of(node);
         }
@@ -127,7 +127,7 @@ public class Patcher<ACTION> {
 
 
     private static Patcher INSTANCE;
-    public static <ACTION> Patcher<ACTION> getInstance() {
+    public static Patcher getInstance() {
         return INSTANCE;
     }
 }

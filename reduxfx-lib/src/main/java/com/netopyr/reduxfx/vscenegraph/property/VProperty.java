@@ -1,28 +1,24 @@
 package com.netopyr.reduxfx.vscenegraph.property;
 
-import com.netopyr.reduxfx.vscenegraph.VElement;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
 
-public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
-
-    private static final Object NO_VALUE = new Object();
-    @SuppressWarnings("unchecked")
-    public static <TYPE> TYPE getNoValue() { return (TYPE) NO_VALUE; }
-
+public final class VProperty<TYPE> {
 
     private final String name;
+    private final boolean isValueDefined;
     private final TYPE value;
-    private final Option<VChangeListener<? super TYPE, ACTION>> changeListener;
-    private final Option<VInvalidationListener<ACTION>> invalidationListener;
+    private final Option<VChangeListener<? super TYPE>> changeListener;
+    private final Option<VInvalidationListener> invalidationListener;
 
     public VProperty(String name,
                      TYPE value,
-                     Option<VChangeListener<? super TYPE, ACTION>> changeListener,
-                     Option<VInvalidationListener<ACTION>> invalidationListener) {
+                     Option<VChangeListener<? super TYPE>> changeListener,
+                     Option<VInvalidationListener> invalidationListener) {
         this.name = Objects.requireNonNull(name, "Name must not be null");
+        this.isValueDefined = true;
         this.value = value;
         this.changeListener = changeListener;
         this.invalidationListener = invalidationListener;
@@ -30,9 +26,13 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
 
     @SuppressWarnings("unchecked")
     public VProperty(String name,
-                     Option<VChangeListener<? super TYPE, ACTION>> changeListener,
-                     Option<VInvalidationListener<ACTION>> invalidationListener) {
-        this(name, getNoValue(), changeListener, invalidationListener);
+                     Option<VChangeListener<? super TYPE>> changeListener,
+                     Option<VInvalidationListener> invalidationListener) {
+        this.name = Objects.requireNonNull(name, "Name must not be null");
+        this.isValueDefined = false;
+        this.value = null;
+        this.changeListener = changeListener;
+        this.invalidationListener = invalidationListener;
     }
 
     public String getName() {
@@ -40,21 +40,21 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
     }
 
     public boolean isValueDefined() {
-        return NO_VALUE != value;
+        return isValueDefined;
     }
 
     public TYPE getValue() {
-        if (! isValueDefined()) {
+        if (! isValueDefined) {
             throw new IllegalStateException("No value defined");
         }
         return value;
     }
 
-    public Option<VChangeListener<? super TYPE, ACTION>> getChangeListener() {
+    public Option<VChangeListener<? super TYPE>> getChangeListener() {
         return changeListener;
     }
 
-    public Option<VInvalidationListener<ACTION>> getInvalidationListener() {
+    public Option<VInvalidationListener> getInvalidationListener() {
         return invalidationListener;
     }
 
@@ -62,6 +62,7 @@ public final class VProperty<TYPE, ACTION> implements VElement<ACTION> {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("name", name)
+                .append("isValueDefined", isValueDefined)
                 .append("value", value)
                 .append("changeListener", changeListener.stringPrefix())
                 .append("invalidationListener", invalidationListener.stringPrefix())

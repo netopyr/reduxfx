@@ -11,19 +11,19 @@ import javafx.scene.Node;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-abstract class AbstractAccessor<V_TYPE, ACTION, FX_TYPE> implements Accessor<V_TYPE, ACTION> {
+abstract class AbstractAccessor<V_TYPE, FX_TYPE> implements Accessor<V_TYPE> {
 
     private final MethodHandle propertyGetter;
-    private final Consumer<ACTION> dispatcher;
+    private final Consumer<Object> dispatcher;
 
-    AbstractAccessor(MethodHandle propertyGetter, Consumer<ACTION> dispatcher) {
+    AbstractAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
         this.propertyGetter = propertyGetter;
         this.dispatcher = dispatcher;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, VProperty<V_TYPE, ACTION> vProperty) {
+    public void set(Node node, VProperty<V_TYPE> vProperty) {
 
         final ReadOnlyProperty<FX_TYPE> property;
         try {
@@ -66,9 +66,9 @@ abstract class AbstractAccessor<V_TYPE, ACTION, FX_TYPE> implements Accessor<V_T
         }
     }
 
-    private void setChangeListener(Node node, ReadOnlyProperty<FX_TYPE> property, VChangeListener<? super V_TYPE, ACTION> listener, Consumer<ACTION> dispatcher) {
+    private void setChangeListener(Node node, ReadOnlyProperty<FX_TYPE> property, VChangeListener<? super V_TYPE> listener, Consumer<Object> dispatcher) {
         final ChangeListener<FX_TYPE> newListener = (source, oldValue, newValue) -> {
-            final ACTION action = listener.onChange(fxToV(oldValue), fxToV(newValue));
+            final Object action = listener.onChange(fxToV(oldValue), fxToV(newValue));
             if (action != null) {
                 dispatcher.accept(action);
             }
@@ -77,9 +77,9 @@ abstract class AbstractAccessor<V_TYPE, ACTION, FX_TYPE> implements Accessor<V_T
         node.getProperties().put(property.getName() + ".change", newListener);
     }
 
-    private void setInvalidationListener(Node node, ReadOnlyProperty<FX_TYPE> property, VInvalidationListener<ACTION> listener, Consumer<ACTION> dispatcher) {
+    private void setInvalidationListener(Node node, ReadOnlyProperty<FX_TYPE> property, VInvalidationListener listener, Consumer<Object> dispatcher) {
         final InvalidationListener newListener = (source) -> {
-            final ACTION action = listener.onInvalidation();
+            final Object action = listener.onInvalidation();
             if (action != null) {
                 dispatcher.accept(action);
             }

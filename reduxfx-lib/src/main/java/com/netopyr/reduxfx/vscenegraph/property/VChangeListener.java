@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph.property;
 
 @FunctionalInterface
-public interface VChangeListener<TYPE, ACTION> {
+public interface VChangeListener<TYPE> {
 
-    ACTION onChange(TYPE oldValue, TYPE newValue);
+    Object onChange(TYPE oldValue, TYPE newValue);
 
 }

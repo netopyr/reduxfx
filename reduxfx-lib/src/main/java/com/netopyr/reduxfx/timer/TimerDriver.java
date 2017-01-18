@@ -6,9 +6,6 @@ import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 
@@ -31,13 +28,13 @@ public class TimerDriver<T> {
                 .forEach(this::stopTimer);
     }
 
-    private void startTimer(StartTimerCommand<T> command) {
-        final Timeline timeline = new Timeline(
-                new KeyFrame(command.getInterval(), e -> actionObserver.onNext(command.getMapper().apply(System.nanoTime() / 1000000)))
-        );
-        timeline.setDelay(command.getDelay() != null? command.getDelay() : Duration.ZERO);
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timers = timers.put(command.getKey(), timeline);
+    private void startTimer(StartTimerCommand command) {
+//        final Timeline timeline = new Timeline(
+//                new KeyFrame(command.getInterval(), e -> actionObserver.onNext(command.getMapper().apply(System.nanoTime() / 1000000)))
+//        );
+//        timeline.setDelay(command.getDelay() != null? command.getDelay() : Duration.ZERO);
+//        timeline.setCycleCount(Animation.INDEFINITE);
+//        timers = timers.put(command.getKey(), timeline);
 //        timeline.play();
     }
 

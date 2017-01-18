@@ -21,7 +21,7 @@ public class Differ {
 
     private static final Logger LOG = LoggerFactory.getLogger(Differ.class);
 
-    public static <ACTION> Vector<Patch> diff(Option<VNode<ACTION>> a, Option<VNode<ACTION>> b) {
+    public static Vector<Patch> diff(Option<VNode> a, Option<VNode> b) {
         final Vector<Patch> patches =
                 a.isEmpty() ?
                         b.isEmpty() ? Vector.empty() : Vector.of(new InsertPatch(0, b.get()))
@@ -31,7 +31,7 @@ public class Differ {
         return patches;
     }
 
-    private static <ACTION> Vector<Patch> doDiff(VNode<ACTION> a, VNode<ACTION> b, int index) {
+    private static Vector<Patch> doDiff(VNode a, VNode b, int index) {
         if (a == null ? b == null : a.equals(b)) {
             return Vector.empty();
         }
@@ -42,8 +42,8 @@ public class Differ {
 
         Vector<Patch> result = diffAttributes(index, a, b);
 
-        final Array<VNode<ACTION>> aChildren = a.getChildren();
-        final Array<VNode<ACTION>> bChildren = b.getChildren();
+        final Array<VNode> aChildren = a.getChildren();
+        final Array<VNode> bChildren = b.getChildren();
         final int nA = aChildren.length();
         final int nB = bChildren.length();
         final int n = Math.min(nA, nB);
@@ -66,17 +66,21 @@ public class Differ {
         return result;
     }
 
-    private static <ACTION> Vector<Patch> diffAttributes(int index, VNode<ACTION> a, VNode<ACTION> b) {
-        final Map<String, VProperty<?, ACTION>> removedProperties = a.getProperties().filter(propertyA -> !b.getProperties().containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<String, VProperty<?, ACTION>> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
-        final Map<String, VProperty<?, ACTION>> diffProperties = removedProperties.merge(updatedProperties);
+    private static Vector<Patch> diffAttributes(int index, VNode a, VNode b) {
+        final Map<String, VProperty<?>> aProperties = a.getProperties().toMap(property -> Tuple.of(property.getName(), property));
+        final Map<String, VProperty<?>> bProperties = b.getProperties().toMap(property -> Tuple.of(property.getName(), property));
+        final Map<String, VProperty<?>> removedProperties = aProperties.filter(propertyA -> !bProperties.containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<String, VProperty<?>> updatedProperties = bProperties.filter(propertyB -> !Option.of(propertyB._2).equals(aProperties.get(propertyB._1)));
+        final Map<String, VProperty<?>> diffProperties = removedProperties.merge(updatedProperties);
 
-        final Map<VEventType, VEventHandlerElement<?, ACTION>> removedEventHandlers = a.getEventHandlers().filter(handlerA -> !b.getEventHandlers().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<VEventType, VEventHandlerElement<?, ACTION>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Option.of(handlerB._2).equals(a.getEventHandlers().get(handlerB._1)));
-        final Map<VEventType, VEventHandlerElement<?, ACTION>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
+        final Map<VEventType, VEventHandlerElement<?>> aEventHandlers = a.getEventHandlers().toMap(eventHandler -> Tuple.of(eventHandler.getType(), eventHandler));
+        final Map<VEventType, VEventHandlerElement<?>> bEventHandlers = a.getEventHandlers().toMap(eventHandler -> Tuple.of(eventHandler.getType(), eventHandler));
+        final Map<VEventType, VEventHandlerElement<?>> removedEventHandlers = aEventHandlers.filter(handlerA -> !bEventHandlers.containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
+        final Map<VEventType, VEventHandlerElement<?>> updatedEventHandlers = bEventHandlers.filter(handlerB -> !Option.of(handlerB._2).equals(aEventHandlers.get(handlerB._1)));
+        final Map<VEventType, VEventHandlerElement<?>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
 
         return diffProperties.isEmpty() && diffEventHandlers.isEmpty() ? Vector.empty()
-                : Vector.of(new AttributesPatch<>(index, diffProperties, diffEventHandlers));
+                : Vector.of(new AttributesPatch(index, diffProperties, diffEventHandlers));
     }
 
 

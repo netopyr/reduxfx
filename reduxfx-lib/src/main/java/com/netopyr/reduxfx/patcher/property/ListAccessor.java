@@ -6,9 +6,9 @@ import javafx.collections.ObservableList;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class ListAccessor<ACTION> extends AbstractNoConversionAccessor<ObservableList, ACTION> {
+public class ListAccessor extends AbstractNoConversionAccessor<ObservableList> {
 
-    public ListAccessor(MethodHandle methodHandle, Consumer<ACTION> dispatcher) {
+    public ListAccessor(MethodHandle methodHandle, Consumer<Object> dispatcher) {
         super(methodHandle, dispatcher);
     }
 

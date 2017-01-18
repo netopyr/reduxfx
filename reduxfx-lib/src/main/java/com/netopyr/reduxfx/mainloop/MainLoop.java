@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class MainLoop<ACTION> {
+public class MainLoop {
 
     private static final AtomicInteger THREAD_COUNTER = new AtomicInteger();
     private static final ThreadFactory THREAD_FACTORY = runnable -> {
@@ -36,8 +36,8 @@ public class MainLoop<ACTION> {
         return thread;
     };
 
-    private final BlockingQueue<ACTION> queue = new LinkedBlockingQueue<>();
-    private final Subject<ACTION> actionSubject = PublishSubject.create();
+    private final BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
+    private final Subject<Object> actionSubject = PublishSubject.create();
     private final Subject<Command> commandObservable = PublishSubject.create();
 
     private ExecutorService executor;
@@ -48,8 +48,8 @@ public class MainLoop<ACTION> {
 
     public <STATE> MainLoop(
             STATE initialState,
-            BiFunction<STATE, ACTION, Update<STATE>> updater,
-            Function<STATE, VNode<ACTION>> view,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
             Parent root
     ) {
         final Subject<Update<STATE>> updateSubject = BehaviorSubject.create();
@@ -57,16 +57,16 @@ public class MainLoop<ACTION> {
                 .scan(Update.of(initialState), (update, action) -> updater.apply(update.getState(), action))
                 .subscribe(updateSubject);
 
-        final Subject<Option<VNode<ACTION>>> vScenegraphSubject = ReplaySubject.createWithSize(2);
+        final Subject<Option<VNode>> vScenegraphSubject = ReplaySubject.createWithSize(2);
         updateSubject.map(Update::getState)
                 .map(view::apply)
                 .map(Option::of)
-                .startWith(Option.<VNode<ACTION>>none())
+                .startWith(Option.<VNode>none())
                 .subscribe(vScenegraphSubject);
 
         final Observable<Vector<Patch>> patchObservable = vScenegraphSubject.zipWith(vScenegraphSubject.skip(1), Differ::diff);
 
-        final Patcher<ACTION> patcher = new Patcher<>(this::dispatch);
+        final Patcher patcher = new Patcher(this::dispatch);
         vScenegraphSubject
                 .zipWith(patchObservable, Tuple::of)
                 .forEach(tuple -> {
@@ -114,7 +114,7 @@ public class MainLoop<ACTION> {
         }
     }
 
-    public boolean dispatch(ACTION action) {
+    public boolean dispatch(Object action) {
         return queue.offer(action);
     }
 

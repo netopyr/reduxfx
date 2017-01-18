@@ -6,15 +6,15 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class AttributesPatch<ACTION> extends Patch {
+public class AttributesPatch extends Patch {
 
-    private final Map<String, VProperty<?, ACTION>> properties;
-    private final Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers;
+    private final Map<String, VProperty<?>> properties;
+    private final Map<VEventType, VEventHandlerElement<?>> eventHandlers;
 
     public AttributesPatch(
             int index,
-            Map<String, VProperty<?, ACTION>> properties,
-            Map<VEventType, VEventHandlerElement<?, ACTION>> eventHandlers) {
+            Map<String, VProperty<?>> properties,
+            Map<VEventType, VEventHandlerElement<?>> eventHandlers) {
         super(index);
         this.properties = properties;
         this.eventHandlers = eventHandlers;
@@ -25,11 +25,11 @@ public class AttributesPatch<ACTION> extends Patch {
         return Type.ATTRIBUTES;
     }
 
-    public Map<String, VProperty<?, ACTION>> getProperties() {
+    public Map<String, VProperty<?>> getProperties() {
         return properties;
     }
 
-    public Map<VEventType, VEventHandlerElement<?, ACTION>> getEventHandlers() {
+    public Map<VEventType, VEventHandlerElement<?>> getEventHandlers() {
         return eventHandlers;
     }
 

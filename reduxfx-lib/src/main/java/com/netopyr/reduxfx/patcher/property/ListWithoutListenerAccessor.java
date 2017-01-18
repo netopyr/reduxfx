@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import java.lang.invoke.MethodHandle;
 import java.util.Collections;
 
-public class ListWithoutListenerAccessor<ACTION> implements Accessor<ObservableList, ACTION> {
+public class ListWithoutListenerAccessor implements Accessor<ObservableList> {
 
     private final MethodHandle getter;
 
@@ -17,7 +17,7 @@ public class ListWithoutListenerAccessor<ACTION> implements Accessor<ObservableL
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, VProperty<ObservableList, ACTION> vProperty) {
+    public void set(Node node, VProperty<ObservableList> vProperty) {
         if (vProperty.isValueDefined()) {
             final ObservableList list;
             try {

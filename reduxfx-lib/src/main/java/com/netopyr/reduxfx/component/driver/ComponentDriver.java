@@ -23,10 +23,10 @@ import javafx.event.EventHandler;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-public class ComponentDriver<ACTION> implements Driver<ACTION> {
+public class ComponentDriver implements Driver {
 
     private final Subject<Command> commandSubject = PublishSubject.create();
-    private final Subject<ACTION> actionSubject = PublishSubject.create();
+    private final Subject<Object> actionSubject = PublishSubject.create();
 
     private Observable<FireEventCommand<? extends Event>> fireEventCommandObservable;
     private Observable<IntegerChangedCommand> integerChangedCommandObservable;
@@ -39,7 +39,7 @@ public class ComponentDriver<ACTION> implements Driver<ACTION> {
     }
 
     @Override
-    public Observable<ACTION> getActionObservable() {
+    public Observable<Object> getActionObservable() {
         return actionSubject;
     }
 
@@ -100,7 +100,7 @@ public class ComponentDriver<ACTION> implements Driver<ACTION> {
     }
 
 
-    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T, ACTION> listener) {
+    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T> listener) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
         Objects.requireNonNull(listener, "Listener must not be null");

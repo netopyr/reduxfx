@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import java.lang.invoke.MethodHandle;
 import java.util.Collection;
 
-public class CollectionAccessor<TYPE extends Collection, ACTION> implements Accessor<TYPE, ACTION> {
+public class CollectionAccessor<TYPE extends Collection> implements Accessor<TYPE> {
 
     private final MethodHandle getter;
 
@@ -16,7 +16,7 @@ public class CollectionAccessor<TYPE extends Collection, ACTION> implements Acce
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, VProperty<TYPE, ACTION> vProperty) {
+    public void set(Node node, VProperty<TYPE> vProperty) {
         if (vProperty.isValueDefined()) {
             final Collection collection;
             try {

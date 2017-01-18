@@ -6,14 +6,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.function.Function;
 
-public class StartTimerCommand<ACTION> implements Command {
+public class StartTimerCommand implements Command {
 
     private final Object key;
     private final Duration delay;
     private final Duration interval;
-    private final Function<Long, ACTION> mapper;
+    private final Function<Long, Object> mapper;
 
-    public StartTimerCommand(Object key, Duration delay, Duration interval, Function<Long, ACTION> mapper) {
+    public StartTimerCommand(Object key, Duration delay, Duration interval, Function<Long, Object> mapper) {
         this.key = key;
         this.delay = delay;
         this.interval = interval;
@@ -32,7 +32,7 @@ public class StartTimerCommand<ACTION> implements Command {
         return interval;
     }
 
-    public Function<Long, ACTION> getMapper() {
+    public Function<Long, Object> getMapper() {
         return mapper;
     }
 

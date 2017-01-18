@@ -13,14 +13,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javaslang.Function2;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class ReduxFX<STATE, ACTION> {
+public class ReduxFX<STATE> {
 
-    public static <STATE, ACTION> ReduxFX<STATE, ACTION> start(STATE initialState, Function2<STATE, ACTION, Update<STATE>> updater, Function<STATE, VNode<ACTION>> view, Stage stage) {
+    public static <STATE> ReduxFX<STATE> start(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Function<STATE, VNode> view, Stage stage) {
         final StackPane root = new StackPane();
         root.setMinWidth(Region.USE_PREF_SIZE);
         root.setMinHeight(Region.USE_PREF_SIZE);
@@ -32,18 +31,18 @@ public class ReduxFX<STATE, ACTION> {
         return new ReduxFX<>(initialState, updater, view, root);
     }
 
-    public static <STATE, ACTION> ReduxFX<STATE, ACTION> start(STATE initialState, BiFunction<STATE, ACTION, Update<STATE>> updater, Function<STATE, VNode<ACTION>> view, Group root) {
+    public static <STATE> ReduxFX<STATE> start(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Function<STATE, VNode> view, Group root) {
         return new ReduxFX<>(initialState, updater, view, root);
     }
 
-    public static <STATE, ACTION> ReduxFX<STATE, ACTION> start(STATE initialState, BiFunction<STATE, ACTION, Update<STATE>> updater, Function<STATE, VNode<ACTION>> view, Pane root) {
+    public static <STATE> ReduxFX<STATE> start(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Function<STATE, VNode> view, Pane root) {
         return new ReduxFX<>(initialState, updater, view, root);
     }
 
-    private final MainLoop<ACTION> mainLoop;
+    private final MainLoop mainLoop;
 
-    protected ReduxFX(STATE initialState, BiFunction<STATE, ACTION, Update<STATE>> updater, Function<STATE, VNode<ACTION>> view, Parent root) {
-        mainLoop = new MainLoop<>(initialState, updater, view, root);
+    protected ReduxFX(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Function<STATE, VNode> view, Parent root) {
+        mainLoop = new MainLoop(initialState, updater, view, root);
     }
 
     public void start() {
@@ -54,7 +53,7 @@ public class ReduxFX<STATE, ACTION> {
         mainLoop.stop();
     }
 
-    public void dispatch(ACTION action) {
+    public void dispatch(Object action) {
         mainLoop.dispatch(action);
     }
 
