@@ -3,12 +3,33 @@ ReduxFX
 
 [Redux][]-Architecture for JavaFX
 
+[![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx/reduxfx)
+[![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
+
 ReduxFX is an experiment to apply patterns from functional reactive UI programming to JavaFX. Modern frameworks like Redux for [React.js][], [Elm][], and [Cycle.js][] introduced a new approach to building user interfaces. This approach has many [advantages](#advantages) and it is worth exploring how it can be applied to JavaFX.
 
-The following section is a brief introduction of the core concepts of functional reactive UI programming taken from my article ["MVC is dead - what comes next?"][mvc is dead] If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#todomvc-javafx-example).
+Adding ReduxFX to your project
+------------------------------
+### Maven
+```xml
+<dependency>
+  <groupId>com.netopyr.reduxfx</groupId>
+  <artifactId>reduxfx</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
+### Gradle
+```groovy
+dependencies {
+    compile "com.netopyr.reduxfx:reduxfx:0.1.0"
+}
+```
 
 Functional Reactive UI Programming
 ----------------------------------
+> The following section is a brief introduction of the core concepts of functional reactive UI programming taken from my article ["MVC is dead - what comes next?"][mvc is dead] If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#todomvc-javafx-example).
+
 On the face of it, frameworks like React.js with the Redux-architecture, Elm, and Cycle.js seem quite different. But under the hood, all of them share a simple idea, which is sketched in the following picture:
 
 ![alt Overview functional reactive UI programming][fruip cycle]
