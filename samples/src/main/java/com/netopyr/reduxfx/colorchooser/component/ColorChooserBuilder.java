@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.colorchooser.component;
 
-import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.builders.VBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;

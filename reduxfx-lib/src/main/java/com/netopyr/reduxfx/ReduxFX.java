@@ -57,12 +57,12 @@ public class ReduxFX<STATE> {
         mainLoop.dispatch(action);
     }
 
-    public void register(Driver<ACTION> driver) {
+    public void register(Driver driver) {
         mainLoop.getCommandObservable().subscribe(driver.getCommandObserver());
         driver.getActionObservable().forEach(mainLoop::dispatch);
     }
 
-    public void register(ActionSupplier<ACTION> actionSupplier) {
+    public void register(ActionSupplier actionSupplier) {
         actionSupplier.getActionObservable().forEach(mainLoop::dispatch);
     }
 
