@@ -23,8 +23,8 @@ public class Accessors {
 
     private final Consumer<Object> dispatcher;
 
-    private Map<PropertyKey, Accessor<?>> accessorMap = HashMap.empty();
-    private Map<PropertyKey, Accessor<?>> layoutAccessorMap = HashMap.empty();
+    private Map<PropertyKey, Accessor> accessorMap = HashMap.empty();
+    private Map<PropertyKey, Accessor> layoutAccessorMap = HashMap.empty();
 
     public Accessors(Consumer<Object> dispatcher) {
         this.dispatcher = dispatcher;
@@ -41,11 +41,11 @@ public class Accessors {
         registerAccessor(new PropertyKey(Node.class, "focused"), new FocusedAccessor(getPropertyGetter(Node.class, "focused").get(), dispatcher));
     }
 
-    public void registerAccessor(PropertyKey propertyKey, Accessor<?> accessor) {
+    public void registerAccessor(PropertyKey propertyKey, Accessor accessor) {
         cacheAccessor(propertyKey, accessor);
     }
 
-    public Option<Accessor<?>> getAccessor(Node node, String propertyName) {
+    public Option<Accessor> getAccessor(Node node, String propertyName) {
         final Class<? extends Node> nodeClass = node.getClass();
         final PropertyKey propertyKey = new PropertyKey(nodeClass, propertyName);
 
@@ -70,10 +70,10 @@ public class Accessors {
                 });
     }
 
-    private Option<Accessor<?>> searchInCache(Map<PropertyKey, Accessor<?>> map, PropertyKey propertyKey) {
+    private Option<Accessor> searchInCache(Map<PropertyKey, Accessor> map, PropertyKey propertyKey) {
         final String propertyName = propertyKey.getName();
         for (Class<?> clazz = propertyKey.getNodeClass().getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
-            final Option<Accessor<?>> accessor = map.get(new PropertyKey(clazz, propertyName));
+            final Option<Accessor> accessor = map.get(new PropertyKey(clazz, propertyName));
             if (accessor.isDefined()) {
                 return accessor;
             }
@@ -81,17 +81,17 @@ public class Accessors {
         return Option.none();
     }
 
-    private Accessor<?> cacheAccessor(PropertyKey propertyKey, Accessor<?> accessor) {
+    private Accessor cacheAccessor(PropertyKey propertyKey, Accessor accessor) {
         accessorMap = doCacheAccessor(accessorMap, propertyKey, accessor);
         return accessor;
     }
 
-    private Accessor<?> cacheLayoutAccessor(PropertyKey propertyKey, Accessor<?> accessor) {
+    private Accessor cacheLayoutAccessor(PropertyKey propertyKey, Accessor accessor) {
         layoutAccessorMap = doCacheAccessor(layoutAccessorMap, propertyKey, accessor);
         return accessor;
     }
 
-    private Map<PropertyKey, Accessor<?>> doCacheAccessor(Map<PropertyKey, Accessor<?>> map, PropertyKey propertyKey, Accessor<?> accessor) {
+    private Map<PropertyKey, Accessor> doCacheAccessor(Map<PropertyKey, Accessor> map, PropertyKey propertyKey, Accessor accessor) {
         final Option<Method> getter = getGetterMethod(propertyKey.getNodeClass(), propertyKey.getName());
         if (getter.isDefined()) {
             final Class<?> declaringClass = getter.get().getDeclaringClass();
@@ -104,7 +104,7 @@ public class Accessors {
         return map;
     }
 
-    private Option<Accessor<?>> createAccessor(Class<? extends Node> nodeClass, String propertyName) {
+    private Option<Accessor> createAccessor(Class<? extends Node> nodeClass, String propertyName) {
         final Option<Method> getterMethod = getGetterMethod(nodeClass, propertyName);
         final Option<MethodHandle> getter = getterMethod.flatMap(this::convertToMethodHandle);
 
@@ -120,14 +120,14 @@ public class Accessors {
         }
 
         if (getSetter(nodeClass, propertyName).isDefined()) {
-            return getPropertyGetter(nodeClass, propertyName).<Accessor<?>>map(methodHandle -> new PropertyAccessor<>(methodHandle, dispatcher))
+            return getPropertyGetter(nodeClass, propertyName).<Accessor>map(methodHandle -> new PropertyAccessor(methodHandle, dispatcher))
                     .orElse(getSetter(nodeClass, propertyName).map(SetterAccessor::new));
         } else {
-            return getPropertyGetter(nodeClass, propertyName).map(methodHandle -> new ReadOnlyPropertyAccessor<>(methodHandle, dispatcher));
+            return getPropertyGetter(nodeClass, propertyName).map(methodHandle -> new ReadOnlyPropertyAccessor(methodHandle, dispatcher));
         }
     }
 
-    private Option<Accessor<?>> createLayoutAccessor(Class<? extends Parent> parentClass, String propertyName) {
+    private Option<Accessor> createLayoutAccessor(Class<? extends Parent> parentClass, String propertyName) {
         final Option<MethodHandle> layoutSetter = getLayoutSetter(parentClass, propertyName);
         return layoutSetter.isEmpty() ? Option.none() : Option.of(new LayoutConstraintAccessor(layoutSetter.get()));
     }

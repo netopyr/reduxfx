@@ -5,28 +5,29 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
 import java.lang.invoke.MethodHandle;
+import java.util.Collection;
 import java.util.Collections;
 
-public class ListWithoutListenerAccessor implements Accessor<ObservableList> {
+public class ListWithoutListenerAccessor implements Accessor {
 
     private final MethodHandle getter;
 
-    public ListWithoutListenerAccessor(MethodHandle getter) {
+    ListWithoutListenerAccessor(MethodHandle getter) {
         this.getter = getter;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, VProperty<ObservableList> vProperty) {
+    public void set(Node node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             final ObservableList list;
             try {
                 list = (ObservableList) getter.invoke(node);
             } catch (Throwable throwable) {
-                throw new IllegalStateException("Unable to read value of property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+                throw new IllegalStateException("Unable to read value of property " + name + " from Node-class " + node.getClass(), throwable);
             }
 
-            list.setAll(vProperty.getValue() == null ? Collections.emptyList() : vProperty.getValue());
+            list.setAll(vProperty.getValue() == null ? Collections.emptyList() : (Collection) vProperty.getValue());
         }
     }
 }

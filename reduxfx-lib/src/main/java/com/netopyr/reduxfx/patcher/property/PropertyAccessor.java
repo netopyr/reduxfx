@@ -6,7 +6,7 @@ import javafx.beans.property.ReadOnlyProperty;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class PropertyAccessor<TYPE> extends AbstractNoConversionAccessor<TYPE> {
+public class PropertyAccessor extends AbstractNoConversionAccessor {
 
     PropertyAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
         super(propertyGetter, dispatcher);
@@ -14,7 +14,7 @@ public class PropertyAccessor<TYPE> extends AbstractNoConversionAccessor<TYPE> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty<TYPE> readOnlyProperty, TYPE value) {
+    protected void setValue(ReadOnlyProperty readOnlyProperty, Object value) {
         final Property property = (Property) readOnlyProperty;
         if (property.getValue() == null? value != null : ! property.getValue().equals(value)) {
             property.setValue(value);

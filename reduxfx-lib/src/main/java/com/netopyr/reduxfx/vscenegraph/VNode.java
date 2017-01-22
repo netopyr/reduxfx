@@ -1,9 +1,11 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
 import javaslang.collection.Array;
+import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Objects;
@@ -12,22 +14,22 @@ public class VNode {
 
     private final Class<? extends Node> nodeClass;
     private final Array<VNode> children;
-    private final Array<VProperty<?>> properties;
-    private final Array<VEventHandlerElement<?>> eventHandlers;
+    private final Map<String, VProperty> properties;
+    private final Map<VEventType, VEventHandler> eventHandlers;
 
 
     @SuppressWarnings("unchecked")
     public VNode(Class<? extends Node> nodeClass,
-                 Array<VProperty<?>> properties,
-                 Array<VEventHandlerElement<?>> eventHandlers) {
+                 Map<String, VProperty> properties,
+                 Map<VEventType, VEventHandler> eventHandlers) {
         this.nodeClass = Objects.requireNonNull(nodeClass, "Type must not be null");
         if (properties == null) {
             throw new NullPointerException("Properties must not be null");
         }
-        this.children = properties.find(property -> "children".equals(property.getName()))
+        this.children = properties.get("children")
                 .map(property -> (Array<VNode>) property.getValue())
                 .getOrElse(Array.empty());
-        this.properties = properties.filter(property -> ! "children".equals(property.getName()));
+        this.properties = properties.filter(entry -> ! "children".equals(entry._1));
         this.eventHandlers = Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
     }
 
@@ -40,11 +42,11 @@ public class VNode {
         return children;
     }
 
-    public Array<VProperty<?>> getProperties() {
+    public Map<String, VProperty> getProperties() {
         return properties;
     }
 
-    public Array<VEventHandlerElement<?>> getEventHandlers() {
+    public Map<VEventType, VEventHandler> getEventHandlers() {
         return eventHandlers;
     }
 

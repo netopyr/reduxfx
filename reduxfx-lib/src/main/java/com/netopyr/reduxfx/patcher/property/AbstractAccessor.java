@@ -11,7 +11,7 @@ import javafx.scene.Node;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-abstract class AbstractAccessor<V_TYPE, FX_TYPE> implements Accessor<V_TYPE> {
+abstract class AbstractAccessor implements Accessor {
 
     private final MethodHandle propertyGetter;
     private final Consumer<Object> dispatcher;
@@ -23,13 +23,13 @@ abstract class AbstractAccessor<V_TYPE, FX_TYPE> implements Accessor<V_TYPE> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, VProperty<V_TYPE> vProperty) {
+    public void set(Node node, String name, VProperty vProperty) {
 
-        final ReadOnlyProperty<FX_TYPE> property;
+        final ReadOnlyProperty property;
         try {
             property = (ReadOnlyProperty) propertyGetter.invoke(node);
         } catch (Throwable throwable) {
-            throw new IllegalStateException("Unable to read property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+            throw new IllegalStateException("Unable to read property " + name + " from Node-class " + node.getClass(), throwable);
         }
 
         clearListeners(node, property);
@@ -47,15 +47,15 @@ abstract class AbstractAccessor<V_TYPE, FX_TYPE> implements Accessor<V_TYPE> {
         }
     }
 
-    protected abstract V_TYPE fxToV(FX_TYPE value);
+    protected abstract Object fxToV(Object value);
 
-    protected abstract FX_TYPE vToFX(V_TYPE value);
+    protected abstract Object vToFX(Object value);
 
-    protected abstract void setValue(ReadOnlyProperty<FX_TYPE> property, FX_TYPE value);
+    protected abstract void setValue(ReadOnlyProperty property, Object value);
 
     @SuppressWarnings("unchecked")
-    private void clearListeners(Node node, ReadOnlyProperty<FX_TYPE> property) {
-        final ChangeListener<FX_TYPE> changeListener = (ChangeListener) node.getProperties().get(property.getName() + ".change");
+    private void clearListeners(Node node, ReadOnlyProperty property) {
+        final ChangeListener changeListener = (ChangeListener) node.getProperties().get(property.getName() + ".change");
         if (changeListener != null) {
             property.removeListener(changeListener);
         }
@@ -66,8 +66,8 @@ abstract class AbstractAccessor<V_TYPE, FX_TYPE> implements Accessor<V_TYPE> {
         }
     }
 
-    private void setChangeListener(Node node, ReadOnlyProperty<FX_TYPE> property, VChangeListener<? super V_TYPE> listener, Consumer<Object> dispatcher) {
-        final ChangeListener<FX_TYPE> newListener = (source, oldValue, newValue) -> {
+    private void setChangeListener(Node node, ReadOnlyProperty property, VChangeListener listener, Consumer<Object> dispatcher) {
+        final ChangeListener newListener = (source, oldValue, newValue) -> {
             final Object action = listener.onChange(fxToV(oldValue), fxToV(newValue));
             if (action != null) {
                 dispatcher.accept(action);
@@ -77,7 +77,7 @@ abstract class AbstractAccessor<V_TYPE, FX_TYPE> implements Accessor<V_TYPE> {
         node.getProperties().put(property.getName() + ".change", newListener);
     }
 
-    private void setInvalidationListener(Node node, ReadOnlyProperty<FX_TYPE> property, VInvalidationListener listener, Consumer<Object> dispatcher) {
+    private void setInvalidationListener(Node node, ReadOnlyProperty property, VInvalidationListener listener, Consumer<Object> dispatcher) {
         final InvalidationListener newListener = (source) -> {
             final Object action = listener.onInvalidation();
             if (action != null) {

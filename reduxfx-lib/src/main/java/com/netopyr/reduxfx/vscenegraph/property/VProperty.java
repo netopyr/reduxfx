@@ -3,21 +3,16 @@ package com.netopyr.reduxfx.vscenegraph.property;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Objects;
+public final class VProperty {
 
-public final class VProperty<TYPE> {
-
-    private final String name;
     private final boolean isValueDefined;
-    private final TYPE value;
-    private final Option<VChangeListener<? super TYPE>> changeListener;
+    private final Object value;
+    private final Option<VChangeListener> changeListener;
     private final Option<VInvalidationListener> invalidationListener;
 
-    public VProperty(String name,
-                     TYPE value,
-                     Option<VChangeListener<? super TYPE>> changeListener,
+    public VProperty(Object value,
+                     Option<VChangeListener> changeListener,
                      Option<VInvalidationListener> invalidationListener) {
-        this.name = Objects.requireNonNull(name, "Name must not be null");
         this.isValueDefined = true;
         this.value = value;
         this.changeListener = changeListener;
@@ -25,32 +20,26 @@ public final class VProperty<TYPE> {
     }
 
     @SuppressWarnings("unchecked")
-    public VProperty(String name,
-                     Option<VChangeListener<? super TYPE>> changeListener,
+    public VProperty(Option<VChangeListener> changeListener,
                      Option<VInvalidationListener> invalidationListener) {
-        this.name = Objects.requireNonNull(name, "Name must not be null");
         this.isValueDefined = false;
         this.value = null;
         this.changeListener = changeListener;
         this.invalidationListener = invalidationListener;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public boolean isValueDefined() {
         return isValueDefined;
     }
 
-    public TYPE getValue() {
+    public Object getValue() {
         if (! isValueDefined) {
             throw new IllegalStateException("No value defined");
         }
         return value;
     }
 
-    public Option<VChangeListener<? super TYPE>> getChangeListener() {
+    public Option<VChangeListener> getChangeListener() {
         return changeListener;
     }
 
@@ -61,7 +50,6 @@ public final class VProperty<TYPE> {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("name", name)
                 .append("isValueDefined", isValueDefined)
                 .append("value", value)
                 .append("changeListener", changeListener.stringPrefix())

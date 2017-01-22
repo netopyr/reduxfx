@@ -1,22 +1,23 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
-import javaslang.collection.Array;
+import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class TextBuilder<BUILDER extends TextBuilder<BUILDER>> extends ShapeBuilder<BUILDER> {
 
     public TextBuilder(Class<? extends Node> nodeClass,
-                       Array<VProperty<?>> properties,
-                       Array<VEventHandlerElement<?>> eventHandlers) {
+                       Map<String, VProperty> properties,
+                       Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
         return (BUILDER) new TextBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 

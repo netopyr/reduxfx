@@ -5,7 +5,7 @@ import javafx.scene.Node;
 
 import java.lang.invoke.MethodHandle;
 
-public class SetterAccessor<TYPE> implements Accessor<TYPE> {
+public class SetterAccessor implements Accessor {
 
     private final MethodHandle setter;
 
@@ -14,12 +14,12 @@ public class SetterAccessor<TYPE> implements Accessor<TYPE> {
     }
 
     @Override
-    public void set(Node node, VProperty<TYPE> vProperty) {
+    public void set(Node node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             try {
                 setter.invoke(node, vProperty.getValue());
             } catch (Throwable throwable) {
-                throw new IllegalStateException("Unable to set property " + vProperty.getName() + " from Node-class " + node.getClass(), throwable);
+                throw new IllegalStateException("Unable to set property " + name + " from Node-class " + node.getClass(), throwable);
             }
         }
     }

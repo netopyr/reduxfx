@@ -6,7 +6,7 @@ import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.differ.patches.RemovePatch;
 import com.netopyr.reduxfx.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.Tuple;
@@ -16,6 +16,8 @@ import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 public class Differ {
 
@@ -67,17 +69,13 @@ public class Differ {
     }
 
     private static Vector<Patch> diffAttributes(int index, VNode a, VNode b) {
-        final Map<String, VProperty<?>> aProperties = a.getProperties().toMap(property -> Tuple.of(property.getName(), property));
-        final Map<String, VProperty<?>> bProperties = b.getProperties().toMap(property -> Tuple.of(property.getName(), property));
-        final Map<String, VProperty<?>> removedProperties = aProperties.filter(propertyA -> !bProperties.containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<String, VProperty<?>> updatedProperties = bProperties.filter(propertyB -> !Option.of(propertyB._2).equals(aProperties.get(propertyB._1)));
-        final Map<String, VProperty<?>> diffProperties = removedProperties.merge(updatedProperties);
+        final Map<String, VProperty> removedProperties = a.getProperties().filter(propertyA -> !b.getProperties().containsKey(propertyA._1)).map((key, value) -> Tuple.of(key, new VProperty(key, Option.none(), Option.none())));
+        final Map<String, VProperty> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
+        final Map<String, VProperty> diffProperties = removedProperties.merge(updatedProperties);
 
-        final Map<VEventType, VEventHandlerElement<?>> aEventHandlers = a.getEventHandlers().toMap(eventHandler -> Tuple.of(eventHandler.getType(), eventHandler));
-        final Map<VEventType, VEventHandlerElement<?>> bEventHandlers = a.getEventHandlers().toMap(eventHandler -> Tuple.of(eventHandler.getType(), eventHandler));
-        final Map<VEventType, VEventHandlerElement<?>> removedEventHandlers = aEventHandlers.filter(handlerA -> !bEventHandlers.containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, null));
-        final Map<VEventType, VEventHandlerElement<?>> updatedEventHandlers = bEventHandlers.filter(handlerB -> !Option.of(handlerB._2).equals(aEventHandlers.get(handlerB._1)));
-        final Map<VEventType, VEventHandlerElement<?>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
+        final Map<VEventType, Option<VEventHandler>> removedEventHandlers = a.getEventHandlers().filter(handlerA -> !b.getEventHandlers().containsKey(handlerA._1)).map((key, value) -> Tuple.of(key, Option.none()));
+        final Map<VEventType, Option<VEventHandler>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Objects.equals(Option.of(handlerB._2), a.getEventHandlers().get(handlerB._1))).map((key, value) -> Tuple.of(key, Option.of(value)));
+        final Map<VEventType, Option<VEventHandler>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
 
         return diffProperties.isEmpty() && diffEventHandlers.isEmpty() ? Vector.empty()
                 : Vector.of(new AttributesPatch(index, diffProperties, diffEventHandlers));

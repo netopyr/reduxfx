@@ -6,14 +6,14 @@ import javafx.scene.Node;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class FocusedAccessor extends AbstractNoConversionAccessor<Boolean> {
+public class FocusedAccessor extends AbstractNoConversionAccessor {
 
     FocusedAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
         super(propertyGetter, dispatcher);
     }
 
     @Override
-    protected void setValue(ReadOnlyProperty<Boolean> property, Boolean value) {
+    protected void setValue(ReadOnlyProperty property, Object value) {
         if (Boolean.TRUE.equals(value)) {
             ((Node) property.getBean()).requestFocus();
         }

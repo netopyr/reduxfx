@@ -1,11 +1,12 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
-import javaslang.collection.Array;
+import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SliderBuilder<BUILDER extends SliderBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
@@ -14,13 +15,13 @@ public class SliderBuilder<BUILDER extends SliderBuilder<BUILDER>> extends NodeB
     private static final String VALUE = "value";
 
     public SliderBuilder(Class<? extends Node> nodeClass,
-                         Array<VProperty<?>> properties,
-                         Array<VEventHandlerElement<?>> eventHandlers) {
+                         Map<String, VProperty> properties,
+                         Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
-    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
         return (BUILDER) new SliderBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 

@@ -10,7 +10,7 @@ import javaslang.control.Option;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class NodeAccessor extends AbstractAccessor<VNode, Node> {
+public class NodeAccessor extends AbstractAccessor {
 
     private final NodeBuilder nodeBuilder;
 
@@ -21,26 +21,46 @@ public class NodeAccessor extends AbstractAccessor<VNode, Node> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected VNode fxToV(Node value) {
-        return (VNode) value.getUserData();
+    protected Object fxToV(Object value) {
+        if (value instanceof Node) {
+            final Node node = (Node) value;
+            final Object vObj = node.getUserData();
+            if (vObj instanceof VNode) {
+                return vObj;
+            }
+        }
+        throw new IllegalStateException(String.format("Unable to convert the value %s to a VNode", value));
     }
 
     @Override
-    protected Node vToFX(VNode value) {
-        final Option<Node> nodeOption = nodeBuilder.create(value);
-        if (nodeOption.isEmpty()) {
-            return null;
-        }
+    protected Object vToFX(Object value) {
+        if (value instanceof VNode) {
+            final Option<Node> nodeOption = nodeBuilder.create((VNode) value);
+            if (nodeOption.isEmpty()) {
+                return null;
+            }
 
-        final Node node = nodeOption.get();
-        node.setUserData(value);
-        return node;
+            final Node node = nodeOption.get();
+            node.setUserData(value);
+            return node;
+        }
+        throw new IllegalStateException(String.format("Unable to convert the value %s to a Node", value));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty<Node> property, Node node) {
-        ((Property)property).setValue(node);
-        nodeBuilder.init(node, fxToV(node));
+    protected void setValue(ReadOnlyProperty property, Object obj) {
+        if (obj instanceof Node) {
+            final Node node = (Node) obj;
+            final Object vObj = fxToV(node);
+            if (vObj instanceof VNode) {
+                final VNode vNode = (VNode) vObj;
+                ((Property) property).setValue(node);
+                nodeBuilder.init(node, vNode);
+                return;
+            }
+        }
+        throw new IllegalStateException(String.format("Unable to set the value %s of property %s in class %s",
+                obj, property.getName(), property.getBean().getClass()));
     }
 }

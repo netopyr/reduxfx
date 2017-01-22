@@ -26,118 +26,118 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javaslang.collection.Array;
+import javaslang.collection.HashMap;
 
 public class VScenegraphFactory {
 
     private VScenegraphFactory() {}
 
     public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> customNode(Class<? extends Node> nodeClass) {
-        return Factory.node(nodeClass, () -> new NodeBuilder<>(nodeClass, Array.empty(), Array.empty()));
+        return Factory.node(nodeClass, () -> new NodeBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends AnchorPaneBuilder<CLASS>> AnchorPaneBuilder<CLASS> AnchorPane() {
-        return Factory.node(AnchorPane.class, () -> new AnchorPaneBuilder<CLASS>(AnchorPane.class, Array.empty(), Array.empty()));
+        return Factory.node(AnchorPane.class, () -> new AnchorPaneBuilder<CLASS>(AnchorPane.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane() {
-        return Factory.node(BorderPane.class, () -> new BorderPaneBuilder<>(BorderPane.class, Array.empty(), Array.empty()));
+        return Factory.node(BorderPane.class, () -> new BorderPaneBuilder<>(BorderPane.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ButtonBaseBuilder<CLASS>> ButtonBaseBuilder<CLASS> ButtonBase() {
-        return Factory.node(ButtonBase.class, () -> new ButtonBaseBuilder<>(ButtonBase.class, Array.empty(), Array.empty()));
+        return Factory.node(ButtonBase.class, () -> new ButtonBaseBuilder<>(ButtonBase.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button(Class<? extends Button> nodeClass) {
-        return Factory.node(nodeClass, () -> new ButtonBuilder<>(nodeClass, Array.empty(), Array.empty()));
+        return Factory.node(nodeClass, () -> new ButtonBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
     }
     public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button() {
         return Button(Button.class);
     }
 
     public static <CLASS extends CheckBoxBuilder<CLASS>> CheckBoxBuilder<CLASS> CheckBox() {
-        return Factory.node(CheckBox.class, () -> new CheckBoxBuilder<>(CheckBox.class, Array.empty(), Array.empty()));
+        return Factory.node(CheckBox.class, () -> new CheckBoxBuilder<>(CheckBox.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ControlBuilder<CLASS>> ControlBuilder<CLASS> Control() {
-        return Factory.node(Control.class, () -> new ControlBuilder<>(Control.class, Array.empty(), Array.empty()));
+        return Factory.node(Control.class, () -> new ControlBuilder<>(Control.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends HBoxBuilder<CLASS>> HBoxBuilder<CLASS> HBox() {
-        return Factory.node(HBox.class, () -> new HBoxBuilder<>(HBox.class, Array.empty(), Array.empty()));
+        return Factory.node(HBox.class, () -> new HBoxBuilder<>(HBox.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends LabelBuilder<CLASS>> LabelBuilder<CLASS> Label() {
-        return Factory.node(Label.class, () -> new LabelBuilder<>(Label.class, Array.empty(), Array.empty()));
+        return Factory.node(Label.class, () -> new LabelBuilder<>(Label.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends LabeledBuilder<CLASS>> LabeledBuilder<CLASS> Labeled() {
-        return Factory.node(Labeled.class, () -> new LabeledBuilder<>(Labeled.class, Array.empty(), Array.empty()));
+        return Factory.node(Labeled.class, () -> new LabeledBuilder<>(Labeled.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ListViewBuilder<CLASS, ELEMENT>, ELEMENT> ListViewBuilder<CLASS, ELEMENT> ListView(Class<ELEMENT> elementClass) {
-        return Factory.node(ReduxFXListView.class, () -> new ListViewBuilder<>(ReduxFXListView.class, elementClass, Array.empty(), Array.empty()));
+        return Factory.node(ReduxFXListView.class, () -> new ListViewBuilder<>(ReduxFXListView.class, elementClass, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> Node() {
-        return Factory.node(Node.class, () -> new NodeBuilder<>(Node.class, Array.empty(), Array.empty()));
+        return Factory.node(Node.class, () -> new NodeBuilder<>(Node.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends PaneBuilder<CLASS>> PaneBuilder<CLASS> Pane() {
-        return Factory.node(Pane.class, () -> new PaneBuilder<>(Pane.class, Array.empty(), Array.empty()));
+        return Factory.node(Pane.class, () -> new PaneBuilder<>(Pane.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ParentBuilder<CLASS>> ParentBuilder<CLASS> Parent() {
-        return Factory.node(Parent.class, () -> new ParentBuilder<>(Parent.class, Array.empty(), Array.empty()));
+        return Factory.node(Parent.class, () -> new ParentBuilder<>(Parent.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar(Class<? extends ProgressBar> nodeClass) {
-        return Factory.node(nodeClass, () -> new ProgressBarBuilder<>(nodeClass, Array.empty(), Array.empty()));
+        return Factory.node(nodeClass, () -> new ProgressBarBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
     }
     public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar() {
         return ProgressBar(ProgressBar.class);
     }
 
     public static <CLASS extends ProgressIndicatorBuilder<CLASS>> ProgressIndicatorBuilder<CLASS> ProgressIndicator() {
-        return Factory.node(ProgressIndicator.class, () -> new ProgressIndicatorBuilder<>(ProgressIndicator.class, Array.empty(), Array.empty()));
+        return Factory.node(ProgressIndicator.class, () -> new ProgressIndicatorBuilder<>(ProgressIndicator.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends RegionBuilder<CLASS>> RegionBuilder<CLASS> Region() {
-        return Factory.node(Region.class, () -> new RegionBuilder<>(Region.class, Array.empty(), Array.empty()));
+        return Factory.node(Region.class, () -> new RegionBuilder<>(Region.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends SliderBuilder<CLASS>> SliderBuilder<CLASS> Slider() {
-        return Factory.node(Slider.class, () -> new SliderBuilder<>(Slider.class, Array.empty(), Array.empty()));
+        return Factory.node(Slider.class, () -> new SliderBuilder<>(Slider.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends StackPaneBuilder<CLASS>> StackPaneBuilder<CLASS> StackPane() {
-        return Factory.node(StackPane.class, () -> new StackPaneBuilder<>(StackPane.class, Array.empty(), Array.empty()));
+        return Factory.node(StackPane.class, () -> new StackPaneBuilder<>(StackPane.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text(Class<? extends Text> nodeClass) {
-        return Factory.node(nodeClass, () -> new TextBuilder<>(nodeClass, Array.empty(), Array.empty()));
+        return Factory.node(nodeClass, () -> new TextBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
     }
     public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text() {
         return Text(Text.class);
     }
 
     public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField(Class<? extends TextField> nodeClass) {
-        return Factory.node(nodeClass, () -> new TextFieldBuilder<>(nodeClass, Array.empty(), Array.empty()));
+        return Factory.node(nodeClass, () -> new TextFieldBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
     }
     public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField() {
         return TextField(TextField.class);
     }
 
     public static <CLASS extends TextInputControlBuilder<CLASS>> TextInputControlBuilder<CLASS> TextInputControl() {
-        return Factory.node(TextInputControl.class, () -> new TextInputControlBuilder<>(TextInputControl.class, Array.empty(), Array.empty()));
+        return Factory.node(TextInputControl.class, () -> new TextInputControlBuilder<>(TextInputControl.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends ToggleButtonBuilder<CLASS>> ToggleButtonBuilder<CLASS> ToggleButton() {
-        return Factory.node(ToggleButton.class, () -> new ToggleButtonBuilder<>(ToggleButton.class, Array.empty(), Array.empty()));
+        return Factory.node(ToggleButton.class, () -> new ToggleButtonBuilder<>(ToggleButton.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends VBoxBuilder<CLASS>> VBoxBuilder<CLASS> VBox() {
-        return Factory.node(VBox.class, () -> new VBoxBuilder<>(VBox.class, Array.empty(), Array.empty()));
+        return Factory.node(VBox.class, () -> new VBoxBuilder<>(VBox.class, HashMap.empty(), HashMap.empty()));
     }
 
 

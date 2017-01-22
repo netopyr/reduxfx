@@ -5,7 +5,7 @@ import javafx.beans.property.ReadOnlyProperty;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class ReadOnlyPropertyAccessor<TYPE> extends AbstractNoConversionAccessor<TYPE> {
+public class ReadOnlyPropertyAccessor extends AbstractNoConversionAccessor {
 
     ReadOnlyPropertyAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
         super(propertyGetter, dispatcher);
