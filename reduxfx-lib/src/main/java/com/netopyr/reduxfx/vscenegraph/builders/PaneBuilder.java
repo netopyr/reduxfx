@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class PaneBuilder<CLASS extends PaneBuilder<CLASS>> extends RegionBuilder<CLASS> {
+public class PaneBuilder<BUILDER extends PaneBuilder<BUILDER>> extends RegionBuilder<BUILDER> {
 
     private static final String CHILDREN = "children";
 
@@ -19,11 +19,11 @@ public class PaneBuilder<CLASS extends PaneBuilder<CLASS>> extends RegionBuilder
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new PaneBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new PaneBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
-    public final CLASS children(VNode... nodes) {
+    public final BUILDER children(VNode... nodes) {
         return property(CHILDREN, nodes == null? Array.empty() : Array.of(nodes));
     }
 

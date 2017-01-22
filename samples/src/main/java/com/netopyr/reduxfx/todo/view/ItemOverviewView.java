@@ -7,7 +7,6 @@ import javafx.scene.layout.Region;
 
 import java.util.Objects;
 
-import static com.netopyr.reduxfx.todo.view.ItemView.ItemView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.AnchorPane;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.ListView;
 
@@ -34,7 +33,7 @@ class ItemOverviewView {
                 .maxWidth(Double.MAX_VALUE)
                 .maxHeight(Double.MAX_VALUE)
                 .children(
-                        ListView()
+                        ListView(TodoEntry.class)
                                 .id("items")
                                 .topAnchor(0.0)
                                 .rightAnchor(0.0)
@@ -58,7 +57,7 @@ class ItemOverviewView {
                                 // With the cell factory, we can set define how a single item of the ListView should be
                                 // visualized. It expects an item from the list of items and has to return the root VNode
                                 // of the resulting part of the VirtualScenegraph.
-                                .cellFactory(todoEntry -> ItemView((TodoEntry) todoEntry))
+                                .cellFactory(ItemView::ItemView)
                 );
     }
 }

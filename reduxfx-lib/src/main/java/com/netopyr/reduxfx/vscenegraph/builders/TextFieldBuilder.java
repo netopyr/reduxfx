@@ -5,13 +5,12 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
-public class TextFieldBuilder<CLASS extends TextFieldBuilder<CLASS>> extends TextInputControlBuilder<CLASS> {
+public class TextFieldBuilder<BUILDER extends TextFieldBuilder<BUILDER>> extends TextInputControlBuilder<BUILDER> {
 
     public TextFieldBuilder(Class<? extends Node> nodeClass,
                             Array<VProperty<?>> properties,
@@ -21,12 +20,12 @@ public class TextFieldBuilder<CLASS extends TextFieldBuilder<CLASS>> extends Tex
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new TextFieldBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new TextFieldBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS onAction(VEventHandler<ActionEvent> eventHandler) {
+    public BUILDER onAction(VEventHandler<ActionEvent> eventHandler) {
         return onEvent(ACTION, eventHandler);
     }
 

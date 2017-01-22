@@ -6,6 +6,7 @@ import com.netopyr.reduxfx.colorchooser.component.state.ColorChooserModel;
 import com.netopyr.reduxfx.colorchooser.component.updater.ColorChooserUpdater;
 import com.netopyr.reduxfx.colorchooser.component.view.ColorChooserView;
 import com.netopyr.reduxfx.component.ComponentBase;
+import com.netopyr.reduxfx.vscenegraph.builders.Factory;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,7 +29,7 @@ public class ColorChooserComponent extends VBox {
      * @return the VirtualScenegraph-node of a {@code ColorChooserComponent}, which is also a {@link ColorChooserBuilder}
      */
     public static <CLASS extends ColorChooserBuilder<CLASS>> ColorChooserBuilder<CLASS> ColorChooser() {
-        return new ColorChooserBuilder<>(ColorChooserComponent.class, Array.empty(), Array.empty());
+        return Factory.node(ColorChooserComponent.class, () -> new ColorChooserBuilder<CLASS>(ColorChooserComponent.class, Array.empty(), Array.empty()));
     }
 
 

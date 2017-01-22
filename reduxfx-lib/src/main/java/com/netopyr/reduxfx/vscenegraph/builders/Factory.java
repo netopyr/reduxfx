@@ -10,8 +10,6 @@ import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.Event;
-import javafx.scene.Node;
-import javaslang.Function3;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.Tuple3;
@@ -19,13 +17,14 @@ import javaslang.collection.Array;
 import javaslang.control.Option;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class Factory {
 
     private static final long EXPIRATION_SECONDS = 30;
     private static final long MAX_SIZE = 10000;
 
-    private static final Cache<Tuple3<Class<? extends Node>, Array<VProperty<?>>, Array<VEventHandlerElement<?>>>, VNode> nodeCache =
+    private static final Cache<Tuple3<Object, Array<VProperty<?>>, Array<VEventHandlerElement<?>>>, VNode> nodeCache =
             Caffeine.newBuilder().expireAfterAccess(EXPIRATION_SECONDS, TimeUnit.SECONDS)
                     .maximumSize(MAX_SIZE)
                     .build();
@@ -45,11 +44,19 @@ public class Factory {
     }
 
 
-    public static VNode node(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers,
-                             Function3<Class<? extends Node>, Array<VProperty<?>>, Array<VEventHandlerElement<?>>, VNode> creator) {
-        return nodeCache.get(
-                Tuple.of(nodeClass, properties, eventHandlers),
-                tuple -> creator.apply(tuple._1, tuple._2, tuple._3)
+    @SuppressWarnings("unchecked")
+    public static <BUILDER extends NodeBuilder<BUILDER>> BUILDER node(NodeBuilder<BUILDER> builder, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) nodeCache.get(
+                Tuple.of(builder.getTypeKey(), properties, eventHandlers),
+                tuple -> builder.create(properties, eventHandlers)
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <BUILDER extends VNode> BUILDER node(Object typeKey, Supplier<BUILDER> factory) {
+        return (BUILDER) nodeCache.get(
+                Tuple.of(typeKey, Array.empty(), Array.empty()),
+                tuple -> factory.get()
         );
     }
 

@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ToggleButtonBuilder<CLASS extends ToggleButtonBuilder<CLASS>> extends ButtonBaseBuilder<CLASS> {
+public class ToggleButtonBuilder<BUILDER extends ToggleButtonBuilder<BUILDER>> extends ButtonBaseBuilder<BUILDER> {
 
     private static final String SELECTED = "selected";
     private static final String TOGGLE_GROUP = "toggleGroup";
@@ -19,16 +19,16 @@ public class ToggleButtonBuilder<CLASS extends ToggleButtonBuilder<CLASS>> exten
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ToggleButtonBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ToggleButtonBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS selected(boolean value) {
+    public BUILDER selected(boolean value) {
         return property(SELECTED, value);
     }
 
-    public CLASS toggleGroup(String value) {
+    public BUILDER toggleGroup(String value) {
         return property(TOGGLE_GROUP, value);
     }
 

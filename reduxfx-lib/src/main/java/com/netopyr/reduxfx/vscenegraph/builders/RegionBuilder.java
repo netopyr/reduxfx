@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class RegionBuilder<CLASS extends RegionBuilder<CLASS>> extends ParentBuilder<CLASS> {
+public class RegionBuilder<BUILDER extends RegionBuilder<BUILDER>> extends ParentBuilder<BUILDER> {
 
     private static final String BACKGROUND = "background";
     private static final String MAX_HEIGHT = "maxHeight";
@@ -29,49 +29,49 @@ public class RegionBuilder<CLASS extends RegionBuilder<CLASS>> extends ParentBui
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new RegionBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new RegionBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS background(Background value) {
+    public BUILDER background(Background value) {
         return property(BACKGROUND, value);
     }
-    public CLASS background(Color fill) {
+    public BUILDER background(Color fill) {
         return property(BACKGROUND, new Background(new BackgroundFill(fill, null, null)));
     }
 
-    public CLASS maxHeight(double value) {
+    public BUILDER maxHeight(double value) {
         return property(MAX_HEIGHT, value);
     }
 
-    public CLASS maxWidth(double value) {
+    public BUILDER maxWidth(double value) {
         return property(MAX_WIDTH, value);
     }
 
-    public CLASS minHeight(double value) {
+    public BUILDER minHeight(double value) {
         return property(MIN_HEIGHT, value);
     }
 
-    public CLASS minWidth(double value) {
+    public BUILDER minWidth(double value) {
         return property(MIN_WIDTH, value);
     }
 
-    public CLASS prefHeight(double value) {
+    public BUILDER prefHeight(double value) {
         return property(PREF_HEIGHT, value);
     }
 
-    public CLASS prefWidth(double value) {
+    public BUILDER prefWidth(double value) {
         return property(PREF_WIDTH, value);
     }
 
-    public CLASS padding(double top, double rightLeft, double bottom) {
+    public BUILDER padding(double top, double rightLeft, double bottom) {
         return property(PADDING, new Insets(top, rightLeft, bottom, rightLeft));
     }
-    public CLASS padding(double topBottom, double rightLeft) {
+    public BUILDER padding(double topBottom, double rightLeft) {
         return property(PADDING, new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
-    public CLASS padding(double value) {
+    public BUILDER padding(double value) {
         return property(PADDING, new Insets(value, value, value, value));
     }
 

@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class TextInputControlBuilder<CLASS extends TextInputControlBuilder<CLASS>> extends ControlBuilder<CLASS> {
+public class TextInputControlBuilder<BUILDER extends TextInputControlBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
     private static final String PROMPT_TEXT = "promptText";
     private static final String TEXT = "text";
@@ -20,22 +20,22 @@ public class TextInputControlBuilder<CLASS extends TextInputControlBuilder<CLASS
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new TextInputControlBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new TextInputControlBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS promptText(String value) {
+    public BUILDER promptText(String value) {
         return property(PROMPT_TEXT, value);
     }
 
-    public CLASS text(String value, VChangeListener<? super String> listener) {
+    public BUILDER text(String value, VChangeListener<? super String> listener) {
         return property(TEXT, value, listener);
     }
-    public CLASS text(String value) {
+    public BUILDER text(String value) {
         return property(TEXT, value);
     }
-    public CLASS text(VChangeListener<? super String> listener) {
+    public BUILDER text(VChangeListener<? super String> listener) {
         return property(TEXT, listener);
     }
 

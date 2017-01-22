@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ProgressBarBuilder<CLASS extends ProgressBarBuilder<CLASS>> extends ProgressIndicatorBuilder<CLASS> {
+public class ProgressBarBuilder<BUILDER extends ProgressBarBuilder<BUILDER>> extends ProgressIndicatorBuilder<BUILDER> {
 
     public ProgressBarBuilder(Class<? extends Node> nodeClass,
                               Array<VProperty<?>> properties,
@@ -16,8 +16,8 @@ public class ProgressBarBuilder<CLASS extends ProgressBarBuilder<CLASS>> extends
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ProgressBarBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ProgressBarBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 

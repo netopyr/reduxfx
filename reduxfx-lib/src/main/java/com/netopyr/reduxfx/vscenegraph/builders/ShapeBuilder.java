@@ -7,7 +7,7 @@ import javafx.scene.paint.Paint;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ShapeBuilder<CLASS extends ShapeBuilder<CLASS>> extends NodeBuilder<CLASS> {
+public class ShapeBuilder<BUILDER extends ShapeBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
 
     private static final String FILL = "fill";
 
@@ -19,12 +19,12 @@ public class ShapeBuilder<CLASS extends ShapeBuilder<CLASS>> extends NodeBuilder
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ShapeBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ShapeBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS fill(Paint value) {
+    public BUILDER fill(Paint value) {
         return property(FILL, value);
     }
 

@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ProgressIndicatorBuilder<CLASS extends ProgressIndicatorBuilder<CLASS>> extends ControlBuilder<CLASS> {
+public class ProgressIndicatorBuilder<BUILDER extends ProgressIndicatorBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
     private static final String PROGRESS = "progress";
 
@@ -18,12 +18,12 @@ public class ProgressIndicatorBuilder<CLASS extends ProgressIndicatorBuilder<CLA
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ProgressIndicatorBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ProgressIndicatorBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS progress(double value) {
+    public BUILDER progress(double value) {
         return property(PROGRESS, value);
     }
 

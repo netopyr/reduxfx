@@ -8,7 +8,7 @@ import javafx.scene.paint.Paint;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class LabeledBuilder<CLASS extends LabeledBuilder<CLASS>> extends ControlBuilder<CLASS> {
+public class LabeledBuilder<BUILDER extends LabeledBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
     private static final String MNEMONIC_PARSING = "mnemonicParsing";
     private static final String TEXT = "text";
@@ -24,28 +24,28 @@ public class LabeledBuilder<CLASS extends LabeledBuilder<CLASS>> extends Control
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new LabeledBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new LabeledBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS graphic(VNode value) {
+    public BUILDER graphic(VNode value) {
         return property(GRAPHIC, value);
     }
 
-    public CLASS mnemonicParsing(boolean value) {
+    public BUILDER mnemonicParsing(boolean value) {
         return property(MNEMONIC_PARSING, value);
     }
 
-    public CLASS text(String value) {
+    public BUILDER text(String value) {
         return property(TEXT, value);
     }
 
-    public CLASS textFill(Paint value) {
+    public BUILDER textFill(Paint value) {
         return property(TEXT_FILL, value);
     }
 
-    public CLASS wrapText(boolean value) {
+    public BUILDER wrapText(boolean value) {
         return property(WRAP_TEXT, value);
     }
 

@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ControlBuilder<CLASS extends ControlBuilder<CLASS>> extends RegionBuilder<CLASS> {
+public class ControlBuilder<BUILDER extends ControlBuilder<BUILDER>> extends RegionBuilder<BUILDER> {
 
     public ControlBuilder(Class<? extends Node> nodeClass,
                           Array<VProperty<?>> properties,
@@ -16,8 +16,8 @@ public class ControlBuilder<CLASS extends ControlBuilder<CLASS>> extends RegionB
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ControlBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ControlBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
     @Override

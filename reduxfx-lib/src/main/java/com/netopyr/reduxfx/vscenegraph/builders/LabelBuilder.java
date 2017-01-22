@@ -3,11 +3,10 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class LabelBuilder<CLASS extends LabelBuilder<CLASS>> extends LabeledBuilder<CLASS> {
+public class LabelBuilder<BUILDER extends LabelBuilder<BUILDER>> extends LabeledBuilder<BUILDER> {
 
     public LabelBuilder(Class<? extends Node> nodeClass,
                         Array<VProperty<?>> properties,
@@ -17,8 +16,8 @@ public class LabelBuilder<CLASS extends LabelBuilder<CLASS>> extends LabeledBuil
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new LabelBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new LabelBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 

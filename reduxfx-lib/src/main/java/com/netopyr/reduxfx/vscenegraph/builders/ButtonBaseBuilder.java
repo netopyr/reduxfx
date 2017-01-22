@@ -5,13 +5,12 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandlerElement;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonBase;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
-public class ButtonBaseBuilder<CLASS extends ButtonBaseBuilder<CLASS>> extends LabeledBuilder<CLASS> {
+public class ButtonBaseBuilder<BUILDER extends ButtonBaseBuilder<BUILDER>> extends LabeledBuilder<BUILDER> {
 
     private static final String TEXT = "text";
 
@@ -23,17 +22,17 @@ public class ButtonBaseBuilder<CLASS extends ButtonBaseBuilder<CLASS>> extends L
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ButtonBaseBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ButtonBaseBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS text(String value) {
+    public BUILDER text(String value) {
         return property(TEXT, value);
     }
 
 
-    public CLASS onAction(VEventHandler<ActionEvent> eventHandler) {
+    public BUILDER onAction(VEventHandler<ActionEvent> eventHandler) {
         return onEvent(ACTION, eventHandler);
     }
 

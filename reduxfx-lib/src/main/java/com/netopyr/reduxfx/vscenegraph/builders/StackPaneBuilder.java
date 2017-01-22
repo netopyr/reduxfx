@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class StackPaneBuilder<CLASS extends StackPaneBuilder<CLASS>> extends PaneBuilder<CLASS> {
+public class StackPaneBuilder<BUILDER extends StackPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
 
     private static final String ALIGNMENT = "alignment";
 
@@ -19,12 +19,12 @@ public class StackPaneBuilder<CLASS extends StackPaneBuilder<CLASS>> extends Pan
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new StackPaneBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new StackPaneBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS alignment(Pos value) {
+    public BUILDER alignment(Pos value) {
         return property(ALIGNMENT, value);
     }
 

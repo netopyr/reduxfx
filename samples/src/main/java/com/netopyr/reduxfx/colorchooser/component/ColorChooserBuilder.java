@@ -9,9 +9,9 @@ import javafx.scene.paint.Color;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ColorChooserBuilder<CLASS extends ColorChooserBuilder<CLASS>> extends VBoxBuilder<CLASS> {
+public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> extends VBoxBuilder<BUILDER> {
 
-    public ColorChooserBuilder(Class<? extends ColorChooserComponent> nodeClass,
+    public ColorChooserBuilder(Class<? extends Node> nodeClass,
                                Array<VProperty<?>> properties,
                                Array<VEventHandlerElement<?>> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
@@ -19,8 +19,8 @@ public class ColorChooserBuilder<CLASS extends ColorChooserBuilder<CLASS>> exten
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ColorChooserBuilder<>((Class<? extends ColorChooserComponent>) nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ColorChooserBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
@@ -31,7 +31,7 @@ public class ColorChooserBuilder<CLASS extends ColorChooserBuilder<CLASS>> exten
      * @param listener the {@link VChangeListener} that should be called if the value of {@code color} changes
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
-    public CLASS color(Color value, VChangeListener<? super Color> listener) {
+    public BUILDER color(Color value, VChangeListener<? super Color> listener) {
         return property("color", value, listener);
     }
 
@@ -41,7 +41,7 @@ public class ColorChooserBuilder<CLASS extends ColorChooserBuilder<CLASS>> exten
      * @param listener the {@link VChangeListener} that should be called if the value of {@code color} changes
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
-    public CLASS color(VChangeListener<? super Color> listener) {
+    public BUILDER color(VChangeListener<? super Color> listener) {
         return property("color", listener);
     }
 

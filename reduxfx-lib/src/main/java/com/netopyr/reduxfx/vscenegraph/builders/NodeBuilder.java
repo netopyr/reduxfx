@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
-public class NodeBuilder<CLASS extends NodeBuilder<CLASS>> extends VNode {
+public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends VNode {
 
     private static final String ID = "id";
     private static final String STYLE_CLASS = "styleClass";
@@ -43,161 +43,160 @@ public class NodeBuilder<CLASS extends NodeBuilder<CLASS>> extends VNode {
 
 
     @SuppressWarnings("unchecked")
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new NodeBuilder(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new NodeBuilder(getNodeClass(), properties, eventHandlers);
+    }
+
+    protected Object getTypeKey() {
+        return getNodeClass();
     }
 
 
-    public CLASS disable(boolean value) {
+    public BUILDER disable(boolean value) {
         return property(DISABLE, value);
     }
 
-    public CLASS focused(boolean value, VChangeListener<? super Boolean> listener) {
+    public BUILDER focused(boolean value, VChangeListener<? super Boolean> listener) {
         return property(FOCUSED, value, listener);
     }
-    public CLASS focused(boolean value) {
+
+    public BUILDER focused(boolean value) {
         return property(FOCUSED, value);
     }
 
-    public CLASS hover(VChangeListener<? super Boolean> listener) {
+    public BUILDER hover(VChangeListener<? super Boolean> listener) {
         return property(HOVER, listener);
     }
 
-    public CLASS id(String value) {
+    public BUILDER id(String value) {
         return property(ID, value);
     }
 
-    public CLASS opacity(double value) {
+    public BUILDER opacity(double value) {
         return property(OPACITY, value);
     }
 
-    public CLASS style(String value) {
+    public BUILDER style(String value) {
         return property(STYLE, value);
     }
 
-    public CLASS styleClass(String... value) {
-        return property(STYLE_CLASS, value == null? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
+    public BUILDER styleClass(String... value) {
+        return property(STYLE_CLASS, value == null ? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
     }
 
-    public CLASS visible(boolean value) {
+    public BUILDER visible(boolean value) {
         return property(VISIBLE, value);
     }
 
 
-    public CLASS onMouseClicked(VEventHandler<MouseEvent> eventHandler) {
+    public BUILDER onMouseClicked(VEventHandler<MouseEvent> eventHandler) {
         return onEvent(MOUSE_CLICKED, eventHandler);
     }
 
 
-    public CLASS hgrow(Priority value) {
+    public BUILDER hgrow(Priority value) {
         return property(HGROW, value);
     }
 
-    public CLASS bottomAnchor(double value) {
+    public BUILDER bottomAnchor(double value) {
         return property(BOTTOM_ANCHOR, value);
     }
-    public CLASS leftAnchor(double value) {
+
+    public BUILDER leftAnchor(double value) {
         return property(LEFT_ANCHOR, value);
     }
-    public CLASS rightAnchor(double value) {
+
+    public BUILDER rightAnchor(double value) {
         return property(RIGHT_ANCHOR, value);
     }
-    public CLASS topAnchor(double value) {
+
+    public BUILDER topAnchor(double value) {
         return property(TOP_ANCHOR, value);
     }
 
-    public CLASS margin(double top, double rightLeft, double bottom) {
+    public BUILDER margin(double top, double rightLeft, double bottom) {
         return property(MARGIN, new Insets(top, rightLeft, bottom, rightLeft));
     }
-    public CLASS margin(double topBottom, double rightLeft) {
+
+    public BUILDER margin(double topBottom, double rightLeft) {
         return property(MARGIN, new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
-    public CLASS margin(double value) {
+
+    public BUILDER margin(double value) {
         return property(MARGIN, new Insets(value, value, value, value));
     }
 
 
-    @SuppressWarnings("unchecked")
-    public <T> CLASS property(String name, T value, VChangeListener<? super T> changeListener, VInvalidationListener invalidationListener) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
+    public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+        return Factory.node(
+                this,
                 getProperties().append(Factory.property(name, value, changeListener, invalidationListener)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public <TYPE> CLASS property(String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name, value, changeListener)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public CLASS property(String name, Object value, VInvalidationListener invalidationListener) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name, value, invalidationListener)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public CLASS property(String name, Object value) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name, value)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public CLASS property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name, changeListener, invalidationListener)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public CLASS property(String name, VChangeListener<?> changeListener) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name, changeListener)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public CLASS property(String name, VInvalidationListener invalidationListener) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name, invalidationListener)),
-                getEventHandlers(),
-                this::create
-        );
-    }
-    @SuppressWarnings("unchecked")
-    public CLASS property(String name) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
-                getProperties().append(Factory.property(name)),
-                getEventHandlers(),
-                this::create
+                getEventHandlers()
         );
     }
 
-    @SuppressWarnings("unchecked")
-    public <EVENT extends Event> CLASS onEvent(VEventType type, VEventHandler<EVENT> eventHandler) {
-        return (CLASS) Factory.node(
-                getNodeClass(),
+    public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name, value, changeListener)),
+                getEventHandlers()
+        );
+    }
+
+    public BUILDER property(String name, Object value, VInvalidationListener invalidationListener) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name, value, invalidationListener)),
+                getEventHandlers()
+        );
+    }
+
+    public BUILDER property(String name, Object value) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name, value)),
+                getEventHandlers()
+        );
+    }
+
+    public BUILDER property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name, changeListener, invalidationListener)),
+                getEventHandlers()
+        );
+    }
+
+    public BUILDER property(String name, VChangeListener<?> changeListener) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name, changeListener)),
+                getEventHandlers()
+        );
+    }
+
+    public BUILDER property(String name, VInvalidationListener invalidationListener) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name, invalidationListener)),
+                getEventHandlers()
+        );
+    }
+
+    public BUILDER property(String name) {
+        return Factory.node(
+                this,
+                getProperties().append(Factory.property(name)),
+                getEventHandlers()
+        );
+    }
+
+    public <EVENT extends Event> BUILDER onEvent(VEventType type, VEventHandler<EVENT> eventHandler) {
+        return Factory.node(
+                this,
                 getProperties(),
-                getEventHandlers().append(Factory.onEvent(type, eventHandler)),
-                this:: create
-                );
+                getEventHandlers().append(Factory.onEvent(type, eventHandler))
+        );
     }
 
 

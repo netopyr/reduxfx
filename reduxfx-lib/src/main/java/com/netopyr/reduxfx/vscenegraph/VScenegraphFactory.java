@@ -32,137 +32,112 @@ public class VScenegraphFactory {
 
     private VScenegraphFactory() {}
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> customNode(Class<? extends Node> nodeClass) {
-        return (NodeBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), NodeBuilder::new);
+        return Factory.node(nodeClass, () -> new NodeBuilder<>(nodeClass, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends AnchorPaneBuilder<CLASS>> AnchorPaneBuilder<CLASS> AnchorPane() {
-        return (AnchorPaneBuilder<CLASS>) Factory.node(AnchorPane.class, Array.empty(), Array.empty(), AnchorPaneBuilder::new);
+        return Factory.node(AnchorPane.class, () -> new AnchorPaneBuilder<CLASS>(AnchorPane.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane() {
-        return (BorderPaneBuilder<CLASS>) Factory.node(BorderPane.class, Array.empty(), Array.empty(), BorderPaneBuilder::new);
+        return Factory.node(BorderPane.class, () -> new BorderPaneBuilder<>(BorderPane.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ButtonBaseBuilder<CLASS>> ButtonBaseBuilder<CLASS> ButtonBase() {
-        return (ButtonBaseBuilder<CLASS>) Factory.node(ButtonBase.class, Array.empty(), Array.empty(), ButtonBaseBuilder::new);
+        return Factory.node(ButtonBase.class, () -> new ButtonBaseBuilder<>(ButtonBase.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button(Class<? extends Button> nodeClass) {
-        return (ButtonBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), ButtonBuilder::new);
+        return Factory.node(nodeClass, () -> new ButtonBuilder<>(nodeClass, Array.empty(), Array.empty()));
     }
     public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button() {
         return Button(Button.class);
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends CheckBoxBuilder<CLASS>> CheckBoxBuilder<CLASS> CheckBox() {
-        return (CheckBoxBuilder<CLASS>) Factory.node(CheckBox.class, Array.empty(), Array.empty(), CheckBoxBuilder::new);
+        return Factory.node(CheckBox.class, () -> new CheckBoxBuilder<>(CheckBox.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ControlBuilder<CLASS>> ControlBuilder<CLASS> Control() {
-        return (ControlBuilder<CLASS>) Factory.node(Control.class, Array.empty(), Array.empty(), ControlBuilder::new);
+        return Factory.node(Control.class, () -> new ControlBuilder<>(Control.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends HBoxBuilder<CLASS>> HBoxBuilder<CLASS> HBox() {
-        return (HBoxBuilder<CLASS>) Factory.node(HBox.class, Array.empty(), Array.empty(), HBoxBuilder::new);
+        return Factory.node(HBox.class, () -> new HBoxBuilder<>(HBox.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends LabelBuilder<CLASS>> LabelBuilder<CLASS> Label() {
-        return (LabelBuilder<CLASS>) Factory.node(Label.class, Array.empty(), Array.empty(), LabelBuilder::new);
+        return Factory.node(Label.class, () -> new LabelBuilder<>(Label.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends LabeledBuilder<CLASS>> LabeledBuilder<CLASS> Labeled() {
-        return (LabeledBuilder<CLASS>) Factory.node(Labeled.class, Array.empty(), Array.empty(), LabeledBuilder::new);
+        return Factory.node(Labeled.class, () -> new LabeledBuilder<>(Labeled.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
-    public static <CLASS extends ListViewBuilder<CLASS>> ListViewBuilder<CLASS> ListView() {
-        return (ListViewBuilder<CLASS>) Factory.node(ReduxFXListView.class, Array.empty(), Array.empty(), ListViewBuilder::new);
+    public static <CLASS extends ListViewBuilder<CLASS, ELEMENT>, ELEMENT> ListViewBuilder<CLASS, ELEMENT> ListView(Class<ELEMENT> elementClass) {
+        return Factory.node(ReduxFXListView.class, () -> new ListViewBuilder<>(ReduxFXListView.class, elementClass, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> Node() {
-        return (NodeBuilder<CLASS>) Factory.node(Node.class, Array.empty(), Array.empty(), NodeBuilder::new);
+        return Factory.node(Node.class, () -> new NodeBuilder<>(Node.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends PaneBuilder<CLASS>> PaneBuilder<CLASS> Pane() {
-        return (PaneBuilder<CLASS>) Factory.node(Pane.class, Array.empty(), Array.empty(), PaneBuilder::new);
+        return Factory.node(Pane.class, () -> new PaneBuilder<>(Pane.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ParentBuilder<CLASS>> ParentBuilder<CLASS> Parent() {
-        return (ParentBuilder<CLASS>) Factory.node(Parent.class, Array.empty(), Array.empty(), ParentBuilder::new);
+        return Factory.node(Parent.class, () -> new ParentBuilder<>(Parent.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar(Class<? extends ProgressBar> nodeClass) {
-        return (ProgressBarBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), ProgressBarBuilder::new);
+        return Factory.node(nodeClass, () -> new ProgressBarBuilder<>(nodeClass, Array.empty(), Array.empty()));
     }
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar() {
         return ProgressBar(ProgressBar.class);
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ProgressIndicatorBuilder<CLASS>> ProgressIndicatorBuilder<CLASS> ProgressIndicator() {
-        return (ProgressIndicatorBuilder<CLASS>) Factory.node(ProgressIndicator.class, Array.empty(), Array.empty(), ProgressIndicatorBuilder::new);
+        return Factory.node(ProgressIndicator.class, () -> new ProgressIndicatorBuilder<>(ProgressIndicator.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends RegionBuilder<CLASS>> RegionBuilder<CLASS> Region() {
-        return (RegionBuilder<CLASS>) Factory.node(Region.class, Array.empty(), Array.empty(), RegionBuilder::new);
+        return Factory.node(Region.class, () -> new RegionBuilder<>(Region.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends SliderBuilder<CLASS>> SliderBuilder<CLASS> Slider() {
-        return (SliderBuilder<CLASS>) Factory.node(Slider.class, Array.empty(), Array.empty(), SliderBuilder::new);
+        return Factory.node(Slider.class, () -> new SliderBuilder<>(Slider.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends StackPaneBuilder<CLASS>> StackPaneBuilder<CLASS> StackPane() {
-        return (StackPaneBuilder<CLASS>) Factory.node(StackPane.class, Array.empty(), Array.empty(), StackPaneBuilder::new);
+        return Factory.node(StackPane.class, () -> new StackPaneBuilder<>(StackPane.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text(Class<? extends Text> nodeClass) {
-        return (TextBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), TextBuilder::new);
+        return Factory.node(nodeClass, () -> new TextBuilder<>(nodeClass, Array.empty(), Array.empty()));
     }
     public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text() {
         return Text(Text.class);
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField(Class<? extends TextField> nodeClass) {
-        return (TextFieldBuilder<CLASS>) Factory.node(nodeClass, Array.empty(), Array.empty(), TextFieldBuilder::new);
+        return Factory.node(nodeClass, () -> new TextFieldBuilder<>(nodeClass, Array.empty(), Array.empty()));
     }
     public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField() {
         return TextField(TextField.class);
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends TextInputControlBuilder<CLASS>> TextInputControlBuilder<CLASS> TextInputControl() {
-        return (TextInputControlBuilder<CLASS>) Factory.node(TextInputControl.class, Array.empty(), Array.empty(), TextInputControlBuilder::new);
+        return Factory.node(TextInputControl.class, () -> new TextInputControlBuilder<>(TextInputControl.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends ToggleButtonBuilder<CLASS>> ToggleButtonBuilder<CLASS> ToggleButton() {
-        return (ToggleButtonBuilder<CLASS>) Factory.node(ToggleButton.class, Array.empty(), Array.empty(), ToggleButtonBuilder::new);
+        return Factory.node(ToggleButton.class, () -> new ToggleButtonBuilder<>(ToggleButton.class, Array.empty(), Array.empty()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <CLASS extends VBoxBuilder<CLASS>> VBoxBuilder<CLASS> VBox() {
-        return (VBoxBuilder<CLASS>) Factory.node(VBox.class, Array.empty(), Array.empty(), VBoxBuilder::new);
+        return Factory.node(VBox.class, () -> new VBoxBuilder<>(VBox.class, Array.empty(), Array.empty()));
     }
 
 

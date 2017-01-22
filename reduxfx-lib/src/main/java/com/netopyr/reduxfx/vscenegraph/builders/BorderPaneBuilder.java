@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class BorderPaneBuilder<CLASS extends BorderPaneBuilder<CLASS>> extends PaneBuilder<CLASS> {
+public class BorderPaneBuilder<BUILDER extends BorderPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
 
     private static final String BOTTOM = "bottom";
     private static final String CENTER = "center";
@@ -23,28 +23,28 @@ public class BorderPaneBuilder<CLASS extends BorderPaneBuilder<CLASS>> extends P
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new BorderPaneBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new BorderPaneBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS bottom(VNode value) {
+    public BUILDER bottom(VNode value) {
         return property(BOTTOM, value);
     }
 
-    public CLASS center(VNode value) {
+    public BUILDER center(VNode value) {
         return property(CENTER, value);
     }
 
-    public CLASS left(VNode value) {
+    public BUILDER left(VNode value) {
         return property(LEFT, value);
     }
 
-    public CLASS right(VNode value) {
+    public BUILDER right(VNode value) {
         return property(RIGHT, value);
     }
 
-    public CLASS top(VNode value) {
+    public BUILDER top(VNode value) {
         return property(TOP, value);
     }
 

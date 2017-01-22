@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javaslang.collection.Array;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ButtonBuilder<CLASS extends ButtonBuilder<CLASS>> extends ButtonBaseBuilder<CLASS> {
+public class ButtonBuilder<BUILDER extends ButtonBuilder<BUILDER>> extends ButtonBaseBuilder<BUILDER> {
 
     public static final String DEFAULT_BUTTON = "defaultButton";
 
@@ -18,12 +18,12 @@ public class ButtonBuilder<CLASS extends ButtonBuilder<CLASS>> extends ButtonBas
 
     @SuppressWarnings("unchecked")
     @Override
-    protected CLASS create(Class<? extends Node> nodeClass, Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
-        return (CLASS) new ButtonBuilder<>(nodeClass, properties, eventHandlers);
+    protected BUILDER create(Array<VProperty<?>> properties, Array<VEventHandlerElement<?>> eventHandlers) {
+        return (BUILDER) new ButtonBuilder<>(getNodeClass(), properties, eventHandlers);
     }
 
 
-    public CLASS defaultButton(boolean value) {
+    public BUILDER defaultButton(boolean value) {
         return property(DEFAULT_BUTTON, value);
     }
 
