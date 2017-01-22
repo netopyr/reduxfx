@@ -8,6 +8,8 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javaslang.Tuple;
+import javaslang.Tuple2;
 import javaslang.collection.Array;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
@@ -23,31 +25,31 @@ public class Accessors {
 
     private final Consumer<Object> dispatcher;
 
-    private Map<PropertyKey, Accessor> accessorMap = HashMap.empty();
-    private Map<PropertyKey, Accessor> layoutAccessorMap = HashMap.empty();
+    private Map<Tuple2<Class<?>, String>, Accessor> accessorMap = HashMap.empty();
+    private Map<Tuple2<Class<?>, String>, Accessor> layoutAccessorMap = HashMap.empty();
 
     public Accessors(Consumer<Object> dispatcher) {
         this.dispatcher = dispatcher;
     }
 
     public void init(NodeBuilder nodeBuilder) {
-        registerAccessor(new PropertyKey(ToggleButton.class, "toggleGroup"), new ToggleGroupAccessor(getPropertyGetter(ToggleButton.class, "toggleGroup").get(), dispatcher));
-        registerAccessor(new PropertyKey(Labeled.class, "graphic"), new NodeAccessor(getPropertyGetter(Labeled.class, "graphic").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(BorderPane.class, "top"), new NodeAccessor(getPropertyGetter(BorderPane.class, "top").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(BorderPane.class, "right"), new NodeAccessor(getPropertyGetter(BorderPane.class, "right").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(BorderPane.class, "bottom"), new NodeAccessor(getPropertyGetter(BorderPane.class, "bottom").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(BorderPane.class, "left"), new NodeAccessor(getPropertyGetter(BorderPane.class, "left").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(BorderPane.class, "center"), new NodeAccessor(getPropertyGetter(BorderPane.class, "center").get(), dispatcher, nodeBuilder));
-        registerAccessor(new PropertyKey(Node.class, "focused"), new FocusedAccessor(getPropertyGetter(Node.class, "focused").get(), dispatcher));
+        registerAccessor(Tuple.of(ToggleButton.class, "toggleGroup"), new ToggleGroupAccessor(getPropertyGetter(ToggleButton.class, "toggleGroup").get(), dispatcher));
+        registerAccessor(Tuple.of(Labeled.class, "graphic"), new NodeAccessor(getPropertyGetter(Labeled.class, "graphic").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "top"), new NodeAccessor(getPropertyGetter(BorderPane.class, "top").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "right"), new NodeAccessor(getPropertyGetter(BorderPane.class, "right").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "bottom"), new NodeAccessor(getPropertyGetter(BorderPane.class, "bottom").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "left"), new NodeAccessor(getPropertyGetter(BorderPane.class, "left").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "center"), new NodeAccessor(getPropertyGetter(BorderPane.class, "center").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(Node.class, "focused"), new FocusedAccessor(getPropertyGetter(Node.class, "focused").get(), dispatcher));
     }
 
-    public void registerAccessor(PropertyKey propertyKey, Accessor accessor) {
+    public void registerAccessor(Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
         cacheAccessor(propertyKey, accessor);
     }
 
     public Option<Accessor> getAccessor(Node node, String propertyName) {
         final Class<? extends Node> nodeClass = node.getClass();
-        final PropertyKey propertyKey = new PropertyKey(nodeClass, propertyName);
+        final Tuple2<Class<?>, String> propertyKey = Tuple.of(nodeClass, propertyName);
 
         return accessorMap.get(propertyKey)
                 .orElse(() -> searchInCache(accessorMap, propertyKey)
@@ -59,7 +61,7 @@ public class Accessors {
                         return Option.none();
                     }
                     final Class<? extends Parent> parentClass = node.getParent().getClass();
-                    final PropertyKey layoutKey = new PropertyKey(parentClass, propertyName);
+                    final Tuple2<Class<?>, String> layoutKey = Tuple.of(parentClass, propertyName);
                     return Pane.class.isAssignableFrom(parentClass) ?
                             layoutAccessorMap.get(layoutKey)
                                     .orElse(() -> searchInCache(layoutAccessorMap, layoutKey)
@@ -70,10 +72,10 @@ public class Accessors {
                 });
     }
 
-    private Option<Accessor> searchInCache(Map<PropertyKey, Accessor> map, PropertyKey propertyKey) {
-        final String propertyName = propertyKey.getName();
-        for (Class<?> clazz = propertyKey.getNodeClass().getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
-            final Option<Accessor> accessor = map.get(new PropertyKey(clazz, propertyName));
+    private Option<Accessor> searchInCache(Map<Tuple2<Class<?>, String>, Accessor> map, Tuple2<Class<?>, String> propertyKey) {
+        final String propertyName = propertyKey._2;
+        for (Class<?> clazz = propertyKey._1.getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
+            final Option<Accessor> accessor = map.get(Tuple.of(clazz, propertyName));
             if (accessor.isDefined()) {
                 return accessor;
             }
@@ -81,25 +83,25 @@ public class Accessors {
         return Option.none();
     }
 
-    private Accessor cacheAccessor(PropertyKey propertyKey, Accessor accessor) {
+    private Accessor cacheAccessor(Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
         accessorMap = doCacheAccessor(accessorMap, propertyKey, accessor);
         return accessor;
     }
 
-    private Accessor cacheLayoutAccessor(PropertyKey propertyKey, Accessor accessor) {
+    private Accessor cacheLayoutAccessor(Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
         layoutAccessorMap = doCacheAccessor(layoutAccessorMap, propertyKey, accessor);
         return accessor;
     }
 
-    private Map<PropertyKey, Accessor> doCacheAccessor(Map<PropertyKey, Accessor> map, PropertyKey propertyKey, Accessor accessor) {
-        final Option<Method> getter = getGetterMethod(propertyKey.getNodeClass(), propertyKey.getName());
+    private Map<Tuple2<Class<?>, String>, Accessor> doCacheAccessor(Map<Tuple2<Class<?>, String>, Accessor> map, Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
+        final Option<Method> getter = getGetterMethod(propertyKey._1, propertyKey._2);
         if (getter.isDefined()) {
             final Class<?> declaringClass = getter.get().getDeclaringClass();
-            final String propertyName = propertyKey.getName();
-            for (Class<?> clazz = propertyKey.getNodeClass(); !declaringClass.equals(clazz); clazz = clazz.getSuperclass()) {
-                map = map.put(new PropertyKey(clazz, propertyName), accessor);
+            final String propertyName = propertyKey._2;
+            for (Class<?> clazz = propertyKey._1; !declaringClass.equals(clazz); clazz = clazz.getSuperclass()) {
+                map = map.put(Tuple.of(clazz, propertyName), accessor);
             }
-            map = map.put(new PropertyKey(declaringClass, propertyName), accessor);
+            map = map.put(Tuple.of(declaringClass, propertyName), accessor);
         }
         return map;
     }
