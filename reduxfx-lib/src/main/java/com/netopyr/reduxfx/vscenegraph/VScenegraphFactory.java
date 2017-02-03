@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -55,8 +56,11 @@ public class VScenegraphFactory {
         return Button(Button.class);
     }
 
+    public static <CLASS extends CheckBoxBuilder<CLASS>> CheckBoxBuilder<CLASS> CheckBox(Class<? extends CheckBox> nodeClass) {
+        return Factory.node(nodeClass, () -> new CheckBoxBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
+    }
     public static <CLASS extends CheckBoxBuilder<CLASS>> CheckBoxBuilder<CLASS> CheckBox() {
-        return Factory.node(CheckBox.class, () -> new CheckBoxBuilder<>(CheckBox.class, HashMap.empty(), HashMap.empty()));
+        return CheckBox(CheckBox.class);
     }
 
     public static <CLASS extends ControlBuilder<CLASS>> ControlBuilder<CLASS> Control() {
@@ -112,6 +116,10 @@ public class VScenegraphFactory {
 
     public static <CLASS extends StackPaneBuilder<CLASS>> StackPaneBuilder<CLASS> StackPane() {
         return Factory.node(StackPane.class, () -> new StackPaneBuilder<>(StackPane.class, HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends GridPaneBuilder<CLASS>> GridPaneBuilder<CLASS> GridPane() {
+        return Factory.node(GridPane.class, () -> new GridPaneBuilder<>(GridPane.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text(Class<? extends Text> nodeClass) {

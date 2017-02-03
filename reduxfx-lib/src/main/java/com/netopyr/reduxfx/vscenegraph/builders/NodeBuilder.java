@@ -27,6 +27,8 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends VNode {
     private static final String BOTTOM_ANCHOR = "bottomAnchor";
     private static final String LEFT_ANCHOR = "leftAnchor";
     private static final String RIGHT_ANCHOR = "rightAnchor";
+    private static final String ROW_INDEX = "rowIndex";
+    private static final String COLUMN_INDEX = "columnIndex";
     private static final String HOVER = "hover";
     private static final String FOCUSED = "focused";
     private static final String MARGIN = "margin";
@@ -123,6 +125,14 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends VNode {
 
     public BUILDER margin(double value) {
         return property(MARGIN, new Insets(value, value, value, value));
+    }
+
+    public BUILDER rowIndex(int value) {
+        return property(ROW_INDEX, value);
+    }
+
+    public BUILDER columnIndex(int value) {
+        return property(COLUMN_INDEX, value);
     }
 
 
