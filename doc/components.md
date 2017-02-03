@@ -12,7 +12,6 @@ In addition a custom component offers a regular JavaFX interface, which is used 
 The following picture shows the architecture of a custom component implemented with ReduxFX.
 This may sound like a lot of work, but most of the boiler-plate is already conveniently provided in the class [ComponentBase][class componentbase].
 
-_Insert picture_
 ![alt Overview ReduxFX component][reduxfx component]
 
 As you can see the heart of a ReduxFX component is a regular event cycle.
@@ -22,7 +21,7 @@ The interaction with the actual interface, i.e. the properties and events of the
 
 Setting up a Custom Component
 -----------------------------
-The first step required to create a custom component with ReduxFX is usually to define the JavaFX component.
+The first step required to create a custom component with ReduxFX is usually to define its interface.
 In the example ColorChooserApp, a simple component is defined that can be used to choose a color.
 The JavaFX component is implemented in the class [ColorChooserComponent][class colorchoosercomponent].
 In the constructor an instance of the class [ComponentBase][class componentbase] is created.
