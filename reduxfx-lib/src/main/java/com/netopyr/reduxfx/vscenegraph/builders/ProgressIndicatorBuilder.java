@@ -11,7 +11,7 @@ public class ProgressIndicatorBuilder<BUILDER extends ProgressIndicatorBuilder<B
 
     private static final String PROGRESS = "progress";
 
-    public ProgressIndicatorBuilder(Class<? extends Node> nodeClass,
+    public ProgressIndicatorBuilder(Class<?> nodeClass,
                                     Map<String, VProperty> properties,
                                     Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

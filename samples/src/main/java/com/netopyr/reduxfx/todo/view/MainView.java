@@ -8,8 +8,8 @@ import javafx.scene.layout.Region;
 import java.util.Objects;
 
 import static com.netopyr.reduxfx.todo.view.AddItemView.AddItemView;
-import static com.netopyr.reduxfx.todo.view.ItemOverviewView.ItemOverviewView;
 import static com.netopyr.reduxfx.todo.view.ControlsView.ControlsView;
+import static com.netopyr.reduxfx.todo.view.ItemOverviewView.ItemOverviewView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 

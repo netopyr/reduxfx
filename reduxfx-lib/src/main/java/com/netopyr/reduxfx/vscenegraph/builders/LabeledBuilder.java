@@ -4,7 +4,6 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,7 +16,7 @@ public class LabeledBuilder<BUILDER extends LabeledBuilder<BUILDER>> extends Con
     private static final String TEXT_FILL = "textFill";
     private static final String WRAP_TEXT = "wrapText";
 
-    public LabeledBuilder(Class<? extends Node> nodeClass,
+    public LabeledBuilder(Class<?> nodeClass,
                           Map<String, VProperty> properties,
                           Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

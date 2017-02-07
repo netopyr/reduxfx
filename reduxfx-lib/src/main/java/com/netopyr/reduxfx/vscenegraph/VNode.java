@@ -3,7 +3,6 @@ package com.netopyr.reduxfx.vscenegraph;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.Node;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,17 +11,17 @@ import java.util.Objects;
 
 public class VNode {
 
-    private final Class<? extends Node> nodeClass;
+    private final Class<?> nodeClass;
     private final Array<VNode> children;
     private final Map<String, VProperty> properties;
     private final Map<VEventType, VEventHandler> eventHandlers;
 
 
     @SuppressWarnings("unchecked")
-    public VNode(Class<? extends Node> nodeClass,
+    public VNode(Class<?> nodeClass,
                  Map<String, VProperty> properties,
                  Map<VEventType, VEventHandler> eventHandlers) {
-        this.nodeClass = Objects.requireNonNull(nodeClass, "Type must not be null");
+        this.nodeClass = Objects.requireNonNull(nodeClass, "NodeClass must not be null");
         if (properties == null) {
             throw new NullPointerException("Properties must not be null");
         }
@@ -34,7 +33,7 @@ public class VNode {
     }
 
 
-    public Class<? extends Node> getNodeClass() {
+    public Class<?> getNodeClass() {
         return nodeClass;
     }
 

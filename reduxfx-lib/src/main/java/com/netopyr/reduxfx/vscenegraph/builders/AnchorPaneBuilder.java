@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AnchorPaneBuilder<BUILDER extends AnchorPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
 
-    public AnchorPaneBuilder(Class<? extends Node> nodeClass,
+    public AnchorPaneBuilder(Class<?> nodeClass,
                              Map<String, VProperty> properties,
                              Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

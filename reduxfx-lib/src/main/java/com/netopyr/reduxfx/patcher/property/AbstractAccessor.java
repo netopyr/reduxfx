@@ -6,10 +6,11 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.Node;
 
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
+
+import static com.netopyr.reduxfx.patcher.NodeUtilities.getProperties;
 
 abstract class AbstractAccessor implements Accessor {
 
@@ -23,7 +24,7 @@ abstract class AbstractAccessor implements Accessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Node node, String name, VProperty vProperty) {
+    public void set(Object node, String name, VProperty vProperty) {
 
         final ReadOnlyProperty property;
         try {
@@ -54,19 +55,19 @@ abstract class AbstractAccessor implements Accessor {
     protected abstract void setValue(ReadOnlyProperty property, Object value);
 
     @SuppressWarnings("unchecked")
-    private void clearListeners(Node node, ReadOnlyProperty property) {
-        final ChangeListener changeListener = (ChangeListener) node.getProperties().get(property.getName() + ".change");
+    private void clearListeners(Object node, ReadOnlyProperty property) {
+        final ChangeListener changeListener = (ChangeListener) getProperties(node).get(property.getName() + ".change");
         if (changeListener != null) {
             property.removeListener(changeListener);
         }
 
-        final InvalidationListener invalidationListener = (InvalidationListener) node.getProperties().get(property.getName() + ".invalidation");
+        final InvalidationListener invalidationListener = (InvalidationListener) getProperties(node).get(property.getName() + ".invalidation");
         if (invalidationListener != null) {
             property.removeListener(invalidationListener);
         }
     }
 
-    private void setChangeListener(Node node, ReadOnlyProperty property, VChangeListener listener, Consumer<Object> dispatcher) {
+    private void setChangeListener(Object node, ReadOnlyProperty property, VChangeListener listener, Consumer<Object> dispatcher) {
         final ChangeListener newListener = (source, oldValue, newValue) -> {
             final Object action = listener.onChange(fxToV(oldValue), fxToV(newValue));
             if (action != null) {
@@ -74,10 +75,10 @@ abstract class AbstractAccessor implements Accessor {
             }
         };
         property.addListener(newListener);
-        node.getProperties().put(property.getName() + ".change", newListener);
+        getProperties(node).put(property.getName() + ".change", newListener);
     }
 
-    private void setInvalidationListener(Node node, ReadOnlyProperty property, VInvalidationListener listener, Consumer<Object> dispatcher) {
+    private void setInvalidationListener(Object node, ReadOnlyProperty property, VInvalidationListener listener, Consumer<Object> dispatcher) {
         final InvalidationListener newListener = (source) -> {
             final Object action = listener.onInvalidation();
             if (action != null) {
@@ -85,6 +86,6 @@ abstract class AbstractAccessor implements Accessor {
             }
         };
         property.addListener(newListener);
-        node.getProperties().put(property.getName() + ".invalidation", newListener);
+        getProperties(node).put(property.getName() + ".invalidation", newListener);
     }
 }

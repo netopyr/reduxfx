@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class TextBuilder<BUILDER extends TextBuilder<BUILDER>> extends ShapeBuilder<BUILDER> {
 
-    public TextBuilder(Class<? extends Node> nodeClass,
+    public TextBuilder(Class<?> nodeClass,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

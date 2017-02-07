@@ -4,7 +4,6 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
-import javafx.scene.Node;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -12,7 +11,7 @@ public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeB
 
     private static final String STYLESHEETS = "stylesheets";
 
-    public ParentBuilder(Class<? extends Node> nodeClass,
+    public ParentBuilder(Class<?> nodeClass,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

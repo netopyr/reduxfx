@@ -12,7 +12,7 @@ public class ShapeBuilder<BUILDER extends ShapeBuilder<BUILDER>> extends NodeBui
 
     private static final String FILL = "fill";
 
-    public ShapeBuilder(Class<? extends Node> nodeClass,
+    public ShapeBuilder(Class<?> nodeClass,
                         Map<String, VProperty> properties,
                         Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

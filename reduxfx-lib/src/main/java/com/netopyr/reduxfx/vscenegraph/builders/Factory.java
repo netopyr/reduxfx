@@ -40,9 +40,9 @@ public class Factory {
 
 
     @SuppressWarnings("unchecked")
-    public static <BUILDER extends NodeBuilder<BUILDER>> BUILDER node(NodeBuilder<BUILDER> builder, Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
+    public static <BUILDER extends Builder<BUILDER>> BUILDER node(Builder<BUILDER> builder, Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
         return (BUILDER) nodeCache.get(
-                Tuple.of(builder.getTypeKey(), properties, eventHandlers),
+                Tuple.of(builder.getNodeClass(), properties, eventHandlers),
                 tuple -> builder.create(properties, eventHandlers)
         );
     }

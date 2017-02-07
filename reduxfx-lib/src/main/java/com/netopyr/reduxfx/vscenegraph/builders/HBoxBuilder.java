@@ -13,7 +13,7 @@ public class HBoxBuilder<BUILDER extends HBoxBuilder<BUILDER>> extends PaneBuild
     private static final String SPACING = "spacing";
     private static final String ALIGNMENT = "alignment";
 
-    public HBoxBuilder(Class<? extends Node> nodeClass,
+    public HBoxBuilder(Class<?> nodeClass,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

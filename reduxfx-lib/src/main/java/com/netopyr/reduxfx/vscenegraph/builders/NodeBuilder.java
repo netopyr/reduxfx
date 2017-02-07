@@ -1,15 +1,11 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
-import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
-import javafx.event.Event;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javaslang.collection.Map;
@@ -17,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
-public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends VNode {
+public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<BUILDER> {
 
     private static final String ID = "id";
     private static final String STYLE_CLASS = "styleClass";
@@ -36,7 +32,7 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends VNode {
     private static final String DISABLE = "disable";
     private static final String STYLE = "style";
 
-    public NodeBuilder(Class<? extends Node> nodeClass,
+    public NodeBuilder(Class<?> nodeClass,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
@@ -133,79 +129,6 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends VNode {
 
     public BUILDER columnIndex(int value) {
         return property(COLUMN_INDEX, value);
-    }
-
-
-    public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(value, changeListener, invalidationListener)),
-                getEventHandlers()
-        );
-    }
-
-    public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(value, changeListener)),
-                getEventHandlers()
-        );
-    }
-
-    public BUILDER property(String name, Object value, VInvalidationListener invalidationListener) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(value, invalidationListener)),
-                getEventHandlers()
-        );
-    }
-
-    public BUILDER property(String name, Object value) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(value)),
-                getEventHandlers()
-        );
-    }
-
-    public BUILDER property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(changeListener, invalidationListener)),
-                getEventHandlers()
-        );
-    }
-
-    public BUILDER property(String name, VChangeListener<?> changeListener) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(changeListener)),
-                getEventHandlers()
-        );
-    }
-
-    public BUILDER property(String name, VInvalidationListener invalidationListener) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property(invalidationListener)),
-                getEventHandlers()
-        );
-    }
-
-    public BUILDER property(String name) {
-        return Factory.node(
-                this,
-                getProperties().put(name, Factory.property()),
-                getEventHandlers()
-        );
-    }
-
-    public <EVENT extends Event> BUILDER onEvent(VEventType type, VEventHandler<EVENT> eventHandler) {
-        return Factory.node(
-                this,
-                getProperties(),
-                getEventHandlers().put(type, eventHandler)
-        );
     }
 
 

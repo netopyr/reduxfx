@@ -12,7 +12,7 @@ public class StackPaneBuilder<BUILDER extends StackPaneBuilder<BUILDER>> extends
 
     private static final String ALIGNMENT = "alignment";
 
-    public StackPaneBuilder(Class<? extends Node> nodeClass,
+    public StackPaneBuilder(Class<?> nodeClass,
                             Map<String, VProperty> properties,
                             Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

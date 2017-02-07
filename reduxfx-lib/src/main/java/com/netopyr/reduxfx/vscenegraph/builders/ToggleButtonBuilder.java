@@ -12,7 +12,7 @@ public class ToggleButtonBuilder<BUILDER extends ToggleButtonBuilder<BUILDER>> e
     private static final String SELECTED = "selected";
     private static final String TOGGLE_GROUP = "toggleGroup";
 
-    public ToggleButtonBuilder(Class<? extends Node> nodeClass,
+    public ToggleButtonBuilder(Class<?> nodeClass,
                                Map<String, VProperty> properties,
                                Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

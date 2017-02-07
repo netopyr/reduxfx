@@ -3,11 +3,11 @@ package com.netopyr.reduxfx.differ.patches;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class InsertPatch extends Patch {
+public class UpdateRootPatch extends Patch {
 
     private final VNode newNode;
 
-    public InsertPatch(int index, VNode newNode) {
+    public UpdateRootPatch(int index, VNode newNode) {
         super(index);
         this.newNode = newNode;
     }

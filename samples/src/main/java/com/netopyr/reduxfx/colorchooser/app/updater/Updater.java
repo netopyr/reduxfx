@@ -16,7 +16,7 @@ import static javaslang.Predicates.instanceOf;
 /**
  * The {@code Updater} is the heart of every ReduxFX-application. This is where the main application logic resides.
  *
- * An {@code Updater} consists of a single function ({@link #update(AppModel, Action)} in this class), which takes
+ * An {@code Updater} consists of a single function ({@link #update(AppModel, Object)} in this class), which takes
  * the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the new state from that.
  *
  * Please note that {@code Updater} has no internal state. Everything that is needed for {@code update} is passed in
@@ -47,7 +47,7 @@ public class Updater {
      * @return the new state
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static AppModel update(AppModel state, Action action) {
+    public static AppModel update(AppModel state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 

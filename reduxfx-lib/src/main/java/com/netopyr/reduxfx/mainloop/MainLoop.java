@@ -12,7 +12,9 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.ReplaySubject;
 import io.reactivex.subjects.Subject;
 import javafx.application.Platform;
-import javafx.scene.Parent;
+import javafx.scene.Group;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javaslang.Tuple;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
@@ -27,6 +29,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Scene;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stage;
+
 public class MainLoop {
 
     private static final AtomicInteger THREAD_COUNTER = new AtomicInteger();
@@ -37,52 +42,85 @@ public class MainLoop {
     };
 
     private final BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
-    private final Subject<Object> actionSubject = PublishSubject.create();
-    private final Subject<Command> commandObservable = PublishSubject.create();
+    private final Subject<Object> actionProcessor = PublishSubject.create();
+    private final Subject<Command> commandProcessor = PublishSubject.create();
+
+    private final Patcher patcher = new Patcher(this::dispatch);
 
     private ExecutorService executor;
 
-    public Observable<Command> getCommandObservable() {
-        return commandObservable;
+    public <STATE> MainLoop(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Stage primaryStage)
+    {
+        final Function<STATE, VNode> stageView = STATE -> Stage().scene(Scene().root(view.apply(STATE)));
+
+        setup(initialState, updater, stageView, primaryStage);
     }
 
     public <STATE> MainLoop(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
-            Parent root
-    ) {
-        final Subject<Update<STATE>> updateSubject = BehaviorSubject.create();
-        actionSubject
-                .scan(Update.of(initialState), (update, action) -> updater.apply(update.getState(), action))
-                .subscribe(updateSubject);
+            Group group)
+    {
+        setup(initialState, updater, view, group);
+    }
 
-        final Subject<Option<VNode>> vScenegraphSubject = ReplaySubject.createWithSize(2);
-        updateSubject.map(Update::getState)
+    public <STATE> MainLoop(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Pane pane)
+    {
+        setup(initialState, updater, view, pane);
+    }
+
+    private <STATE> void setup(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Object javaFXRoot)
+    {
+        final Subject<Update<STATE>> updateProcessor = BehaviorSubject.create();
+        actionProcessor
+                .scan(Update.of(initialState), (update, action) -> updater.apply(update.getState(), action))
+                .subscribe(updateProcessor);
+
+        final Subject<Option<VNode>> vScenegraphProcessor = ReplaySubject.createWithSize(2);
+
+        updateProcessor.map(Update::getState)
                 .map(view::apply)
                 .map(Option::of)
                 .startWith(Option.<VNode>none())
-                .subscribe(vScenegraphSubject);
+                .subscribe(vScenegraphProcessor);
 
-        final Observable<Vector<Patch>> patchObservable = vScenegraphSubject.zipWith(vScenegraphSubject.skip(1), Differ::diff);
+        final Observable<Vector<Patch>> patchObservable = vScenegraphProcessor.zipWith(vScenegraphProcessor.skip(1), Differ::diff);
 
-        final Patcher patcher = new Patcher(this::dispatch);
-        vScenegraphSubject
+        vScenegraphProcessor
                 .zipWith(patchObservable, Tuple::of)
                 .forEach(tuple -> {
                     if (Platform.isFxApplicationThread()) {
-                        patcher.patch(root, tuple._1, tuple._2);
+                        patcher.patch(javaFXRoot, tuple._1, tuple._2);
                     } else {
-                        Platform.runLater(() -> patcher.patch(root, tuple._1, tuple._2));
+                        Platform.runLater(() -> patcher.patch(javaFXRoot, tuple._1, tuple._2));
                     }
                 });
 
-        updateSubject
+        updateProcessor
                 .map(Update::getCommands)
                 .flatMapIterable(commands -> commands)
-                .subscribe(commandObservable);
+                .subscribe(commandProcessor);
 
         start();
+    }
+
+
+
+    public Observable<Command> getCommandProcessor() {
+        return commandProcessor;
     }
 
     public synchronized void start() {
@@ -91,7 +129,7 @@ public class MainLoop {
             executor.execute(() -> {
                 try {
                     while (true) {
-                        actionSubject.onNext(queue.take());
+                        actionProcessor.onNext(queue.take());
                     }
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();

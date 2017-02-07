@@ -12,7 +12,7 @@ import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
 public class TextFieldBuilder<BUILDER extends TextFieldBuilder<BUILDER>> extends TextInputControlBuilder<BUILDER> {
 
-    public TextFieldBuilder(Class<? extends Node> nodeClass,
+    public TextFieldBuilder(Class<?> nodeClass,
                             Map<String, VProperty> properties,
                             Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

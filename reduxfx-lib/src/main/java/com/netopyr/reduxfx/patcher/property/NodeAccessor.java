@@ -10,6 +10,8 @@ import javaslang.control.Option;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
+import static com.netopyr.reduxfx.patcher.NodeUtilities.getProperties;
+
 public class NodeAccessor extends AbstractAccessor {
 
     private final NodeBuilder nodeBuilder;
@@ -22,26 +24,20 @@ public class NodeAccessor extends AbstractAccessor {
     @SuppressWarnings("unchecked")
     @Override
     protected Object fxToV(Object value) {
-        if (value instanceof Node) {
-            final Node node = (Node) value;
-            final Object vObj = node.getUserData();
-            if (vObj instanceof VNode) {
-                return vObj;
-            }
-        }
-        throw new IllegalStateException(String.format("Unable to convert the value %s to a VNode", value));
+        return getProperties(value).get("vValue");
     }
 
     @Override
     protected Object vToFX(Object value) {
         if (value instanceof VNode) {
-            final Option<Node> nodeOption = nodeBuilder.create((VNode) value);
+            final Option<Object> nodeOption = nodeBuilder.create((VNode) value);
             if (nodeOption.isEmpty()) {
                 return null;
             }
 
-            final Node node = nodeOption.get();
-            node.setUserData(value);
+            final Object node = nodeOption.get();
+
+            getProperties(node).put("vValue", value);
             return node;
         }
         throw new IllegalStateException(String.format("Unable to convert the value %s to a Node", value));

@@ -12,7 +12,7 @@ public class GridPaneBuilder<BUILDER extends GridPaneBuilder<BUILDER>> extends P
     private static final String HGAP = "hgap";
     private static final String VGAP = "vgap";
 
-    public GridPaneBuilder(Class<? extends Node> nodeClass,
+    public GridPaneBuilder(Class<?> nodeClass,
                            Map<String, VProperty> properties,
                            Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

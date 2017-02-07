@@ -14,7 +14,7 @@ public class SliderBuilder<BUILDER extends SliderBuilder<BUILDER>> extends NodeB
     private static final String MAX = "max";
     private static final String VALUE = "value";
 
-    public SliderBuilder(Class<? extends Node> nodeClass,
+    public SliderBuilder(Class<?> nodeClass,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

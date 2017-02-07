@@ -10,22 +10,38 @@ import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class ComponentBase<STATE> extends ReduxFX<STATE> {
+public class ComponentBase extends ReduxFX {
 
     private final ComponentDriver componentDriver = new ComponentDriver();
 
-    public ComponentBase(
-            Parent component,
+    public <STATE> ComponentBase(
+            Group component,
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view
     ) {
         super(initialState, updater, view, component);
+        init(component);
+    }
+
+    public <STATE> ComponentBase(
+            Pane component,
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view
+    ) {
+        super(initialState, updater, view, component);
+        init(component);
+    }
+
+    private void init(Node component) {
         component.sceneProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 start();

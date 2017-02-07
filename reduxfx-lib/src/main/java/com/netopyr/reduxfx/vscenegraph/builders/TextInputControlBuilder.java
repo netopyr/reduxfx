@@ -13,7 +13,7 @@ public class TextInputControlBuilder<BUILDER extends TextInputControlBuilder<BUI
     private static final String PROMPT_TEXT = "promptText";
     private static final String TEXT = "text";
 
-    public TextInputControlBuilder(Class<? extends Node> nodeClass,
+    public TextInputControlBuilder(Class<?> nodeClass,
                                    Map<String, VProperty> properties,
                                    Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

@@ -13,7 +13,7 @@ public class VBoxBuilder<BUILDER extends VBoxBuilder<BUILDER>> extends PaneBuild
     private static final String ALIGNMENT = "alignment";
     private static final String SPACING = "spacing";
 
-    public VBoxBuilder(Class<? extends Node> nodeClass,
+    public VBoxBuilder(Class<?> nodeClass,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

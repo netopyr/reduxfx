@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class LabelBuilder<BUILDER extends LabelBuilder<BUILDER>> extends LabeledBuilder<BUILDER> {
 
-    public LabelBuilder(Class<? extends Node> nodeClass,
+    public LabelBuilder(Class<?> nodeClass,
                         Map<String, VProperty> properties,
                         Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

@@ -5,14 +5,13 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> extends VBoxBuilder<BUILDER> {
 
-    public ColorChooserBuilder(Class<? extends Node> nodeClass,
+    public ColorChooserBuilder(Class<?> nodeClass,
                                Map<String, VProperty> properties,
                                Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

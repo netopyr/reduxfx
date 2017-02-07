@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ProgressBarBuilder<BUILDER extends ProgressBarBuilder<BUILDER>> extends ProgressIndicatorBuilder<BUILDER> {
 
-    public ProgressBarBuilder(Class<? extends Node> nodeClass,
+    public ProgressBarBuilder(Class<?> nodeClass,
                               Map<String, VProperty> properties,
                               Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

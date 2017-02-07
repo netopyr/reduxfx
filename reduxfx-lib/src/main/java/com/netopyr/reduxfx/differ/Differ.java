@@ -1,10 +1,11 @@
 package com.netopyr.reduxfx.differ;
 
 import com.netopyr.reduxfx.differ.patches.AttributesPatch;
-import com.netopyr.reduxfx.differ.patches.InsertPatch;
+import com.netopyr.reduxfx.differ.patches.AppendPatch;
 import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.differ.patches.RemovePatch;
 import com.netopyr.reduxfx.differ.patches.ReplacePatch;
+import com.netopyr.reduxfx.differ.patches.UpdateRootPatch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -26,7 +27,7 @@ public class Differ {
     public static Vector<Patch> diff(Option<VNode> a, Option<VNode> b) {
         final Vector<Patch> patches =
                 a.isEmpty() ?
-                        b.isEmpty() ? Vector.empty() : Vector.of(new InsertPatch(0, b.get()))
+                        b.isEmpty() ? Vector.empty() : Vector.of(new UpdateRootPatch(0, b.get()))
                         :
                         b.isEmpty() ? Vector.of(new RemovePatch(0)) : doDiff(a.get(), b.get(), 0);
         LOG.trace("Diff:\na:\n{}\nb:\n{}\nresult:\n{}", a, b, patches);
@@ -62,7 +63,7 @@ public class Differ {
         }
 
         for (int i = n; i < nB; i++) {
-            result = result.append(new InsertPatch(index, bChildren.get(i)));
+            result = result.append(new AppendPatch(index, bChildren.get(i)));
         }
 
         return result;

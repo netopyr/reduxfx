@@ -25,7 +25,7 @@ import static javaslang.Predicates.instanceOf;
 /**
  * The {@code Updater} is the heart of every ReduxFX-application. This is where the main application logic resides.
  *
- * An {@code Updater} consists of a single function ({@link #update(AppModel, Action)} in this class), which takes
+ * An {@code Updater} consists of a single function ({@link #update(AppModel, Object)} in this class), which takes
  * the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the new state from that.
  *
  * Please note that {@code Updater} has no internal state. Everything that is needed for {@code update} is passed in
@@ -56,7 +56,7 @@ public class Updater {
      * @return the new state
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static AppModel update(AppModel state, Action action) {
+    public static AppModel update(AppModel state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
@@ -159,7 +159,7 @@ public class Updater {
                         // the old entry. But if the id matches, we replace the TodoEntry with one that has the
                         // hover-flag set to the given value.
                         Case(instanceOf(SetTodoHoverAction.class),
-                                setTodoHoverAction -> state.withTodos(
+                                (SetTodoHoverAction setTodoHoverAction) -> state.withTodos(
                                         state.getTodos()
                                                 .map(entry -> entry.getId() != setTodoHoverAction.getId() ?
                                                         entry : entry.withHover(setTodoHoverAction.isValue())
@@ -173,7 +173,7 @@ public class Updater {
                         // the old entry. But if the id matches, we replace the TodoEntry with one that has the
                         // editMode-flag set to the given value.
                         Case(instanceOf(SetEditModeAction.class),
-                                setEditModeAction -> state.withTodos(
+                                (SetEditModeAction setEditModeAction) -> state.withTodos(
                                         state.getTodos()
                                                 .map(entry -> entry.getId() != setEditModeAction.getId() ?
                                                         entry : entry.withEditMode(setEditModeAction.isValue())

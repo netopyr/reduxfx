@@ -11,7 +11,7 @@ public class ButtonBuilder<BUILDER extends ButtonBuilder<BUILDER>> extends Butto
 
     public static final String DEFAULT_BUTTON = "defaultButton";
 
-    public ButtonBuilder(Class<? extends Node> nodeClass,
+    public ButtonBuilder(Class<?> nodeClass,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

@@ -4,7 +4,6 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.Node;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -16,7 +15,7 @@ public class BorderPaneBuilder<BUILDER extends BorderPaneBuilder<BUILDER>> exten
     private static final String RIGHT = "right";
     private static final String TOP = "top";
 
-    public BorderPaneBuilder(Class<? extends Node> nodeClass,
+    public BorderPaneBuilder(Class<?> nodeClass,
                              Map<String, VProperty> properties,
                              Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

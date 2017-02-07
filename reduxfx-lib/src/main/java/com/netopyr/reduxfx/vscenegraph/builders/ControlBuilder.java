@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ControlBuilder<BUILDER extends ControlBuilder<BUILDER>> extends RegionBuilder<BUILDER> {
 
-    public ControlBuilder(Class<? extends Node> nodeClass,
+    public ControlBuilder(Class<?> nodeClass,
                           Map<String, VProperty> properties,
                           Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

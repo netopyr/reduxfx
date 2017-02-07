@@ -24,7 +24,7 @@ import static javaslang.Predicates.instanceOf;
  * The {@code ColorChooserUpdater} is the heart of the
  * {@link com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent}. This is where the main logic resides.
  *
- * A {@code ColorChooserUpdater} consists of a single function ({@link #update(ColorChooserModel, ColorChooserAction)}
+ * A {@code ColorChooserUpdater} consists of a single function ({@link #update(ColorChooserModel, Object)}
  * in this class), which takes the current state (an instance of {@link ColorChooserModel}) and an
  * {@link ColorChooserAction} and calculates the new state from that.
  *

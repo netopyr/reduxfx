@@ -4,7 +4,6 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.Node;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,7 +12,7 @@ public class PaneBuilder<BUILDER extends PaneBuilder<BUILDER>> extends RegionBui
 
     private static final String CHILDREN = "children";
 
-    public PaneBuilder(Class<? extends Node> nodeClass,
+    public PaneBuilder(Class<?> nodeClass,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);
@@ -27,6 +26,9 @@ public class PaneBuilder<BUILDER extends PaneBuilder<BUILDER>> extends RegionBui
 
     public final BUILDER children(VNode... nodes) {
         return property(CHILDREN, nodes == null? Array.empty() : Array.of(nodes));
+    }
+    public final BUILDER children(Iterable<VNode> nodes) {
+        return property(CHILDREN, nodes == null? Array.empty() : Array.ofAll(nodes));
     }
 
     @Override

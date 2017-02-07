@@ -14,7 +14,7 @@ public class ButtonBaseBuilder<BUILDER extends ButtonBaseBuilder<BUILDER>> exten
 
     private static final String TEXT = "text";
 
-    public ButtonBaseBuilder(Class<? extends Node> nodeClass,
+    public ButtonBaseBuilder(Class<?> nodeClass,
                              Map<String, VProperty> properties,
                              Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, properties, eventHandlers);

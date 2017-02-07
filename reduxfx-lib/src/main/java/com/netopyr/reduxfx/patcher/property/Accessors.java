@@ -4,10 +4,12 @@ import com.netopyr.reduxfx.patcher.NodeBuilder;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.collection.Array;
@@ -41,14 +43,16 @@ public class Accessors {
         registerAccessor(Tuple.of(BorderPane.class, "left"), new NodeAccessor(getPropertyGetter(BorderPane.class, "left").get(), dispatcher, nodeBuilder));
         registerAccessor(Tuple.of(BorderPane.class, "center"), new NodeAccessor(getPropertyGetter(BorderPane.class, "center").get(), dispatcher, nodeBuilder));
         registerAccessor(Tuple.of(Node.class, "focused"), new FocusedAccessor(getPropertyGetter(Node.class, "focused").get(), dispatcher));
+        registerAccessor(Tuple.of(Stage.class, "scene"), new SceneAccessor(nodeBuilder));
+        registerAccessor(Tuple.of(Scene.class, "root"), new NodeAccessor(getPropertyGetter(Scene.class, "root").get(), dispatcher, nodeBuilder));
     }
 
     public void registerAccessor(Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
         cacheAccessor(propertyKey, accessor);
     }
 
-    public Option<Accessor> getAccessor(Node node, String propertyName) {
-        final Class<? extends Node> nodeClass = node.getClass();
+    public Option<Accessor> getAccessor(Object node, String propertyName) {
+        final Class<?> nodeClass = node.getClass();
         final Tuple2<Class<?>, String> propertyKey = Tuple.of(nodeClass, propertyName);
 
         return accessorMap.get(propertyKey)
@@ -57,10 +61,10 @@ public class Accessors {
                         .map(accessor -> cacheAccessor(propertyKey, accessor))
                 )
                 .orElse(() -> {
-                    if (node.getParent() == null) {
+                    if (! (node instanceof Node) || ((Node) node).getParent() == null) {
                         return Option.none();
                     }
-                    final Class<? extends Parent> parentClass = node.getParent().getClass();
+                    final Class<? extends Parent> parentClass = ((Node) node).getParent().getClass();
                     final Tuple2<Class<?>, String> layoutKey = Tuple.of(parentClass, propertyName);
                     return Pane.class.isAssignableFrom(parentClass) ?
                             layoutAccessorMap.get(layoutKey)
@@ -106,7 +110,7 @@ public class Accessors {
         return map;
     }
 
-    private Option<Accessor> createAccessor(Class<? extends Node> nodeClass, String propertyName) {
+    private Option<Accessor> createAccessor(Class<?> nodeClass, String propertyName) {
         final Option<Method> getterMethod = getGetterMethod(nodeClass, propertyName);
         final Option<MethodHandle> getter = getterMethod.flatMap(this::convertToMethodHandle);
 

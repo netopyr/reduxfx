@@ -11,12 +11,14 @@ import com.netopyr.reduxfx.vscenegraph.builders.LabeledBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ListViewBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ProgressBarBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ProgressIndicatorBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ScrollPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.SliderBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextFieldBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextInputControlBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ToggleButtonBuilder;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -27,11 +29,24 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javaslang.collection.HashMap;
 
 public class VScenegraphFactory {
 
     private VScenegraphFactory() {}
+
+    public static VNode Stages(StageBuilder... stages) {
+        return Factory.node(Stage.class, () -> new VNode(Stage.class, HashMap.of("stages", Factory.property(stages)), HashMap.empty()));
+    }
+
+    public static <CLASS extends StageBuilder<CLASS>> StageBuilder<CLASS> Stage() {
+        return Factory.node(Stage.class, () -> new StageBuilder<>(Stage.class, HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends SceneBuilder<CLASS>> SceneBuilder<CLASS> Scene() {
+        return Factory.node(Scene.class, () -> new SceneBuilder<>(Scene.class, HashMap.empty(), HashMap.empty()));
+    }
 
     public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> customNode(Class<? extends Node> nodeClass) {
         return Factory.node(nodeClass, () -> new NodeBuilder<>(nodeClass, HashMap.empty(), HashMap.empty()));
@@ -120,6 +135,10 @@ public class VScenegraphFactory {
 
     public static <CLASS extends GridPaneBuilder<CLASS>> GridPaneBuilder<CLASS> GridPane() {
         return Factory.node(GridPane.class, () -> new GridPaneBuilder<>(GridPane.class, HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends ScrollPaneBuilder<CLASS>> ScrollPaneBuilder<CLASS> ScrollPane() {
+        return Factory.node(ScrollPane.class, () -> new ScrollPaneBuilder<>(ScrollBar.class, HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text(Class<? extends Text> nodeClass) {
