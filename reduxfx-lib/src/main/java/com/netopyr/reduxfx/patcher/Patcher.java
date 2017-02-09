@@ -139,6 +139,7 @@ public class Patcher {
         nodeBuilder.updateProperties(node, vNode.getProperties());
         nodeBuilder.updateEventHandlers(node, vNode.getEventHandlers()
                 .map((key, value) -> Tuple.of(key, Option.of(value))));
+        nodeBuilder.updateProperties(node, vNode.getNamedChildren());
 
 
         for (final VNode vChild : vNode.getChildren()) {

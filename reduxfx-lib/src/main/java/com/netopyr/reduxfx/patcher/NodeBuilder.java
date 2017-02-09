@@ -8,6 +8,7 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javaslang.Tuple;
 import javaslang.Tuple2;
 import javaslang.collection.Map;
 import javaslang.control.Option;
@@ -47,8 +48,9 @@ public class NodeBuilder {
 
     @SuppressWarnings("unchecked")
     public void init(Object node, VNode vNode) {
-        setProperties(node, vNode.getProperties());
-        setEventHandlers(node, vNode.getEventHandlers());
+        updateProperties(node, vNode.getProperties());
+        updateEventHandlers(node, vNode.getEventHandlers().map((name, eventHandler) -> Tuple.of(name, Option.of(eventHandler))));
+        updateProperties(node, vNode.getNamedChildren());
 
         if (vNode.getChildren().nonEmpty()) {
             vNode.getChildren().forEach(vChild -> {
@@ -62,7 +64,7 @@ public class NodeBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private void setProperties(Object node, Map<String, VProperty> properties) {
+    void updateProperties(Object node, Map<String, VProperty> properties) {
         for (final Tuple2<String, VProperty> entry : properties) {
             final Option<Accessor> accessor = accessors.getAccessor(node, entry._1);
             if (accessor.isDefined()) {
@@ -74,41 +76,9 @@ public class NodeBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private void setEventHandlers(Object node, Map<VEventType, VEventHandler> eventHandlers) {
-        for (final Tuple2<VEventType, VEventHandler> entry : eventHandlers) {
-            final Option<MethodHandle> setter = getEventSetter(node.getClass(), entry._1);
-            if (setter.isDefined()) {
-                try {
-                    final EventHandler<? extends Event> eventHandler = e -> {
-                        final Object action = entry._2.onChange(e);
-                        if (action != null) {
-                            dispatcher.accept(action);
-                        }
-                    };
-                    setter.get().invoke(node, eventHandler);
-                } catch (Throwable throwable) {
-                    LOG.error("Unable to set JavaFX EventHandler " + entry._1 + " for class " + node.getClass(), throwable);
-                }
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    void updateProperties(Object obj, Map<String, VProperty> properties) {
-        for (final Tuple2<String, VProperty> entry : properties) {
-            final Option<Accessor> accessor = accessors.getAccessor(obj, entry._1);
-            if (accessor.isDefined()) {
-                accessor.get().set(obj, entry._1, entry._2);
-            } else {
-                LOG.warn("Accessor not found for property {} in class {}", entry._1, obj.getClass());
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    void updateEventHandlers(Object obj, Map<VEventType, Option<VEventHandler>> eventHandlers) {
+    void updateEventHandlers(Object node, Map<VEventType, Option<VEventHandler>> eventHandlers) {
         for (final Tuple2<VEventType, Option<VEventHandler>> entry : eventHandlers) {
-            final Option<MethodHandle> setter = getEventSetter(obj.getClass(), entry._1);
+            final Option<MethodHandle> setter = getEventSetter(node.getClass(), entry._1);
             if (setter.isDefined()) {
                 try {
                     final EventHandler<Event> eventHandler =
@@ -121,9 +91,9 @@ public class NodeBuilder {
                                                 }
                                             }
                             ).getOrElse((EventHandler) null);
-                    setter.get().invoke(obj, eventHandler);
+                    setter.get().invoke(node, eventHandler);
                 } catch (Throwable throwable) {
-                    LOG.error("Unable to set JavaFX EventHandler " + entry._1() + " for class " + obj.getClass(), throwable);
+                    LOG.error("Unable to set JavaFX EventHandler " + entry._1() + " for class " + node.getClass(), throwable);
                 }
             }
         }
