@@ -3,9 +3,12 @@ package com.netopyr.reduxfx.differ.patches;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Objects;
 
 public class AttributesPatch extends Patch {
 
@@ -17,13 +20,12 @@ public class AttributesPatch extends Patch {
             Map<String, VProperty> properties,
             Map<VEventType, Option<VEventHandler>> eventHandlers) {
         super(index);
-        this.properties = properties;
-        this.eventHandlers = eventHandlers;
+        this.properties = Objects.requireNonNull(properties, "Properties must not be null");
+        this.eventHandlers = Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
     }
 
-    @Override
-    public Type getType() {
-        return Type.ATTRIBUTES;
+    public AttributesPatch(int index, String name, VProperty property) {
+        this(index, HashMap.of(name, property), HashMap.empty());
     }
 
     public Map<String, VProperty> getProperties() {

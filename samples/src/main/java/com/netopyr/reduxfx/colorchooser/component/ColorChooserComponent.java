@@ -10,6 +10,7 @@ import com.netopyr.reduxfx.vscenegraph.builders.Factory;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javaslang.collection.Array;
 import javaslang.collection.HashMap;
 
 /**
@@ -29,7 +30,7 @@ public class ColorChooserComponent extends VBox {
      * @return the VirtualScenegraph-node of a {@code ColorChooserComponent}, which is also a {@link ColorChooserBuilder}
      */
     public static <CLASS extends ColorChooserBuilder<CLASS>> ColorChooserBuilder<CLASS> ColorChooser() {
-        return Factory.node(ColorChooserComponent.class, () -> new ColorChooserBuilder<CLASS>(ColorChooserComponent.class, HashMap.empty(), HashMap.empty()));
+        return Factory.node(ColorChooserComponent.class, () -> new ColorChooserBuilder<CLASS>(ColorChooserComponent.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
 

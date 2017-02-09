@@ -9,11 +9,6 @@ public class RemovePatch extends Patch {
     }
 
     @Override
-    public Type getType() {
-        return Type.REMOVE;
-    }
-
-    @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
