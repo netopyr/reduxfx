@@ -5,6 +5,7 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -20,16 +21,22 @@ public class ListViewBuilder<BUILDER extends ListViewBuilder<BUILDER, ELEMENT>, 
 
     public ListViewBuilder(Class<?> nodeClass,
                            Class<ELEMENT> elementClass,
+                           Array<VNode> children,
+                           Map<String, VProperty> namedChildren,
                            Map<String, VProperty> properties,
                            Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
         this.elementClass = elementClass;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ListViewBuilder<>(getNodeClass(), elementClass, properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new ListViewBuilder<>(getNodeClass(), elementClass, children, namedChildren, properties, eventHandlers);
     }
 
 

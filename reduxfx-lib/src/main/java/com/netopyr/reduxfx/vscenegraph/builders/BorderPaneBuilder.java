@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -16,36 +17,42 @@ public class BorderPaneBuilder<BUILDER extends BorderPaneBuilder<BUILDER>> exten
     private static final String TOP = "top";
 
     public BorderPaneBuilder(Class<?> nodeClass,
+                             Array<VNode> children,
+                             Map<String, VProperty> namedChildren,
                              Map<String, VProperty> properties,
                              Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new BorderPaneBuilder<>(getNodeClass(), properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new BorderPaneBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
 
     public BUILDER bottom(VNode value) {
-        return property(BOTTOM, value);
+        return child(BOTTOM, value);
     }
 
     public BUILDER center(VNode value) {
-        return property(CENTER, value);
+        return child(CENTER, value);
     }
 
     public BUILDER left(VNode value) {
-        return property(LEFT, value);
+        return child(LEFT, value);
     }
 
     public BUILDER right(VNode value) {
-        return property(RIGHT, value);
+        return child(RIGHT, value);
     }
 
     public BUILDER top(VNode value) {
-        return property(TOP, value);
+        return child(TOP, value);
     }
 
 

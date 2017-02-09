@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
@@ -7,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -22,15 +24,21 @@ public class RegionBuilder<BUILDER extends RegionBuilder<BUILDER>> extends Paren
     private static final String PADDING = "padding";
 
     public RegionBuilder(Class<?> nodeClass,
+                         Array<VNode> children,
+                         Map<String, VProperty> namedChildren,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new RegionBuilder<>(getNodeClass(), properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new RegionBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
 

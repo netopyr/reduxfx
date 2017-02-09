@@ -10,25 +10,29 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class PaneBuilder<BUILDER extends PaneBuilder<BUILDER>> extends RegionBuilder<BUILDER> {
 
-    private static final String CHILDREN = "children";
-
     public PaneBuilder(Class<?> nodeClass,
+                       Array<VNode> children,
+                       Map<String, VProperty> namedChildren,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new PaneBuilder<>(getNodeClass(), properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new PaneBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
     public final BUILDER children(VNode... nodes) {
-        return property(CHILDREN, nodes == null? Array.empty() : Array.of(nodes));
+        return children(nodes == null? Array.empty() : Array.of(nodes));
     }
     public final BUILDER children(Iterable<VNode> nodes) {
-        return property(CHILDREN, nodes == null? Array.empty() : Array.ofAll(nodes));
+        return children(nodes == null? Array.empty() : Array.ofAll(nodes));
     }
 
     @Override

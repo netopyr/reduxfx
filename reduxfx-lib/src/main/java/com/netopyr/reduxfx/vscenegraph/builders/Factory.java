@@ -9,7 +9,8 @@ import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.Tuple;
-import javaslang.Tuple3;
+import javaslang.Tuple5;
+import javaslang.collection.Array;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
@@ -24,7 +25,7 @@ public class Factory {
 
     private static final VProperty EMPTY_PROPERTY = new VProperty(Option.none(), Option.none());
 
-    private static final Cache<Tuple3<Object, Map<String, VProperty>, Map<VEventType, VEventHandler>>, VNode> nodeCache =
+    private static final Cache<Tuple5<Object, Array<VNode>, Map<String, VProperty>, Map<String, VProperty>, Map<VEventType, VEventHandler>>, VNode> nodeCache =
             Caffeine.newBuilder().expireAfterAccess(EXPIRATION_SECONDS, TimeUnit.SECONDS)
                     .maximumSize(MAX_SIZE)
                     .build();
@@ -40,17 +41,23 @@ public class Factory {
 
 
     @SuppressWarnings("unchecked")
-    public static <BUILDER extends Builder<BUILDER>> BUILDER node(Builder<BUILDER> builder, Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) nodeCache.get(
-                Tuple.of(builder.getNodeClass(), properties, eventHandlers),
-                tuple -> builder.create(properties, eventHandlers)
-        );
+    public static <BUILDER extends Builder<BUILDER>> BUILDER node(
+            Builder<BUILDER> builder,
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return eventHandlers.isEmpty() && properties.filter(p -> p._2.getChangeListener().isDefined() || p._2.getInvalidationListener().isDefined()).isEmpty() ?
+                (BUILDER) nodeCache.get(
+                        Tuple.of(builder.getNodeClass(), children, namedChildren, properties, eventHandlers),
+                        tuple -> builder.create(children, namedChildren, properties, eventHandlers)
+                ) : builder.create(children, namedChildren, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     public static <BUILDER extends VNode> BUILDER node(Object typeKey, Supplier<BUILDER> factory) {
         return (BUILDER) nodeCache.get(
-                Tuple.of(typeKey, HashMap.empty(), HashMap.empty()),
+                Tuple.of(typeKey, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()),
                 tuple -> factory.get()
         );
     }

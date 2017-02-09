@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -33,15 +35,21 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     private static final String STYLE = "style";
 
     public NodeBuilder(Class<?> nodeClass,
+                       Array<VNode> children,
+                       Map<String, VProperty> namedChildren,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
 
     @SuppressWarnings("unchecked")
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new NodeBuilder(getNodeClass(), properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new NodeBuilder(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
     protected Object getTypeKey() {

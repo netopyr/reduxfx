@@ -1,8 +1,10 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 
 public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder<BUILDER> {
@@ -10,19 +12,28 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder
     private static final String SCENE = "scene";
     private static final String SHOWING = "showing";
 
-    public StageBuilder(Class<?> nodeClass, Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+    public StageBuilder(
+            Class<?> nodeClass,
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new StageBuilder<>(getNodeClass(), properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new StageBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
 
     public BUILDER scene(SceneBuilder<?> value) {
-        return property(SCENE, value);
+        return child(SCENE, value);
     }
 
     public BUILDER showing(boolean value) {

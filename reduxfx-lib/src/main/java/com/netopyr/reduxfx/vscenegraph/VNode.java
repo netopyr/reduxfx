@@ -13,22 +13,21 @@ public class VNode {
 
     private final Class<?> nodeClass;
     private final Array<VNode> children;
+    private final Map<String, VProperty> namedChildren;
     private final Map<String, VProperty> properties;
     private final Map<VEventType, VEventHandler> eventHandlers;
 
 
     @SuppressWarnings("unchecked")
     public VNode(Class<?> nodeClass,
+                 Array<VNode> children,
+                 Map<String, VProperty> namedChildren,
                  Map<String, VProperty> properties,
                  Map<VEventType, VEventHandler> eventHandlers) {
         this.nodeClass = Objects.requireNonNull(nodeClass, "NodeClass must not be null");
-        if (properties == null) {
-            throw new NullPointerException("Properties must not be null");
-        }
-        this.children = properties.get("children")
-                .map(property -> (Array<VNode>) property.getValue())
-                .getOrElse(Array.empty());
-        this.properties = properties.filter(entry -> ! "children".equals(entry._1));
+        this.children = Objects.requireNonNull(children, "Children must not be null");
+        this.namedChildren = Objects.requireNonNull(namedChildren, "NamedChildren must not be null");
+        this.properties = Objects.requireNonNull(properties, "Properties must not be null");
         this.eventHandlers = Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
     }
 
@@ -41,6 +40,10 @@ public class VNode {
         return children;
     }
 
+    public Map<String, VProperty> getNamedChildren() {
+        return namedChildren;
+    }
+
     public Map<String, VProperty> getProperties() {
         return properties;
     }
@@ -51,7 +54,11 @@ public class VNode {
 
 
     public int getSize() {
-        return children.map(VNode::getSize).sum().intValue() + 1;
+        return children.map(VNode::getSize).sum().intValue()
+                + namedChildren.values()
+                .map(property -> property.isValueDefined() && property.getValue() != null ? ((VNode) property.getValue()).getSize() : 0)
+                .sum().intValue()
+                + 1;
     }
 
     @Override
@@ -59,6 +66,7 @@ public class VNode {
         return new ToStringBuilder(this)
                 .append("nodeClass", nodeClass)
                 .append("children", children)
+                .append("namedChildren", namedChildren)
                 .append("properties", properties)
                 .append("eventHandlers", eventHandlers)
                 .toString();

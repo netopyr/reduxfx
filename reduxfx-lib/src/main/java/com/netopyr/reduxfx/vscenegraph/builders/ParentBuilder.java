@@ -1,9 +1,11 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -12,15 +14,21 @@ public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeB
     private static final String STYLESHEETS = "stylesheets";
 
     public ParentBuilder(Class<?> nodeClass,
+                         Array<VNode> children,
+                         Map<String, VProperty> namedChildren,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, properties, eventHandlers);
+        super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(Map<String, VProperty> properties, Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ParentBuilder<>(getNodeClass(), properties, eventHandlers);
+    protected BUILDER create(
+            Array<VNode> children,
+            Map<String, VProperty> namedChildren,
+            Map<String, VProperty> properties,
+            Map<VEventType, VEventHandler> eventHandlers) {
+        return (BUILDER) new ParentBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
 
