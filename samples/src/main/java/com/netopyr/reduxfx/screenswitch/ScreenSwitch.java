@@ -16,7 +16,7 @@ public class ScreenSwitch extends Application {
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.
-        SimpleReduxFX.start(initialState, Updater::update, ViewManager::view, primaryStage);
+        SimpleReduxFX.startStages(initialState, Updater::update, ViewManager::view, primaryStage);
     }
 
     public static void main(String[] args) {

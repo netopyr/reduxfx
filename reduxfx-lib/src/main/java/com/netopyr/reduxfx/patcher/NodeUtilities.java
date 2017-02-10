@@ -1,10 +1,12 @@
 package com.netopyr.reduxfx.patcher;
 
+import com.netopyr.reduxfx.vscenegraph.Stages;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import javaslang.collection.Array;
 import javaslang.control.Option;
@@ -13,6 +15,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static javaslang.API.$;
@@ -27,8 +30,19 @@ public class NodeUtilities {
     }
 
 
-    public static Object getChild(Parent parent, int index) {
-        return parent.getChildrenUnmodifiable().get(index);
+    public static Object getChild(Object obj, int index) {
+
+        return Match(obj).of(
+
+                Case(instanceOf(Parent.class),
+                        parent -> parent.getChildrenUnmodifiable().get(index)
+                ),
+
+                Case(instanceOf(Stages.class),
+                        stages -> stages.getChildren().get(index)
+                )
+
+        );
     }
 
 
@@ -59,6 +73,9 @@ public class NodeUtilities {
 
                     Case($(), false)
             );
+
+        } else if (obj instanceof Stage && parent instanceof Stages) {
+            return ((Stages) parent).getChildren().add((Stage) obj);
         }
 
         return false;
@@ -76,15 +93,46 @@ public class NodeUtilities {
             return Match(parent).of(
 
                     Case(instanceOf(Pane.class),
-                            pane -> pane.getChildren().set(pane.getChildren().indexOf(oldChild), newChild) != null
+                            pane -> {
+                                final List<Node> children = pane.getChildren();
+                                final int index = children.indexOf(oldChild);
+                                if (index >= 0) {
+                                    children.set(index, newChild);
+                                    return true;
+                                }
+                                return false;
+                            }
                     ),
 
                     Case(instanceOf(Group.class),
-                            group -> group.getChildren().set(group.getChildren().indexOf(oldChild), newChild) != null
+                            group -> {
+                                final List<Node> children = group.getChildren();
+                                final int index = children.indexOf(oldChild);
+                                if (index >= 0) {
+                                    children.set(index, newChild);
+                                    return true;
+                                }
+                                return false;
+                            }
                     ),
 
                     Case($(), false)
             );
+
+
+        } else if (oldObj instanceof Stage && newObj instanceof Stage) {
+
+            final Object parent = ((Stage) oldObj).getProperties().get("stages");
+
+            if (parent instanceof Stages) {
+                final List<Stage> children = ((Stages) parent).getChildren();
+                final int index = children.indexOf(oldObj);
+                if (index >= 0) {
+                    children.set(index, (Stage) newObj);
+                    return true;
+                }
+                return false;
+            }
         }
 
         return false;
@@ -108,6 +156,13 @@ public class NodeUtilities {
 
                     Case($(), false)
             );
+
+
+        } else if (obj instanceof Stage) {
+            final Object stages = ((Stage) obj).getProperties().get("stages");
+            if (stages instanceof Stages) {
+                return ((Stages) stages).getChildren().remove(obj);
+            }
         }
 
         return false;

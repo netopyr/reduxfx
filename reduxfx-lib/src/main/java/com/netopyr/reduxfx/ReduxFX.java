@@ -15,61 +15,62 @@ import java.util.function.Function;
 
 public class ReduxFX {
 
-    public static <STATE> ReduxFX start(
+    public static <STATE> ReduxFX startStages(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
-            Stage primaryStage)
-    {
-        return new ReduxFX(initialState, updater, view, primaryStage);
+            Stage primaryStage
+    ) {
+        final MainLoop mainLoop = MainLoop.createStages(initialState, updater, view, primaryStage);
+        return new ReduxFX(mainLoop);
+    }
+
+    public static <STATE> ReduxFX startStage(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Stage primaryStage
+    ) {
+        final MainLoop mainLoop = MainLoop.createStage(initialState, updater, view, primaryStage);
+        return new ReduxFX(mainLoop);
     }
 
     public static <STATE> ReduxFX start(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
-            Group group)
-    {
-        return new ReduxFX(initialState, updater, view, group);
+            Stage primaryStage
+    ) {
+        final MainLoop mainLoop = MainLoop.create(initialState, updater, view, primaryStage);
+        return new ReduxFX(mainLoop);
     }
 
     public static <STATE> ReduxFX start(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
-            Pane pane)
-    {
-        return new ReduxFX(initialState, updater, view, pane);
+            Group group
+    ) {
+        final MainLoop mainLoop = MainLoop.create(initialState, updater, view, group);
+        return new ReduxFX(mainLoop);
+    }
+
+    public static <STATE> ReduxFX start(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Pane pane
+    ) {
+        final MainLoop mainLoop = MainLoop.create(initialState, updater, view, pane);
+        return new ReduxFX(mainLoop);
     }
 
 
     private final MainLoop mainLoop;
 
 
-    private  <STATE> ReduxFX(
-            STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Function<STATE, VNode> view,
-            Stage primaryStage)
-    {
-        mainLoop = new MainLoop(initialState, updater, view, primaryStage);
-    }
-
-    protected  <STATE> ReduxFX(
-            STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Function<STATE, VNode> view,
-            Group group)
-    {
-        mainLoop = new MainLoop(initialState, updater, view, group);
-    }
-
-    protected  <STATE> ReduxFX(
-            STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Function<STATE, VNode> view,
-            Pane pane) {
-        mainLoop = new MainLoop(initialState, updater, view, pane);
+    protected ReduxFX(MainLoop mainLoop) {
+        this.mainLoop = mainLoop;
     }
 
 

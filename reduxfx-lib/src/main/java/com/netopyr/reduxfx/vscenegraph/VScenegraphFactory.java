@@ -37,8 +37,8 @@ public class VScenegraphFactory {
 
     private VScenegraphFactory() {}
 
-    public static VNode Stages(StageBuilder... stages) {
-        return Factory.node(Stage.class, () -> new VNode(Stage.class, Array.of(stages), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    public static StagesBuilder Stages() {
+        return new StagesBuilder(Array.empty());
     }
 
     public static <CLASS extends StageBuilder<CLASS>> StageBuilder<CLASS> Stage() {

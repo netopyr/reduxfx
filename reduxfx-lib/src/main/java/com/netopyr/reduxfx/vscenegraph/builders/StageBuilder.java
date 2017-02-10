@@ -11,6 +11,7 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder
 
     private static final String SCENE = "scene";
     private static final String SHOWING = "showing";
+    private static final String TITLE = "title";
 
     public StageBuilder(
             Class<?> nodeClass,
@@ -38,6 +39,10 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder
 
     public BUILDER showing(boolean value) {
         return property(SHOWING, value);
+    }
+
+    public BUILDER title(String value) {
+        return property(TITLE, value);
     }
 
 }

@@ -8,7 +8,6 @@ import com.netopyr.reduxfx.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.differ.patches.UpdateRootPatch;
 import com.netopyr.reduxfx.patcher.property.Accessors;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javafx.scene.Parent;
 import javaslang.Tuple;
 import javaslang.collection.Seq;
 import javaslang.collection.Vector;
@@ -47,7 +46,7 @@ public class Patcher {
 
         for (final Patch patch : patches) {
 
-            LOG.trace("Patch:\n{}", patch);
+            LOG.trace("\n\nPatch:\n{}", patch);
 
             final Object node;
             try {
@@ -169,7 +168,7 @@ public class Patcher {
 
             if (head instanceof Integer) {
                 final int index = (Integer) head;
-                node = getChild((Parent) node, index);
+                node = getChild(node, index);
                 vNode = vNode.getChildren().get(index);
 
             } else if (head instanceof String) {

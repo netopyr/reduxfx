@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.component;
 
 import com.netopyr.reduxfx.ReduxFX;
 import com.netopyr.reduxfx.component.driver.ComponentDriver;
+import com.netopyr.reduxfx.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
@@ -27,7 +28,7 @@ public class ComponentBase extends ReduxFX {
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view
     ) {
-        super(initialState, updater, view, component);
+        super(MainLoop.create(initialState, updater, view, component));
         init(component);
     }
 
@@ -37,7 +38,7 @@ public class ComponentBase extends ReduxFX {
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view
     ) {
-        super(initialState, updater, view, component);
+        super(MainLoop.create(initialState, updater, view, component));
         init(component);
     }
 

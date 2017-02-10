@@ -39,11 +39,6 @@ public class Differ {
         Objects.requireNonNull(a, "First node must not be null");
         Objects.requireNonNull(b, "Second node must not be null");
 
-        // TODO Wie hiermit umgehen, wenn named child?
-        if (a.getNodeClass() != b.getNodeClass()) {
-            return Vector.of(new ReplacePatch(path, b));
-        }
-
         return diffAttributes(path, a, b)
                 .appendAll(diffChildren(path, a, b))
                 .appendAll(diffNamedChildren(path, a, b));
@@ -84,7 +79,7 @@ public class Differ {
         }
 
         for (int i = n; i < nB; i++) {
-            result = result.append(new AppendPatch(path.append(i), bChildren.get(i)));
+            result = result.append(new AppendPatch(path, bChildren.get(i)));
         }
 
         return result;

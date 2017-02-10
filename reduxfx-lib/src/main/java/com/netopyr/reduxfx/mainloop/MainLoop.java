@@ -5,6 +5,7 @@ import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.patcher.Patcher;
 import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.updater.Update;
+import com.netopyr.reduxfx.vscenegraph.Stages;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -31,6 +32,7 @@ import java.util.function.Function;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Scene;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stage;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stages;
 
 public class MainLoop {
 
@@ -49,37 +51,57 @@ public class MainLoop {
 
     private ExecutorService executor;
 
-    public <STATE> MainLoop(
+    public static <STATE> MainLoop createStages(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Stage primaryStage)
+    {
+        final Stages stages = new Stages(primaryStage);
+        final Option<VNode> initialVNode = Option.of(Stages().children(Stage()));
+        return new MainLoop(initialState, initialVNode, updater, view, stages);
+    }
+
+    public static <STATE> MainLoop createStage(
+            STATE initialState,
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Function<STATE, VNode> view,
+            Stage primaryStage)
+    {
+        return new MainLoop(initialState, Option.none(), updater, view, primaryStage);
+    }
+
+    public static <STATE> MainLoop create(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
             Stage primaryStage)
     {
         final Function<STATE, VNode> stageView = STATE -> Stage().scene(Scene().root(view.apply(STATE)));
-
-        setup(initialState, updater, stageView, primaryStage);
+        return new MainLoop(initialState, Option.none(), updater, stageView, primaryStage);
     }
 
-    public <STATE> MainLoop(
+    public static <STATE> MainLoop create(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
             Group group)
     {
-        setup(initialState, updater, view, group);
+        return new MainLoop(initialState, Option.none(), updater, view, group);
     }
 
-    public <STATE> MainLoop(
+    public static <STATE> MainLoop create(
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
             Pane pane)
     {
-        setup(initialState, updater, view, pane);
+        return new MainLoop(initialState, Option.none(), updater, view, pane);
     }
 
-    private <STATE> void setup(
+    private <STATE> MainLoop(
             STATE initialState,
+            Option<VNode> initialVNode,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view,
             Object javaFXRoot)
@@ -94,7 +116,7 @@ public class MainLoop {
         updateProcessor.map(Update::getState)
                 .map(view::apply)
                 .map(Option::of)
-                .startWith(Option.<VNode>none())
+                .startWith(initialVNode)
                 .subscribe(vScenegraphProcessor);
 
         final Observable<Vector<Patch>> patchObservable = vScenegraphProcessor.zipWith(vScenegraphProcessor.skip(1), Differ::diff);

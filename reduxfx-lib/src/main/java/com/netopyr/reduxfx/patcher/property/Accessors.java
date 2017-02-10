@@ -44,6 +44,7 @@ public class Accessors {
         registerAccessor(Tuple.of(Node.class, "focused"), new FocusedAccessor(NodeUtilities.getPropertyGetter(Node.class, "focused").get(), dispatcher));
         registerAccessor(Tuple.of(Stage.class, "scene"), new SceneAccessor(nodeBuilder));
         registerAccessor(Tuple.of(Scene.class, "root"), new NodeAccessor(NodeUtilities.getPropertyGetter(Scene.class, "root").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(Stage.class, "showing"), new StageShowingAccessor(NodeUtilities.getPropertyGetter(Stage.class, "showing").get(), dispatcher));
     }
 
     public void registerAccessor(Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
