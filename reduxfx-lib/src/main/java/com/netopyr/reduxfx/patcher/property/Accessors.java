@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.patcher.property;
 
 import com.netopyr.reduxfx.patcher.NodeBuilder;
+import com.netopyr.reduxfx.patcher.NodeUtilities;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -12,13 +13,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javaslang.Tuple;
 import javaslang.Tuple2;
-import javaslang.collection.Array;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -35,16 +34,16 @@ public class Accessors {
     }
 
     public void init(NodeBuilder nodeBuilder) {
-        registerAccessor(Tuple.of(ToggleButton.class, "toggleGroup"), new ToggleGroupAccessor(getPropertyGetter(ToggleButton.class, "toggleGroup").get(), dispatcher));
-        registerAccessor(Tuple.of(Labeled.class, "graphic"), new NodeAccessor(getPropertyGetter(Labeled.class, "graphic").get(), dispatcher, nodeBuilder));
-        registerAccessor(Tuple.of(BorderPane.class, "top"), new NodeAccessor(getPropertyGetter(BorderPane.class, "top").get(), dispatcher, nodeBuilder));
-        registerAccessor(Tuple.of(BorderPane.class, "right"), new NodeAccessor(getPropertyGetter(BorderPane.class, "right").get(), dispatcher, nodeBuilder));
-        registerAccessor(Tuple.of(BorderPane.class, "bottom"), new NodeAccessor(getPropertyGetter(BorderPane.class, "bottom").get(), dispatcher, nodeBuilder));
-        registerAccessor(Tuple.of(BorderPane.class, "left"), new NodeAccessor(getPropertyGetter(BorderPane.class, "left").get(), dispatcher, nodeBuilder));
-        registerAccessor(Tuple.of(BorderPane.class, "center"), new NodeAccessor(getPropertyGetter(BorderPane.class, "center").get(), dispatcher, nodeBuilder));
-        registerAccessor(Tuple.of(Node.class, "focused"), new FocusedAccessor(getPropertyGetter(Node.class, "focused").get(), dispatcher));
+        registerAccessor(Tuple.of(ToggleButton.class, "toggleGroup"), new ToggleGroupAccessor(NodeUtilities.getPropertyGetter(ToggleButton.class, "toggleGroup").get(), dispatcher));
+        registerAccessor(Tuple.of(Labeled.class, "graphic"), new NodeAccessor(NodeUtilities.getPropertyGetter(Labeled.class, "graphic").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "top"), new NodeAccessor(NodeUtilities.getPropertyGetter(BorderPane.class, "top").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "right"), new NodeAccessor(NodeUtilities.getPropertyGetter(BorderPane.class, "right").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "bottom"), new NodeAccessor(NodeUtilities.getPropertyGetter(BorderPane.class, "bottom").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "left"), new NodeAccessor(NodeUtilities.getPropertyGetter(BorderPane.class, "left").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(BorderPane.class, "center"), new NodeAccessor(NodeUtilities.getPropertyGetter(BorderPane.class, "center").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(Node.class, "focused"), new FocusedAccessor(NodeUtilities.getPropertyGetter(Node.class, "focused").get(), dispatcher));
         registerAccessor(Tuple.of(Stage.class, "scene"), new SceneAccessor(nodeBuilder));
-        registerAccessor(Tuple.of(Scene.class, "root"), new NodeAccessor(getPropertyGetter(Scene.class, "root").get(), dispatcher, nodeBuilder));
+        registerAccessor(Tuple.of(Scene.class, "root"), new NodeAccessor(NodeUtilities.getPropertyGetter(Scene.class, "root").get(), dispatcher, nodeBuilder));
     }
 
     public void registerAccessor(Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
@@ -76,7 +75,7 @@ public class Accessors {
                 });
     }
 
-    private Option<Accessor> searchInCache(Map<Tuple2<Class<?>, String>, Accessor> map, Tuple2<Class<?>, String> propertyKey) {
+    private static Option<Accessor> searchInCache(Map<Tuple2<Class<?>, String>, Accessor> map, Tuple2<Class<?>, String> propertyKey) {
         final String propertyName = propertyKey._2;
         for (Class<?> clazz = propertyKey._1.getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
             final Option<Accessor> accessor = map.get(Tuple.of(clazz, propertyName));
@@ -97,8 +96,8 @@ public class Accessors {
         return accessor;
     }
 
-    private Map<Tuple2<Class<?>, String>, Accessor> doCacheAccessor(Map<Tuple2<Class<?>, String>, Accessor> map, Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
-        final Option<Method> getter = getGetterMethod(propertyKey._1, propertyKey._2);
+    private static Map<Tuple2<Class<?>, String>, Accessor> doCacheAccessor(Map<Tuple2<Class<?>, String>, Accessor> map, Tuple2<Class<?>, String> propertyKey, Accessor accessor) {
+        final Option<Method> getter = NodeUtilities.getGetterMethod(propertyKey._1, propertyKey._2);
         if (getter.isDefined()) {
             final Class<?> declaringClass = getter.get().getDeclaringClass();
             final String propertyName = propertyKey._2;
@@ -111,13 +110,13 @@ public class Accessors {
     }
 
     private Option<Accessor> createAccessor(Class<?> nodeClass, String propertyName) {
-        final Option<Method> getterMethod = getGetterMethod(nodeClass, propertyName);
-        final Option<MethodHandle> getter = getterMethod.flatMap(this::convertToMethodHandle);
+        final Option<Method> getterMethod = NodeUtilities.getGetterMethod(nodeClass, propertyName);
+        final Option<MethodHandle> getter = getterMethod.flatMap(NodeUtilities::convertToMethodHandle);
 
         final Option<Class<?>> type = getterMethod.map(Method::getReturnType);
         if (type.isDefined() && Collection.class.isAssignableFrom(type.get())) {
             if (ObservableList.class.isAssignableFrom(type.get())) {
-                final Option<MethodHandle> propertyGetter = getPropertyGetter(nodeClass, propertyName);
+                final Option<MethodHandle> propertyGetter = NodeUtilities.getPropertyGetter(nodeClass, propertyName);
                 return propertyGetter.isDefined() ?
                         propertyGetter.map(methodHandle -> new ListAccessor(methodHandle, dispatcher))
                         : getter.map(ListWithoutListenerAccessor::new);
@@ -125,84 +124,17 @@ public class Accessors {
             return getter.map(CollectionAccessor::new);
         }
 
-        if (getSetter(nodeClass, propertyName).isDefined()) {
-            return getPropertyGetter(nodeClass, propertyName).<Accessor>map(methodHandle -> new PropertyAccessor(methodHandle, dispatcher))
-                    .orElse(getSetter(nodeClass, propertyName).map(SetterAccessor::new));
+        if (NodeUtilities.getSetter(nodeClass, propertyName).isDefined()) {
+            return NodeUtilities.getPropertyGetter(nodeClass, propertyName).<Accessor>map(methodHandle -> new PropertyAccessor(methodHandle, dispatcher))
+                    .orElse(NodeUtilities.getSetter(nodeClass, propertyName).map(SetterAccessor::new));
         } else {
-            return getPropertyGetter(nodeClass, propertyName).map(methodHandle -> new ReadOnlyPropertyAccessor(methodHandle, dispatcher));
+            return NodeUtilities.getPropertyGetter(nodeClass, propertyName).map(methodHandle -> new ReadOnlyPropertyAccessor(methodHandle, dispatcher));
         }
     }
 
-    private Option<Accessor> createLayoutAccessor(Class<? extends Parent> parentClass, String propertyName) {
-        final Option<MethodHandle> layoutSetter = getLayoutSetter(parentClass, propertyName);
+    private static Option<Accessor> createLayoutAccessor(Class<? extends Parent> parentClass, String propertyName) {
+        final Option<MethodHandle> layoutSetter = NodeUtilities.getLayoutSetter(parentClass, propertyName);
         return layoutSetter.isEmpty() ? Option.none() : Option.of(new LayoutConstraintAccessor(layoutSetter.get()));
     }
 
-    private Option<Method> getGetterMethod(Class<?> nodeClass, String propertyName) {
-        final String getterNameSuffix = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
-        try {
-            return Option.of(nodeClass.getMethod("is" + getterNameSuffix));
-        } catch (NoSuchMethodException | SecurityException e) {
-            // ignore
-        }
-
-        try {
-            return Option.of(nodeClass.getMethod("get" + getterNameSuffix));
-        } catch (NoSuchMethodException | SecurityException e) {
-            return Option.none();
-        }
-    }
-
-    private Option<Method> getPropertyGetterMethod(Class<?> nodeClass, String propertyName) {
-        final String propertyGetterName = propertyName + "Property";
-        try {
-            return Option.of(nodeClass.getMethod(propertyGetterName));
-        } catch (NoSuchMethodException | SecurityException e) {
-            return Option.none();
-        }
-    }
-
-    private Option<MethodHandle> getPropertyGetter(Class<?> nodeClass, String propertyName) {
-        final String propertyGetterName = propertyName + "Property";
-        try {
-            return convertToMethodHandle(nodeClass.getMethod(propertyGetterName));
-        } catch (NoSuchMethodException | SecurityException e) {
-            return Option.none();
-        }
-    }
-
-    private Option<MethodHandle> convertToMethodHandle(Method method) {
-        try {
-            return Option.of(MethodHandles.publicLookup().unreflect(method));
-        } catch (IllegalAccessException e) {
-            return Option.none();
-        }
-    }
-
-    private Option<MethodHandle> getSetter(Class<?> nodeClass, String propertyName) {
-        final String setterName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
-        try {
-            return Array.of(nodeClass.getMethods())
-                    .filter(method -> setterName.equals(method.getName()))
-                    .filter(method -> method.getParameterCount() == 1)
-                    .headOption()
-                    .flatMap(this::convertToMethodHandle);
-        } catch (Exception ex) {
-            return Option.none();
-        }
-    }
-
-    private Option<MethodHandle> getLayoutSetter(Class<?> parentClass, String propertyName) {
-        final String setterName = "set" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
-        try {
-            return Array.of(parentClass.getMethods())
-                    .filter(method -> setterName.equals(method.getName()))
-                    .filter(method -> method.getParameterCount() == 2)
-                    .filter(method -> Node.class.equals(method.getParameterTypes()[0]))
-                    .headOption()
-                    .flatMap(this::convertToMethodHandle);
-        } catch (Exception ex) {
-            return Option.none();
-        }
-    }
 }

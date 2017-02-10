@@ -3,14 +3,13 @@ package com.netopyr.reduxfx.patcher;
 import com.netopyr.reduxfx.differ.Differ;
 import com.netopyr.reduxfx.differ.patches.Patch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.VScenegraphFactory;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.TransformationList;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javaslang.collection.Vector;
@@ -85,25 +84,11 @@ public class ReduxFXListView extends ListView<Object> {
                 setGraphic(null);
             } else {
                 if (item instanceof VNode) {
-                    final Option<Node> oldNode = Option.of(getGraphic());
-                    final Option<VNode> oldVNode = oldNode.flatMap(node -> (Option<VNode>) node.getUserData());
-                    final Option<VNode> newVNode = Option.of((VNode) item);
-                    final Vector<Patch> patches = Differ.diff(oldVNode, newVNode);
-                    if (oldNode.isEmpty()) {
-                        final Group parent = new Group();
-                        listView.patcher.patch(parent, Option.none(), patches);
-                        if (! parent.getChildren().isEmpty()) {
-                            final Node newNode = parent.getChildren().get(0);
-                            newNode.setUserData(newVNode);
-                            this.setGraphic(newNode);
-                        } else {
-                            this.setGraphic(null);
-                            this.setText(null);
-                        }
-                    } else {
-                        listView.patcher.patch(oldNode.get().getParent(), oldVNode, patches);
-                        oldNode.get().setUserData(newVNode);
-                    }
+                    final VNode newVNode = VScenegraphFactory.customNode(ListCell.class).child("graphic", (VNode) item);
+                    final Option<VNode> oldVNode = Option.of(getGraphic()).flatMap(node -> Option.of((VNode) node.getUserData()));
+                    final Vector<Patch> patches = Differ.diff(oldVNode, Option.of(newVNode));
+                    listView.getPatcher().patch(this, oldVNode, patches);
+                    Option.of(getGraphic()).peek(node -> node.setUserData(newVNode));
                 } else {
                     this.setText(String.valueOf(item));
                     this.setGraphic(null);

@@ -11,6 +11,7 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Parent;
 import javaslang.Tuple;
 import javaslang.collection.Seq;
+import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.patcher.NodeUtilities.appendNode;
 import static com.netopyr.reduxfx.patcher.NodeUtilities.getChild;
-import static com.netopyr.reduxfx.patcher.NodeUtilities.getParent;
 import static com.netopyr.reduxfx.patcher.NodeUtilities.removeNode;
 import static com.netopyr.reduxfx.patcher.NodeUtilities.replaceNode;
 import static javaslang.API.$;
@@ -45,10 +45,17 @@ public class Patcher {
 
     public void patch(Object root, Option<VNode> vRoot, Seq<Patch> patches) {
 
-        LOG.trace("Patches:\n{}", patches);
-
         for (final Patch patch : patches) {
-            final Object node = vRoot.flatMap(vNode -> findNode(patch.getIndex(), root, vNode, 0)).getOrElse(root);
+
+            LOG.trace("Patch:\n{}", patch);
+
+            final Object node;
+            try {
+                node = vRoot.isDefined() ? findNode(patch.getPath(), root, vRoot.get()) : root;
+            } catch (RuntimeException ex) {
+                LOG.error("Unable to apply patch", ex);
+                continue;
+            }
 
             Match(patch).of(
 
@@ -104,7 +111,7 @@ public class Patcher {
                 return;
             }
         }
-        LOG.error("Unable to replace node from parent class {}", getParent(oldNode).getClass());
+        LOG.error("Unable to replace node {} with {}", oldNode, vNode);
     }
 
     @SuppressWarnings("unchecked")
@@ -130,7 +137,7 @@ public class Patcher {
 
     private static void doRemove(Object node) {
         if (!removeNode(node)) {
-            LOG.error("Unable to remove node from parent class {}", getParent(node).getClass());
+            LOG.error("Unable to remove node {}", node);
         }
     }
 
@@ -154,22 +161,26 @@ public class Patcher {
         }
     }
 
-    private static Option<Object> findNode(int needle, Object node, VNode vNode, int index) {
-        if (needle == index) {
-            return Option.of(node);
-        }
-        if (!(node instanceof Parent)) {
-            LOG.error("Unable to navigate to children of class {}", node.getClass());
-            return Option.none();
+    private Object findNode(Vector<Object> path, Object node, VNode vNode) {
+
+        while (! path.isEmpty()) {
+            final Object head = path.head();
+            path = path.tail();
+
+            if (head instanceof Integer) {
+                final int index = (Integer) head;
+                node = getChild((Parent) node, index);
+                vNode = vNode.getChildren().get(index);
+
+            } else if (head instanceof String) {
+                final String name = (String) head;
+                node = getChild(node, name);
+                vNode = (VNode) vNode.getNamedChildren().get(name).get().getValue();
+
+            }
         }
 
-        final Seq<Integer> sizes = vNode.getChildren()
-                .map(VNode::getSize)
-                .scan(index + 1, (a, b) -> a + b)
-                .takeWhile(value -> value <= needle);
-        final int child = sizes.length() - 1;
-
-        return findNode(needle, getChild(node, child).get(), vNode.getChildren().get(child), sizes.last());
+        return node;
     }
 
 

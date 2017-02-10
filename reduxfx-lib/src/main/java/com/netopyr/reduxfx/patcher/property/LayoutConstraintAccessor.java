@@ -4,8 +4,6 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 
 import java.lang.invoke.MethodHandle;
 
-import static com.netopyr.reduxfx.patcher.NodeUtilities.getParent;
-
 public class LayoutConstraintAccessor implements Accessor {
 
     private final MethodHandle setter;
@@ -20,8 +18,8 @@ public class LayoutConstraintAccessor implements Accessor {
             try {
                 setter.invoke(node, vProperty.getValue());
             } catch (Throwable e) {
-                throw new IllegalStateException(String.format("Unable to set the value %s of property %s in class %s",
-                        vProperty.getValue(), name, getParent(node).getClass()), e);
+                throw new IllegalStateException(String.format("Unable to set the layout constraint %s to %s in %s",
+                        name, vProperty.getValue(), node), e);
             }
         }
     }

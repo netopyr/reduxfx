@@ -1,11 +1,12 @@
 package com.netopyr.reduxfx.differ.patches;
 
+import javaslang.collection.Vector;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class RemovePatch extends Patch {
 
-    public RemovePatch(int index) {
-        super(index);
+    public RemovePatch(Vector<Object> path) {
+        super(path);
     }
 
     @Override

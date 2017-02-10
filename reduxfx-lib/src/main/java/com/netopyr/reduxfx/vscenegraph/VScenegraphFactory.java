@@ -99,10 +99,6 @@ public class VScenegraphFactory {
         return Factory.node(ReduxFXListView.class, () -> new ListViewBuilder<>(ReduxFXListView.class, elementClass, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> Node() {
-        return Factory.node(Node.class, () -> new NodeBuilder<>(Node.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
-    }
-
     public static <CLASS extends PaneBuilder<CLASS>> PaneBuilder<CLASS> Pane() {
         return Factory.node(Pane.class, () -> new PaneBuilder<>(Pane.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }

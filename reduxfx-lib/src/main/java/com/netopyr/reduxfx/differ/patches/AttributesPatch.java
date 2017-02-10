@@ -5,6 +5,7 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
+import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -16,16 +17,16 @@ public class AttributesPatch extends Patch {
     private final Map<VEventType, Option<VEventHandler>> eventHandlers;
 
     public AttributesPatch(
-            int index,
+            Vector<Object> path,
             Map<String, VProperty> properties,
             Map<VEventType, Option<VEventHandler>> eventHandlers) {
-        super(index);
+        super(path);
         this.properties = Objects.requireNonNull(properties, "Properties must not be null");
         this.eventHandlers = Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
     }
 
-    public AttributesPatch(int index, String name, VProperty property) {
-        this(index, HashMap.of(name, property), HashMap.empty());
+    public AttributesPatch(Vector<Object> path, String name, VProperty property) {
+        this(path, HashMap.of(name, property), HashMap.empty());
     }
 
     public Map<String, VProperty> getProperties() {

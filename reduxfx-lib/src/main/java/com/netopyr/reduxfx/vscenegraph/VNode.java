@@ -53,14 +53,6 @@ public class VNode {
     }
 
 
-    public int getSize() {
-        return children.map(VNode::getSize).sum().intValue()
-                + namedChildren.values()
-                .map(property -> property.isValueDefined() && property.getValue() != null ? ((VNode) property.getValue()).getSize() : 0)
-                .sum().intValue()
-                + 1;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
