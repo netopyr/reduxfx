@@ -4,8 +4,11 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.stage.WindowEvent;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+
+import static com.netopyr.reduxfx.vscenegraph.event.VEventType.CLOSE_REQUEST;
 
 public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder<BUILDER> {
 
@@ -43,6 +46,11 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder
 
     public BUILDER title(String value) {
         return property(TITLE, value);
+    }
+
+
+    public BUILDER onCloseRequest(VEventHandler<WindowEvent> eventHandler) {
+        return onEvent(CLOSE_REQUEST, eventHandler);
     }
 
 }

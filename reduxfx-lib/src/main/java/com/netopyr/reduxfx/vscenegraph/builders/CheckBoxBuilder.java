@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
+import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
@@ -33,6 +34,9 @@ public class CheckBoxBuilder<BUILDER extends CheckBoxBuilder<BUILDER>> extends B
 
     public BUILDER selected(boolean value) {
         return property(SELECTED, value);
+    }
+    public BUILDER selected(VChangeListener<Boolean> changeListener) {
+        return property(SELECTED, changeListener);
     }
 
 

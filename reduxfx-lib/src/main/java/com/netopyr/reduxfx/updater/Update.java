@@ -16,7 +16,8 @@ public final class Update<STATE> {
         return new Update<>(state, Array.of(commands));
     }
 
-    public static <T> Update<T> of(T state, Seq<Command> commands) {
+    @SafeVarargs
+    public static <T> Update<T> of(T state, Seq<Command>... commands) {
         return new Update<>(state, commands);
     }
 
