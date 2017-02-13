@@ -32,6 +32,9 @@ public class CheckBoxBuilder<BUILDER extends CheckBoxBuilder<BUILDER>> extends B
     }
 
 
+    public BUILDER selected(boolean value, VChangeListener<Boolean> changeListener) {
+        return property(SELECTED, value, changeListener);
+    }
     public BUILDER selected(boolean value) {
         return property(SELECTED, value);
     }
