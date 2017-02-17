@@ -3,7 +3,7 @@ package com.netopyr.reduxfx;
 import com.netopyr.reduxfx.driver.ActionSupplier;
 import com.netopyr.reduxfx.driver.CommandConsumer;
 import com.netopyr.reduxfx.driver.Driver;
-import com.netopyr.reduxfx.mainloop.MainLoop;
+import com.netopyr.reduxfx.impl.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.Group;

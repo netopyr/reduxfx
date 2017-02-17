@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-import com.netopyr.reduxfx.patcher.ReduxFXListView;
+import com.netopyr.reduxfx.impl.patcher.ReduxFXListView;
 import com.netopyr.reduxfx.vscenegraph.builders.*;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBaseBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBuilder;
