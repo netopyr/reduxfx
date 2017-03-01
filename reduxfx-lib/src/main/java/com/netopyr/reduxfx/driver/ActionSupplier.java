@@ -1,9 +1,9 @@
 package com.netopyr.reduxfx.driver;
 
-import io.reactivex.Observable;
+import org.reactivestreams.Publisher;
 
 public interface ActionSupplier {
 
-    Observable<?> getActionObservable();
+    Publisher<?> getActionPublisher();
 
 }

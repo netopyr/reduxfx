@@ -1,8 +1,9 @@
 package com.netopyr.reduxfx.impl.component.property;
 
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import javafx.beans.property.ReadOnlyIntegerPropertyBase;
+import org.reactivestreams.Publisher;
 
 public final class ReduxFXReadOnlyIntegerProperty extends ReadOnlyIntegerPropertyBase {
 
@@ -11,10 +12,10 @@ public final class ReduxFXReadOnlyIntegerProperty extends ReadOnlyIntegerPropert
 
     private int value;
 
-    public ReduxFXReadOnlyIntegerProperty(Object bean, String name, Observable<IntegerChangedCommand> receiver) {
+    public ReduxFXReadOnlyIntegerProperty(Object bean, String name, Publisher<IntegerChangedCommand> receiver) {
         this.bean = bean;
         this.name = name;
-        receiver.forEach(command -> {
+        Flowable.fromPublisher(receiver).forEach(command -> {
             this.value = command.getNewValue();
             this.fireValueChangedEvent();
         });

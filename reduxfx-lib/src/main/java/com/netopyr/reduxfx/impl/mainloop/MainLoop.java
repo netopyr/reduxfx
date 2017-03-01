@@ -7,11 +7,11 @@ import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.Stages;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.ReplaySubject;
-import io.reactivex.subjects.Subject;
+import io.reactivex.Flowable;
+import io.reactivex.processors.BehaviorProcessor;
+import io.reactivex.processors.FlowableProcessor;
+import io.reactivex.processors.PublishProcessor;
+import io.reactivex.processors.ReplayProcessor;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javaslang.Tuple;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
+import org.reactivestreams.Publisher;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -44,8 +45,8 @@ public class MainLoop {
     };
 
     private final BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
-    private final Subject<Object> actionProcessor = PublishSubject.create();
-    private final Subject<Command> commandProcessor = PublishSubject.create();
+    private final FlowableProcessor<Object> actionProcessor = PublishProcessor.create();
+    private final FlowableProcessor<Command> commandProcessor = PublishProcessor.create();
 
     private final Patcher patcher = new Patcher(this::dispatch);
 
@@ -106,12 +107,12 @@ public class MainLoop {
             Function<STATE, VNode> view,
             Object javaFXRoot)
     {
-        final Subject<Update<STATE>> updateProcessor = BehaviorSubject.create();
+        final FlowableProcessor<Update<STATE>> updateProcessor = BehaviorProcessor.create();
         actionProcessor
                 .scan(Update.of(initialState), (update, action) -> updater.apply(update.getState(), action))
                 .subscribe(updateProcessor);
 
-        final Subject<Option<VNode>> vScenegraphProcessor = ReplaySubject.createWithSize(2);
+        final FlowableProcessor<Option<VNode>> vScenegraphProcessor = ReplayProcessor.createWithSize(2);
 
         updateProcessor.map(Update::getState)
                 .map(view::apply)
@@ -119,7 +120,7 @@ public class MainLoop {
                 .startWith(initialVNode)
                 .subscribe(vScenegraphProcessor);
 
-        final Observable<Vector<Patch>> patchObservable = vScenegraphProcessor.zipWith(vScenegraphProcessor.skip(1), Differ::diff);
+        final Flowable<Vector<Patch>> patchObservable = vScenegraphProcessor.zipWith(vScenegraphProcessor.skip(1), Differ::diff);
 
         vScenegraphProcessor
                 .zipWith(patchObservable, Tuple::of)
@@ -141,7 +142,7 @@ public class MainLoop {
 
 
 
-    public Observable<Command> getCommandProcessor() {
+    public Publisher<Command> getCommandProcessor() {
         return commandProcessor;
     }
 
@@ -150,6 +151,7 @@ public class MainLoop {
             executor = Executors.newSingleThreadExecutor(THREAD_FACTORY);
             executor.execute(() -> {
                 try {
+                    //noinspection InfiniteLoopStatement
                     while (true) {
                         actionProcessor.onNext(queue.take());
                     }

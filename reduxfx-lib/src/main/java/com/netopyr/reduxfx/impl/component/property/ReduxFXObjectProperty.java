@@ -1,9 +1,10 @@
 package com.netopyr.reduxfx.impl.component.property;
 
 import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectPropertyBase;
+import org.reactivestreams.Publisher;
 
 import java.util.function.BiConsumer;
 
@@ -14,10 +15,11 @@ public final class ReduxFXObjectProperty<T> extends ObjectPropertyBase<T> {
 
     private boolean updating;
 
-    public ReduxFXObjectProperty(Object bean, String name, Observable<ObjectChangedCommand<?>> commandReceiver, BiConsumer<T, T> dispatcher) {
+    @SuppressWarnings("unchecked")
+    public ReduxFXObjectProperty(Object bean, String name, Publisher<ObjectChangedCommand<?>> commandReceiver, BiConsumer<T, T> dispatcher) {
         this.bean = bean;
         this.name = name;
-        commandReceiver.forEach(
+        Flowable.fromPublisher(commandReceiver).forEach(
                 command -> Platform.runLater(
                         () -> {
                             try {

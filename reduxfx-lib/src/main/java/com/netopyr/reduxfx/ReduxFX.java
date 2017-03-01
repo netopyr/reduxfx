@@ -6,6 +6,7 @@ import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.impl.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import io.reactivex.Flowable;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -87,16 +88,16 @@ public class ReduxFX {
     }
 
     public void register(Driver driver) {
-        mainLoop.getCommandProcessor().subscribe(driver.getCommandObserver());
-        driver.getActionObservable().forEach(mainLoop::dispatch);
+        mainLoop.getCommandProcessor().subscribe(driver.getCommandSubscriber());
+        Flowable.fromPublisher(driver.getActionPublisher()).forEach(mainLoop::dispatch);
     }
 
     public void register(ActionSupplier actionSupplier) {
-        actionSupplier.getActionObservable().forEach(mainLoop::dispatch);
+        Flowable.fromPublisher(actionSupplier.getActionPublisher()).forEach(mainLoop::dispatch);
     }
 
     public void register(CommandConsumer commandConsumer) {
-        mainLoop.getCommandProcessor().subscribe(commandConsumer.getCommandObserver());
+        mainLoop.getCommandProcessor().subscribe(commandConsumer.getCommandSubscriber());
     }
 
 }

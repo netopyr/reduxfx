@@ -1,83 +1,84 @@
 package com.netopyr.reduxfx.impl.component.driver;
 
-import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.component.command.FireEventCommand;
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
 import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
+import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.impl.component.property.ReduxFXObjectProperty;
 import com.netopyr.reduxfx.impl.component.property.ReduxFXReadOnlyIntegerProperty;
 import com.netopyr.reduxfx.impl.component.property.ReduxFXReadOnlyObjectProperty;
 import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
+import io.reactivex.Flowable;
+import io.reactivex.processors.FlowableProcessor;
+import io.reactivex.processors.PublishProcessor;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class ComponentDriver implements Driver {
 
-    private final Subject<Command> commandSubject = PublishSubject.create();
-    private final Subject<Object> actionSubject = PublishSubject.create();
+    private final FlowableProcessor<Command> commandProcessor = PublishProcessor.create();
+    private final FlowableProcessor<Object> actionProcessor = PublishProcessor.create();
 
-    private Observable<FireEventCommand<? extends Event>> fireEventCommandObservable;
-    private Observable<IntegerChangedCommand> integerChangedCommandObservable;
-    private Observable<ObjectChangedCommand<?>> objectChangedCommandObservable;
+    private Flowable<FireEventCommand<? extends Event>> fireEventCommandFlowable;
+    private Flowable<IntegerChangedCommand> integerChangedCommandFlowable;
+    private Flowable<ObjectChangedCommand<?>> objectChangedCommandFlowable;
 
 
     @Override
-    public Observer<Command> getCommandObserver() {
-        return commandSubject;
+    public Subscriber<Command> getCommandSubscriber() {
+        return commandProcessor;
     }
 
     @Override
-    public Observable<Object> getActionObservable() {
-        return actionSubject;
+    public Publisher<Object> getActionPublisher() {
+        return actionProcessor;
     }
 
 
-    private Observable<IntegerChangedCommand> getIntegerChangedCommandObservable() {
-        if (integerChangedCommandObservable == null) {
-            final Subject<IntegerChangedCommand> subject = PublishSubject.create();
-            commandSubject
+    private Flowable<IntegerChangedCommand> getIntegerChangedCommandFlowable() {
+        if (integerChangedCommandFlowable == null) {
+            final FlowableProcessor<IntegerChangedCommand> processor = PublishProcessor.create();
+            commandProcessor
                     .filter(command -> command instanceof IntegerChangedCommand)
                     .map(command -> (IntegerChangedCommand) command)
-                    .subscribe(subject);
-            integerChangedCommandObservable = subject;
+                    .subscribe(processor);
+            integerChangedCommandFlowable = processor;
         }
-        return integerChangedCommandObservable;
+        return integerChangedCommandFlowable;
     }
 
-    private Observable<ObjectChangedCommand<?>> getObjectChangedCommandObservable() {
-        if (objectChangedCommandObservable == null) {
-            final Subject<ObjectChangedCommand<?>> subject = PublishSubject.create();
-            commandSubject
+    private Flowable<ObjectChangedCommand<?>> getObjectChangedCommandFlowable() {
+        if (objectChangedCommandFlowable == null) {
+            final FlowableProcessor<ObjectChangedCommand<?>> processor = PublishProcessor.create();
+            commandProcessor
                     .filter(command -> command instanceof ObjectChangedCommand)
                     .map(command -> (ObjectChangedCommand<?>) command)
-                    .subscribe(subject);
-            objectChangedCommandObservable = subject;
+                    .subscribe(processor);
+            objectChangedCommandFlowable = processor;
         }
-        return objectChangedCommandObservable;
+        return objectChangedCommandFlowable;
     }
 
-    private Observable<FireEventCommand<? extends Event>> getFireEventCommandObservable() {
-        if (fireEventCommandObservable == null) {
-            final Subject<FireEventCommand<? extends Event>> subject = PublishSubject.create();
-            commandSubject
+    private Flowable<FireEventCommand<? extends Event>> getFireEventCommandFlowable() {
+        if (fireEventCommandFlowable == null) {
+            final FlowableProcessor<FireEventCommand<? extends Event>> processor = PublishProcessor.create();
+            commandProcessor
                     .filter(command -> command instanceof FireEventCommand)
                     .map(command -> (FireEventCommand<? extends Event>) command)
-                    .subscribe(subject);
-            fireEventCommandObservable = subject;
+                    .subscribe(processor);
+            fireEventCommandFlowable = processor;
         }
-        return fireEventCommandObservable;
+        return fireEventCommandFlowable;
     }
 
 
@@ -85,17 +86,17 @@ public class ComponentDriver implements Driver {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
 
-        final Observable<IntegerChangedCommand> propertyObervable =
-                getIntegerChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
-        return new ReduxFXReadOnlyIntegerProperty(bean, name, propertyObervable);
+        final Publisher<IntegerChangedCommand> propertyPublisher =
+                getIntegerChangedCommandFlowable().filter(command -> name.equals(command.getPropertyName()));
+        return new ReduxFXReadOnlyIntegerProperty(bean, name, propertyPublisher);
     }
 
     public <T> ReadOnlyObjectProperty<T> createReadOnlyObjectProperty(Object bean, String name) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
 
-        final Observable<ObjectChangedCommand<?>> propertyObervable =
-                getObjectChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
+        final Publisher<ObjectChangedCommand<?>> propertyObervable =
+                getObjectChangedCommandFlowable().filter(command -> name.equals(command.getPropertyName()));
         return new ReduxFXReadOnlyObjectProperty<>(bean, name, propertyObervable);
     }
 
@@ -105,9 +106,9 @@ public class ComponentDriver implements Driver {
         Objects.requireNonNull(name, "Name must not be null");
         Objects.requireNonNull(listener, "Listener must not be null");
 
-        final Observable<ObjectChangedCommand<?>> propertyObervable =
-                getObjectChangedCommandObservable().filter(command -> name.equals(command.getPropertyName()));
-        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> actionSubject.onNext(listener.onChange(oldValue, newValue));
+        final Publisher<ObjectChangedCommand<?>> propertyObervable =
+                getObjectChangedCommandFlowable().filter(command -> name.equals(command.getPropertyName()));
+        final BiConsumer<T, T> dispatcher = (oldValue, newValue) -> actionProcessor.onNext(listener.onChange(oldValue, newValue));
         return new ReduxFXObjectProperty<>(bean, name, propertyObervable, dispatcher);
     }
 
@@ -117,7 +118,7 @@ public class ComponentDriver implements Driver {
         Objects.requireNonNull(name, "Name must not be null");
 
         final ObjectProperty<EventHandler<EVENT>> property = new SimpleObjectProperty<>(bean, name);
-        getFireEventCommandObservable()
+        getFireEventCommandFlowable()
                 .filter(command -> name.equals(command.getEventName()))
                 .forEach(command -> {
                     final EventHandler<EVENT> eventHandler = property.get();
