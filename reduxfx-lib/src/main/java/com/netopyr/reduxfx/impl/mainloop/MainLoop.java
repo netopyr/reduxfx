@@ -11,7 +11,6 @@ import io.reactivex.Flowable;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
-import io.reactivex.processors.ReplayProcessor;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
@@ -45,8 +44,8 @@ public class MainLoop {
     };
 
     private final BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
-    private final FlowableProcessor<Object> actionProcessor = PublishProcessor.create();
-    private final FlowableProcessor<Command> commandProcessor = PublishProcessor.create();
+    private final FlowableProcessor<Object> actionsStream = PublishProcessor.create();
+    private final FlowableProcessor<Command> commandsStream = PublishProcessor.create();
 
     private final Patcher patcher = new Patcher(this::dispatch);
 
@@ -107,23 +106,19 @@ public class MainLoop {
             Function<STATE, VNode> view,
             Object javaFXRoot)
     {
-        final FlowableProcessor<Update<STATE>> updateProcessor = BehaviorProcessor.create();
-        actionProcessor
-                .scan(Update.of(initialState), (update, action) -> updater.apply(update.getState(), action))
-                .subscribe(updateProcessor);
+        final FlowableProcessor<Update<STATE>> updatesStream = BehaviorProcessor.create();
 
-        final FlowableProcessor<Option<VNode>> vScenegraphProcessor = ReplayProcessor.createWithSize(2);
+        final Flowable<STATE> statesStream = updatesStream.map(Update::getState);
+        statesStream.zipWith(actionsStream, updater::apply)
+                .startWith(Update.of(initialState))
+                .subscribe(updatesStream);
 
-        updateProcessor.map(Update::getState)
-                .map(view::apply)
-                .map(Option::of)
-                .startWith(initialVNode)
-                .subscribe(vScenegraphProcessor);
+        final FlowableProcessor<Option<VNode>> vScenegraphsStream = PublishProcessor.create();
 
-        final Flowable<Vector<Patch>> patchObservable = vScenegraphProcessor.zipWith(vScenegraphProcessor.skip(1), Differ::diff);
+        final Flowable<Vector<Patch>> patchesStream = vScenegraphsStream.zipWith(vScenegraphsStream.skip(1), Differ::diff);
 
-        vScenegraphProcessor
-                .zipWith(patchObservable, Tuple::of)
+        vScenegraphsStream
+                .zipWith(patchesStream, Tuple::of)
                 .forEach(tuple -> {
                     if (Platform.isFxApplicationThread()) {
                         patcher.patch(javaFXRoot, tuple._1, tuple._2);
@@ -132,18 +127,25 @@ public class MainLoop {
                     }
                 });
 
-        updateProcessor
+        updatesStream.map(Update::getState)
+                .map(view::apply)
+                .map(Option::of)
+                .startWith(initialVNode)
+                .subscribe(vScenegraphsStream);
+
+
+        updatesStream
                 .map(Update::getCommands)
                 .flatMapIterable(commands -> commands)
-                .subscribe(commandProcessor);
+                .subscribe(commandsStream);
 
         start();
     }
 
 
 
-    public Publisher<Command> getCommandProcessor() {
-        return commandProcessor;
+    public Publisher<Command> getCommandPublisher() {
+        return commandsStream;
     }
 
     public synchronized void start() {
@@ -153,7 +155,7 @@ public class MainLoop {
                 try {
                     //noinspection InfiniteLoopStatement
                     while (true) {
-                        actionProcessor.onNext(queue.take());
+                        actionsStream.onNext(queue.take());
                     }
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();

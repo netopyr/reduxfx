@@ -88,7 +88,7 @@ public class ReduxFX {
     }
 
     public void register(Driver driver) {
-        mainLoop.getCommandProcessor().subscribe(driver.getCommandSubscriber());
+        mainLoop.getCommandPublisher().subscribe(driver.getCommandSubscriber());
         Flowable.fromPublisher(driver.getActionPublisher()).forEach(mainLoop::dispatch);
     }
 
@@ -97,7 +97,7 @@ public class ReduxFX {
     }
 
     public void register(CommandConsumer commandConsumer) {
-        mainLoop.getCommandProcessor().subscribe(commandConsumer.getCommandSubscriber());
+        mainLoop.getCommandPublisher().subscribe(commandConsumer.getCommandSubscriber());
     }
 
 }
