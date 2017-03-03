@@ -3,6 +3,7 @@ package com.netopyr.reduxfx;
 import com.netopyr.reduxfx.driver.ActionSupplier;
 import com.netopyr.reduxfx.driver.CommandConsumer;
 import com.netopyr.reduxfx.driver.Driver;
+import com.netopyr.reduxfx.driver.properties.PropertiesDriver;
 import com.netopyr.reduxfx.impl.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
@@ -72,8 +73,12 @@ public class ReduxFX {
 
     protected ReduxFX(MainLoop mainLoop) {
         this.mainLoop = mainLoop;
+        registerDefaultDrivers();
     }
 
+    private void registerDefaultDrivers() {
+        register(new PropertiesDriver());
+    }
 
     public void start() {
         mainLoop.start();
