@@ -3,20 +3,20 @@ package com.netopyr.reduxfx.todo.view;
 import com.netopyr.reduxfx.todo.actions.Actions;
 import com.netopyr.reduxfx.todo.state.TodoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
 import java.util.Objects;
 
+import static com.netopyr.reduxfx.fontawesomefx.FontAwesomeFX.FontAwesomeIconView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Button;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.CheckBox;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.HBox;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.StackPane;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.TextField;
-import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.customNode;
 
 /**
  * The class {@code ItemView} defines how a single entry in the todo-list should be visualized.
@@ -83,9 +83,9 @@ class ItemView {
                                                                 .mnemonicParsing(false)
                                                                 .visible(todoEntry.isHover())
                                                                 .graphic(
-                                                                        customNode(FontAwesomeIconView.class)
-                                                                                .property("glyphName", "CLOSE")
-                                                                                .property("size", "1.5em")
+                                                                        FontAwesomeIconView()
+                                                                                .icon(FontAwesomeIcon.CLOSE)
+                                                                                .size("1.5em")
                                                                                 .styleClass("close_icon")
                                                                 )
                                                                 // If the onAction-event is fired, we want to dispatch a DeleteTodoAction

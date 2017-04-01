@@ -3,6 +3,8 @@ package com.netopyr.reduxfx;
 import com.netopyr.reduxfx.driver.ActionSupplier;
 import com.netopyr.reduxfx.driver.CommandConsumer;
 import com.netopyr.reduxfx.driver.Driver;
+import com.netopyr.reduxfx.driver.action.ActionDriver;
+import com.netopyr.reduxfx.driver.http.HttpDriver;
 import com.netopyr.reduxfx.driver.properties.PropertiesDriver;
 import com.netopyr.reduxfx.impl.mainloop.MainLoop;
 import com.netopyr.reduxfx.updater.Update;
@@ -78,6 +80,8 @@ public class ReduxFX {
 
     private void registerDefaultDrivers() {
         register(new PropertiesDriver());
+        register(new HttpDriver());
+        register(new ActionDriver());
     }
 
     public void start() {
