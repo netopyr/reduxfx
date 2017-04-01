@@ -15,7 +15,7 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javaslang.Tuple;
+import javaslang.collection.Seq;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.reactivestreams.Publisher;
@@ -118,12 +118,12 @@ public class MainLoop {
         final Flowable<Vector<Patch>> patchesStream = vScenegraphsStream.zipWith(vScenegraphsStream.skip(1), Differ::diff);
 
         vScenegraphsStream
-                .zipWith(patchesStream, Tuple::of)
-                .forEach(tuple -> {
+                .zipWith(patchesStream, PatchParameters::new)
+                .forEach(parameters -> {
                     if (Platform.isFxApplicationThread()) {
-                        patcher.patch(javaFXRoot, tuple._1, tuple._2);
+                        patcher.patch(javaFXRoot, parameters.vRoot, parameters.patches);
                     } else {
-                        Platform.runLater(() -> patcher.patch(javaFXRoot, tuple._1, tuple._2));
+                        Platform.runLater(() -> patcher.patch(javaFXRoot, parameters.vRoot, parameters.patches));
                     }
                 });
 
@@ -180,6 +180,17 @@ public class MainLoop {
 
     public boolean dispatch(Object action) {
         return queue.offer(action);
+    }
+
+
+    private static class PatchParameters {
+        private final Option<VNode> vRoot;
+        private final Seq<Patch> patches;
+
+        private PatchParameters(Option<VNode> vRoot, Seq<Patch> patches) {
+            this.vRoot = vRoot;
+            this.patches = patches;
+        }
     }
 
 }
