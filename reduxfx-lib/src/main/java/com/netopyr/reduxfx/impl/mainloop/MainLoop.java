@@ -118,12 +118,12 @@ public class MainLoop {
         final Flowable<Vector<Patch>> patchesStream = vScenegraphsStream.zipWith(vScenegraphsStream.skip(1), Differ::diff);
 
         vScenegraphsStream
-                .zipWith(patchesStream, PatchParameters::new)
-                .forEach(parameters -> {
+                .zipWith(patchesStream, PatchParams::new)
+                .forEach(params -> {
                     if (Platform.isFxApplicationThread()) {
-                        patcher.patch(javaFXRoot, parameters.vRoot, parameters.patches);
+                        patcher.patch(javaFXRoot, params.vRoot, params.patches);
                     } else {
-                        Platform.runLater(() -> patcher.patch(javaFXRoot, parameters.vRoot, parameters.patches));
+                        Platform.runLater(() -> patcher.patch(javaFXRoot, params.vRoot, params.patches));
                     }
                 });
 
@@ -183,11 +183,11 @@ public class MainLoop {
     }
 
 
-    private static class PatchParameters {
+    private static class PatchParams {
         private final Option<VNode> vRoot;
         private final Seq<Patch> patches;
 
-        private PatchParameters(Option<VNode> vRoot, Seq<Patch> patches) {
+        private PatchParams(Option<VNode> vRoot, Seq<Patch> patches) {
             this.vRoot = vRoot;
             this.patches = patches;
         }
