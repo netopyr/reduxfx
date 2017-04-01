@@ -13,8 +13,6 @@ import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
 public class ButtonBaseBuilder<BUILDER extends ButtonBaseBuilder<BUILDER>> extends LabeledBuilder<BUILDER> {
 
-    private static final String TEXT = "text";
-
     public ButtonBaseBuilder(Class<?> nodeClass,
                              Array<VNode> children,
                              Map<String, VProperty> namedChildren,
@@ -31,11 +29,6 @@ public class ButtonBaseBuilder<BUILDER extends ButtonBaseBuilder<BUILDER>> exten
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
         return (BUILDER) new ButtonBaseBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
-    }
-
-
-    public BUILDER text(String value) {
-        return property(TEXT, value);
     }
 
 

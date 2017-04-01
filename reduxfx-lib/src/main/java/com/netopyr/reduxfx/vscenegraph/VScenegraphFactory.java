@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.vscenegraph;
 
 import com.netopyr.reduxfx.impl.patcher.ReduxFXListView;
+import com.netopyr.reduxfx.vscenegraph.builders.AccordionBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.*;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBaseBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBuilder;
@@ -15,6 +16,7 @@ import com.netopyr.reduxfx.vscenegraph.builders.ScrollPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.SliderBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextFieldBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextInputControlBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TitledPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ToggleButtonBuilder;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,11 +30,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javaslang.collection.Array;
 import javaslang.collection.HashMap;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class VScenegraphFactory {
 
     private VScenegraphFactory() {}
@@ -53,12 +57,19 @@ public class VScenegraphFactory {
         return Factory.node(nodeClass, () -> new NodeBuilder<>(nodeClass, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
+    public static <CLASS extends AccordionBuilder<CLASS>> AccordionBuilder<CLASS> Accordion() {
+        return Factory.node(Accordion.class, () -> new AccordionBuilder<CLASS>(Accordion.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
     public static <CLASS extends AnchorPaneBuilder<CLASS>> AnchorPaneBuilder<CLASS> AnchorPane() {
         return Factory.node(AnchorPane.class, () -> new AnchorPaneBuilder<CLASS>(AnchorPane.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
+    public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane(Class<? extends BorderPane> nodeClass) {
+        return Factory.node(nodeClass, () -> new BorderPaneBuilder<>(nodeClass, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
     public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane() {
-        return Factory.node(BorderPane.class, () -> new BorderPaneBuilder<>(BorderPane.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+        return BorderPane(BorderPane.class);
     }
 
     public static <CLASS extends ButtonBaseBuilder<CLASS>> ButtonBaseBuilder<CLASS> ButtonBase() {
@@ -130,6 +141,10 @@ public class VScenegraphFactory {
         return Factory.node(StackPane.class, () -> new StackPaneBuilder<>(StackPane.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
+    public static <CLASS extends TitledPaneBuilder<CLASS>> TitledPaneBuilder<CLASS> TitledPane() {
+        return Factory.node(TitledPane.class, () -> new TitledPaneBuilder<>(TitledPane.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
     public static <CLASS extends GridPaneBuilder<CLASS>> GridPaneBuilder<CLASS> GridPane() {
         return Factory.node(GridPane.class, () -> new GridPaneBuilder<>(GridPane.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
@@ -162,6 +177,10 @@ public class VScenegraphFactory {
 
     public static <CLASS extends VBoxBuilder<CLASS>> VBoxBuilder<CLASS> VBox() {
         return Factory.node(VBox.class, () -> new VBoxBuilder<>(VBox.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends RectangleBuilder<CLASS>> RectangleBuilder<CLASS> Rectangle() {
+        return Factory.node(Rectangle.class, () -> new RectangleBuilder<>(Rectangle.class, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
 

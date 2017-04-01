@@ -4,20 +4,22 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.event.ActionEvent;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-@SuppressWarnings("unused")
-public class ButtonBuilder<BUILDER extends ButtonBuilder<BUILDER>> extends ButtonBaseBuilder<BUILDER> {
+import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
-    public static final String DEFAULT_BUTTON = "defaultButton";
+public class TitledPaneBuilder<BUILDER extends TitledPaneBuilder<BUILDER>> extends LabeledBuilder<BUILDER> {
 
-    public ButtonBuilder(Class<?> nodeClass,
-                         Array<VNode> children,
-                         Map<String, VProperty> namedChildren,
-                         Map<String, VProperty> properties,
-                         Map<VEventType, VEventHandler> eventHandlers) {
+    private static final String CONTENT = "content";
+
+    public TitledPaneBuilder(Class<?> nodeClass,
+                             Array<VNode> children,
+                             Map<String, VProperty> namedChildren,
+                             Map<String, VProperty> properties,
+                             Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, children, namedChildren, properties, eventHandlers);
     }
 
@@ -28,13 +30,19 @@ public class ButtonBuilder<BUILDER extends ButtonBuilder<BUILDER>> extends Butto
             Map<String, VProperty> namedChildren,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ButtonBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new TitledPaneBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
     }
 
 
-    public BUILDER defaultButton(boolean value) {
-        return property(DEFAULT_BUTTON, value);
+    public BUILDER content(VNode value) {
+        return property(CONTENT, value);
     }
+
+
+    public BUILDER onAction(VEventHandler<ActionEvent> eventHandler) {
+        return onEvent(ACTION, eventHandler);
+    }
+
 
 
     @Override

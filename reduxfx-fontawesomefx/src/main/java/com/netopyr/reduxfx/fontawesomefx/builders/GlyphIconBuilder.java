@@ -15,6 +15,8 @@ public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>
     private static final String GLYPH_NAME = "glyphName";
     private static final String GLYPH_SIZE = "glyphSize";
     private static final String GLYPH_STYLE = "glyphStyle";
+    private static final String SIZE = "size";
+
     protected static final String ICON = "icon";
 
     protected GlyphIconBuilder(Class<?> nodeClass,
@@ -36,6 +38,10 @@ public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>
 
     public BUILDER glyphStyle(String value) {
         return property(GLYPH_STYLE, value);
+    }
+
+    public BUILDER size(String value) {
+        return property(SIZE, value);
     }
 
 
