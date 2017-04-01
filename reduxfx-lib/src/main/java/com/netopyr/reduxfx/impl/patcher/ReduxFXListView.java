@@ -23,10 +23,6 @@ public class ReduxFXListView extends ListView<Object> {
 
     private final Patcher patcher;
 
-    Patcher getPatcher() {
-        return patcher;
-    }
-
     private ObjectProperty<ObservableList<Object>> data = new SimpleObjectProperty<>(this, "data", FXCollections.observableArrayList());
 
     public final ObservableList<Object> getData() {
@@ -56,9 +52,9 @@ public class ReduxFXListView extends ListView<Object> {
     }
 
 
-    {
+    public ReduxFXListView(){
         this.patcher = Patcher.getInstance();
-        setCellFactory(listView -> new ReduxFXListCell((ReduxFXListView) listView));
+        setCellFactory(listView -> new ReduxFXListCell());
         setItems(new ReduxFXTransformationList(null));
         mappingProperty().addListener(((observable, oldValue, newValue) -> {
             setItems(new ReduxFXTransformationList(newValue));
@@ -66,14 +62,7 @@ public class ReduxFXListView extends ListView<Object> {
     }
 
 
-    private static class ReduxFXListCell extends ListCell<Object> {
-
-        private final ReduxFXListView listView;
-
-        public ReduxFXListCell(ReduxFXListView listView) {
-            this.listView = listView;
-        }
-
+    private class ReduxFXListCell extends ListCell<Object> {
         @SuppressWarnings("unchecked")
         @Override
         protected void updateItem(Object item, boolean empty) {
@@ -87,7 +76,7 @@ public class ReduxFXListView extends ListView<Object> {
                     final VNode newVNode = VScenegraphFactory.customNode(ListCell.class).child("graphic", (VNode) item);
                     final Option<VNode> oldVNode = Option.of(getGraphic()).flatMap(node -> Option.of((VNode) node.getUserData()));
                     final Vector<Patch> patches = Differ.diff(oldVNode, Option.of(newVNode));
-                    listView.getPatcher().patch(this, oldVNode, patches);
+                    ReduxFXListView.this.patcher.patch(this, oldVNode, patches);
                     Option.of(getGraphic()).peek(node -> node.setUserData(newVNode));
                 } else {
                     this.setText(String.valueOf(item));

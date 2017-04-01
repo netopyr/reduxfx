@@ -17,11 +17,20 @@ import java.nio.file.Files;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class PropertiesDriver implements Driver {
 
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+    private static final AtomicInteger THREAD_COUNTER = new AtomicInteger();
+    private static final ThreadFactory THREAD_FACTORY = runnable -> {
+        final Thread thread = new Thread(runnable, "PropertiesDriver-" + THREAD_COUNTER.incrementAndGet());
+        thread.setDaemon(true);
+        return thread;
+    };
+
+    private final ExecutorService executorService = Executors.newCachedThreadPool(THREAD_FACTORY);
 
     private final FlowableProcessor<Command> commandSubscriber = PublishProcessor.create();
 

@@ -6,13 +6,20 @@
 
     <groupId>com.netopyr.reduxfx</groupId>
     <artifactId>reduxfx-all</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+    </properties>
 
     <modules>
         <module>samples</module>
         <module>reduxfx-lib</module>
+        <module>reduxfx-jfoenix</module>
+        <module>reduxfx-fontawesomefx</module>
     </modules>
 
 </project>
