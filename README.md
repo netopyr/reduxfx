@@ -15,14 +15,14 @@ Adding ReduxFX to your project
 <dependency>
   <groupId>com.netopyr.reduxfx</groupId>
   <artifactId>reduxfx</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
 ### Gradle
 ```groovy
 dependencies {
-    compile "com.netopyr.reduxfx:reduxfx:0.1.0"
+    compile "com.netopyr.reduxfx:reduxfx:0.2.0"
 }
 ```
 
