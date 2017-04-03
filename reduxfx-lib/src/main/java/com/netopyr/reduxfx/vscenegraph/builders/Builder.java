@@ -1,5 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
+import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.NodeAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -42,6 +45,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     }
 
     public <TYPE extends VNode> BUILDER child(String name, TYPE child, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
                 getChildren(),
@@ -52,6 +56,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     }
 
     public <TYPE extends VNode> BUILDER child(String name, TYPE child, VChangeListener<? super TYPE> changeListener) {
+        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
                 getChildren(),
@@ -62,6 +67,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     }
 
     public <TYPE extends VNode> BUILDER child(String name, TYPE child, VInvalidationListener invalidationListener) {
+        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
                 getChildren(),
@@ -72,6 +78,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     }
 
     public BUILDER child(String name, VNode child) {
+        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
                 getChildren(),

@@ -1,9 +1,13 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
+import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.NodeAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.scene.control.Labeled;
 import javafx.scene.paint.Paint;
 import javaslang.collection.Array;
 import javaslang.collection.Map;

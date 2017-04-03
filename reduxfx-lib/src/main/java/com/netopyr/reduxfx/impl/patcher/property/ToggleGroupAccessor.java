@@ -1,22 +1,23 @@
 package com.netopyr.reduxfx.impl.patcher.property;
 
+import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
 import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.scene.Node;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javaslang.collection.HashMap;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 
-import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
 public class ToggleGroupAccessor extends AbstractAccessor {
 
     private Map<Object, ToggleGroup> mapping = HashMap.empty();
 
-    public ToggleGroupAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
-        super(propertyGetter, dispatcher);
+    public ToggleGroupAccessor() {
+        super(NodeUtilities.getPropertyGetter(ToggleButton.class, "toggleGroup").get());
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ToggleGroupAccessor extends AbstractAccessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty property, Object value) {
+    protected void setValue(Consumer<Object> dispatcher, ReadOnlyProperty property, Object value) {
         if (value instanceof ToggleGroup) {
             ((Property) property).setValue(value);
             return;

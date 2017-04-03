@@ -1,15 +1,20 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.SceneAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.StageShowingAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.CLOSE_REQUEST;
 
+@SuppressWarnings("unused")
 public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder<BUILDER> {
 
     private static final String SCENE = "scene";
@@ -37,10 +42,12 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder
 
 
     public BUILDER scene(SceneBuilder<?> value) {
+        Accessors.registerAccessor(Stage.class, "scene", SceneAccessor::new);
         return child(SCENE, value);
     }
 
     public BUILDER showing(boolean value) {
+        Accessors.registerAccessor(Stage.class, "showing", StageShowingAccessor::new);
         return property(SHOWING, value);
     }
 

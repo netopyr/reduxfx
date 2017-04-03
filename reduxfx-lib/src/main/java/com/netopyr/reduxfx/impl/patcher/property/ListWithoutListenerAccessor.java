@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import java.lang.invoke.MethodHandle;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Consumer;
 
 public class ListWithoutListenerAccessor implements Accessor {
 
@@ -17,7 +18,7 @@ public class ListWithoutListenerAccessor implements Accessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             final ObservableList list;
             try {

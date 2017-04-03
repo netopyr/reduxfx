@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.impl.patcher.property;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 
 import java.lang.invoke.MethodHandle;
+import java.util.function.Consumer;
 
 public class SetterAccessor implements Accessor {
 
@@ -13,7 +14,7 @@ public class SetterAccessor implements Accessor {
     }
 
     @Override
-    public void set(Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             try {
                 setter.invoke(node, vProperty.getValue());

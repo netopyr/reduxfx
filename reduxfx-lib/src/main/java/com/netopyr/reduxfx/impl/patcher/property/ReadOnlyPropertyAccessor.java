@@ -7,12 +7,12 @@ import java.util.function.Consumer;
 
 public class ReadOnlyPropertyAccessor extends AbstractNoConversionAccessor {
 
-    ReadOnlyPropertyAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
-        super(propertyGetter, dispatcher);
+    ReadOnlyPropertyAccessor(MethodHandle propertyGetter) {
+        super(propertyGetter);
     }
 
     @Override
-    protected void setValue(ReadOnlyProperty property, Object value) {
+    protected void setValue(Consumer<Object> dispatcher, ReadOnlyProperty property, Object value) {
 
     }
 }

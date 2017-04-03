@@ -1,12 +1,11 @@
 package com.netopyr.reduxfx.impl.patcher.property;
 
 import java.lang.invoke.MethodHandle;
-import java.util.function.Consumer;
 
 abstract class AbstractNoConversionAccessor extends AbstractAccessor {
 
-    AbstractNoConversionAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
-        super(propertyGetter, dispatcher);
+    AbstractNoConversionAccessor(MethodHandle propertyGetter) {
+        super(propertyGetter);
     }
 
     @Override

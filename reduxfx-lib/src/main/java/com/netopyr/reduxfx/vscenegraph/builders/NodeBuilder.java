@@ -1,5 +1,7 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.FocusedAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -7,6 +9,7 @@ import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javaslang.collection.Array;
@@ -62,10 +65,12 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     }
 
     public BUILDER focused(boolean value, VChangeListener<? super Boolean> listener) {
+        Accessors.registerAccessor(Node.class, "focused", FocusedAccessor::new);
         return property(FOCUSED, value, listener);
     }
 
     public BUILDER focused(boolean value) {
+        Accessors.registerAccessor(Node.class, "focused", FocusedAccessor::new);
         return property(FOCUSED, value);
     }
 

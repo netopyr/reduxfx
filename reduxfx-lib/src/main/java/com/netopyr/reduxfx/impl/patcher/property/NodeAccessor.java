@@ -14,11 +14,8 @@ import static com.netopyr.reduxfx.impl.patcher.NodeUtilities.getProperties;
 
 public class NodeAccessor extends AbstractAccessor {
 
-    private final NodeBuilder nodeBuilder;
-
-    NodeAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher, NodeBuilder nodeBuilder) {
-        super(propertyGetter, dispatcher);
-        this.nodeBuilder = nodeBuilder;
+    public NodeAccessor(MethodHandle propertyGetter) {
+        super(propertyGetter);
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +27,7 @@ public class NodeAccessor extends AbstractAccessor {
     @Override
     protected Object vToFX(Object value) {
         if (value instanceof VNode) {
-            final Option<Object> nodeOption = nodeBuilder.create((VNode) value);
+            final Option<Object> nodeOption = NodeBuilder.create((VNode) value);
             if (nodeOption.isEmpty()) {
                 return null;
             }
@@ -45,14 +42,14 @@ public class NodeAccessor extends AbstractAccessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty property, Object obj) {
+    protected void setValue(Consumer<Object> dispatcher, ReadOnlyProperty property, Object obj) {
         if (obj instanceof Node) {
             final Node node = (Node) obj;
             final Object vObj = fxToV(node);
             if (vObj instanceof VNode) {
                 final VNode vNode = (VNode) vObj;
                 ((Property) property).setValue(node);
-                nodeBuilder.init(node, vNode);
+                NodeBuilder.init(dispatcher, node, vNode);
                 return;
             }
         }

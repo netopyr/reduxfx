@@ -8,6 +8,7 @@ import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ChangeListener;
 
 import java.lang.invoke.MethodHandle;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.impl.patcher.NodeUtilities.getProperties;
@@ -15,16 +16,14 @@ import static com.netopyr.reduxfx.impl.patcher.NodeUtilities.getProperties;
 abstract class AbstractAccessor implements Accessor {
 
     private final MethodHandle propertyGetter;
-    private final Consumer<Object> dispatcher;
 
-    AbstractAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
-        this.propertyGetter = propertyGetter;
-        this.dispatcher = dispatcher;
+    AbstractAccessor(MethodHandle propertyGetter) {
+        this.propertyGetter = Objects.requireNonNull(propertyGetter, "PropertyGetter must not be null");
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
 
         final ReadOnlyProperty property;
         try {
@@ -36,15 +35,15 @@ abstract class AbstractAccessor implements Accessor {
         clearListeners(node, property);
 
         if (vProperty.isValueDefined()) {
-            setValue(property, vToFX(vProperty.getValue()));
+            setValue(dispatcher, property, vToFX(vProperty.getValue()));
         }
 
         if (vProperty.getChangeListener().isDefined()) {
-            setChangeListener(node, property, vProperty.getChangeListener().get(), dispatcher);
+            setChangeListener(dispatcher, node, property, vProperty.getChangeListener().get());
         }
 
         if (vProperty.getInvalidationListener().isDefined()) {
-            setInvalidationListener(node, property, vProperty.getInvalidationListener().get(), dispatcher);
+            setInvalidationListener(dispatcher, node, property, vProperty.getInvalidationListener().get());
         }
     }
 
@@ -52,7 +51,7 @@ abstract class AbstractAccessor implements Accessor {
 
     protected abstract Object vToFX(Object value);
 
-    protected abstract void setValue(ReadOnlyProperty property, Object value);
+    protected abstract void setValue(Consumer<Object> dispatcher, ReadOnlyProperty property, Object value);
 
     @SuppressWarnings("unchecked")
     private void clearListeners(Object node, ReadOnlyProperty property) {
@@ -67,7 +66,8 @@ abstract class AbstractAccessor implements Accessor {
         }
     }
 
-    private void setChangeListener(Object node, ReadOnlyProperty property, VChangeListener listener, Consumer<Object> dispatcher) {
+    @SuppressWarnings("unchecked")
+    private void setChangeListener(Consumer<Object> dispatcher, Object node, ReadOnlyProperty property, VChangeListener listener) {
         final ChangeListener newListener = (source, oldValue, newValue) -> {
             final Object action = listener.onChange(fxToV(oldValue), fxToV(newValue));
             if (action != null) {
@@ -78,7 +78,7 @@ abstract class AbstractAccessor implements Accessor {
         getProperties(node).put(property.getName() + ".change", newListener);
     }
 
-    private void setInvalidationListener(Object node, ReadOnlyProperty property, VInvalidationListener listener, Consumer<Object> dispatcher) {
+    private void setInvalidationListener(Consumer<Object> dispatcher, Object node, ReadOnlyProperty property, VInvalidationListener listener) {
         final InvalidationListener newListener = (source) -> {
             final Object action = listener.onInvalidation();
             if (action != null) {

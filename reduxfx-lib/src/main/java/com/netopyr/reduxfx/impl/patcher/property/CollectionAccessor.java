@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 
 import java.lang.invoke.MethodHandle;
 import java.util.Collection;
+import java.util.function.Consumer;
 
 public class CollectionAccessor implements Accessor {
 
@@ -15,7 +16,7 @@ public class CollectionAccessor implements Accessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             final Collection collection;
             try {

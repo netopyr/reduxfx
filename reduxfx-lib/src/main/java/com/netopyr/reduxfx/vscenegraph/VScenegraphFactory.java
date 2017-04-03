@@ -1,6 +1,5 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-import com.netopyr.reduxfx.impl.patcher.ReduxFXListView;
 import com.netopyr.reduxfx.vscenegraph.builders.AccordionBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.*;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBaseBuilder;
@@ -107,7 +106,7 @@ public class VScenegraphFactory {
     }
 
     public static <CLASS extends ListViewBuilder<CLASS, ELEMENT>, ELEMENT> ListViewBuilder<CLASS, ELEMENT> ListView(Class<ELEMENT> elementClass) {
-        return Factory.node(ReduxFXListView.class, () -> new ListViewBuilder<>(ReduxFXListView.class, elementClass, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+        return Factory.node(ListView.class, () -> new ListViewBuilder<>(ListView.class, elementClass, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
     public static <CLASS extends PaneBuilder<CLASS>> PaneBuilder<CLASS> Pane() {

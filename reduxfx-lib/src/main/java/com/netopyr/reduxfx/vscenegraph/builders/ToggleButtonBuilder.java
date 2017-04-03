@@ -1,9 +1,12 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.ToggleGroupAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.scene.control.ToggleButton;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -37,6 +40,7 @@ public class ToggleButtonBuilder<BUILDER extends ToggleButtonBuilder<BUILDER>> e
     }
 
     public BUILDER toggleGroup(String value) {
+        Accessors.registerAccessor(ToggleButton.class, "toggleGroup", ToggleGroupAccessor::new);
         return property(TOGGLE_GROUP, value);
     }
 

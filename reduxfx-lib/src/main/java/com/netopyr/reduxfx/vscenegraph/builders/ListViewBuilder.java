@@ -1,10 +1,13 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
+import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.ListViewCellFactoryAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.FXCollections;
+import javafx.scene.control.ListView;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
@@ -14,8 +17,8 @@ import java.util.function.Function;
 
 public class ListViewBuilder<BUILDER extends ListViewBuilder<BUILDER, ELEMENT>, ELEMENT> extends ControlBuilder<BUILDER> {
 
-    private static final String DATA = "data";
-    private static final String MAPPING = "mapping";
+    private static final String ITEMS = "items";
+    private static final String CELL_FACTORY = "cellFactory";
 
     private final Class<ELEMENT> elementClass;
 
@@ -41,11 +44,12 @@ public class ListViewBuilder<BUILDER extends ListViewBuilder<BUILDER, ELEMENT>, 
 
 
     public BUILDER cellFactory(Function<? super ELEMENT, VNode> value) {
-        return property(MAPPING, value);
+        Accessors.registerAccessor(ListView.class, "cellFactory", ListViewCellFactoryAccessor::new);
+        return property(CELL_FACTORY, value);
     }
 
     public BUILDER items(Seq<? extends ELEMENT> value) {
-        return property(DATA, value == null? FXCollections.emptyObservableList() : FXCollections.observableList(value.toJavaList()));
+        return property(ITEMS, value == null? FXCollections.emptyObservableList() : FXCollections.observableList(value.toJavaList()));
     }
 
 

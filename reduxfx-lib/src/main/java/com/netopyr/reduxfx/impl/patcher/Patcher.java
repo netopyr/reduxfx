@@ -6,7 +6,6 @@ import com.netopyr.reduxfx.impl.differ.patches.Patch;
 import com.netopyr.reduxfx.impl.differ.patches.RemovePatch;
 import com.netopyr.reduxfx.impl.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.impl.differ.patches.UpdateRootPatch;
-import com.netopyr.reduxfx.impl.patcher.property.Accessors;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javaslang.Tuple;
 import javaslang.collection.Seq;
@@ -31,18 +30,9 @@ public class Patcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(Patcher.class);
 
-    private final NodeBuilder nodeBuilder;
+    private Patcher() {}
 
-    public Patcher(Consumer<Object> dispatcher) {
-        final Accessors accessors = new Accessors(dispatcher);
-        this.nodeBuilder = new NodeBuilder(dispatcher, accessors);
-        accessors.init(nodeBuilder);
-
-        INSTANCE = this;
-    }
-
-
-    public void patch(Object root, Option<VNode> vRoot, Seq<Patch> patches) {
+    public static void patch(Consumer<Object> dispatcher, Object root, Option<VNode> vRoot, Seq<Patch> patches) {
 
         for (final Patch patch : patches) {
 
@@ -60,13 +50,13 @@ public class Patcher {
 
                     Case(instanceOf(ReplacePatch.class),
                             replacePatch -> run(() ->
-                                    doReplace(node, replacePatch)
+                                    doReplace(dispatcher, node, replacePatch)
                             )
                     ),
 
                     Case(instanceOf(AttributesPatch.class),
                             attributesPatch -> run(() ->
-                                    doAttributes(node, attributesPatch)
+                                    doAttributes(dispatcher, node, attributesPatch)
                             )
                     ),
 
@@ -76,7 +66,7 @@ public class Patcher {
 
                     Case(instanceOf(AppendPatch.class),
                             appendPatch -> run(() ->
-                                    doAppend(node, appendPatch)
+                                    doAppend(dispatcher, node, appendPatch)
                             )
                     ),
 
@@ -88,7 +78,7 @@ public class Patcher {
 
                     Case(instanceOf(UpdateRootPatch.class),
                             updateRootPatch -> run(() ->
-                                    doUpdateRoot(node, updateRootPatch)
+                                    doUpdateRoot(dispatcher, node, updateRootPatch)
                             )
                     ),
 
@@ -101,12 +91,12 @@ public class Patcher {
     }
 
     @SuppressWarnings("unchecked")
-    private void doReplace(Object oldNode, ReplacePatch patch) {
+    private static void doReplace(Consumer<Object> dispatcher, Object oldNode, ReplacePatch patch) {
         final VNode vNode = patch.getNewNode();
-        final Option<Object> newNode = nodeBuilder.create(vNode);
+        final Option<Object> newNode = NodeBuilder.create(vNode);
         if (newNode.isDefined()) {
             if (replaceNode(oldNode, newNode.get())) {
-                nodeBuilder.init(newNode.get(), vNode);
+                NodeBuilder.init(dispatcher, newNode.get(), vNode);
                 return;
             }
         }
@@ -114,21 +104,21 @@ public class Patcher {
     }
 
     @SuppressWarnings("unchecked")
-    private void doAttributes(Object node, AttributesPatch patch) {
-        nodeBuilder.updateProperties(node, patch.getProperties());
-        nodeBuilder.updateEventHandlers(node, patch.getEventHandlers());
+    private static void doAttributes(Consumer<Object> dispatcher, Object node, AttributesPatch patch) {
+        NodeBuilder.updateProperties(dispatcher, node, patch.getProperties());
+        NodeBuilder.updateEventHandlers(dispatcher, node, patch.getEventHandlers());
     }
 
     @SuppressWarnings("unchecked")
-    private void doAppend(Object parent, AppendPatch patch) {
+    private static void doAppend(Consumer<Object> dispatcher, Object parent, AppendPatch patch) {
         final VNode vNode = patch.getNewNode();
-        final Option<Object> node = nodeBuilder.create(vNode);
+        final Option<Object> node = NodeBuilder.create(vNode);
         if (node.isDefined()) {
             if (!appendNode(parent, node.get())) {
                 LOG.error("Unable to append node '{}' to parent '{}'", node.get(), parent);
                 return;
             }
-            nodeBuilder.init(node.get(), vNode);
+            NodeBuilder.init(dispatcher, node.get(), vNode);
             return;
         }
         LOG.error("Unable to add node to parent class {}", parent.getClass());
@@ -140,27 +130,27 @@ public class Patcher {
         }
     }
 
-    private void doUpdateRoot(Object node, UpdateRootPatch patch) {
+    private static void doUpdateRoot(Consumer<Object> dispatcher, Object node, UpdateRootPatch patch) {
         final VNode vNode = patch.getNewNode();
-        nodeBuilder.updateProperties(node, vNode.getProperties());
-        nodeBuilder.updateEventHandlers(node, vNode.getEventHandlers()
+        NodeBuilder.updateProperties(dispatcher, node, vNode.getProperties());
+        NodeBuilder.updateEventHandlers(dispatcher, node, vNode.getEventHandlers()
                 .map((key, value) -> Tuple.of(key, Option.of(value))));
-        nodeBuilder.updateProperties(node, vNode.getNamedChildren());
+        NodeBuilder.updateProperties(dispatcher, node, vNode.getNamedChildren());
 
 
         for (final VNode vChild : vNode.getChildren()) {
-            final Option<Object> child = nodeBuilder.create(vChild);
+            final Option<Object> child = NodeBuilder.create(vChild);
             if (child.isDefined()) {
                 if (!appendNode(node, child.get())) {
                     LOG.error("Unable to append node '{}' to parent '{}'", child.get(), node);
                     continue;
                 }
-                nodeBuilder.init(child.get(), vChild);
+                NodeBuilder.init(dispatcher, child.get(), vChild);
             }
         }
     }
 
-    private Object findNode(Vector<Object> path, Object node, VNode vNode) {
+    private static Object findNode(Vector<Object> path, Object node, VNode vNode) {
 
         while (! path.isEmpty()) {
             final Object head = path.head();
@@ -180,12 +170,5 @@ public class Patcher {
         }
 
         return node;
-    }
-
-
-    private static Patcher INSTANCE;
-
-    public static Patcher getInstance() {
-        return INSTANCE;
     }
 }

@@ -47,8 +47,6 @@ public class MainLoop {
     private final FlowableProcessor<Object> actionsStream = PublishProcessor.create();
     private final FlowableProcessor<Command> commandsStream = PublishProcessor.create();
 
-    private final Patcher patcher = new Patcher(this::dispatch);
-
     private ExecutorService executor;
 
     public static <STATE> MainLoop createStages(
@@ -121,9 +119,9 @@ public class MainLoop {
                 .zipWith(patchesStream, PatchParams::new)
                 .forEach(params -> {
                     if (Platform.isFxApplicationThread()) {
-                        patcher.patch(javaFXRoot, params.vRoot, params.patches);
+                        Patcher.patch(this::dispatch, javaFXRoot, params.vRoot, params.patches);
                     } else {
-                        Platform.runLater(() -> patcher.patch(javaFXRoot, params.vRoot, params.patches));
+                        Platform.runLater(() -> Patcher.patch(this::dispatch, javaFXRoot, params.vRoot, params.patches));
                     }
                 });
 

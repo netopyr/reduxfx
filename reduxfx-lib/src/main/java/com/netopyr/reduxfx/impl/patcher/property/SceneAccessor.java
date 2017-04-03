@@ -7,22 +7,18 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.function.Consumer;
+
 public class SceneAccessor implements Accessor {
 
-    private final NodeBuilder nodeBuilder;
-
-    SceneAccessor(NodeBuilder nodeBuilder) {
-        this.nodeBuilder = nodeBuilder;
-    }
-
     @Override
-    public void set(Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             final Object value = vProperty.getValue();
             if (value instanceof SceneBuilder<?>) {
                 final SceneBuilder<?> sceneBuilder = (SceneBuilder<?>) value;
                 final Scene scene = new Scene(new Group());
-                nodeBuilder.init(scene, sceneBuilder);
+                NodeBuilder.init(dispatcher, scene, sceneBuilder);
                 ((Stage) node).setScene(scene);
 //                Option<VProperty> sceneProperty = sceneBuilder.getProperties().get("root");
 //                if (sceneProperty.isEmpty() || ! sceneProperty.get().isValueDefined()) {

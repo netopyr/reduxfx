@@ -18,24 +18,21 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.impl.patcher.NodeUtilities.appendNode;
 
+@SuppressWarnings("WeakerAccess")
 public class NodeBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeBuilder.class);
 
-    private final Accessors accessors;
-    private final Consumer<Object> dispatcher;
-
-    NodeBuilder(Consumer<Object> dispatcher, Accessors accessors) {
-        this.dispatcher = dispatcher;
-        this.accessors = accessors;
-    }
+    private NodeBuilder() {}
 
     @SuppressWarnings("unchecked")
-    public Option<Object> create(VNode vNode) {
+    public static Option<Object> create(VNode vNode) {
+        Objects.requireNonNull(vNode, "VNode must not be null");
         try {
             final Class<?> nodeClass = vNode.getNodeClass();
             final Object node = nodeClass.newInstance();
@@ -47,28 +44,36 @@ public class NodeBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    public void init(Object node, VNode vNode) {
-        updateProperties(node, vNode.getProperties());
-        updateEventHandlers(node, vNode.getEventHandlers().map((name, eventHandler) -> Tuple.of(name, Option.of(eventHandler))));
-        updateProperties(node, vNode.getNamedChildren());
+    public static void init(Consumer<Object> dispatcher, Object node, VNode vNode) {
+        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
+        Objects.requireNonNull(node, "Node must not be null");
+        Objects.requireNonNull(vNode, "VNode must not be null");
+
+        updateProperties(dispatcher, node, vNode.getProperties());
+        updateEventHandlers(dispatcher, node, vNode.getEventHandlers().map((name, eventHandler) -> Tuple.of(name, Option.of(eventHandler))));
+        updateProperties(dispatcher, node, vNode.getNamedChildren());
 
         if (vNode.getChildren().nonEmpty()) {
             vNode.getChildren().forEach(vChild -> {
                 final Option<Object> child = create(vChild);
                 if (child.isDefined()) {
                     appendNode(node, child.get());
-                    init(child.get(), vChild);
+                    init(dispatcher, child.get(), vChild);
                 }
             });
         }
     }
 
     @SuppressWarnings("unchecked")
-    void updateProperties(Object node, Map<String, VProperty> properties) {
+    public static void updateProperties(Consumer<Object> dispatcher, Object node, Map<String, VProperty> properties) {
+        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
+        Objects.requireNonNull(node, "Node must not be null");
+        Objects.requireNonNull(properties, "Properties must not be null");
+
         for (final Tuple2<String, VProperty> entry : properties) {
-            final Option<Accessor> accessor = accessors.getAccessor(node, entry._1);
+            final Option<Accessor> accessor = Accessors.getAccessor(node, entry._1);
             if (accessor.isDefined()) {
-                accessor.get().set(node, entry._1, entry._2);
+                accessor.get().set(dispatcher, node, entry._1, entry._2);
             } else {
                 LOG.warn("Accessor not found for property {} in class {}", entry._1, node.getClass());
             }
@@ -76,7 +81,11 @@ public class NodeBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    void updateEventHandlers(Object node, Map<VEventType, Option<VEventHandler>> eventHandlers) {
+    public static void updateEventHandlers(Consumer<Object> dispatcher, Object node, Map<VEventType, Option<VEventHandler>> eventHandlers) {
+        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
+        Objects.requireNonNull(node, "Node must not be null");
+        Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
+
         for (final Tuple2<VEventType, Option<VEventHandler>> entry : eventHandlers) {
             final Option<MethodHandle> setter = getEventSetter(node.getClass(), entry._1);
             if (setter.isDefined()) {

@@ -9,13 +9,13 @@ import java.util.function.Consumer;
 
 public class ListAccessor extends AbstractNoConversionAccessor {
 
-    ListAccessor(MethodHandle methodHandle, Consumer<Object> dispatcher) {
-        super(methodHandle, dispatcher);
+    ListAccessor(MethodHandle methodHandle) {
+        super(methodHandle);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty property, Object value) {
+    protected void setValue(Consumer<Object> dispatcher, ReadOnlyProperty property, Object value) {
         final Object propertyValue = property.getValue();
         if (propertyValue instanceof ObservableList && value instanceof Collection) {
             ((ObservableList) property.getValue()).setAll((Collection) value);

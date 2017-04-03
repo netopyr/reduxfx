@@ -8,13 +8,13 @@ import java.util.function.Consumer;
 
 public class PropertyAccessor extends AbstractNoConversionAccessor {
 
-    PropertyAccessor(MethodHandle propertyGetter, Consumer<Object> dispatcher) {
-        super(propertyGetter, dispatcher);
+    PropertyAccessor(MethodHandle propertyGetter) {
+        super(propertyGetter);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void setValue(ReadOnlyProperty readOnlyProperty, Object value) {
+    protected void setValue(Consumer<Object> dispatcher, ReadOnlyProperty readOnlyProperty, Object value) {
         final Property property = (Property) readOnlyProperty;
         if (property.getValue() == null? value != null : ! property.getValue().equals(value)) {
             property.setValue(value);
