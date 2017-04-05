@@ -37,7 +37,7 @@ public class TitledPaneBuilder<BUILDER extends TitledPaneBuilder<BUILDER>> exten
 
 
     public BUILDER content(VNode value) {
-        return property(CONTENT, value);
+        return child(CONTENT, value);
     }
 
 
