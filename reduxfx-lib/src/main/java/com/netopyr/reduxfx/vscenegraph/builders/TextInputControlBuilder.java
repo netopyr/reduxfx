@@ -7,29 +7,31 @@ import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings("SameParameterValue")
 public class TextInputControlBuilder<BUILDER extends TextInputControlBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
     private static final String PROMPT_TEXT = "promptText";
     private static final String TEXT = "text";
 
     public TextInputControlBuilder(Class<?> nodeClass,
-                                   Array<VNode> children,
-                                   Map<String, VProperty> namedChildren,
+                                   Map<String, Array<VNode>> childrenMap,
+                                   Map<String, Option<VNode>> singleChildMap,
                                    Map<String, VProperty> properties,
                                    Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new TextInputControlBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new TextInputControlBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

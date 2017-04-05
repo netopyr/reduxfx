@@ -8,22 +8,22 @@ import java.util.Objects;
 
 public class UpdateRootPatch extends Patch {
 
-    private final VNode newNode;
+    private final VNode rootNode;
 
-    public UpdateRootPatch(Vector<Object> path, VNode newNode) {
-        super(path);
-        this.newNode = Objects.requireNonNull(newNode, "NewNode must not be null");
+    public UpdateRootPatch(VNode rootNode) {
+        super(Vector.empty());
+        this.rootNode = Objects.requireNonNull(rootNode, "RootNode must not be null");
     }
 
-    public VNode getNewNode() {
-        return newNode;
+    public VNode getRootNode() {
+        return rootNode;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .appendSuper(super.toString())
-                .append("newNode", newNode)
+                .append("rootNode", rootNode)
                 .toString();
     }
 }

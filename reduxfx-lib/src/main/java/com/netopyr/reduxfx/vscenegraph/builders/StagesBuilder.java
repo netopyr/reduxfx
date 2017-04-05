@@ -7,8 +7,10 @@ import javaslang.collection.HashMap;
 
 public class StagesBuilder extends VNode {
 
+    private static final String CHILDREN = "children";
+
     public StagesBuilder(Array<VNode> children) {
-        super(Stages.class, children, HashMap.empty(), HashMap.empty(), HashMap.empty());
+        super(Stages.class, HashMap.of(CHILDREN, children), HashMap.empty(), HashMap.empty(), HashMap.empty());
     }
 
 

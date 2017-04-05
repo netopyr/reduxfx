@@ -8,28 +8,30 @@ import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings({"unused", "SameParameterValue"})
 public class SliderBuilder<BUILDER extends SliderBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
 
     private static final String MAX = "max";
     private static final String VALUE = "value";
 
     public SliderBuilder(Class<?> nodeClass,
-                         Array<VNode> children,
-                         Map<String, VProperty> namedChildren,
+                         Map<String, Array<VNode>> childrenMap,
+                         Map<String, Option<VNode>> singleChildMap,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new SliderBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new SliderBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

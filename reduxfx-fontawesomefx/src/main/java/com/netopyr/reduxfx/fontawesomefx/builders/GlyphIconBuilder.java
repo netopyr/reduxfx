@@ -7,9 +7,10 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue"})
 public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>> extends TextBuilder<BUILDER> {
 
     private static final String GLYPH_NAME = "glyphName";
@@ -20,11 +21,11 @@ public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>
     protected static final String ICON = "icon";
 
     protected GlyphIconBuilder(Class<?> nodeClass,
-                            Array<VNode> children,
-                            Map<String, VProperty> namedChildren,
+                               Map<String, Array<VNode>> childrenMap,
+                               Map<String, Option<VNode>> singleChildMap,
                             Map<String, VProperty> properties,
                             Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

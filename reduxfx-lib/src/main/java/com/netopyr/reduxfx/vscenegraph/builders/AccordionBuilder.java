@@ -6,35 +6,38 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class AccordionBuilder<BUILDER extends AccordionBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
+    private static final String PANES = "panes";
+
     public AccordionBuilder(Class<?> nodeClass,
-                            Array<VNode> children,
-                            Map<String, VProperty> namedChildren,
+                            Map<String, Array<VNode>> children,
+                            Map<String, Option<VNode>> singleChildMap,
                             Map<String, VProperty> properties,
                             Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, children, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new AccordionBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new AccordionBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
     public final BUILDER panes(VNode... nodes) {
-        return children(nodes == null? Array.empty() : Array.of(nodes));
+        return children(PANES, nodes == null? Array.empty() : Array.of(nodes));
     }
     public final BUILDER panes(Iterable<VNode> nodes) {
-        return children(nodes == null? Array.empty() : Array.ofAll(nodes));
+        return children(PANES, nodes == null? Array.empty() : Array.ofAll(nodes));
     }
 
 

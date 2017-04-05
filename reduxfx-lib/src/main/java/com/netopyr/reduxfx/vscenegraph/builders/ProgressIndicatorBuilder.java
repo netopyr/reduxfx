@@ -6,28 +6,30 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings("unused")
 public class ProgressIndicatorBuilder<BUILDER extends ProgressIndicatorBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
     private static final String PROGRESS = "progress";
 
     public ProgressIndicatorBuilder(Class<?> nodeClass,
-                                    Array<VNode> children,
-                                    Map<String, VProperty> namedChildren,
+                                    Map<String, Array<VNode>> childrenMap,
+                                    Map<String, Option<VNode>> singleChildMap,
                                     Map<String, VProperty> properties,
                                     Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ProgressIndicatorBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new ProgressIndicatorBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

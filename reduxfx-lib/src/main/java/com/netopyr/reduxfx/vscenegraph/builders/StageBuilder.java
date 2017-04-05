@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.CLOSE_REQUEST;
 
@@ -21,28 +22,27 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends Builder
     private static final String SHOWING = "showing";
     private static final String TITLE = "title";
 
-    public StageBuilder(
-            Class<?> nodeClass,
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
-            Map<String, VProperty> properties,
-            Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+    public StageBuilder(Class<?> nodeClass,
+                        Map<String, Array<VNode>> childrenMap,
+                        Map<String, Option<VNode>> singleChildMap,
+                        Map<String, VProperty> properties,
+                        Map<VEventType, VEventHandler> eventHandlers) {
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new StageBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new StageBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
     public BUILDER scene(SceneBuilder<?> value) {
-        Accessors.registerAccessor(Stage.class, "scene", SceneAccessor::new);
+        Accessors.registerNodeAccessors(Stage.class, "scene", SceneAccessor::new);
         return child(SCENE, value);
     }
 

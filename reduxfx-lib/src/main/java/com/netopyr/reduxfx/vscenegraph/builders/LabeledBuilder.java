@@ -1,18 +1,16 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
-import com.netopyr.reduxfx.impl.patcher.property.Accessors;
-import com.netopyr.reduxfx.impl.patcher.property.NodeAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.control.Labeled;
 import javafx.scene.paint.Paint;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings({"unused", "SameParameterValue"})
 public class LabeledBuilder<BUILDER extends LabeledBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
 
     private static final String MNEMONIC_PARSING = "mnemonicParsing";
@@ -22,21 +20,21 @@ public class LabeledBuilder<BUILDER extends LabeledBuilder<BUILDER>> extends Con
     private static final String WRAP_TEXT = "wrapText";
 
     public LabeledBuilder(Class<?> nodeClass,
-                          Array<VNode> children,
-                          Map<String, VProperty> namedChildren,
+                          Map<String, Array<VNode>> childrenMap,
+                          Map<String, Option<VNode>> singleChildMap,
                           Map<String, VProperty> properties,
                           Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new LabeledBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new LabeledBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

@@ -6,8 +6,10 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings("unused")
 public class RectangleBuilder<BUILDER extends RectangleBuilder<BUILDER>> extends ShapeBuilder<BUILDER> {
 
     private static final String HEIGHT = "height";
@@ -16,21 +18,21 @@ public class RectangleBuilder<BUILDER extends RectangleBuilder<BUILDER>> extends
     private static final String Y = "y";
 
     public RectangleBuilder(Class<?> nodeClass,
-                            Array<VNode> children,
-                            Map<String, VProperty> namedChildren,
+                            Map<String, Array<VNode>> childrenMap,
+                            Map<String, Option<VNode>> singleChildMap,
                             Map<String, VProperty> properties,
                             Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new RectangleBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new RectangleBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

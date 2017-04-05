@@ -9,29 +9,31 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.control.ToggleButton;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings("SameParameterValue")
 public class ToggleButtonBuilder<BUILDER extends ToggleButtonBuilder<BUILDER>> extends ButtonBaseBuilder<BUILDER> {
 
     private static final String SELECTED = "selected";
     private static final String TOGGLE_GROUP = "toggleGroup";
 
     public ToggleButtonBuilder(Class<?> nodeClass,
-                               Array<VNode> children,
-                               Map<String, VProperty> namedChildren,
+                               Map<String, Array<VNode>> childrenMap,
+                               Map<String, Option<VNode>> singleChildMap,
                                Map<String, VProperty> properties,
                                Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ToggleButtonBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new ToggleButtonBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

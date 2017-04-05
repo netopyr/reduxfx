@@ -7,28 +7,20 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.paint.Paint;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ShapeBuilder<BUILDER extends ShapeBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
+@SuppressWarnings({"unused", "WeakerAccess"})
+public abstract class ShapeBuilder<BUILDER extends ShapeBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
 
     private static final String FILL = "fill";
 
-    public ShapeBuilder(Class<?> nodeClass,
-                        Array<VNode> children,
-                        Map<String, VProperty> namedChildren,
-                        Map<String, VProperty> properties,
-                        Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
-            Map<String, VProperty> properties,
-            Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ShapeBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+    protected ShapeBuilder(Class<?> nodeClass,
+                           Map<String, Array<VNode>> childrenMap,
+                           Map<String, Option<VNode>> singleChildMap,
+                           Map<String, VProperty> properties,
+                           Map<VEventType, VEventHandler> eventHandlers) {
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

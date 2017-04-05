@@ -14,10 +14,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
+@SuppressWarnings({"unused", "SameParameterValue"})
 public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<BUILDER> {
 
     private static final String ID = "id";
@@ -38,21 +40,21 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     private static final String STYLE = "style";
 
     public NodeBuilder(Class<?> nodeClass,
-                       Array<VNode> children,
-                       Map<String, VProperty> namedChildren,
+                       Map<String, Array<VNode>> childrenMap,
+                       Map<String, Option<VNode>> singleChildMap,
                        Map<String, VProperty> properties,
                        Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
     @SuppressWarnings("unchecked")
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new NodeBuilder(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new NodeBuilder(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     protected Object getTypeKey() {

@@ -2,7 +2,8 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
 import com.netopyr.reduxfx.impl.patcher.property.Accessors;
-import com.netopyr.reduxfx.impl.patcher.property.NodeAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.NodeListAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.SimpleNodeAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -12,77 +13,47 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.Event;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings("WeakerAccess")
 public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
 
     public Builder(Class<?> nodeClass,
-                   Array<VNode> children,
-                   Map<String, VProperty> namedChildren,
+                   Map<String, Array<VNode>> childrenMap,
+                   Map<String, Option<VNode>> singleChildMap,
                    Map<String, VProperty> properties,
                    Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
     @SuppressWarnings("unchecked")
-    protected BUILDER create(Array<VNode> children,
-                             Map<String, VProperty> namedChildren,
+    protected BUILDER create(Map<String, Array<VNode>> childrenMap,
+                             Map<String, Option<VNode>> singleChildMap,
                              Map<String, VProperty> properties,
                              Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new Builder(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new Builder(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER children(Array<VNode> children) {
+    public BUILDER children(String name, Array<VNode> children) {
+        Accessors.registerNodeListAccessors(getNodeClass(), name, () -> new NodeListAccessor(NodeUtilities.getGetterMethodHandle(getNodeClass(), name).get()));
         return Factory.node(
                 this,
-                children,
-                getNamedChildren(),
-                getProperties(),
-                getEventHandlers()
-        );
-    }
-
-    public <TYPE extends VNode> BUILDER child(String name, TYPE child, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
-        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
-        return Factory.node(
-                this,
-                getChildren(),
-                getNamedChildren().put(name, Factory.property(child, changeListener, invalidationListener)),
-                getProperties(),
-                getEventHandlers()
-        );
-    }
-
-    public <TYPE extends VNode> BUILDER child(String name, TYPE child, VChangeListener<? super TYPE> changeListener) {
-        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
-        return Factory.node(
-                this,
-                getChildren(),
-                getNamedChildren().put(name, Factory.property(child, changeListener)),
-                getProperties(),
-                getEventHandlers()
-        );
-    }
-
-    public <TYPE extends VNode> BUILDER child(String name, TYPE child, VInvalidationListener invalidationListener) {
-        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
-        return Factory.node(
-                this,
-                getChildren(),
-                getNamedChildren().put(name, Factory.property(child, invalidationListener)),
+                getChildrenMap().put(name, children),
+                getSingleChildMap(),
                 getProperties(),
                 getEventHandlers()
         );
     }
 
     public BUILDER child(String name, VNode child) {
-        Accessors.registerAccessor(getNodeClass(), name, () -> new NodeAccessor(NodeUtilities.getPropertyGetter(getNodeClass(), name).get()));
+        Accessors.registerNodeAccessors(getNodeClass(), name, () -> new SimpleNodeAccessor(NodeUtilities.getSetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren().put(name, Factory.property(child)),
+                getChildrenMap(),
+                getSingleChildMap().put(name, Option.of(child)),
                 getProperties(),
                 getEventHandlers()
         );
@@ -91,8 +62,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(value, changeListener, invalidationListener)),
                 getEventHandlers()
         );
@@ -101,8 +72,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(value, changeListener)),
                 getEventHandlers()
         );
@@ -111,8 +82,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public BUILDER property(String name, Object value, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(value, invalidationListener)),
                 getEventHandlers()
         );
@@ -121,8 +92,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public BUILDER property(String name, Object value) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(value)),
                 getEventHandlers()
         );
@@ -131,8 +102,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public BUILDER property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(changeListener, invalidationListener)),
                 getEventHandlers()
         );
@@ -141,8 +112,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public BUILDER property(String name, VChangeListener<?> changeListener) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(changeListener)),
                 getEventHandlers()
         );
@@ -151,8 +122,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public BUILDER property(String name, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property(invalidationListener)),
                 getEventHandlers()
         );
@@ -161,8 +132,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public BUILDER property(String name) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties().put(name, Factory.property()),
                 getEventHandlers()
         );
@@ -171,8 +142,8 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     public <EVENT extends Event> BUILDER onEvent(VEventType type, VEventHandler<EVENT> eventHandler) {
         return Factory.node(
                 this,
-                getChildren(),
-                getNamedChildren(),
+                getChildrenMap(),
+                getSingleChildMap(),
                 getProperties(),
                 getEventHandlers().put(type, eventHandler)
         );

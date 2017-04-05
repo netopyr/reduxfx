@@ -5,6 +5,8 @@ import com.netopyr.reduxfx.impl.differ.patches.AttributesPatch;
 import com.netopyr.reduxfx.impl.differ.patches.Patch;
 import com.netopyr.reduxfx.impl.differ.patches.RemovePatch;
 import com.netopyr.reduxfx.impl.differ.patches.ReplacePatch;
+import com.netopyr.reduxfx.impl.differ.patches.SetChildrenPatch;
+import com.netopyr.reduxfx.impl.differ.patches.SetSingleChildPatch;
 import com.netopyr.reduxfx.impl.differ.patches.UpdateRootPatch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
@@ -26,11 +28,15 @@ public class Differ {
     private static final Logger LOG = LoggerFactory.getLogger(Differ.class);
 
     public static Vector<Patch> diff(Option<VNode> a, Option<VNode> b) {
+        if (!a.isEmpty() && b.isEmpty()) {
+            LOG.error("Tried to remove root node");
+            return Vector.empty();
+        }
+
         final Vector<Patch> patches =
                 a.isEmpty() ?
-                        b.isEmpty() ? Vector.empty() : Vector.of(new UpdateRootPatch(Vector.empty(), b.get()))
-                        :
-                        b.isEmpty() ? Vector.of(new RemovePatch(Vector.empty())) : doDiff(Vector.empty(), a.get(), b.get());
+                        b.isEmpty() ? Vector.empty() : Vector.of(new UpdateRootPatch(b.get()))
+                        : doDiff(Vector.empty(), a.get(), b.get());
         LOG.trace("Diff:\na:\n{}\nb:\n{}\nresult:\n{}", a, b, patches);
         return patches;
     }
@@ -40,8 +46,8 @@ public class Differ {
         Objects.requireNonNull(b, "Second node must not be null");
 
         return diffAttributes(path, a, b)
-                .appendAll(diffChildren(path, a, b))
-                .appendAll(diffNamedChildren(path, a, b));
+                .appendAll(diffChildrenMaps(path, a, b))
+                .appendAll(diffSingleChildMaps(path, a, b));
     }
 
     private static Vector<Patch> diffAttributes(Vector<Object> path, VNode a, VNode b) {
@@ -57,54 +63,79 @@ public class Differ {
                 : Vector.of(new AttributesPatch(path, diffProperties, diffEventHandlers));
     }
 
-    private static Vector<Patch> diffChildren(Vector<Object> path, VNode a, VNode b) {
+    private static Seq<Patch> diffChildrenMaps(Vector<Object> path, VNode a, VNode b) {
 
-        final Array<VNode> aChildren = a.getChildren();
-        final Array<VNode> bChildren = b.getChildren();
-        final int nA = aChildren.length();
-        final int nB = bChildren.length();
-        final int n = Math.min(nA, nB);
+        final Map<String, Array<VNode>> oldChildrenMap = a.getChildrenMap();
+        final Map<String, Array<VNode>> newChildrenMap = b.getChildrenMap();
 
-        Vector<Patch> result = Vector.empty();
+        final Seq<Patch> updatedChildren = oldChildrenMap
+                .filter(oldChildren -> newChildrenMap.containsKey(oldChildren._1))
+                .map(oldChildren -> Tuple.of(oldChildren._1, oldChildren._2, newChildrenMap.get(oldChildren._1).get()))
+                .flatMap(tuple -> {
+                    final Vector<Object> currentPath = path.append(tuple._1);
+                    final Array<VNode> oldChildren = tuple._2;
+                    final Array<VNode> newChildren = tuple._3;
 
-        for (int i = 0; i < n; i++) {
-            final VNode aChild = aChildren.get(i);
-            final VNode bChild = bChildren.get(i);
-            result = aChild.getNodeClass() != bChild.getNodeClass()? result.append(new ReplacePatch(path.append(i), bChild))
-                    : result.appendAll(doDiff(path.append(i), aChild, bChild));
-        }
+                    final int nA = oldChildren.length();
+                    final int nB = newChildren.length();
+                    final int n = Math.min(nA, nB);
 
-        for (int i = n; i < nA; i++) {
-            result = result.append(new RemovePatch(path.append(i)));
-        }
+                    Vector<Patch> result = Vector.empty();
 
-        for (int i = n; i < nB; i++) {
-            result = result.append(new AppendPatch(path, bChildren.get(i)));
-        }
+                    for (int i = 0; i < n; i++) {
+                        final VNode aChild = oldChildren.get(i);
+                        final VNode bChild = newChildren.get(i);
+                        result = aChild.getNodeClass() != bChild.getNodeClass() ? result.append(new ReplacePatch(currentPath, i, bChild))
+                                : result.appendAll(doDiff(currentPath.append(i), aChild, bChild));
+                    }
 
-        return result;
+                    for (int i = n; i < nA; i++) {
+                        result = result.append(new RemovePatch(currentPath, i));
+                    }
+
+                    for (int i = n; i < nB; i++) {
+                        result = result.append(new AppendPatch(currentPath, newChildren.get(i)));
+                    }
+
+                    return result;
+                });
+
+        final Seq<Patch> removedChildren = oldChildrenMap.removeAll(newChildrenMap.keySet())
+                .map(tuple -> new SetChildrenPatch(path, tuple._1, Array.empty()));
+        final Seq<Patch> addedChildren = newChildrenMap.removeAll(oldChildrenMap.keySet())
+                .map(tuple -> new SetChildrenPatch(path, tuple._1, tuple._2));
+        return updatedChildren.appendAll(removedChildren).appendAll(addedChildren);
     }
 
-    private static Vector<Patch> diffNamedChildren(Vector<Object> path, VNode oldNode, VNode newNode) {
+    private static Vector<Patch> diffSingleChildMaps(Vector<Object> path, VNode oldNode, VNode newNode) {
 
-        final Map<String, VProperty> oldChildren = oldNode.getNamedChildren();
-        final Map<String, VProperty> newChildren = newNode.getNamedChildren();
+        final Map<String, Option<VNode>> oldChildren = oldNode.getSingleChildMap();
+        final Map<String, Option<VNode>> newChildren = newNode.getSingleChildMap();
 
         final Vector<Patch> updatedChildren = Vector.ofAll(oldChildren
                 .filter(oldChild -> newChildren.containsKey(oldChild._1))
                 .map(oldChild -> Tuple.of(oldChild._1, oldChild._2, newChildren.get(oldChild._1).get()))
                 .flatMap(tuple -> {
-                    final VNode a = (VNode) tuple._2.getValue();
-                    final VNode b = (VNode) tuple._3.getValue();
-                    return (a.getNodeClass() != b.getNodeClass()) ?
-                            Vector.of(new AttributesPatch(path, tuple._1, tuple._3))
-                            : doDiff(path.append(tuple._1), a, b);
+                    final String key = tuple._1;
+                    final Option<VNode> oldValue = tuple._2;
+                    final Option<VNode> newValue = tuple._3;
+
+                    if (oldValue.isEmpty() && newValue.isEmpty()) {
+                        return Vector.empty();
+                    }
+                    if (newValue.isEmpty()) {
+                        return Vector.of(new SetSingleChildPatch(path, key, Option.none()));
+                    }
+                    if (oldValue.isEmpty() || ! oldValue.get().getNodeClass().equals(newValue.get().getNodeClass())) {
+                        return Vector.of(new SetSingleChildPatch(path, key, newValue));
+                    }
+                    return doDiff(path.append(key), oldValue.get(), newValue.get());
                 })
         );
         final Seq<Patch> removedChildren = oldChildren.removeAll(newChildren.keySet())
-                .map(tuple -> new AttributesPatch(path, tuple._1, new VProperty(null, Option.none(), Option.none())));
+                .map(tuple -> new SetSingleChildPatch(path, tuple._1, Option.none()));
         final Seq<Patch> addedChildren = newChildren.removeAll(oldChildren.keySet())
-                .map(tuple -> new AttributesPatch(path, tuple._1, tuple._2));
+                .map(tuple -> new SetSingleChildPatch(path, tuple._1, tuple._2));
         return updatedChildren.appendAll(removedChildren).appendAll(addedChildren);
     }
 }

@@ -25,7 +25,7 @@ public class Factory {
 
     private static final VProperty EMPTY_PROPERTY = new VProperty(Option.none(), Option.none());
 
-    private static final Cache<Tuple5<Object, Array<VNode>, Map<String, VProperty>, Map<String, VProperty>, Map<VEventType, VEventHandler>>, VNode> nodeCache =
+    private static final Cache<Tuple5<Object, Map<String, Array<VNode>>, Map<String, Option<VNode>>, Map<String, VProperty>, Map<VEventType, VEventHandler>>, VNode> nodeCache =
             Caffeine.newBuilder().expireAfterAccess(EXPIRATION_SECONDS, TimeUnit.SECONDS)
                     .maximumSize(MAX_SIZE)
                     .build();
@@ -43,21 +43,21 @@ public class Factory {
     @SuppressWarnings("unchecked")
     public static <BUILDER extends Builder<BUILDER>> BUILDER node(
             Builder<BUILDER> builder,
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
         return eventHandlers.isEmpty() && properties.filter(p -> p._2.getChangeListener().isDefined() || p._2.getInvalidationListener().isDefined()).isEmpty() ?
                 (BUILDER) nodeCache.get(
-                        Tuple.of(builder.getNodeClass(), children, namedChildren, properties, eventHandlers),
-                        tuple -> builder.create(children, namedChildren, properties, eventHandlers)
-                ) : builder.create(children, namedChildren, properties, eventHandlers);
+                        Tuple.of(builder.getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers),
+                        tuple -> builder.create(childrenMap, singleChildMap, properties, eventHandlers)
+                ) : builder.create(childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     public static <BUILDER extends VNode> BUILDER node(Object typeKey, Supplier<BUILDER> factory) {
         return (BUILDER) nodeCache.get(
-                Tuple.of(typeKey, Array.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()),
+                Tuple.of(typeKey, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()),
                 tuple -> factory.get()
         );
     }

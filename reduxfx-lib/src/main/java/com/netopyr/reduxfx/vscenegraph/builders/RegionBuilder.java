@@ -10,8 +10,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@SuppressWarnings({"unused", "SameParameterValue"})
 public class RegionBuilder<BUILDER extends RegionBuilder<BUILDER>> extends ParentBuilder<BUILDER> {
 
     private static final String BACKGROUND = "background";
@@ -24,21 +26,21 @@ public class RegionBuilder<BUILDER extends RegionBuilder<BUILDER>> extends Paren
     private static final String PADDING = "padding";
 
     public RegionBuilder(Class<?> nodeClass,
-                         Array<VNode> children,
-                         Map<String, VProperty> namedChildren,
+                         Map<String, Array<VNode>> childrenMap,
+                         Map<String, Option<VNode>> singleChildMap,
                          Map<String, VProperty> properties,
                          Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new RegionBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new RegionBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

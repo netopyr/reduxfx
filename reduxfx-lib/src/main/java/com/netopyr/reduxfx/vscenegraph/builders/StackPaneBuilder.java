@@ -7,6 +7,7 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Pos;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class StackPaneBuilder<BUILDER extends StackPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
@@ -14,21 +15,21 @@ public class StackPaneBuilder<BUILDER extends StackPaneBuilder<BUILDER>> extends
     private static final String ALIGNMENT = "alignment";
 
     public StackPaneBuilder(Class<?> nodeClass,
-                            Array<VNode> children,
-                            Map<String, VProperty> namedChildren,
+                            Map<String, Array<VNode>> childrenMap,
+                            Map<String, Option<VNode>> singleChildMap,
                             Map<String, VProperty> properties,
                             Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new StackPaneBuilder<>(getNodeClass(), children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new StackPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

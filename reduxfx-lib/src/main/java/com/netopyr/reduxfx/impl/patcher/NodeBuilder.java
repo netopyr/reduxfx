@@ -2,6 +2,8 @@ package com.netopyr.reduxfx.impl.patcher;
 
 import com.netopyr.reduxfx.impl.patcher.property.Accessor;
 import com.netopyr.reduxfx.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.impl.patcher.property.NodeAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.NodeListAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -10,6 +12,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javaslang.Tuple;
 import javaslang.Tuple2;
+import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.slf4j.Logger;
@@ -20,8 +23,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import static com.netopyr.reduxfx.impl.patcher.NodeUtilities.appendNode;
 
 @SuppressWarnings("WeakerAccess")
 public class NodeBuilder {
@@ -51,16 +52,36 @@ public class NodeBuilder {
 
         updateProperties(dispatcher, node, vNode.getProperties());
         updateEventHandlers(dispatcher, node, vNode.getEventHandlers().map((name, eventHandler) -> Tuple.of(name, Option.of(eventHandler))));
-        updateProperties(dispatcher, node, vNode.getNamedChildren());
 
-        if (vNode.getChildren().nonEmpty()) {
-            vNode.getChildren().forEach(vChild -> {
-                final Option<Object> child = create(vChild);
-                if (child.isDefined()) {
-                    appendNode(node, child.get());
-                    init(dispatcher, child.get(), vChild);
-                }
-            });
+        vNode.getSingleChildMap().forEach(tuple -> setSingleChild(dispatcher, node, tuple._1, tuple._2));
+        vNode.getChildrenMap().forEach(tuple -> setChildren(dispatcher, node, tuple._1, tuple._2));
+    }
+
+    public static void setSingleChild(Consumer<Object> dispatcher, Object parent, String name, Option<VNode> child) {
+        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
+        Objects.requireNonNull(parent, "Parent must not be null");
+        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(child, "Child must not be null");
+
+        final Option<NodeAccessor> accessor = Accessors.getNodeAccessor(parent, name);
+        if (accessor.isDefined()) {
+            accessor.get().set(dispatcher, parent, name, child);
+        } else {
+            LOG.warn("Accessor not found for child {} in class {}", name, parent.getClass());
+        }
+    }
+
+    public static void setChildren(Consumer<Object> dispatcher, Object parent, String name, Array<VNode> children) {
+        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
+        Objects.requireNonNull(parent, "Parent must not be null");
+        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(children, "Children must not be null");
+
+        final Option<NodeListAccessor> accessor = Accessors.getNodeListAccessor(parent, name);
+        if (accessor.isDefined()) {
+            accessor.get().set(dispatcher, parent, name, children);
+        } else {
+            LOG.warn("Accessor not found for children {} in class {}", name, parent.getClass());
         }
     }
 

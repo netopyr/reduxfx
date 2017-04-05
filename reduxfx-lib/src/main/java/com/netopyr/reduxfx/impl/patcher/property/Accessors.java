@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import javaslang.collection.HashMap;
+import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,21 +16,34 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 
 public class Accessors {
 
-    private static final Map<PropertyKey, Accessor> accessorMap = new ConcurrentHashMap<>();
-    private static final Map<PropertyKey, Accessor> layoutAccessorMap = new ConcurrentHashMap<>();
+    private static Map<PropertyKey, Accessor> accessorMap = HashMap.empty();
+    private static Map<PropertyKey, Accessor> layoutAccessorMap = HashMap.empty();
+    private static Map<PropertyKey, NodeAccessor> nodeAccessorMap = HashMap.empty();
+    private static Map<PropertyKey, NodeListAccessor> nodeListAccessorMap = HashMap.empty();
+
+    private static final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final Lock nodeLock = new ReentrantLock();
+    private static final Lock nodeListLock = new ReentrantLock();
 
     private Accessors() {}
 
     public static void registerAccessor(Class<?> clazz, String propertyName, Supplier<Accessor> accessor) {
         final PropertyKey propertyKey = new PropertyKey(clazz, propertyName);
-        if (! accessorMap.containsKey(propertyKey)) {
-            cacheAccessor(accessorMap, propertyKey, accessor.get());
+        lock.writeLock().lock();
+        try {
+            if (!accessorMap.containsKey(propertyKey)) {
+                accessorMap = cacheAccessor(accessorMap, propertyKey, accessor.get());
+            }
+        } finally {
+            lock.writeLock().unlock();
         }
     }
 
@@ -36,31 +51,78 @@ public class Accessors {
         final Class<?> nodeClass = node.getClass();
         final PropertyKey propertyKey = new PropertyKey(nodeClass, propertyName);
 
-        return Option.of(accessorMap.get(propertyKey))
-                .orElse(() -> searchInCache(accessorMap, propertyKey)
-                        .orElse(() -> createAccessor(nodeClass, propertyName))
-                        .peek(accessor -> cacheAccessor(accessorMap, propertyKey, accessor))
-                )
-                .orElse(() -> {
-                    if (! (node instanceof Node) || ((Node) node).getParent() == null) {
-                        return Option.none();
-                    }
-                    final Class<? extends Parent> parentClass = ((Node) node).getParent().getClass();
-                    final PropertyKey layoutKey = new PropertyKey(parentClass, propertyName);
-                    return Pane.class.isAssignableFrom(parentClass) ?
-                            Option.of(layoutAccessorMap.get(layoutKey))
-                                    .orElse(() -> searchInCache(layoutAccessorMap, layoutKey)
-                                            .orElse(() -> createLayoutAccessor(parentClass, propertyName))
-                                            .peek(accessor -> cacheAccessor(layoutAccessorMap, layoutKey, accessor))
-                                    )
-                            : Option.none();
-                });
+        lock.readLock().lock();
+        try {
+            return accessorMap.get(propertyKey)
+                    .orElse(() -> searchInCache(accessorMap, propertyKey)
+                            .orElse(() -> createAccessor(nodeClass, propertyName))
+                            .peek(accessor -> accessorMap = cacheAccessor(accessorMap, propertyKey, accessor))
+                    )
+                    .orElse(() -> {
+                        if (!(node instanceof Node) || ((Node) node).getParent() == null) {
+                            return Option.none();
+                        }
+                        final Class<? extends Parent> parentClass = ((Node) node).getParent().getClass();
+                        final PropertyKey layoutKey = new PropertyKey(parentClass, propertyName);
+                        return Pane.class.isAssignableFrom(parentClass) ?
+                                layoutAccessorMap.get(layoutKey)
+                                        .orElse(() -> searchInCache(layoutAccessorMap, layoutKey)
+                                                .orElse(() -> createLayoutAccessor(parentClass, propertyName))
+                                                .peek(accessor -> layoutAccessorMap = cacheAccessor(layoutAccessorMap, layoutKey, accessor))
+                                        )
+                                : Option.none();
+                    });
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
-    private static Option<Accessor> searchInCache(Map<PropertyKey, Accessor> map, PropertyKey propertyKey) {
+    public static void registerNodeAccessors(Class<?> clazz, String propertyName, Supplier<NodeAccessor> accessor) {
+        final PropertyKey propertyKey = new PropertyKey(clazz, propertyName);
+        nodeLock.lock();
+        try {
+            if (!nodeAccessorMap.containsKey(propertyKey)) {
+                nodeAccessorMap = cacheAccessor(nodeAccessorMap, propertyKey, accessor.get());
+            }
+        } finally {
+            nodeLock.unlock();
+        }
+    }
+
+    public static Option<NodeAccessor> getNodeAccessor(Object node, String propertyName) {
+        final Class<?> nodeClass = node.getClass();
+        final PropertyKey propertyKey = new PropertyKey(nodeClass, propertyName);
+        return nodeAccessorMap.get(propertyKey)
+                .orElse(() -> searchInCache(nodeAccessorMap, propertyKey)
+                        .peek(accessor -> nodeAccessorMap = cacheAccessor(nodeAccessorMap, propertyKey, accessor))
+                );
+    }
+
+    public static void registerNodeListAccessors(Class<?> clazz, String propertyName, Supplier<NodeListAccessor> accessor) {
+        final PropertyKey propertyKey = new PropertyKey(clazz, propertyName);
+        nodeListLock.lock();
+        try {
+            if (!nodeListAccessorMap.containsKey(propertyKey)) {
+                nodeListAccessorMap = cacheAccessor(nodeListAccessorMap, propertyKey, accessor.get());
+            }
+        } finally {
+            nodeListLock.unlock();
+        }
+    }
+
+    public static Option<NodeListAccessor> getNodeListAccessor(Object node, String propertyName) {
+        final Class<?> nodeClass = node.getClass();
+        final PropertyKey propertyKey = new PropertyKey(nodeClass, propertyName);
+        return nodeListAccessorMap.get(propertyKey)
+                .orElse(() -> searchInCache(nodeListAccessorMap, propertyKey)
+                        .peek(accessor -> nodeListAccessorMap = cacheAccessor(nodeListAccessorMap, propertyKey, accessor))
+                );
+    }
+
+    private static <ACCESSOR> Option<ACCESSOR> searchInCache(Map<PropertyKey, ACCESSOR> map, PropertyKey propertyKey) {
         final String propertyName = propertyKey.name;
         for (Class<?> clazz = propertyKey.clazz.getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
-            final Option<Accessor> accessor = Option.of(map.get(new PropertyKey(clazz, propertyName)));
+            final Option<ACCESSOR> accessor = map.get(new PropertyKey(clazz, propertyName));
             if (accessor.isDefined()) {
                 return accessor;
             }
@@ -68,16 +130,17 @@ public class Accessors {
         return Option.none();
     }
 
-    private static void cacheAccessor(Map<PropertyKey, Accessor> map, PropertyKey propertyKey, Accessor accessor) {
+    private static <ACCESSOR> Map<PropertyKey, ACCESSOR> cacheAccessor(Map<PropertyKey, ACCESSOR> map, PropertyKey propertyKey, ACCESSOR accessor) {
         final Option<Method> getter = NodeUtilities.getGetterMethod(propertyKey.clazz, propertyKey.name);
         if (getter.isDefined()) {
             final Class<?> declaringClass = getter.get().getDeclaringClass();
             final String propertyName = propertyKey.name;
             for (Class<?> clazz = propertyKey.clazz; !declaringClass.equals(clazz); clazz = clazz.getSuperclass()) {
-                map.put(new PropertyKey(clazz, propertyName), accessor);
+                map = map.put(new PropertyKey(clazz, propertyName), accessor);
             }
-            map.put(new PropertyKey(declaringClass, propertyName), accessor);
+            map = map.put(new PropertyKey(declaringClass, propertyName), accessor);
         }
+        return map;
     }
 
     private static Option<Accessor> createAccessor(Class<?> nodeClass, String propertyName) {

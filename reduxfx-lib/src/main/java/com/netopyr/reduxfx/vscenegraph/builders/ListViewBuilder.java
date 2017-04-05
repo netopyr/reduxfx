@@ -11,6 +11,7 @@ import javafx.scene.control.ListView;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
+import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.function.Function;
@@ -24,22 +25,22 @@ public class ListViewBuilder<BUILDER extends ListViewBuilder<BUILDER, ELEMENT>, 
 
     public ListViewBuilder(Class<?> nodeClass,
                            Class<ELEMENT> elementClass,
-                           Array<VNode> children,
-                           Map<String, VProperty> namedChildren,
+                           Map<String, Array<VNode>> childrenMap,
+                           Map<String, Option<VNode>> singleChildMap,
                            Map<String, VProperty> properties,
                            Map<VEventType, VEventHandler> eventHandlers) {
-        super(nodeClass, children, namedChildren, properties, eventHandlers);
+        super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
         this.elementClass = elementClass;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected BUILDER create(
-            Array<VNode> children,
-            Map<String, VProperty> namedChildren,
+            Map<String, Array<VNode>> childrenMap,
+            Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ListViewBuilder<>(getNodeClass(), elementClass, children, namedChildren, properties, eventHandlers);
+        return (BUILDER) new ListViewBuilder<>(getNodeClass(), elementClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
