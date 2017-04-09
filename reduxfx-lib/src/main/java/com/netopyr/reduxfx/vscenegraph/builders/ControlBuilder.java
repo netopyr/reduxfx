@@ -8,8 +8,12 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
+@SuppressWarnings("unused")
 public class ControlBuilder<BUILDER extends ControlBuilder<BUILDER>> extends RegionBuilder<BUILDER> {
+
+    private static final String CONTEXT_MENU = "contextMenu";
 
     public ControlBuilder(Class<?> nodeClass,
                           Map<String, Array<VNode>> childrenMap,
@@ -29,9 +33,15 @@ public class ControlBuilder<BUILDER extends ControlBuilder<BUILDER>> extends Reg
         return (BUILDER) new ControlBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
+
+    public BUILDER contextMenu(VNode value) {
+        return child(CONTEXT_MENU, value);
+    }
+
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

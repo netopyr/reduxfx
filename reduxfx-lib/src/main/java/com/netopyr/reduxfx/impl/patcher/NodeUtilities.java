@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.impl.patcher;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Dialog;
 import javafx.stage.Window;
 import javaslang.collection.Array;
 import javaslang.control.Option;
@@ -10,6 +11,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static javaslang.API.$;
@@ -42,10 +44,15 @@ public class NodeUtilities {
 
     public static Object getProperty(Object obj, String name) {
         final Option<MethodHandle> getter = getGetterMethodHandle(obj.getClass(), name);
-        try {
-            return getter.get().invoke(obj);
-        } catch (Throwable throwable) {
-            throw new IllegalStateException(throwable);
+
+        if (getter.isDefined()) {
+            try {
+                return getter.get().invoke(obj);
+            } catch (Throwable throwable) {
+                throw new IllegalStateException(throwable);
+            }
+        } else {
+            return getProperties(obj).get(name);
         }
     }
 
@@ -162,6 +169,7 @@ public class NodeUtilities {
 //        return false;
 //    }
 
+    @SuppressWarnings("unchecked")
     public static Map<Object, Object> getProperties(Object obj) {
 
         return Match(obj).of(
@@ -176,6 +184,11 @@ public class NodeUtilities {
 
                 Case(instanceOf(Window.class),
                         Window::getProperties
+                ),
+
+                Case(instanceOf(Dialog.class),
+                        dialog -> (Map<Object, Object>) dialog.getDialogPane().getProperties()
+                                .computeIfAbsent("dialog", key -> new HashMap<>())
                 ),
 
                 Case($(), Collections.emptyMap())

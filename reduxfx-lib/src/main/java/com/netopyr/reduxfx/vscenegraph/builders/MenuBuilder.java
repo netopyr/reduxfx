@@ -10,15 +10,16 @@ import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
+@SuppressWarnings("unused")
+public class MenuBuilder<BUILDER extends MenuBuilder<BUILDER>> extends MenuItemBuilder<BUILDER> {
 
-    private static final String STYLESHEETS = "stylesheets";
+    private static final String ITEMS = "items";
 
-    public ParentBuilder(Class<?> nodeClass,
-                         Map<String, Array<VNode>> childrenMap,
-                         Map<String, Option<VNode>> singleChildMap,
-                         Map<String, VProperty> properties,
-                         Map<VEventType, VEventHandler> eventHandlers) {
+    public MenuBuilder(Class<?> nodeClass,
+                       Map<String, Array<VNode>> childrenMap,
+                       Map<String, Option<VNode>> singleChildMap,
+                       Map<String, VProperty> properties,
+                       Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
@@ -29,14 +30,12 @@ public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeB
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ParentBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (BUILDER) new MenuBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
-
-    public final BUILDER stylesheets(String... value) {
-        return property(STYLESHEETS, value == null? Array.empty() : Array.of(value));
+    public BUILDER items(MenuItemBuilder<?>... items) {
+        return children(ITEMS, items == null? Array.empty() : Array.of(items));
     }
-
 
     @Override
     public String toString() {

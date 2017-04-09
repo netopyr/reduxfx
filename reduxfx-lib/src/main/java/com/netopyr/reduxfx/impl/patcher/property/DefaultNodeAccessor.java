@@ -7,15 +7,16 @@ import javaslang.control.Option;
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
 
-public class SimpleNodeAccessor implements NodeAccessor {
+public class DefaultNodeAccessor implements NodeAccessor {
 
     private final MethodHandle setter;
 
-    public SimpleNodeAccessor(MethodHandle setter) {
+    public DefaultNodeAccessor(MethodHandle setter) {
         this.setter = setter;
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public void set(Consumer<Object> dispatcher, Object parent, String name, Option<VNode> vNode) {
         if (vNode.isDefined()) {
             final Option<Object> nodeOption = NodeBuilder.create(vNode.get());

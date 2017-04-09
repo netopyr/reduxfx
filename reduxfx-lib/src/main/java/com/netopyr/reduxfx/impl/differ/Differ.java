@@ -46,8 +46,8 @@ public class Differ {
         Objects.requireNonNull(b, "Second node must not be null");
 
         return diffAttributes(path, a, b)
-                .appendAll(diffChildrenMaps(path, a, b))
-                .appendAll(diffSingleChildMaps(path, a, b));
+                .appendAll(diffSingleChildMaps(path, a, b))
+                .appendAll(diffChildrenMaps(path, a, b));
     }
 
     private static Vector<Patch> diffAttributes(Vector<Object> path, VNode a, VNode b) {

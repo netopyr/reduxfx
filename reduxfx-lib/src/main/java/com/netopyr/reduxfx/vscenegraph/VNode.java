@@ -7,10 +7,15 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
 public class VNode {
+
+    private static final Logger LOG = LoggerFactory.getLogger(VNode.class);
 
     private final Class<?> nodeClass;
     private final Map<String, Array<VNode>> childrenMap;
@@ -30,6 +35,18 @@ public class VNode {
         this.singleChildMap = Objects.requireNonNull(singleChildMap, "SingleChildMap must not be null");
         this.properties = Objects.requireNonNull(properties, "Properties must not be null");
         this.eventHandlers = Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
+    }
+
+
+    public Option<Object> produce() {
+        try {
+            final Class<?> nodeClass = getNodeClass();
+            final Object node = nodeClass.newInstance();
+            return Option.of(node);
+        } catch (InstantiationException | IllegalAccessException e) {
+            LOG.error("Unable to create node", e);
+            return Option.none();
+        }
     }
 
 
@@ -56,7 +73,7 @@ public class VNode {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("nodeClass", nodeClass)
                 .append("childrenMap", childrenMap)
                 .append("singleChildMap", singleChildMap)

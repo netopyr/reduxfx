@@ -14,20 +14,16 @@ public class SceneAccessor implements NodeAccessor {
 
     @Override
     public void set(Consumer<Object> dispatcher, Object parent, String name, Option<VNode> vNode) {
-        if (parent instanceof Stage) {
-            if (vNode.isDefined()) {
-                final VNode value = vNode.get();
-                if (value instanceof SceneBuilder<?>) {
-                    final SceneBuilder<?> sceneBuilder = (SceneBuilder<?>) value;
-                    final Scene scene = new Scene(new Group());
-                    NodeBuilder.init(dispatcher, scene, sceneBuilder);
-                    ((Stage) parent).setScene(scene);
-                } else {
-                    throw new IllegalStateException(String.format("Unable to convert the value %s to a Scene", value));
-                }
+        if (vNode.isDefined()) {
+            final VNode value = vNode.get();
+            if (value instanceof SceneBuilder<?>) {
+                final SceneBuilder<?> sceneBuilder = (SceneBuilder<?>) value;
+                final Scene scene = new Scene(new Group());
+                NodeBuilder.init(dispatcher, scene, sceneBuilder);
+                ((Stage) parent).setScene(scene);
+            } else {
+                throw new IllegalStateException(String.format("Unable to convert the value %s to a Scene", value));
             }
-        } else {
-            throw new IllegalStateException(String.format("Tried to set the scene of a %s", parent.getClass()));
         }
     }
 }

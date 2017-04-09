@@ -5,10 +5,14 @@ import com.netopyr.reduxfx.vscenegraph.builders.*;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBaseBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ButtonBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.CheckBoxBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.ContextMenuBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ControlBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.LabelBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.LabeledBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ListViewBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.MenuBarBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.MenuBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.MenuItemBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ProgressBarBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ProgressIndicatorBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ScrollPaneBuilder;
@@ -185,6 +189,26 @@ public class VScenegraphFactory {
 
     public static <CLASS extends RectangleBuilder<CLASS>> RectangleBuilder<CLASS> Rectangle() {
         return Factory.node(Rectangle.class, () -> new RectangleBuilder<>(Rectangle.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends MenuBarBuilder<CLASS>> MenuBarBuilder<CLASS> MenuBar() {
+        return Factory.node(MenuBar.class, () -> new MenuBarBuilder<>(MenuBar.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends MenuBuilder<CLASS>> MenuBuilder<CLASS> Menu() {
+        return Factory.node(Menu.class, () -> new MenuBuilder<>(Menu.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends MenuItemBuilder<CLASS>> MenuItemBuilder<CLASS> MenuItem() {
+        return Factory.node(MenuItem.class, () -> new MenuItemBuilder<>(MenuItem.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends AlertBuilder<CLASS>> AlertBuilder<CLASS> Alert() {
+        return Factory.node(Alert.class, () -> new AlertBuilder<>(Alert.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends ContextMenuBuilder<CLASS>> ContextMenuBuilder<CLASS> ContextMenu() {
+        return Factory.node(ContextMenu.class, () -> new ContextMenuBuilder<>(ContextMenu.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
 

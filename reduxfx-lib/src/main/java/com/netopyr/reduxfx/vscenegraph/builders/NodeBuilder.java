@@ -7,15 +7,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
@@ -67,12 +66,12 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     }
 
     public BUILDER focused(boolean value, VChangeListener<? super Boolean> listener) {
-        Accessors.registerAccessor(Node.class, "focused", FocusedAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), "focused", FocusedAccessor::new);
         return property(FOCUSED, value, listener);
     }
 
     public BUILDER focused(boolean value) {
-        Accessors.registerAccessor(Node.class, "focused", FocusedAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), "focused", FocusedAccessor::new);
         return property(FOCUSED, value);
     }
 
@@ -93,7 +92,7 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     }
 
     public BUILDER styleClass(String... value) {
-        return property(STYLE_CLASS, value == null ? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
+        return property(STYLE_CLASS, value == null ? Array.empty() : Array.of(value));
     }
 
     public BUILDER visible(boolean value) {
@@ -149,7 +148,7 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

@@ -4,21 +4,27 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.event.ActionEvent;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
+import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
-    private static final String STYLESHEETS = "stylesheets";
+@SuppressWarnings("unused")
+public class MenuItemBuilder<BUILDER extends MenuItemBuilder<BUILDER>> extends Builder<BUILDER> {
 
-    public ParentBuilder(Class<?> nodeClass,
-                         Map<String, Array<VNode>> childrenMap,
-                         Map<String, Option<VNode>> singleChildMap,
-                         Map<String, VProperty> properties,
-                         Map<VEventType, VEventHandler> eventHandlers) {
+    private static final String DISABLE = "disable";
+    private static final String TEXT = "text";
+
+
+    public MenuItemBuilder(Class<?> nodeClass,
+                           Map<String, Array<VNode>> childrenMap,
+                           Map<String, Option<VNode>> singleChildMap,
+                           Map<String, VProperty> properties,
+                           Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
@@ -29,12 +35,21 @@ public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeB
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ParentBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (BUILDER) new MenuItemBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public final BUILDER stylesheets(String... value) {
-        return property(STYLESHEETS, value == null? Array.empty() : Array.of(value));
+    public BUILDER disable(boolean value) {
+        return property(DISABLE, value);
+    }
+
+    public BUILDER text(String value) {
+        return property(TEXT, value);
+    }
+
+
+    public BUILDER onAction(VEventHandler<ActionEvent> eventHandler) {
+        return onEvent(ACTION, eventHandler);
     }
 
 
@@ -44,4 +59,5 @@ public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeB
                 .appendSuper(super.toString())
                 .toString();
     }
+
 }

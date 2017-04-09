@@ -34,14 +34,7 @@ public class NodeBuilder {
     @SuppressWarnings("unchecked")
     public static Option<Object> create(VNode vNode) {
         Objects.requireNonNull(vNode, "VNode must not be null");
-        try {
-            final Class<?> nodeClass = vNode.getNodeClass();
-            final Object node = nodeClass.newInstance();
-            return Option.of(node);
-        } catch (InstantiationException | IllegalAccessException e) {
-            LOG.error("Unable to create node", e);
-            return Option.none();
-        }
+        return vNode.produce();
     }
 
     @SuppressWarnings("unchecked")

@@ -2,9 +2,10 @@ package com.netopyr.reduxfx.impl.patcher.property;
 
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.collections.ObservableList;
+import javaslang.collection.Seq;
 
 import java.lang.invoke.MethodHandle;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Consumer;
 
 public class ListAccessor extends AbstractNoConversionAccessor {
@@ -16,9 +17,6 @@ public class ListAccessor extends AbstractNoConversionAccessor {
     @SuppressWarnings("unchecked")
     @Override
     protected void setValue(Consumer<Object> dispatcher, ReadOnlyProperty property, Object value) {
-        final Object propertyValue = property.getValue();
-        if (propertyValue instanceof ObservableList && value instanceof Collection) {
-            ((ObservableList) property.getValue()).setAll((Collection) value);
-        }
+        ((ObservableList) property.getValue()).setAll(value == null? Collections.emptyList() : ((Seq) value).toJavaList());
     }
 }

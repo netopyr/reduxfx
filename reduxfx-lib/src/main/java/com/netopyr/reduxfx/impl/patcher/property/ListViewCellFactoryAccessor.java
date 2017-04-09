@@ -67,7 +67,7 @@ public class ListViewCellFactoryAccessor implements Accessor {
                         final Option<VNode> oldVNode = Option.of(getGraphic()).flatMap(node -> Option.of((VNode) node.getUserData()));
                         final Vector<Patch> patches = Differ.diff(oldVNode, Option.of(newVNode));
                         Patcher.patch(dispatcher, this, oldVNode, patches);
-                        Option.of(getGraphic()).peek(node -> node.setUserData(newVNode));
+                        Option.of(getGraphic()).forEach(node -> node.setUserData(newVNode));
                     } else {
                         this.setText(String.valueOf(item));
                         this.setGraphic(null);

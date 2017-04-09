@@ -6,11 +6,11 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.scene.control.ToggleButton;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("SameParameterValue")
 public class ToggleButtonBuilder<BUILDER extends ToggleButtonBuilder<BUILDER>> extends ButtonBaseBuilder<BUILDER> {
@@ -42,14 +42,14 @@ public class ToggleButtonBuilder<BUILDER extends ToggleButtonBuilder<BUILDER>> e
     }
 
     public BUILDER toggleGroup(String value) {
-        Accessors.registerAccessor(ToggleButton.class, "toggleGroup", ToggleGroupAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), "toggleGroup", ToggleGroupAccessor::new);
         return property(TOGGLE_GROUP, value);
     }
 
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

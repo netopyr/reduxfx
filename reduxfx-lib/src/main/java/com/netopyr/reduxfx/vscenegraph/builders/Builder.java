@@ -2,8 +2,8 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
 import com.netopyr.reduxfx.impl.patcher.property.Accessors;
-import com.netopyr.reduxfx.impl.patcher.property.NodeListAccessor;
-import com.netopyr.reduxfx.impl.patcher.property.SimpleNodeAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.DefaultNodeAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.DefaultNodeListAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -15,6 +15,7 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("WeakerAccess")
 public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
@@ -38,7 +39,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
 
 
     public BUILDER children(String name, Array<VNode> children) {
-        Accessors.registerNodeListAccessors(getNodeClass(), name, () -> new NodeListAccessor(NodeUtilities.getGetterMethodHandle(getNodeClass(), name).get()));
+        Accessors.registerNodeListAccessor(getNodeClass(), name, () -> new DefaultNodeListAccessor(NodeUtilities.getGetterMethodHandle(getNodeClass(), name).get()));
         return Factory.node(
                 this,
                 getChildrenMap().put(name, children),
@@ -49,7 +50,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
     }
 
     public BUILDER child(String name, VNode child) {
-        Accessors.registerNodeAccessors(getNodeClass(), name, () -> new SimpleNodeAccessor(NodeUtilities.getSetter(getNodeClass(), name).get()));
+        Accessors.registerNodeAccessor(getNodeClass(), name, () -> new DefaultNodeAccessor(NodeUtilities.getSetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -152,7 +153,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

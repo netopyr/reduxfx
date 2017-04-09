@@ -10,15 +10,16 @@ import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
+@SuppressWarnings("unused")
+public class ContextMenuBuilder<BUILDER extends ContextMenuBuilder<BUILDER>> extends PopupControlBuilder<BUILDER> {
 
-    private static final String STYLESHEETS = "stylesheets";
+    private static final String ITEMS = "items";
 
-    public ParentBuilder(Class<?> nodeClass,
-                         Map<String, Array<VNode>> childrenMap,
-                         Map<String, Option<VNode>> singleChildMap,
-                         Map<String, VProperty> properties,
-                         Map<VEventType, VEventHandler> eventHandlers) {
+    public ContextMenuBuilder(Class<?> nodeClass,
+                              Map<String, Array<VNode>> childrenMap,
+                              Map<String, Option<VNode>> singleChildMap,
+                              Map<String, VProperty> properties,
+                              Map<VEventType, VEventHandler> eventHandlers) {
         super(nodeClass, childrenMap, singleChildMap, properties, eventHandlers);
     }
 
@@ -29,12 +30,12 @@ public class ParentBuilder<BUILDER extends ParentBuilder<BUILDER>> extends NodeB
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ParentBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (BUILDER) new ContextMenuBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public final BUILDER stylesheets(String... value) {
-        return property(STYLESHEETS, value == null? Array.empty() : Array.of(value));
+    public BUILDER items(VNode... items) {
+        return children(ITEMS, items == null? Array.empty() : Array.of(items));
     }
 
 

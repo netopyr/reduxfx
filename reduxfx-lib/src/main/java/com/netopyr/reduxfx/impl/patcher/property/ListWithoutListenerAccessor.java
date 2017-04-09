@@ -2,9 +2,9 @@ package com.netopyr.reduxfx.impl.patcher.property;
 
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.ObservableList;
+import javaslang.collection.Seq;
 
 import java.lang.invoke.MethodHandle;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Consumer;
 
@@ -27,7 +27,7 @@ public class ListWithoutListenerAccessor implements Accessor {
                 throw new IllegalStateException("Unable to read value of property " + name + " from Node-class " + node.getClass(), throwable);
             }
 
-            list.setAll(vProperty.getValue() == null ? Collections.emptyList() : (Collection) vProperty.getValue());
+            list.setAll(vProperty.getValue() == null ? Collections.emptyList() : ((Seq) vProperty.getValue()).toJavaList());
         }
     }
 }

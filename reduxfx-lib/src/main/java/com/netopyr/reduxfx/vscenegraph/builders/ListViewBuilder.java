@@ -6,13 +6,12 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javafx.collections.FXCollections;
-import javafx.scene.control.ListView;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.function.Function;
 
@@ -45,18 +44,18 @@ public class ListViewBuilder<BUILDER extends ListViewBuilder<BUILDER, ELEMENT>, 
 
 
     public BUILDER cellFactory(Function<? super ELEMENT, VNode> value) {
-        Accessors.registerAccessor(ListView.class, "cellFactory", ListViewCellFactoryAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), "cellFactory", ListViewCellFactoryAccessor::new);
         return property(CELL_FACTORY, value);
     }
 
     public BUILDER items(Seq<? extends ELEMENT> value) {
-        return property(ITEMS, value == null? FXCollections.emptyObservableList() : FXCollections.observableList(value.toJavaList()));
+        return property(ITEMS, value);
     }
 
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .append("elementClass", elementClass)
                 .toString();

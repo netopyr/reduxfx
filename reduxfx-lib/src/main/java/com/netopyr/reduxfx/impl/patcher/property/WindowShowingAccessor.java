@@ -6,9 +6,9 @@ import javafx.stage.Stage;
 
 import java.util.function.Consumer;
 
-public class StageShowingAccessor extends AbstractNoConversionAccessor {
+public class WindowShowingAccessor extends AbstractNoConversionAccessor {
 
-    public StageShowingAccessor() {
+    public WindowShowingAccessor() {
         super(NodeUtilities.getPropertyGetter(Stage.class, "showing").get());
     }
 
