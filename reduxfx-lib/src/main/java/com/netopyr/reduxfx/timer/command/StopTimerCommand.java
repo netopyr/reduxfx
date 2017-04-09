@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.timer.command;
 
 import com.netopyr.reduxfx.updater.Command;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class StopTimerCommand implements Command {
 
@@ -17,7 +18,7 @@ public class StopTimerCommand implements Command {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("key", key)
                 .toString();
     }

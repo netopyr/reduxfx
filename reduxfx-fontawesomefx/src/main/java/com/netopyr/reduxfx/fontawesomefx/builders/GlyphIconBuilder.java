@@ -9,6 +9,7 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue"})
 public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>> extends TextBuilder<BUILDER> {
@@ -48,7 +49,7 @@ public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

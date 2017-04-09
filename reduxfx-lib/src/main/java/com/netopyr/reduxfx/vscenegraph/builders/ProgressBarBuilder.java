@@ -8,6 +8,7 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ProgressBarBuilder<BUILDER extends ProgressBarBuilder<BUILDER>> extends ProgressIndicatorBuilder<BUILDER> {
 
@@ -32,7 +33,7 @@ public class ProgressBarBuilder<BUILDER extends ProgressBarBuilder<BUILDER>> ext
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

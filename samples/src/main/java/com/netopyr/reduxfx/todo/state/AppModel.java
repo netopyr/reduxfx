@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.todo.state;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
@@ -113,7 +114,7 @@ public final class AppModel {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("newTodoText", newTodoText)
                 .append("todos", todos)
                 .append("filter", filter)

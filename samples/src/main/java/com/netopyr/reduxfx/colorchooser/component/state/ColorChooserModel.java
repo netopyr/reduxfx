@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.colorchooser.component.state;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * An instance of the class {@code ColorChooserModel} is the root node of the state-tree of this component.
@@ -105,7 +106,7 @@ public final class ColorChooserModel {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("color", String.format("0x%02x%02x%02x", red, green, blue))
                 .toString();
     }

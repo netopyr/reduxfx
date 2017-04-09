@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.component.command;
 
 import com.netopyr.reduxfx.updater.Command;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public final class IntegerChangedCommand implements Command {
 
@@ -23,7 +24,7 @@ public final class IntegerChangedCommand implements Command {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("propertyName", propertyName)
                 .append("newValue", newValue)
                 .toString();

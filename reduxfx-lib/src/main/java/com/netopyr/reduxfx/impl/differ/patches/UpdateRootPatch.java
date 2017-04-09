@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.impl.differ.patches;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javaslang.collection.Vector;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class UpdateRootPatch extends Patch {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .append("rootNode", rootNode)
                 .toString();

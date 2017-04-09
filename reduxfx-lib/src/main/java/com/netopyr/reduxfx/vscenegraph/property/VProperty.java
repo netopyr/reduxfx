@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.vscenegraph.property;
 
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public final class VProperty {
 
@@ -49,7 +50,7 @@ public final class VProperty {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("isValueDefined", isValueDefined)
                 .append("value", value)
                 .append("changeListener", changeListener.stringPrefix())

@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.updater;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Arrays;
 
@@ -40,7 +41,7 @@ public final class Update<STATE> {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("state", state)
                 .append("commands", commands)
                 .toString();

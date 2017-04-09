@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.colorchooser.component.actions;
 
 import javafx.scene.paint.Color;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * A {@code ColorChangedAction} is passed to the
@@ -27,7 +28,7 @@ public final class ColorChangedAction implements ColorChooserAction {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("newColor", newColor)
                 .toString();
     }

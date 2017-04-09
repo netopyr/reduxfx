@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.colorchooser.app.state;
 
 import javafx.scene.paint.Color;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * An instance of the class {@code AppModel} is the root node of the state-tree.
@@ -59,7 +60,7 @@ public final class AppModel {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("color", color)
                 .toString();
     }

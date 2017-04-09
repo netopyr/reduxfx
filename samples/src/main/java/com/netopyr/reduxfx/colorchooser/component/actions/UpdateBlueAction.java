@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.colorchooser.component.actions;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * An {@code UpdateBlueAction} is passed to the
@@ -25,7 +26,7 @@ public final class UpdateBlueAction implements ColorChooserAction {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("value", value)
                 .toString();
     }

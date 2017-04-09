@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.component.command;
 import com.netopyr.reduxfx.updater.Command;
 import javafx.event.Event;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class FireEventCommand<EVENT extends Event> implements Command {
 
@@ -24,7 +25,7 @@ public class FireEventCommand<EVENT extends Event> implements Command {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("eventName", eventName)
                 .append("event", event)
                 .toString();

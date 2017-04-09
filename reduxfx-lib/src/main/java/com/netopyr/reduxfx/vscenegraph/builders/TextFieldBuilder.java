@@ -9,6 +9,7 @@ import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
@@ -40,7 +41,7 @@ public class TextFieldBuilder<BUILDER extends TextFieldBuilder<BUILDER>> extends
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .appendSuper(super.toString())
                 .toString();
     }

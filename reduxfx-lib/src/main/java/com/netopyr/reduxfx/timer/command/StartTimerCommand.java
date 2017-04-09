@@ -3,6 +3,7 @@ package com.netopyr.reduxfx.timer.command;
 import com.netopyr.reduxfx.updater.Command;
 import javafx.util.Duration;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.function.Function;
 
@@ -38,7 +39,7 @@ public class StartTimerCommand implements Command {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("key", key)
                 .append("delay", delay)
                 .append("interval", interval)
