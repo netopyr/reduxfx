@@ -23,7 +23,7 @@ public class ViewManager {
                                                         MainView.view(state)
                                                 )
                                 )
-                                .windows(
+                                .dialogs(
                                         AlertView.view(state)
                                 )
                 );

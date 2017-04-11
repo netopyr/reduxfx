@@ -17,6 +17,7 @@ import static com.netopyr.reduxfx.vscenegraph.event.VEventType.CLOSE_REQUEST;
 @SuppressWarnings("unused")
 public class WindowBuilder<BUILDER extends WindowBuilder<BUILDER>> extends Builder<BUILDER> {
 
+    private static final String DIALOGS = "dialogs";
     private static final String SCENE = "scene";
     private static final String SHOWING = "showing";
     private static final String WINDOWS = "windows";
@@ -40,13 +41,18 @@ public class WindowBuilder<BUILDER extends WindowBuilder<BUILDER>> extends Build
     }
 
 
+    public BUILDER dialogs(VNode... nodes) {
+        Accessors.registerNodeListAccessor(getNodeClass(), DIALOGS, WindowsAccessor::new);
+        return children(DIALOGS, nodes == null? Array.empty() : Array.of(nodes));
+    }
+
     public BUILDER scene(SceneBuilder<?> value) {
-        Accessors.registerNodeAccessor(getNodeClass(), "scene", SceneAccessor::new);
+        Accessors.registerNodeAccessor(getNodeClass(), SCENE, SceneAccessor::new);
         return child(SCENE, value);
     }
 
     public BUILDER windows(VNode... nodes) {
-        Accessors.registerNodeListAccessor(getNodeClass(), "windows", WindowsAccessor::new);
+        Accessors.registerNodeListAccessor(getNodeClass(), WINDOWS, WindowsAccessor::new);
         return children(WINDOWS, nodes == null? Array.empty() : Array.of(nodes));
     }
 

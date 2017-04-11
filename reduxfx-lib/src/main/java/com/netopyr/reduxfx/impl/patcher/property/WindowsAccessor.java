@@ -27,7 +27,7 @@ public class WindowsAccessor implements NodeListAccessor {
             return;
         }
         final Window window = (Window) parent;
-        final ArrayList<Object> windowList = (ArrayList<Object>) window.getProperties().computeIfAbsent("windows", key -> new ArrayList<>());
+        final ArrayList<Object> windowList = (ArrayList<Object>) window.getProperties().computeIfAbsent(name, key -> new ArrayList<>());
         vNodes.forEach(vNode -> {
                     if (!(vNode instanceof WindowBuilder || vNode instanceof DialogBuilder)) {
                         LOG.warn("Tried to add non-Window {} to windows-list of {}", vNode, parent);

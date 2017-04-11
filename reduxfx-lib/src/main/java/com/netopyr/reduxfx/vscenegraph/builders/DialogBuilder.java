@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.impl.patcher.property.Accessors;
-import com.netopyr.reduxfx.impl.patcher.property.DialogModalityAccessor;
 import com.netopyr.reduxfx.impl.patcher.property.DialogShowingAccessor;
+import com.netopyr.reduxfx.impl.patcher.property.VirtualPropertyAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
@@ -16,10 +16,10 @@ import javaslang.control.Option;
 @SuppressWarnings("unused")
 public class DialogBuilder<BUILDER extends DialogBuilder<BUILDER>> extends Builder<BUILDER> {
 
-    private static final String CONTENT_TEXT = "contentText";
-    private static final String HEADER_TEXT = "headerText";
-    private static final String MODAL = "modal";
-    private static final String SHOWING = "showing";
+    public static final String CONTENT_TEXT = "contentText";
+    public static final String HEADER_TEXT = "headerText";
+    public static final String MODAL = "modal";
+    public static final String SHOWING = "showing";
 
 
     public DialogBuilder(Class<?> nodeClass,
@@ -51,12 +51,12 @@ public class DialogBuilder<BUILDER extends DialogBuilder<BUILDER>> extends Build
     }
 
     public BUILDER modal(Modality value) {
-        Accessors.registerAccessor(getNodeClass(), MODAL, DialogModalityAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), MODAL, VirtualPropertyAccessor::new);
         return property(MODAL, value);
     }
 
     public BUILDER showing(boolean value, VChangeListener<Boolean> changeListener) {
-        Accessors.registerAccessor(getNodeClass(), SHOWING, DialogShowingAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), SHOWING, () -> new DialogShowingAccessor(this::produce));
         return property(SHOWING, value, changeListener);
     }
     public BUILDER showing(boolean value) {
