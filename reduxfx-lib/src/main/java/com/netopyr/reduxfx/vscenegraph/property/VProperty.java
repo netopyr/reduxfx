@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public final class VProperty {
 
+    public enum Phase { STRUCTURE, HIDE_STAGE, DEFAULT, SHOW_STAGE }
+
     private final boolean isValueDefined;
     private final Object value;
     private final Option<VChangeListener> changeListener;

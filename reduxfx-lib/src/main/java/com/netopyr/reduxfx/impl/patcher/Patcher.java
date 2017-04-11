@@ -6,10 +6,11 @@ import com.netopyr.reduxfx.impl.differ.patches.Patch;
 import com.netopyr.reduxfx.impl.differ.patches.RemovePatch;
 import com.netopyr.reduxfx.impl.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.impl.differ.patches.SetChildrenPatch;
-import com.netopyr.reduxfx.impl.differ.patches.UpdateRootPatch;
 import com.netopyr.reduxfx.impl.differ.patches.SetSingleChildPatch;
+import com.netopyr.reduxfx.impl.differ.patches.UpdateRootPatch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javaslang.collection.Seq;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
+import javaslang.collection.Map;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.slf4j.Logger;
@@ -32,72 +33,74 @@ public class Patcher {
     private Patcher() {
     }
 
-    public static void patch(Consumer<Object> dispatcher, Object root, Option<VNode> vRoot, Seq<Patch> patches) {
+    public static void patch(Consumer<Object> dispatcher, Object root, Option<VNode> vRoot, Map<Phase, Vector<Patch>> patches) {
 
-        for (final Patch patch : patches) {
+        for (final Phase phase : Phase.values()) {
+            for (final Patch patch : patches.get(phase).getOrElse(Vector.empty())) {
 
-            LOG.trace("\n\nPatch:\n{}", patch);
+                LOG.trace("\n\nPatch:\n{}", patch);
 
-            final Object node;
-            try {
-                node = vRoot.isDefined() ? findNode(patch.getPath(), root) : root;
-            } catch (RuntimeException ex) {
-                LOG.error("Unable to apply patch", ex);
-                continue;
-            }
+                final Object node;
+                try {
+                    node = vRoot.isDefined() ? findNode(patch.getPath(), root) : root;
+                } catch (RuntimeException ex) {
+                    LOG.error("Unable to apply patch", ex);
+                    continue;
+                }
 
-            Match(patch).of(
+                Match(patch).of(
 
-                    Case(instanceOf(AppendPatch.class),
-                            appendPatch -> run(() ->
-                                    doAppend(dispatcher, node, appendPatch)
-                            )
-                    ),
+                        Case(instanceOf(AppendPatch.class),
+                                appendPatch -> run(() ->
+                                        doAppend(dispatcher, node, appendPatch)
+                                )
+                        ),
 
-                    Case(instanceOf(ReplacePatch.class),
-                            replacePatch -> run(() ->
-                                    doReplace(dispatcher, node, replacePatch)
-                            )
-                    ),
+                        Case(instanceOf(ReplacePatch.class),
+                                replacePatch -> run(() ->
+                                        doReplace(dispatcher, node, replacePatch)
+                                )
+                        ),
 
-                    Case(instanceOf(RemovePatch.class),
-                            removePatch -> run(() ->
-                                    doRemove(node, removePatch)
-                            )
-                    ),
+                        Case(instanceOf(RemovePatch.class),
+                                removePatch -> run(() ->
+                                        doRemove(node, removePatch)
+                                )
+                        ),
 
-                    Case(instanceOf(AttributesPatch.class),
-                            attributesPatch -> run(() ->
-                                    doAttributes(dispatcher, node, attributesPatch)
-                            )
-                    ),
+                        Case(instanceOf(AttributesPatch.class),
+                                attributesPatch -> run(() ->
+                                        doAttributes(dispatcher, node, attributesPatch)
+                                )
+                        ),
 
 //                    Case(instanceOf(OrderPatch.class),
 //                            replacePatch -> run(() -> doReplace(node, replacePatch))
 //                    ),
 
-                    Case(instanceOf(SetSingleChildPatch.class),
-                            setSingleChildPatch -> run(() ->
-                                    doSetSingleChild(dispatcher, node, setSingleChildPatch)
-                            )
-                    ),
+                        Case(instanceOf(SetSingleChildPatch.class),
+                                setSingleChildPatch -> run(() ->
+                                        doSetSingleChild(dispatcher, node, setSingleChildPatch)
+                                )
+                        ),
 
-                    Case(instanceOf(SetChildrenPatch.class),
-                            setChildrenPatch -> run(() ->
-                                    doSetChildren(dispatcher, node, setChildrenPatch)
-                            )
-                    ),
+                        Case(instanceOf(SetChildrenPatch.class),
+                                setChildrenPatch -> run(() ->
+                                        doSetChildren(dispatcher, node, setChildrenPatch)
+                                )
+                        ),
 
-                    Case(instanceOf(UpdateRootPatch.class),
-                            updateRootPatch -> run(() ->
-                                    doUpdateRoot(dispatcher, node, updateRootPatch)
-                            )
-                    ),
+                        Case(instanceOf(UpdateRootPatch.class),
+                                updateRootPatch -> run(() ->
+                                        doUpdateRoot(dispatcher, node, updateRootPatch)
+                                )
+                        ),
 
-                    Case($(), o -> run(() -> {
-                        throw new IllegalArgumentException("Unknown patch received " + patch);
-                    }))
-            );
+                        Case($(), o -> run(() -> {
+                            throw new IllegalArgumentException("Unknown patch received " + patch);
+                        }))
+                );
+            }
         }
 
     }

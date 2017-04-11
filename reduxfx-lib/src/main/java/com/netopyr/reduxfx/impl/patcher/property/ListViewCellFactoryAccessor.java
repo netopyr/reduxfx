@@ -6,9 +6,11 @@ import com.netopyr.reduxfx.impl.patcher.Patcher;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.VScenegraphFactory;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
+import javaslang.collection.Map;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
 
@@ -65,7 +67,7 @@ public class ListViewCellFactoryAccessor implements Accessor {
                     if (item instanceof VNode) {
                         final VNode newVNode = VScenegraphFactory.customNode(ListCell.class).child("graphic", (VNode) item);
                         final Option<VNode> oldVNode = Option.of(getGraphic()).flatMap(node -> Option.of((VNode) node.getUserData()));
-                        final Vector<Patch> patches = Differ.diff(oldVNode, Option.of(newVNode));
+                        final Map<Phase, Vector<Patch>> patches = Differ.diff(oldVNode, Option.of(newVNode));
                         Patcher.patch(dispatcher, this, oldVNode, patches);
                         Option.of(getGraphic()).forEach(node -> node.setUserData(newVNode));
                     } else {

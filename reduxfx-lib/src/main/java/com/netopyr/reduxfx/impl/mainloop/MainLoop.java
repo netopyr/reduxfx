@@ -7,6 +7,7 @@ import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.Stages;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import io.reactivex.Flowable;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
@@ -15,7 +16,7 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javaslang.collection.Seq;
+import javaslang.collection.Map;
 import javaslang.collection.Vector;
 import javaslang.control.Option;
 import org.reactivestreams.Publisher;
@@ -113,7 +114,7 @@ public class MainLoop {
 
         final FlowableProcessor<Option<VNode>> vScenegraphsStream = PublishProcessor.create();
 
-        final Flowable<Vector<Patch>> patchesStream = vScenegraphsStream.zipWith(vScenegraphsStream.skip(1), Differ::diff);
+        final Flowable<Map<Phase, Vector<Patch>>> patchesStream = vScenegraphsStream.zipWith(vScenegraphsStream.skip(1), Differ::diff);
 
         vScenegraphsStream
                 .zipWith(patchesStream, PatchParams::new)
@@ -183,9 +184,9 @@ public class MainLoop {
 
     private static class PatchParams {
         private final Option<VNode> vRoot;
-        private final Seq<Patch> patches;
+        private final Map<Phase, Vector<Patch>> patches;
 
-        private PatchParams(Option<VNode> vRoot, Seq<Patch> patches) {
+        private PatchParams(Option<VNode> vRoot, Map<Phase, Vector<Patch>> patches) {
             this.vRoot = vRoot;
             this.patches = patches;
         }
