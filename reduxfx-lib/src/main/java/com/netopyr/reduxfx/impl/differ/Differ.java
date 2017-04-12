@@ -9,6 +9,7 @@ import com.netopyr.reduxfx.impl.differ.patches.SetChildrenPatch;
 import com.netopyr.reduxfx.impl.differ.patches.SetSingleChildPatch;
 import com.netopyr.reduxfx.impl.differ.patches.UpdateRootPatch;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.builders.Factory;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
@@ -53,25 +54,24 @@ public class Differ {
     }
 
     private static Map<Phase, Vector<Patch>> diffAttributes(Vector<Object> path, VNode a, VNode b) {
-        final Map<String, VProperty> removedProperties = a.getProperties().removeAll(b.getProperties().keySet()).map((key, value) -> Tuple.of(key, new VProperty(key, Option.none(), Option.none())));
+        final Map<String, VProperty> removedProperties = a.getProperties().removeAll(b.getProperties().keySet()).map((key, value) -> Tuple.of(key, Factory.property(value.getPhase(), key)));
         final Map<String, VProperty> updatedProperties = b.getProperties().filter(propertyB -> !Option.of(propertyB._2).equals(a.getProperties().get(propertyB._1)));
-
-        // TODO: Workaround until the phase is configurable
-        final Map<String, VProperty> hidingProperties = updatedProperties.filter(tuple -> "showing".equals(tuple._1) && tuple._2.isValueDefined() && !Boolean.TRUE.equals(tuple._2.getValue()));
-        final Map<String, VProperty> regularProperties = updatedProperties.filter(tuple -> !("showing".equals(tuple._1) && tuple._2.isValueDefined()));
-        final Map<String, VProperty> showingProperties = updatedProperties.filter(tuple -> "showing".equals(tuple._1) && tuple._2.isValueDefined() && Boolean.TRUE.equals(tuple._2.getValue()));
-
-        final Map<String, VProperty> diffProperties = removedProperties.merge(regularProperties);
 
         final Map<VEventType, Option<VEventHandler>> removedEventHandlers = a.getEventHandlers().removeAll(b.getEventHandlers().keySet()).map((key, value) -> Tuple.of(key, Option.none()));
         final Map<VEventType, Option<VEventHandler>> updatedEventHandlers = b.getEventHandlers().filter(handlerB -> !Objects.equals(Option.of(handlerB._2), a.getEventHandlers().get(handlerB._1))).map((key, value) -> Tuple.of(key, Option.of(value)));
         final Map<VEventType, Option<VEventHandler>> diffEventHandlers = removedEventHandlers.merge(updatedEventHandlers);
 
-
-        return HashMap.of(Phase.DEFAULT, diffProperties.isEmpty() && diffEventHandlers.isEmpty() ? Vector.<Patch>empty()
-                : Vector.<Patch>of(new AttributesPatch(path, diffProperties, diffEventHandlers)))
-                .put(Phase.HIDE_STAGE, hidingProperties.isEmpty() ? Vector.empty() : Vector.of(new AttributesPatch(path, hidingProperties, HashMap.empty())))
-                .put(Phase.SHOW_STAGE, showingProperties.isEmpty() ? Vector.empty() : Vector.of(new AttributesPatch(path, showingProperties, HashMap.empty())));
+        return removedProperties.merge(updatedProperties)
+                .groupBy(tuple -> tuple._2.getPhase())
+                .map((phase, properties) ->
+                        Tuple.of(phase, Vector.of(
+                                new AttributesPatch(
+                                        path,
+                                        properties,
+                                        phase == Phase.DEFAULT ? diffEventHandlers : HashMap.empty()
+                                )
+                        ))
+                );
     }
 
     private static Map<Phase, Vector<Patch>> diffChildrenMaps(Vector<Object> path, VNode a, VNode b) {

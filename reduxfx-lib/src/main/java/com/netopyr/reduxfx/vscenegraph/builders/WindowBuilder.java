@@ -57,7 +57,7 @@ public class WindowBuilder<BUILDER extends WindowBuilder<BUILDER>> extends Build
     }
 
     public BUILDER showing(boolean value) {
-        return property(SHOWING, value);
+        return property(value? VProperty.Phase.SHOW_STAGE : VProperty.Phase.HIDE_STAGE, SHOWING, value);
     }
 
 

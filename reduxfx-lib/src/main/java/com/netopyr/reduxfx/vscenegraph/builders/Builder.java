@@ -10,6 +10,7 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import javafx.event.Event;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
@@ -60,84 +61,108 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
         );
     }
 
+    public <TYPE> BUILDER property(Phase phase, String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+        return Factory.node(
+                this,
+                getChildrenMap(),
+                getSingleChildMap(),
+                getProperties().put(name, Factory.property(phase, value, changeListener, invalidationListener)),
+                getEventHandlers()
+        );
+    }
     public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+        return property(Phase.DEFAULT, name, value, changeListener, invalidationListener);
+    }
+
+    public <TYPE> BUILDER property(Phase phase, String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(value, changeListener, invalidationListener)),
+                getProperties().put(name, Factory.property(phase, value, changeListener)),
                 getEventHandlers()
         );
     }
-
     public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
+        return property(Phase.DEFAULT, name, value, changeListener);
+    }
+
+    public BUILDER property(Phase phase, String name, Object value, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(value, changeListener)),
+                getProperties().put(name, Factory.property(phase, value, invalidationListener)),
                 getEventHandlers()
         );
     }
+    public <TYPE> BUILDER property(String name, TYPE value, VInvalidationListener invalidationListener) {
+        return property(Phase.DEFAULT, name, value, invalidationListener);
+    }
 
-    public BUILDER property(String name, Object value, VInvalidationListener invalidationListener) {
+    public BUILDER property(Phase phase, String name, Object value) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(value, invalidationListener)),
+                getProperties().put(name, Factory.property(phase, value)),
                 getEventHandlers()
         );
     }
-
     public BUILDER property(String name, Object value) {
+        return property(Phase.DEFAULT, name, value);
+    }
+
+    public BUILDER property(Phase phase, String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(value)),
+                getProperties().put(name, Factory.property(phase, changeListener, invalidationListener)),
                 getEventHandlers()
         );
     }
-
     public BUILDER property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
+        return property(Phase.DEFAULT, name, changeListener, invalidationListener);
+    }
+
+    public BUILDER property(Phase phase, String name, VChangeListener<?> changeListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(changeListener, invalidationListener)),
+                getProperties().put(name, Factory.property(phase, changeListener)),
                 getEventHandlers()
         );
     }
-
     public BUILDER property(String name, VChangeListener<?> changeListener) {
+        return property(Phase.DEFAULT, name, changeListener);
+    }
+
+    public BUILDER property(Phase phase, String name, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(changeListener)),
+                getProperties().put(name, Factory.property(phase, invalidationListener)),
                 getEventHandlers()
         );
     }
-
     public BUILDER property(String name, VInvalidationListener invalidationListener) {
+        return property(Phase.DEFAULT, name, invalidationListener);
+    }
+
+    public BUILDER property(Phase phase, String name) {
         return Factory.node(
                 this,
                 getChildrenMap(),
                 getSingleChildMap(),
-                getProperties().put(name, Factory.property(invalidationListener)),
+                getProperties().put(name, Factory.property(phase)),
                 getEventHandlers()
         );
     }
-
     public BUILDER property(String name) {
-        return Factory.node(
-                this,
-                getChildrenMap(),
-                getSingleChildMap(),
-                getProperties().put(name, Factory.property()),
-                getEventHandlers()
-        );
+        return property(Phase.DEFAULT, name);
     }
 
     public <EVENT extends Event> BUILDER onEvent(VEventType type, VEventHandler<EVENT> eventHandler) {

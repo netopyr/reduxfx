@@ -8,7 +8,9 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import javaslang.Tuple;
+import javaslang.Tuple2;
 import javaslang.Tuple5;
 import javaslang.collection.Array;
 import javaslang.collection.HashMap;
@@ -23,14 +25,12 @@ public class Factory {
     private static final long EXPIRATION_SECONDS = 30;
     private static final long MAX_SIZE = 10000;
 
-    private static final VProperty EMPTY_PROPERTY = new VProperty(Option.none(), Option.none());
-
     private static final Cache<Tuple5<Object, Map<String, Array<VNode>>, Map<String, Option<VNode>>, Map<String, VProperty>, Map<VEventType, VEventHandler>>, VNode> nodeCache =
             Caffeine.newBuilder().expireAfterAccess(EXPIRATION_SECONDS, TimeUnit.SECONDS)
                     .maximumSize(MAX_SIZE)
                     .build();
 
-    private static final Cache<Object, VProperty> propertyWithValueCache =
+    private static final Cache<Tuple2<Phase, Object>, VProperty> propertyWithValueCache =
             Caffeine.newBuilder().expireAfterAccess(EXPIRATION_SECONDS, TimeUnit.SECONDS)
                     .maximumSize(MAX_SIZE)
                     .build();
@@ -63,43 +63,38 @@ public class Factory {
     }
 
 
-    public static <TYPE> VProperty property(TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
-        return new VProperty(value, Option.of(changeListener), Option.of(invalidationListener));
+    public static <TYPE> VProperty property(Phase phase, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+        return new VProperty(phase, value, Option.of(changeListener), Option.of(invalidationListener));
     }
 
-    public static <TYPE> VProperty property(TYPE value, VChangeListener<? super TYPE> changeListener) {
-        return new VProperty(value, Option.of(changeListener), Option.none());
+    public static <TYPE> VProperty property(Phase phase, TYPE value, VChangeListener<? super TYPE> changeListener) {
+        return new VProperty(phase, value, Option.of(changeListener), Option.none());
     }
 
-    public static VProperty property(Object value, VInvalidationListener invalidationListener) {
-        return new VProperty(value, Option.none(), Option.of(invalidationListener));
+    public static VProperty property(Phase phase, Object value, VInvalidationListener invalidationListener) {
+        return new VProperty(phase, value, Option.none(), Option.of(invalidationListener));
     }
 
-    @SuppressWarnings("unchecked")
-    public static VProperty property(Object value) {
+    public static VProperty property(Phase phase, Object value) {
         return propertyWithValueCache.get(
-                value,
-                tuple -> new VProperty(value, Option.none(), Option.none())
+                Tuple.of(phase, value),
+                tuple -> new VProperty(phase, value, Option.none(), Option.none())
         );
     }
 
-    @SuppressWarnings("unchecked")
-    public static VProperty property(VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
-        return new VProperty(Option.of(changeListener), Option.of(invalidationListener));
+    public static VProperty property(Phase phase, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
+        return new VProperty(phase, Option.of(changeListener), Option.of(invalidationListener));
     }
 
-    @SuppressWarnings("unchecked")
-    public static VProperty property(VChangeListener<?> changeListener) {
-        return new VProperty(Option.of(changeListener), Option.none());
+    public static VProperty property(Phase phase, VChangeListener<?> changeListener) {
+        return new VProperty(phase, Option.of(changeListener), Option.none());
     }
 
-    @SuppressWarnings("unchecked")
-    public static VProperty property(VInvalidationListener invalidationListener) {
-        return new VProperty(Option.none(), Option.of(invalidationListener));
+    public static VProperty property(Phase phase, VInvalidationListener invalidationListener) {
+        return new VProperty(phase, Option.none(), Option.of(invalidationListener));
     }
 
-    @SuppressWarnings("unchecked")
-    public static VProperty property() {
-        return EMPTY_PROPERTY;
+    public static VProperty property(Phase phase) {
+        return new VProperty(phase, Option.none(), Option.none());
     }
 }

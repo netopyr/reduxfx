@@ -57,10 +57,11 @@ public class DialogBuilder<BUILDER extends DialogBuilder<BUILDER>> extends Build
 
     public BUILDER showing(boolean value, VChangeListener<Boolean> changeListener) {
         Accessors.registerAccessor(getNodeClass(), SHOWING, () -> new DialogShowingAccessor(this::produce));
-        return property(SHOWING, value, changeListener);
+        return property(value? VProperty.Phase.SHOW_STAGE : VProperty.Phase.HIDE_STAGE, SHOWING, value, changeListener);
     }
     public BUILDER showing(boolean value) {
-        return property(SHOWING, value);
+        Accessors.registerAccessor(getNodeClass(), SHOWING, () -> new DialogShowingAccessor(this::produce));
+        return property(value? VProperty.Phase.SHOW_STAGE : VProperty.Phase.HIDE_STAGE, SHOWING, value);
     }
 
 }
