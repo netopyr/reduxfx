@@ -19,13 +19,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <modules>
-        <module>samples</module>
         <module>reduxfx-lib</module>
         <module>reduxfx-jfoenix</module>
         <module>reduxfx-fontawesomefx</module>
+        <module>samples</module>
     </modules>
 
     <developers>
