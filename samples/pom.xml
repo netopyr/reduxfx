@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx-fontawesomefx</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

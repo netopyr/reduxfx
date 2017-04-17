@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>de.jensd</groupId>

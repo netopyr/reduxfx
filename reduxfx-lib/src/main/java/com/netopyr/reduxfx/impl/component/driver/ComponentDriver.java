@@ -113,6 +113,7 @@ public class ComponentDriver implements Driver {
     }
 
 
+    @SuppressWarnings("unchecked")
     public <EVENT extends Event> ObjectProperty<EventHandler<EVENT>> createEventHandlerProperty(Object bean, String name) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
