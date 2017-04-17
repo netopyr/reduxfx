@@ -14,6 +14,10 @@
     <description>ReduxFX builders for FontAwesomeFX nodes</description>
     <url>https://github.com/netopyr/reduxfx</url>
 
+    <properties>
+        <maven.deploy.skip>false</maven.deploy.skip>
+    </properties>
+
     <distributionManagement>
         <repository>
             <id>bintray</id>
