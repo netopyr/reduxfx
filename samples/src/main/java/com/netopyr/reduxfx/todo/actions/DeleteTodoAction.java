@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * A {@©ode DeleteTodoAction} is passed to the {@link com.netopyr.reduxfx.todo.updater.Updater} when a
+ * A {@code DeleteTodoAction} is passed to the {@link com.netopyr.reduxfx.todo.updater.Updater} when a
  * {@link com.netopyr.reduxfx.todo.state.TodoEntry} should be deleted.
  */
 public final class DeleteTodoAction implements Action {

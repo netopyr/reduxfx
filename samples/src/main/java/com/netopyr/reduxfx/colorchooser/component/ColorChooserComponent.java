@@ -26,6 +26,7 @@ public class ColorChooserComponent extends VBox {
     /**
      * This is a helper function, to make the code in {@link com.netopyr.reduxfx.colorchooser.app.view.MainView#view(AppModel)} more readable.
      *
+     * @param <CLASS> Parameter required to implement inheritable builders
      * @return the VirtualScenegraph-node of a {@code ColorChooserComponent}, which is also a {@link ColorChooserBuilder}
      */
     public static <CLASS extends ColorChooserBuilder<CLASS>> ColorChooserBuilder<CLASS> ColorChooser() {

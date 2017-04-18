@@ -13,6 +13,11 @@ import javaslang.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+/**
+ * Builder for the custom component {@link ColorChooserComponent}
+ *
+ * @param <BUILDER> Parameter required to implement inheritable builders
+ */
 public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> extends VBoxBuilder<BUILDER> {
 
     ColorChooserBuilder(Class<?> nodeClass,

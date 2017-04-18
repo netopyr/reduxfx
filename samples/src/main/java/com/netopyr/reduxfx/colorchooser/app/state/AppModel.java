@@ -27,6 +27,8 @@ public final class AppModel {
     /**
      * The method {@code create} returns a new instance of {@code AppModel} with the color set to the default value
      * {@code Color.BLACK}.
+     *
+     * @return the new {@code AppModel}
      */
     public static AppModel create() {
         return new AppModel(Color.BLACK);
