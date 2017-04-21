@@ -1,8 +1,7 @@
 package com.netopyr.reduxfx.component;
 
-import com.netopyr.reduxfx.ReduxFX;
 import com.netopyr.reduxfx.impl.component.driver.ComponentDriver;
-import com.netopyr.reduxfx.impl.mainloop.MainLoop;
+import com.netopyr.reduxfx.store.ReduxFXStore;
 import com.netopyr.reduxfx.updater.Update;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
@@ -18,27 +17,27 @@ import javafx.scene.layout.Pane;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class ComponentBase extends ReduxFX {
+public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
 
     private final ComponentDriver componentDriver = new ComponentDriver();
 
-    public <STATE> ComponentBase(
+    public ComponentBase(
             Group component,
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view
     ) {
-        super(MainLoop.create(initialState, updater, view, component));
+        super(initialState, updater);
         init(component);
     }
 
-    public <STATE> ComponentBase(
+    public ComponentBase(
             Pane component,
             STATE initialState,
             BiFunction<STATE, Object, Update<STATE>> updater,
             Function<STATE, VNode> view
     ) {
-        super(MainLoop.create(initialState, updater, view, component));
+        super(initialState, updater);
         init(component);
     }
 
