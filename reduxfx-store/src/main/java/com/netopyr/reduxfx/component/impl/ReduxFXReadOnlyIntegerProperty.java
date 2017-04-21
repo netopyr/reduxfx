@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.impl.component.property;
+package com.netopyr.reduxfx.component.impl;
 
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
 import io.reactivex.Flowable;

@@ -5,10 +5,10 @@
     <parent>
         <artifactId>reduxfx-all</artifactId>
         <groupId>com.netopyr.reduxfx</groupId>
-        <version>0.3.1-SNAPSHOT</version>
+        <version>0.4.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>reduxfx</artifactId>
+    <artifactId>reduxfx-view</artifactId>
 
     <name>ReduxFX</name>
     <description>Redux Architecture for JavaFX</description>
@@ -22,7 +22,7 @@
         <repository>
             <id>bintray</id>
             <name>netopyr-reduxfx</name>
-            <url>https://api.bintray.com/maven/netopyr/reduxfx/reduxfx/;publish=1</url>
+            <url>https://api.bintray.com/maven/netopyr/reduxfx/reduxfx-view/;publish=1</url>
         </repository>
     </distributionManagement>
 

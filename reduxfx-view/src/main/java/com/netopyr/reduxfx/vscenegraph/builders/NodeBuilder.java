@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.impl.patcher.property.Accessors;
-import com.netopyr.reduxfx.impl.patcher.property.FocusedAccessor;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.FocusedAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;

@@ -1,9 +1,9 @@
 package com.netopyr.reduxfx.vscenegraph.builders;
 
-import com.netopyr.reduxfx.impl.patcher.NodeUtilities;
-import com.netopyr.reduxfx.impl.patcher.property.Accessors;
-import com.netopyr.reduxfx.impl.patcher.property.DefaultNodeAccessor;
-import com.netopyr.reduxfx.impl.patcher.property.DefaultNodeListAccessor;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.NodeUtilities;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.Accessors;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.DefaultNodeAccessor;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.DefaultNodeListAccessor;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;

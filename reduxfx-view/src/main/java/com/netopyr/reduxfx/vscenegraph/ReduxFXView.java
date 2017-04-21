@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph;
 
-import com.netopyr.reduxfx.impl.differ.Differ;
-import com.netopyr.reduxfx.impl.differ.patches.Patch;
-import com.netopyr.reduxfx.impl.patcher.Patcher;
+import com.netopyr.reduxfx.vscenegraph.impl.differ.Differ;
+import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.Patch;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.Patcher;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;

@@ -1,14 +1,11 @@
-package com.netopyr.reduxfx.impl.component.driver;
+package com.netopyr.reduxfx.component.impl;
 
+import com.netopyr.reduxfx.component.ComponentBase;
 import com.netopyr.reduxfx.component.command.FireEventCommand;
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
 import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
 import com.netopyr.reduxfx.driver.Driver;
-import com.netopyr.reduxfx.impl.component.property.ReduxFXObjectProperty;
-import com.netopyr.reduxfx.impl.component.property.ReduxFXReadOnlyIntegerProperty;
-import com.netopyr.reduxfx.impl.component.property.ReduxFXReadOnlyObjectProperty;
 import com.netopyr.reduxfx.updater.Command;
-import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import io.reactivex.Flowable;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
@@ -101,7 +98,7 @@ public class ComponentDriver implements Driver {
     }
 
 
-    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T> listener) {
+    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, ComponentBase.ChangeListener<T> listener) {
         Objects.requireNonNull(bean, "Bean must not be null");
         Objects.requireNonNull(name, "Name must not be null");
         Objects.requireNonNull(listener, "Listener must not be null");

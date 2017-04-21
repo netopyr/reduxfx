@@ -1,10 +1,8 @@
 package com.netopyr.reduxfx.component;
 
-import com.netopyr.reduxfx.impl.component.driver.ComponentDriver;
+import com.netopyr.reduxfx.component.impl.ComponentDriver;
 import com.netopyr.reduxfx.store.ReduxFXStore;
 import com.netopyr.reduxfx.updater.Update;
-import com.netopyr.reduxfx.vscenegraph.VNode;
-import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -15,8 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
+@SuppressWarnings("unused")
 public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
 
     private final ComponentDriver componentDriver = new ComponentDriver();
@@ -24,8 +22,7 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
     public ComponentBase(
             Group component,
             STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Function<STATE, VNode> view
+            BiFunction<STATE, Object, Update<STATE>> updater
     ) {
         super(initialState, updater);
         init(component);
@@ -34,8 +31,7 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
     public ComponentBase(
             Pane component,
             STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Function<STATE, VNode> view
+            BiFunction<STATE, Object, Update<STATE>> updater
     ) {
         super(initialState, updater);
         init(component);
@@ -62,12 +58,19 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
     }
 
 
-    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, VChangeListener<T> listener) {
+    public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, ChangeListener<T> listener) {
         return componentDriver.createObjectProperty(bean, name, listener);
     }
 
 
     public <EVENT extends Event> ObjectProperty<EventHandler<EVENT>> createEventHandlerProperty(Object bean, String name) {
         return componentDriver.createEventHandlerProperty(bean, name);
+    }
+
+    @FunctionalInterface
+    public interface ChangeListener<TYPE> {
+
+        Object onChange(TYPE oldValue, TYPE newValue);
+
     }
 }
