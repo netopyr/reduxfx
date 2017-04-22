@@ -1,12 +1,22 @@
 ReduxFX
 =======
 
-[Redux][]-Architecture for JavaFX
+Functional Reactive Programming (FRP) for JavaFX
 
 [![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx/reduxfx)
 [![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
 
-ReduxFX is an experiment to apply patterns from functional reactive UI programming to JavaFX. Modern frameworks like Redux for [React.js][], [Elm][], and [Cycle.js][] introduced a new approach to building user interfaces. This approach has many [advantages](#advantages) and it is worth exploring how it can be applied to JavaFX.
+ReduxFX in 1 minute
+-------------------
+ReduxFX is a set of libraries that enable you to use functional reactive programming in your JavaFX applications.
+
+The libraries are written in plain Java.
+Therefore you can use any language that runs on the JVM and still reap the benefits of functional programming.
+All data structures of a ReduxFX application are immutable and all functions are pure.
+This simplifies the creation, testing, and maintenance of code compared to imperative programming, which ultimately leads to faster development and fewer bugs.
+
+All changes and messages "flow" in a single circular stream, which makes it perfectly clear what is going on in your application and helps to quickly find the source of any bug.
+On top of it enables advanced development tools like a "time travelling debugger" that can be used to step back and forth in your application, which again makes it easier to find bugs.
 
 Adding ReduxFX to your project
 ------------------------------
