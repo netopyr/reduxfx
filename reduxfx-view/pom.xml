@@ -10,7 +10,7 @@
 
     <artifactId>reduxfx-view</artifactId>
 
-    <name>ReduxFX</name>
+    <name>ReduxFX View</name>
     <description>Redux Architecture for JavaFX</description>
     <url>https://github.com/netopyr/reduxfx</url>
 

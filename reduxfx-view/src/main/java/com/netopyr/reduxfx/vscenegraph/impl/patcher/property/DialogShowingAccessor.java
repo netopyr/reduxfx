@@ -51,11 +51,13 @@ public class DialogShowingAccessor extends ListenerHandlingAccessor {
 
         if (vProperty.isValueDefined()) {
             if (Boolean.TRUE.equals(vProperty.getValue())) {
-                final Object modality = NodeUtilities.getProperties(dialog).get(MODAL);
-                if (modality instanceof Modality) {
-                    dialog.initModality((Modality) modality);
+                if (!dialog.isShowing()) {
+                    final Object modality = NodeUtilities.getProperties(dialog).get(MODAL);
+                    if (modality instanceof Modality) {
+                        dialog.initModality((Modality) modality);
+                    }
+                    dialog.show();
                 }
-                dialog.show();
             } else {
                 dialog.close();
                 final ArrayList<Object> dialogs = (ArrayList<Object>) NodeUtilities.getProperties(dialog.getOwner()).get("dialogs");

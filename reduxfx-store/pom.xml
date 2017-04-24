@@ -10,7 +10,7 @@
 
     <artifactId>reduxfx-store</artifactId>
 
-    <name>ReduxFX</name>
+    <name>ReduxFX Store</name>
     <description>Redux Architecture for JavaFX</description>
     <url>https://github.com/netopyr/reduxfx</url>
 

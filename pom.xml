@@ -20,6 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <maven.deploy.skip>true</maven.deploy.skip>
+        <commons.lang3.version>3.4</commons.lang3.version>
+        <slf4j.version>1.7.21</slf4j.version>
     </properties>
 
     <modules>
@@ -27,7 +29,11 @@
         <module>reduxfx-view</module>
         <module>reduxfx-jfoenix</module>
         <module>reduxfx-fontawesomefx</module>
-        <module>samples</module>
+
+        <module>examples/colorchooser</module>
+        <module>examples/menus</module>
+        <module>examples/screenswitch</module>
+        <module>examples/todomvc</module>
     </modules>
 
     <developers>
