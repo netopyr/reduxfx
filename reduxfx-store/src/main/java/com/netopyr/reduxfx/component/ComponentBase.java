@@ -9,7 +9,6 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import java.util.function.BiFunction;
@@ -25,7 +24,7 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
             BiFunction<STATE, Object, Update<STATE>> updater
     ) {
         super(initialState, updater);
-        init(component);
+        register(componentDriver);
     }
 
     public ComponentBase(
@@ -34,18 +33,6 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
             BiFunction<STATE, Object, Update<STATE>> updater
     ) {
         super(initialState, updater);
-        init(component);
-    }
-
-    private void init(Node component) {
-        component.sceneProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                start();
-            } else {
-                stop();
-            }
-        });
-
         register(componentDriver);
     }
 
