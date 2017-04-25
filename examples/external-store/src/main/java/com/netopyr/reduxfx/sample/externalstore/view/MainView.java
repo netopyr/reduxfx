@@ -1,5 +1,7 @@
-package com.netopyr.reduxfx.sample.externalstore;
+package com.netopyr.reduxfx.sample.externalstore.view;
 
+import com.netopyr.reduxfx.sample.externalstore.actions.Actions;
+import com.netopyr.reduxfx.sample.externalstore.state.AppModel;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import java.util.Objects;
@@ -12,8 +14,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 @SuppressWarnings("WeakerAccess")
 public class MainView {
 
-    public static VNode view(Integer counter) {
-        Objects.requireNonNull(counter, "The parameter 'counter' must not be null");
+    public static VNode view(AppModel state) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return
                 StackPane()
@@ -24,10 +26,10 @@ public class MainView {
                                         .children(
                                                 Label()
                                                         .prefWidth(210)
-                                                        .text(String.format("You clicked the button %d times", counter)),
+                                                        .text(String.format("You clicked the button %d times", state.getCounter())),
                                                 Button()
                                                         .text("Click Me!")
-                                                        .onAction(e -> Action.INC_COUNTER)
+                                                        .onAction(e -> Actions.incCounterAction())
                                         )
                         );
     }
