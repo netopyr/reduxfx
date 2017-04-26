@@ -26,10 +26,10 @@ public class ReduxFXStore<STATE> {
     public ReduxFXStore(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater) {
         final FlowableProcessor<Update<STATE>> updateProcessor = BehaviorProcessor.create();
 
-        statePublisher = updateProcessor.map(Update::getState);
+        statePublisher = updateProcessor.map(Update::getState)
+                .startWith(initialState);
 
         statePublisher.zipWith(actionProcessor, updater::apply)
-                .startWith(Update.of(initialState))
                 .subscribe(updateProcessor);
 
         commandPublisher = updateProcessor

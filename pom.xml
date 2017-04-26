@@ -34,6 +34,8 @@
         <module>examples/menus</module>
         <module>examples/screenswitch</module>
         <module>examples/todomvc</module>
+        <module>examples/external-store</module>
+        <module>examples/fxml</module>
     </modules>
 
     <developers>
