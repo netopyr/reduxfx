@@ -6,6 +6,7 @@ import com.netopyr.reduxfx.colorchooser.component.state.ColorChooserModel;
 import com.netopyr.reduxfx.colorchooser.component.updater.ColorChooserUpdater;
 import com.netopyr.reduxfx.colorchooser.component.view.ColorChooserView;
 import com.netopyr.reduxfx.component.ComponentBase;
+import com.netopyr.reduxfx.middleware.LoggingMiddleware;
 import com.netopyr.reduxfx.vscenegraph.ReduxFXView;
 import com.netopyr.reduxfx.vscenegraph.builders.Factory;
 import javafx.beans.property.ObjectProperty;
@@ -47,7 +48,7 @@ public class ColorChooserComponent extends VBox {
 
         // A ComponentBase is the central piece of every component implemented with ReduxFX. It creates a separate
         // event-cycle for the component and acts as the factory for all JavaFX properties.
-        final ComponentBase<ColorChooserModel> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update);
+        final ComponentBase<ColorChooserModel> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, new LoggingMiddleware<>());
         final ReduxFXView<ColorChooserModel> view = ReduxFXView.create(ColorChooserView::view, this);
         view.connect(componentBase.createActionSubscriber(), componentBase.getStatePublisher());
 

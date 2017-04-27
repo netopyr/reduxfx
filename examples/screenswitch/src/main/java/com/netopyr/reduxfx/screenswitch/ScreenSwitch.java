@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.screenswitch;
 
+import com.netopyr.reduxfx.middleware.LoggingMiddleware;
 import com.netopyr.reduxfx.screenswitch.state.AppModel;
 import com.netopyr.reduxfx.screenswitch.updater.Updater;
 import com.netopyr.reduxfx.screenswitch.view.ViewManager;
@@ -17,7 +18,7 @@ public class ScreenSwitch extends Application {
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.
-        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update);
+        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
         final ReduxFXView<AppModel> view = ReduxFXView.createStages(ViewManager::view, primaryStage);
         view.connect(store.createActionSubscriber(), store.getStatePublisher());
     }

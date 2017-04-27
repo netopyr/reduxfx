@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.driver.Driver;
 import com.netopyr.reduxfx.driver.action.ActionDriver;
 import com.netopyr.reduxfx.driver.http.HttpDriver;
 import com.netopyr.reduxfx.driver.properties.PropertiesDriver;
+import com.netopyr.reduxfx.middleware.Middleware;
 import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.updater.Update;
 import io.reactivex.Flowable;
@@ -23,13 +24,16 @@ public class ReduxFXStore<STATE> {
     private final Flowable<Command> commandPublisher;
 
 
-    public ReduxFXStore(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater) {
+    @SafeVarargs
+    public ReduxFXStore(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Middleware<STATE>... middlewares) {
+        final BiFunction<STATE, Object, Update<STATE>> chainedUpdater = applyMiddlewares(updater, middlewares);
+
         final FlowableProcessor<Update<STATE>> updateProcessor = BehaviorProcessor.create();
 
         statePublisher = updateProcessor.map(Update::getState)
                 .startWith(initialState);
 
-        statePublisher.zipWith(actionProcessor, updater::apply)
+        statePublisher.zipWith(actionProcessor, chainedUpdater::apply)
                 .subscribe(updateProcessor);
 
         commandPublisher = updateProcessor
@@ -37,6 +41,14 @@ public class ReduxFXStore<STATE> {
                 .flatMapIterable(commands -> commands);
 
         registerDefaultDrivers();
+    }
+
+    private BiFunction<STATE, Object, Update<STATE>> applyMiddlewares(BiFunction<STATE, Object, Update<STATE>> updater, Middleware<STATE>[] middlewares) {
+        BiFunction<STATE, Object, Update<STATE>> result = updater;
+        for (final Middleware<STATE> middleware : middlewares) {
+            result = middleware.apply(result);
+        }
+        return result;
     }
 
 

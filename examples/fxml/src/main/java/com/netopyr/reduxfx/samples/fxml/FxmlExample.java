@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.samples.fxml;
 
+import com.netopyr.reduxfx.middleware.LoggingMiddleware;
 import com.netopyr.reduxfx.samples.fxml.reduxjavafx.ReduxJavaFX;
 import com.netopyr.reduxfx.samples.fxml.reduxjavafx.ViewLoader;
 import com.netopyr.reduxfx.samples.fxml.state.AppModel;
@@ -21,7 +22,7 @@ public class FxmlExample extends Application {
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.
-        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update);
+        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
         ReduxJavaFX.connect(store.createActionSubscriber(), store.getStatePublisher());
 
 

@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.component;
 
 import com.netopyr.reduxfx.component.impl.ComponentDriver;
+import com.netopyr.reduxfx.middleware.Middleware;
 import com.netopyr.reduxfx.store.ReduxFXStore;
 import com.netopyr.reduxfx.updater.Update;
 import javafx.beans.property.ObjectProperty;
@@ -18,19 +19,23 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
 
     private final ComponentDriver componentDriver = new ComponentDriver();
 
+    @SafeVarargs
     public ComponentBase(
             Group component,
             STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Middleware<STATE>... middlewares
     ) {
-        super(initialState, updater);
+        super(initialState, updater, middlewares);
         register(componentDriver);
     }
 
+    @SafeVarargs
     public ComponentBase(
             Pane component,
             STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater
+            BiFunction<STATE, Object, Update<STATE>> updater,
+            Middleware<STATE>... middlewares
     ) {
         super(initialState, updater);
         register(componentDriver);

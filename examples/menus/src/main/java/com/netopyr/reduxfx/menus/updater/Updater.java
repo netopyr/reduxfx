@@ -7,8 +7,6 @@ import com.netopyr.reduxfx.menus.actions.OpenModalAlertAction;
 import com.netopyr.reduxfx.menus.state.AppModel;
 import javafx.stage.Modality;
 import javaslang.API;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -27,8 +25,6 @@ import static javaslang.Predicates.instanceOf;
  * the parameters.
  */
 public class Updater {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Updater.class);
 
     private Updater() {
     }
@@ -55,40 +51,33 @@ public class Updater {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        // Here we assign the new state
-        final AppModel newState =
+        // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
+        // in Java, except that it is much more flexible and that it can be used as an expression.
+        // We check which of the cases is true and in that branch we specify the value that will be assigned
+        // to newState.
+        return Match(action).of(
 
-                // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
-                // in Java, except that it is much more flexible and that it can be used as an expression.
-                // We check which of the cases is true and in that branch we specify the value that will be assigned
-                // to newState.
-                Match(action).of(
+                API.Case(instanceOf(OpenAlertAction.class),
+                        openAlertAction ->
+                                state.withAlertVisible(true)
+                                        .withAlertModality(Modality.NONE)
+                ),
 
-                        API.Case(instanceOf(OpenAlertAction.class),
-                                openAlertAction ->
-                                        state.withAlertVisible(true)
-                                                .withAlertModality(Modality.NONE)
-                        ),
+                API.Case(instanceOf(OpenModalAlertAction.class),
+                        openModalAlertAction ->
+                                state.withAlertVisible(true)
+                                        .withAlertModality(Modality.APPLICATION_MODAL)
+                ),
 
-                        API.Case(instanceOf(OpenModalAlertAction.class),
-                                openModalAlertAction ->
-                                        state.withAlertVisible(true)
-                                                .withAlertModality(Modality.APPLICATION_MODAL)
-                        ),
+                API.Case(instanceOf(AlertWasClosedAction.class),
+                        alertWasClosedAction ->
+                                state.withAlertVisible(false)
+                ),
 
-                        API.Case(instanceOf(AlertWasClosedAction.class),
-                                alertWasClosedAction ->
-                                        state.withAlertVisible(false)
-                        ),
-
-                        // This is the default branch of this switch-case. If an unknown Action was passed to the
-                        // updater, we simple return the old state. This is a convention, that is not needed right
-                        // now, but will help once you start to decompose your updater.
-                        Case($(), state)
-                );
-
-        LOG.trace("\nUpdater Old State:\n{}\nUpdater Action:\n{}\nUpdater New State:\n{}\n\n",
-                state, action, newState);
-        return newState;
+                // This is the default branch of this switch-case. If an unknown Action was passed to the
+                // updater, we simple return the old state. This is a convention, that is not needed right
+                // now, but will help once you start to decompose your updater.
+                Case($(), state)
+        );
     }
 }

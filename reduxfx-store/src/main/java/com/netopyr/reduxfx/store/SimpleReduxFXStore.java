@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.store;
 
+import com.netopyr.reduxfx.middleware.Middleware;
 import com.netopyr.reduxfx.updater.Update;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
@@ -10,8 +11,9 @@ public class SimpleReduxFXStore<STATE> {
 
     private final ReduxFXStore<STATE> store;
 
-    public SimpleReduxFXStore(STATE initialState, BiFunction<STATE, Object, STATE> updater) {
-        this.store = new ReduxFXStore<>(initialState, (STATE state, Object action) -> Update.of(updater.apply(state, action)));
+    @SafeVarargs
+    public SimpleReduxFXStore(STATE initialState, BiFunction<STATE, Object, STATE> updater, Middleware<STATE>... middlewares) {
+        this.store = new ReduxFXStore<>(initialState, (STATE state, Object action) -> Update.of(updater.apply(state, action)), middlewares);
     }
 
     public Subscriber<Object> createActionSubscriber() {
