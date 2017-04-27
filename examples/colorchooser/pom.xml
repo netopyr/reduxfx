@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>colorchooser-sample</artifactId>
+    <groupId>com.netopyr.reduxfx.examples</groupId>
 
     <name>ReduxFX: ColorChooser Examples</name>
     <description>Example of a custom component and how to use it</description>

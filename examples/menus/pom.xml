@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>menu-sample</artifactId>
+    <groupId>com.netopyr.reduxfx.examples</groupId>
 
     <name>ReduxFX: Menus Examples</name>
     <description>Example demonstrating a menu, a popup menu, and a dialog</description>

@@ -10,7 +10,7 @@ import java.util.Objects;
  * An {@code UpdateColorAction} is passed to the {@link com.netopyr.reduxfx.colorchooser.app.updater.Updater} when the
  * color selected in the {@link com.netopyr.reduxfx.colorchooser.component.ColorChooserComponent} has changed.
  */
-public final class UpdateColorAction implements Action {
+public final class UpdateColorAction {
 
     private final Color value;
 

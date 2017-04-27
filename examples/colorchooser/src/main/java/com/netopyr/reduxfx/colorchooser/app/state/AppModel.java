@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
  * in the {@link com.netopyr.reduxfx.colorchooser.app.updater.Updater}. The {@code Updater} gets the current state
- * together with the {@link com.netopyr.reduxfx.colorchooser.app.actions.Action} that should be performed and calculates
+ * together with the action that should be performed and calculates
  * the new state from that.
  *
  * The new state is passed to the {@link com.netopyr.reduxfx.colorchooser.app.view.MainView}-function,

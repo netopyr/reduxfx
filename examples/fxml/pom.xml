@@ -11,8 +11,8 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.netopyr.reduxfx.samples</groupId>
     <artifactId>fxml</artifactId>
+    <groupId>com.netopyr.reduxfx.examples</groupId>
 
     <name>ReduxFX: FXML example</name>
     <description>Example of using ReduxFX with FXML</description>

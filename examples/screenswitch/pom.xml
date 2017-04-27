@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>screenswitch</artifactId>
+    <groupId>com.netopyr.reduxfx.examples</groupId>
 
     <name>ReduxFX: Screen-Switch Examples</name>
     <description>Example demonstrating navigation between several windows</description>

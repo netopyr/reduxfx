@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>external-store</artifactId>
-
+    <groupId>com.netopyr.reduxfx.examples</groupId>
 
     <name>ReduxFX: 3rd-party store example</name>
     <description>Example of using ReduxFX-View with with a 3rd-party store</description>

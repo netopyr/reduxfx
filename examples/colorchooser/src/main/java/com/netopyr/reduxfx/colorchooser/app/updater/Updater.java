@@ -1,6 +1,5 @@
 package com.netopyr.reduxfx.colorchooser.app.updater;
 
-import com.netopyr.reduxfx.colorchooser.app.actions.Action;
 import com.netopyr.reduxfx.colorchooser.app.actions.UpdateColorAction;
 import com.netopyr.reduxfx.colorchooser.app.state.AppModel;
 import org.slf4j.Logger;
@@ -17,7 +16,7 @@ import static javaslang.Predicates.instanceOf;
  * The {@code Updater} is the heart of every ReduxFX-application. This is where the main application logic resides.
  *
  * An {@code Updater} consists of a single function ({@link #update(AppModel, Object)} in this class), which takes
- * the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the new state from that.
+ * the current state (an instance of {@link AppModel}) and an action and calculates the new state from that.
  *
  * Please note that {@code Updater} has no internal state. Everything that is needed for {@code update} is passed in
  * the parameters.
@@ -33,7 +32,7 @@ public class Updater {
      * The method {@code update} is the central piece of the ColorChooser-application. The whole application logic is
      * implemented here.
      *
-     * This method takes the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the
+     * This method takes the current state (an instance of {@link AppModel}) and an action and calculates the
      * new state from that.
      *
      * Please note that {@code update} does not require any internal state. Everything that is needed, is passed in the
