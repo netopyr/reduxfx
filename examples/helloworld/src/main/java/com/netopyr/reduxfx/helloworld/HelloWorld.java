@@ -1,9 +1,10 @@
 package com.netopyr.reduxfx.helloworld;
 
-import com.netopyr.reduxfx.SimpleReduxFX;
 import com.netopyr.reduxfx.helloworld.state.AppModel;
 import com.netopyr.reduxfx.helloworld.updater.Updater;
 import com.netopyr.reduxfx.helloworld.view.MainView;
+import com.netopyr.reduxfx.store.SimpleReduxFXStore;
+import com.netopyr.reduxfx.vscenegraph.ReduxFXView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -19,7 +20,9 @@ public class HelloWorld extends Application {
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.
-        SimpleReduxFX.start(initialState, Updater::update, MainView::view, primaryStage);
+        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update);
+        final ReduxFXView<AppModel> view = ReduxFXView.create(MainView::view, primaryStage);
+        view.connect(store.createActionSubscriber(), store.getStatePublisher());
 
         primaryStage.setTitle("HelloWorld - ReduxFX");
         primaryStage.show();
