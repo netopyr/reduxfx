@@ -1,0 +1,35 @@
+package com.netopyr.reduxfx.examples.screenswitch.actions;
+
+import com.netopyr.reduxfx.examples.screenswitch.state.Screen;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+/**
+ * A {@code DeleteTodoAction} is passed to the {@link com.netopyr.reduxfx.todo.updater.Updater} when a
+ * {@link com.netopyr.reduxfx.todo.state.TodoEntry} should be deleted.
+ */
+public final class SwitchScreenAction implements Action {
+
+    private final Screen screen;
+
+    SwitchScreenAction(Screen screen) {
+        this.screen = screen;
+    }
+
+    /**
+     * This is the getter for the {@code id} of the {@link com.netopyr.reduxfx.todo.state.TodoEntry} that needs to be
+     * deleted
+     *
+     * @return the {@code Screen}
+     */
+    public Screen getScreen() {
+        return screen;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                .append("screen", screen)
+                .toString();
+    }
+}
