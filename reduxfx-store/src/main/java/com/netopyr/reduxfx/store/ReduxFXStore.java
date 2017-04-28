@@ -7,7 +7,9 @@ import com.netopyr.reduxfx.driver.properties.PropertiesDriver;
 import com.netopyr.reduxfx.middleware.Middleware;
 import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.updater.Update;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
@@ -19,21 +21,26 @@ import java.util.function.BiFunction;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class ReduxFXStore<STATE> {
 
-    private final PublishProcessor<Object> actionProcessor = PublishProcessor.create();
     private final Flowable<STATE> statePublisher;
     private final Flowable<Command> commandPublisher;
+    private FlowableEmitter<Publisher<?>> emitter;
 
 
     @SafeVarargs
     public ReduxFXStore(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Middleware<STATE>... middlewares) {
         final BiFunction<STATE, Object, Update<STATE>> chainedUpdater = applyMiddlewares(updater, middlewares);
 
+        final Publisher<Object> actionPublisher =
+                Flowable.mergeDelayError(
+                        Flowable.create(emitter -> this.emitter = emitter, BackpressureStrategy.BUFFER)
+                );
+
         final FlowableProcessor<Update<STATE>> updateProcessor = BehaviorProcessor.create();
 
         statePublisher = updateProcessor.map(Update::getState)
                 .startWith(initialState);
 
-        statePublisher.zipWith(actionProcessor, chainedUpdater::apply)
+        statePublisher.zipWith(actionPublisher, chainedUpdater::apply)
                 .subscribe(updateProcessor);
 
         commandPublisher = updateProcessor
@@ -54,7 +61,7 @@ public class ReduxFXStore<STATE> {
 
     public Subscriber<Object> createActionSubscriber() {
         final PublishProcessor<Object> actionSubscriber = PublishProcessor.create();
-        actionSubscriber.subscribe(actionProcessor::offer);
+        emitter.onNext(actionSubscriber);
         return actionSubscriber;
     }
 
@@ -64,7 +71,7 @@ public class ReduxFXStore<STATE> {
 
     public final void register(Driver driver) {
         commandPublisher.subscribe(driver.getCommandSubscriber());
-        Flowable.fromPublisher(driver.getActionPublisher()).subscribe(actionProcessor::offer);
+        emitter.onNext(driver.getActionPublisher());
     }
 
 
