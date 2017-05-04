@@ -1,7 +1,6 @@
 package com.netopyr.reduxfx.examples.todo.state;
 
 import com.netopyr.reduxfx.examples.todo.updater.Updater;
-import com.netopyr.reduxfx.examples.todo.actions.Action;
 import com.netopyr.reduxfx.examples.todo.view.MainView;
 import javaslang.collection.Array;
 import javaslang.collection.Seq;

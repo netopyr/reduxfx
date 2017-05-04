@@ -1,7 +1,6 @@
 package com.netopyr.reduxfx.examples.screenswitch.updater;
 
 import com.netopyr.reduxfx.examples.screenswitch.actions.SwitchScreenAction;
-import com.netopyr.reduxfx.examples.screenswitch.actions.Action;
 import com.netopyr.reduxfx.examples.screenswitch.state.AppModel;
 import javaslang.API;
 

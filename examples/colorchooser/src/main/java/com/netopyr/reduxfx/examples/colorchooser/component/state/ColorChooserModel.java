@@ -1,6 +1,5 @@
 package com.netopyr.reduxfx.examples.colorchooser.component.state;
 
-import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChooserAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.updater.ColorChooserUpdater;
 import com.netopyr.reduxfx.examples.colorchooser.component.view.ColorChooserView;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * In ReduxFX the whole state of a component is kept in a single, immutable data structure. This data structure is
  * created in the {@link ColorChooserUpdater}. The
  * {@code ColorChooserUpdater} gets the current state together with the
- * {@link ColorChooserAction} that should be performed and calculates
+ * action that should be performed and calculates
  * the new state from that.
  *
  * The new state is passed to the {@link ColorChooserView}-function,

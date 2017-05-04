@@ -6,11 +6,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * A {@code SetTodoHoverAction} is passed to the {@link Updater} when the
- * {@code hover}-flag of a {@link TodoEntry} should be changed. The
- * {@code hover}-flag signals, if the mouse hovers over the item.
+ * A {@code SetTodoHoverAction} is passed to the {@link Updater} when the {@code hover}-flag of a {@link TodoEntry}
+ * should be changed. The {@code hover}-flag signals, if the mouse hovers over the item.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link Updater}, which performs the actual change.
  */
-public final class SetTodoHoverAction implements Action {
+public final class SetTodoHoverAction {
 
     private final int id;
     private final boolean value;
@@ -21,8 +24,7 @@ public final class SetTodoHoverAction implements Action {
     }
 
     /**
-     * This is the getter for the {@code id} of the {@link TodoEntry} which
-     * {@code hover}-flag needs to be changed.
+     * This is the getter for the {@code id} of the {@link TodoEntry} which {@code hover}-flag needs to be changed.
      *
      * @return the {@code id}
      */

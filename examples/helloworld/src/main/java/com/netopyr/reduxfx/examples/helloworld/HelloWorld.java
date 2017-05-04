@@ -20,10 +20,16 @@ public class HelloWorld extends Application {
 
         // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
         // the stage to use with the resulting SceneGraph.
+        // Setup the ReduxFX-store passing the initialState and the update-function
         final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update);
+
+        // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
         final ReduxFXView<AppModel> view = ReduxFXView.create(MainView::view, primaryStage);
+
+        // Connect store and view
         view.connect(store.createActionSubscriber(), store.getStatePublisher());
 
+        // Show the application
         primaryStage.setTitle("HelloWorld - ReduxFX");
         primaryStage.show();
     }

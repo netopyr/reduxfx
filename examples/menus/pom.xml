@@ -11,7 +11,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>menu-sample</artifactId>
+    <artifactId>menus</artifactId>
     <groupId>com.netopyr.reduxfx.examples</groupId>
 
     <name>ReduxFX: Menus Examples</name>

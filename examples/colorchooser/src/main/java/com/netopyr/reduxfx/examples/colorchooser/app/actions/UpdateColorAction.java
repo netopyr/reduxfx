@@ -9,8 +9,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Objects;
 
 /**
- * An {@code UpdateColorAction} is passed to the {@link Updater} when the
- * color selected in the {@link ColorChooserComponent} has changed.
+ * An {@code UpdateColorAction} is passed to the {@link Updater} when the color selected in the
+ * {@link ColorChooserComponent} has changed.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link Updater}, which performs the actual change.
  */
 public final class UpdateColorAction {
 

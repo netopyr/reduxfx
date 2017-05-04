@@ -1,7 +1,6 @@
 package com.netopyr.reduxfx.examples.menus.updater;
 
 import com.netopyr.reduxfx.examples.menus.actions.AlertWasClosedAction;
-import com.netopyr.reduxfx.examples.menus.actions.Action;
 import com.netopyr.reduxfx.examples.menus.actions.OpenAlertAction;
 import com.netopyr.reduxfx.examples.menus.actions.OpenModalAlertAction;
 import com.netopyr.reduxfx.examples.menus.state.AppModel;

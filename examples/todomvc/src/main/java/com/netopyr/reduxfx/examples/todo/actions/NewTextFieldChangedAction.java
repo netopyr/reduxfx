@@ -8,10 +8,14 @@ import com.netopyr.reduxfx.examples.todo.state.TodoEntry;
 import java.util.Objects;
 
 /**
- * A {@code NewTextFieldChangedAction} is passed to the {@link Updater} when the value
- * of the {@link javafx.scene.control.TextField} for new {@link TodoEntry}s has changed.
+ * A {@code NewTextFieldChangedAction} is passed to the {@link Updater} when the value of the
+ * {@code TextField} for the new {@link TodoEntry}s has changed.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link Updater}, which performs the actual change.
  */
-public final class NewTextFieldChangedAction implements Action {
+public final class NewTextFieldChangedAction {
 
     private final String text;
 

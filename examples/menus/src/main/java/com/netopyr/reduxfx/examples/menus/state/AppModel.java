@@ -1,7 +1,6 @@
 package com.netopyr.reduxfx.examples.menus.state;
 
 import com.netopyr.reduxfx.examples.menus.updater.Updater;
-import com.netopyr.reduxfx.examples.menus.actions.Action;
 import com.netopyr.reduxfx.examples.menus.view.MainView;
 import javafx.stage.Modality;
 import org.apache.commons.lang3.builder.ToStringBuilder;

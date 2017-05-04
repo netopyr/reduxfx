@@ -8,10 +8,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Objects;
 
 /**
- * A {@code SetFilterAction} is passed to the {@link Updater} when the filter should be
- * changed.
+ * A {@code SetFilterAction} is passed to the {@link Updater} when the filter should be changed.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link Updater}, which performs the actual change.
  */
-public final class SetFilterAction implements Action {
+public final class SetFilterAction {
 
     private final Filter filter;
 

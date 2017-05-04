@@ -8,10 +8,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Objects;
 
 /**
- * An {@code EditTodoAction} is passed to the {@link Updater} when the {@code text} of
- * a {@link TodoEntry} needs to be changed
+ * An {@code EditTodoAction} is passed to the {@link Updater} when the {@code text} of a {@link TodoEntry} needs to
+ * be changed.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link Updater}, which performs the actual change.
  */
-public final class EditTodoAction implements Action {
+public final class EditTodoAction {
 
     private final int id;
     private final String text;
@@ -23,8 +27,7 @@ public final class EditTodoAction implements Action {
     }
 
     /**
-     * This is the getter for the {@code id} of the {@link TodoEntry} which
-     * {@code text} needs to be changed.
+     * This is the getter for the {@code id} of the {@link TodoEntry} which {@code text} needs to be changed.
      *
      * @return the {@code id}
      */

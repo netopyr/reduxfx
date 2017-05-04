@@ -1,6 +1,5 @@
 package com.netopyr.reduxfx.examples.screenswitch.state;
 
-import com.netopyr.reduxfx.examples.screenswitch.actions.Action;
 import com.netopyr.reduxfx.examples.screenswitch.updater.Updater;
 import com.netopyr.reduxfx.examples.screenswitch.view.ViewManager;
 import org.apache.commons.lang3.builder.ToStringBuilder;

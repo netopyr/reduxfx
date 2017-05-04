@@ -1,14 +1,13 @@
 package com.netopyr.reduxfx.examples.colorchooser.component.updater;
 
+import com.netopyr.reduxfx.component.ComponentBase;
+import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
 import com.netopyr.reduxfx.examples.colorchooser.component.ColorChooserComponent;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChangedAction;
-import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChooserAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateBlueAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateGreenAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateRedAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserModel;
-import com.netopyr.reduxfx.component.ComponentBase;
-import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
 import com.netopyr.reduxfx.updater.Update;
 import javafx.scene.paint.Color;
 
@@ -25,7 +24,7 @@ import static javaslang.Predicates.instanceOf;
  * <p>
  * A {@code ColorChooserUpdater} consists of a single function ({@link #update(ColorChooserModel, Object)}
  * in this class), which takes the current state (an instance of {@link ColorChooserModel}) and an
- * {@link ColorChooserAction} and calculates the new state from that.
+ * action and calculates the new state from that.
  * <p>
  * Optionally it can also create an arbitrary number of commands, which are processed by a
  * {@link com.netopyr.reduxfx.driver.Driver}. Usually such a {@code Driver} has to be registered with the
@@ -45,7 +44,7 @@ public class ColorChooserUpdater {
      * The method {@code update} is the central piece of the
      * {@link ColorChooserComponent}. The whole logic is implemented here.
      * <p>
-     * This method takes the current state (an instance of {@link ColorChooserModel}) and a {@link ColorChooserAction}
+     * This method takes the current state (an instance of {@link ColorChooserModel}) and an action
      * and calculates the new state from that and optionally all of the commands which are needed to speak to the
      * outside world.
      * <p>

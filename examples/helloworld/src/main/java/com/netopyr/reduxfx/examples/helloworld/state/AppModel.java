@@ -1,18 +1,16 @@
 package com.netopyr.reduxfx.examples.helloworld.state;
 
-import com.netopyr.reduxfx.examples.helloworld.updater.Updater;
-import com.netopyr.reduxfx.examples.helloworld.view.MainView;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * An instance of the class {@code AppModel} is the root node of the state-tree.
  *
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
- * in the {@link Updater}. The {@code Updater} gets the current state together with the
- * Action that should be performed and calculates the new state from that.
+ * in the {@link com.netopyr.reduxfx.examples.helloworld.updater.Updater}. The {@code Updater} gets the current state
+ * together with the action that should be performed and calculates the new state from that.
  *
- * The new state is passed to the {@link MainView}-function, which calculates the new
- * virtual Scenegraph.
+ * The new state is passed to the {@link com.netopyr.reduxfx.examples.helloworld.view.MainView}-function, which
+ * calculates the new virtual Scenegraph.
  */
 public final class AppModel {
 
@@ -24,7 +22,7 @@ public final class AppModel {
     }
 
     /**
-     * The method {@code create} returns a new instance of {@code AppModel} with the counter set to its default values {@code 0}.
+     * The method {@code create} returns a new instance of {@code AppModel} with the counter set to its default value {@code 0}.
      *
      * @return the new {@code AppModel}
      */

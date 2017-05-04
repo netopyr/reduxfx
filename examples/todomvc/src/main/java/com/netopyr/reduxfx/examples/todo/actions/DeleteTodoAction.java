@@ -6,10 +6,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * A {@code DeleteTodoAction} is passed to the {@link Updater} when a
- * {@link TodoEntry} should be deleted.
+ * A {@code DeleteTodoAction} is passed to the {@link Updater} when a {@link TodoEntry} should be deleted.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link Updater}, which performs the actual change.
  */
-public final class DeleteTodoAction implements Action {
+public final class DeleteTodoAction {
 
     private final int id;
 
@@ -18,8 +21,7 @@ public final class DeleteTodoAction implements Action {
     }
 
     /**
-     * This is the getter for the {@code id} of the {@link TodoEntry} that needs to be
-     * deleted
+     * This is the getter for the {@code id} of the {@link TodoEntry} that needs to be deleted
      *
      * @return the {@code id}
      */

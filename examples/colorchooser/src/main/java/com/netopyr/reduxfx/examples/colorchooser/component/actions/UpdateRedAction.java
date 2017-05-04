@@ -5,11 +5,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * An {@code UpdateRedAction} is passed to the
- * {@link ColorChooserUpdater} when the slider for red
- * has changed.
+ * An {@code UpdateRedAction} is passed to the {@link ColorChooserUpdater} when the slider for red has changed.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link ColorChooserUpdater}, which performs the actual change.
  */
-public final class UpdateRedAction implements ColorChooserAction {
+public final class UpdateRedAction {
 
     private final int value;
 
@@ -19,6 +21,7 @@ public final class UpdateRedAction implements ColorChooserAction {
 
     /**
      * The getter of the value for red
+     *
      * @return the new value
      */
     public int getValue() {

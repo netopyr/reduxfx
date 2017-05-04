@@ -6,11 +6,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * A {@code ColorChangedAction} is passed to the
- * {@link ColorChooserUpdater} when the value of the color
+ * A {@code ColorChangedAction} is passed to the  {@link ColorChooserUpdater} when the value of the color
  * property of this component was changed from outside.
+ * <p>
+ * Actions are an implementation of the Command pattern. They describe what should happen within the application,
+ * but they do not do any changes themselves. Every time we want to change something in the application-state,
+ * we have to generate an Action and pass it to the {@link ColorChooserUpdater}, which performs the actual change.
  */
-public final class ColorChangedAction implements ColorChooserAction {
+public final class ColorChangedAction {
 
     private final Color newColor;
 

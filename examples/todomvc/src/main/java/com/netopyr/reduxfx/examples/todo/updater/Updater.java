@@ -1,7 +1,6 @@
 package com.netopyr.reduxfx.examples.todo.updater;
 
 import com.netopyr.reduxfx.examples.todo.actions.AddTodoAction;
-import com.netopyr.reduxfx.examples.todo.actions.Action;
 import com.netopyr.reduxfx.examples.todo.actions.CompleteAllAction;
 import com.netopyr.reduxfx.examples.todo.actions.CompleteTodoAction;
 import com.netopyr.reduxfx.examples.todo.actions.DeleteTodoAction;
