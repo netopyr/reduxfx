@@ -7,15 +7,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * An instance of the class {@code ColorChooserModel} is the root node of the state-tree of this component.
- *
- * In ReduxFX the whole state of a component is kept in a single, immutable data structure. This data structure is
- * created in the {@link ColorChooserUpdater}. The
- * {@code ColorChooserUpdater} gets the current state together with the
- * action that should be performed and calculates
- * the new state from that.
- *
- * The new state is passed to the {@link ColorChooserView}-function,
- * which calculates the new virtual Scenegraph.
+ * <p>
+ * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
+ * in the {@link ColorChooserUpdater}. The {@code ColorChooserUpdater} gets the current state together with the action
+ * that should be performed and calculates the new state from that.
+ * <p>
+ * The new state is passed to the {@link ColorChooserView}-function, which calculates the new virtual Scenegraph.
  */
 public final class ColorChooserModel {
 
@@ -26,18 +23,18 @@ public final class ColorChooserModel {
     /**
      * The default constructor creates a new instance of {@code ColorChooserModel} with all properties set to their
      * default values.
-     *
+     * <p>
      * Default values are: {red: 0, green: 0, blue: 0}
      */
     public ColorChooserModel() {
         this(0, 0, 0);
     }
+
     private ColorChooserModel(int red, int green, int blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
     }
-
 
 
     /**
@@ -61,7 +58,6 @@ public final class ColorChooserModel {
     }
 
 
-
     /**
      * This is the getter of the green value.
      *
@@ -83,7 +79,6 @@ public final class ColorChooserModel {
     }
 
 
-
     /**
      * This is the getter of the blue value.
      *
@@ -103,7 +98,6 @@ public final class ColorChooserModel {
     public final ColorChooserModel withBlue(int newBlue) {
         return new ColorChooserModel(red, green, newBlue);
     }
-
 
 
     @Override

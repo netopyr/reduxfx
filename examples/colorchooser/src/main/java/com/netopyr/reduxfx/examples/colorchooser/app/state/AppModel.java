@@ -9,14 +9,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * An instance of the class {@code AppModel} is the root node of the state-tree.
- *
+ * <p>
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
- * in the {@link Updater}. The {@code Updater} gets the current state
- * together with the action that should be performed and calculates
- * the new state from that.
- *
- * The new state is passed to the {@link MainView}-function,
- * which calculates the new virtual Scenegraph.
+ * in the {@link Updater}. The {@code Updater} gets the current state together with the action that should be performed
+ * and calculates the new state from that.
+ * <p>
+ * The new state is passed to the {@link MainView}-function, which calculates the new virtual Scenegraph.
  */
 public final class AppModel {
 
@@ -40,9 +38,8 @@ public final class AppModel {
 
     /**
      * This is the getter of the {@code color}.
-     *
-     * The property {@code color} contains the color that was selected in the
-     * {@link ColorChooserComponent}.
+     * <p>
+     * The property {@code color} contains the color that was selected in the {@link ColorChooserComponent}.
      *
      * @return the {@code color}
      */

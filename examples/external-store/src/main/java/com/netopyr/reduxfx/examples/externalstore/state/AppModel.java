@@ -1,7 +1,7 @@
-package com.netopyr.reduxfx.examples.fxml.state;
+package com.netopyr.reduxfx.examples.externalstore.state;
 
-import com.netopyr.reduxfx.examples.fxml.updater.Updater;
-import com.netopyr.reduxfx.examples.fxml.view.MainView;
+import com.netopyr.reduxfx.examples.externalstore.reducer.Reducer;
+import com.netopyr.reduxfx.examples.externalstore.view.MainView;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * An instance of the class {@code AppModel} is the root node of the state-tree.
  * <p>
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
- * in the {@link Updater}. The {@code Updater} gets the current state together with the action that should be performed
+ * in the {@link Reducer}. The {@code Reducer} gets the current state together with the action that should be performed
  * and calculates the new state from that.
  * <p>
  * The new state is passed to the {@link MainView}-function, which calculates the new virtual Scenegraph.

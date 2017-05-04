@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
  * but they do not do any changes themselves. All actions are generated in change- and invalidation-listeners,
  * as well as event-handlers, and passed to the {@link ColorChooserUpdater}, which performs the actual change.
  */
-public final class ColorChooserActions {
+public class ColorChooserActions {
 
     private ColorChooserActions() {
     }

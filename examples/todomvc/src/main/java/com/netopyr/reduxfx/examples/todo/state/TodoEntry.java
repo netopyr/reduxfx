@@ -27,7 +27,7 @@ public final class TodoEntry {
 
     /**
      * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
-     *
+     * <p>
      * Default values are: {id: 0, text: "", completed: false, hover: false, editMode: false}
      *
      * @return the new {@code TodoEntry}
@@ -49,13 +49,12 @@ public final class TodoEntry {
     /**
      * The method {@code withId} creates a copy of this {@code TodoEntry} with the {@code id} set to the given value.
      *
-     * @param newId the new {@code id}
+     * @param id the new {@code id}
      * @return the created {@code TodoEntry}
      */
-    public TodoEntry withId(int newId) {
-        return new TodoEntry(newId, this.text, this.completed, this.hover, this.editMode);
+    public TodoEntry withId(int id) {
+        return new TodoEntry(id, this.text, this.completed, this.hover, this.editMode);
     }
-
 
 
     /**
@@ -70,15 +69,14 @@ public final class TodoEntry {
     /**
      * The method {@code withText} creates a copy of this {@code TodoEntry} with the {@code text} set to the given value.
      *
-     * @param newText the new {@code text}
+     * @param text the new {@code text}
      * @return the created {@code TodoEntry}
      * @throws NullPointerException if {@code newText} is {@code null}
      */
-    public TodoEntry withText(String newText) {
-        Objects.requireNonNull(newText, "The parameter 'newText' must not be null");
-        return new TodoEntry(this.id, newText, this.completed, this.hover, this.editMode);
+    public TodoEntry withText(String text) {
+        Objects.requireNonNull(text, "The parameter 'newText' must not be null");
+        return new TodoEntry(this.id, text, this.completed, this.hover, this.editMode);
     }
-
 
 
     /**
@@ -94,13 +92,12 @@ public final class TodoEntry {
      * The method {@code withCompleted} creates a copy of this {@code TodoEntry} with the {@code completed}-flag set to
      * the given value.
      *
-     * @param newCompleted the new {@code completed}-flag
+     * @param completed the new {@code completed}-flag
      * @return the created {@code TodoEntry}
      */
-    public TodoEntry withCompleted(boolean newCompleted) {
-        return new TodoEntry(this.id, this.text, newCompleted, this.hover, this.editMode);
+    public TodoEntry withCompleted(boolean completed) {
+        return new TodoEntry(this.id, this.text, completed, this.hover, this.editMode);
     }
-
 
 
     /**
@@ -116,13 +113,12 @@ public final class TodoEntry {
      * The method {@code withHover} creates a copy of this {@code TodoEntry} with the {@code hover}-flag set to
      * the given value.
      *
-     * @param newHover the new {@code hover}-flag
+     * @param hover the new {@code hover}-flag
      * @return the created {@code TodoEntry}
      */
-    public TodoEntry withHover(boolean newHover) {
-        return new TodoEntry(this.id, this.text, this.completed, newHover, this.editMode);
+    public TodoEntry withHover(boolean hover) {
+        return new TodoEntry(this.id, this.text, this.completed, hover, this.editMode);
     }
-
 
 
     /**
@@ -138,13 +134,12 @@ public final class TodoEntry {
      * The method {@code withEditMode} creates a copy of this {@code TodoEntry} with the {@code editMode}-flag set to
      * the given value.
      *
-     * @param newEditMode the new {@code editMode}-flag
+     * @param editMode the new {@code editMode}-flag
      * @return the created {@code TodoEntry}
      */
-    public TodoEntry withEditMode(boolean newEditMode) {
-        return new TodoEntry(this.id, this.text, this.completed, this.hover, newEditMode);
+    public TodoEntry withEditMode(boolean editMode) {
+        return new TodoEntry(this.id, this.text, this.completed, this.hover, editMode);
     }
-
 
 
     @Override

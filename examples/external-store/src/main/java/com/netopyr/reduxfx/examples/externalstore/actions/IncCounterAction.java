@@ -6,14 +6,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * A {@code IncCounterAction} is passed to the  {@link Reducer} when the user clicks the button.
- *
+ * <p>
  * Actions are an implementation of the Command pattern. They describe what should happen within the application,
  * but they do not do any changes themselves. Every time we want to change something in the application-state,
  * we have to generate an Action and pass it to the {@link Reducer},  which performs the actual change.
  */
-public class IncCounterAction {
+public final class IncCounterAction {
 
-    IncCounterAction() {}
+    IncCounterAction() {
+    }
 
     @Override
     public String toString() {

@@ -11,13 +11,12 @@ import java.util.Objects;
 
 /**
  * An instance of the class {@code AppModel} is the root node of the state-tree.
- *
+ * <p>
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
- * in the {@link Updater}. The {@code Updated} gets the current state together with the
- * {@link Action} that should be performed and calculates the new state from that.
- *
- * The new state is passed to the {@link MainView}-function, which calculates the new
- * virtual Scenegraph.
+ * in the {@link Updater}. The {@code Updater} gets the current state together with the action that should be performed
+ * and calculates the new state from that.
+ * <p>
+ * The new state is passed to the {@link MainView}-function, which calculates the new virtual Scenegraph.
  */
 public final class AppModel {
 
@@ -34,7 +33,7 @@ public final class AppModel {
 
     /**
      * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
-     *
+     * <p>
      * Default values are: {newTodoText: "", todos: Array.empty(), filter: Filter.ALL}
      *
      * @return the new {@code AppModel}
@@ -46,7 +45,7 @@ public final class AppModel {
 
     /**
      * This is the getter of the {@code newTodoText}.
-     *
+     * <p>
      * If a new todo-entry should be created, this property contains the text that the new todo-entry should contain.
      *
      * @return the {@code newTodoText}
@@ -113,7 +112,6 @@ public final class AppModel {
         Objects.requireNonNull(newFilter, "The parameter 'newFilter' must not be null");
         return new AppModel(this.newTodoText, this.todos, newFilter);
     }
-
 
 
     @Override

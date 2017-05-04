@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * In this case {@code IncCounterAction} is created and passed to the {@code Updater} when the user clicks the
  * button.
  */
-public class IncCounterAction {
+public final class IncCounterAction {
 
     IncCounterAction() {}
 

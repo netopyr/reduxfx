@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
  * but they do not do any changes themselves. All actions are generated in change- and invalidation-listeners,
  * as well as event-handlers, and passed to the {@link Updater}, which performs the actual change.
  */
-public final class Actions {
+public class Actions {
 
     private Actions() {
     }
