@@ -11,39 +11,37 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.MenuItem;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.StackPane;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
-public class MainView {
+class MainView {
 
     private MainView() {
     }
 
-    public static VNode view(AppModel state) {
-
-        return
-                VBox()
-                        .children(
-                                MenuBar()
-                                        .menus(
-                                                Menu()
-                                                        .text("View")
-                                                        .items(
-                                                                MenuItem()
-                                                                        .text("Open Alert")
-                                                                        .disable(state.getAlertVisible())
-                                                                        .onAction(e -> Actions.openAlert()),
-                                                                MenuItem()
-                                                                        .text("Open Modal Alert")
-                                                                        .disable(state.getAlertVisible())
-                                                                        .onAction(e -> Actions.openModalAlert())
-                                                        )
-                                        ),
-                                StackPane()
-                                        .padding(50, 100)
-                                        .children(
-                                                Label()
-                                                        .text("I have a context menu")
-                                                        .contextMenu(ContextMenuView.view(state))
-                                        )
-                        );
+    static VNode view(AppModel state) {
+        return VBox()
+                .children(
+                        MenuBar()
+                                .menus(
+                                        Menu()
+                                                .text("View")
+                                                .items(
+                                                        MenuItem()
+                                                                .text("Open Alert")
+                                                                .disable(state.getAlertVisible())
+                                                                .onAction(e -> Actions.openAlert()),
+                                                        MenuItem()
+                                                                .text("Open Modal Alert")
+                                                                .disable(state.getAlertVisible())
+                                                                .onAction(e -> Actions.openModalAlert())
+                                                )
+                                ),
+                        StackPane()
+                                .padding(50, 100)
+                                .children(
+                                        Label()
+                                                .text("I have a context menu")
+                                                .contextMenu(ContextMenuView.view(state))
+                                )
+                );
     }
 
 }

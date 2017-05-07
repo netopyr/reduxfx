@@ -8,6 +8,8 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import static com.netopyr.reduxfx.examples.colorchooser.component.ColorChooserComponent.ColorChooser;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.HBox;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Region;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Scene;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stage;
 
 /**
  * The class {@code MainView} is responsible for mapping the current state of the application, an instance of
@@ -44,22 +46,30 @@ public class MainView {
      */
     public static VNode view(AppModel state) {
 
-        return HBox()
-                .padding(50.0)
-                .spacing(20.0)
-                .children(
-                        ColorChooser()
-                                // This is how a property value and a ChangeListener can be set.
-                                // The ChangeListener gets the old and the new value and has to return the Action that should
-                                // be dispatched to the Updater.
-                                // Here we want to set the value of the ColorChooser (first parameter) and fire an
-                                // UpdateColorAction, if the property of the component changes (second parameter).
-                                .color(state.getColor(), (oldValue, newValue) -> Actions.updateColor(newValue)),
-                        Region()
-                                // The background-color of the region should be set to the color stored in the current state
-                                .background(state.getColor())
-                                .minWidth(100.0)
-                                .minHeight(100.0)
+        return Stage()
+                .title("ColorChooser Example")
+                .showing(true)
+                .scene(
+                        Scene()
+                                .root(
+                                        HBox()
+                                                .padding(50.0)
+                                                .spacing(20.0)
+                                                .children(
+                                                        ColorChooser()
+                                                                // This is how a property value and a ChangeListener can be set.
+                                                                // The ChangeListener gets the old and the new value and has to return the Action that should
+                                                                // be dispatched to the Updater.
+                                                                // Here we want to set the value of the ColorChooser (first parameter) and fire an
+                                                                // UpdateColorAction, if the property of the component changes (second parameter).
+                                                                .color(state.getColor(), (oldValue, newValue) -> Actions.updateColor(newValue)),
+                                                        Region()
+                                                                // The background-color of the region should be set to the color stored in the current state
+                                                                .background(state.getColor())
+                                                                .minWidth(100.0)
+                                                                .minHeight(100.0)
+                                                )
+                                )
                 );
     }
 }

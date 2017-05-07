@@ -48,10 +48,14 @@ public class ColorChooserComponent extends VBox {
         final ColorChooserModel initialData = new ColorChooserModel();
 
         // A ComponentBase is the central piece of every component implemented with ReduxFX. It creates a separate
-        // event-cycle for the component and acts as the factory for all JavaFX properties.
+        // ReduxFX-store for the component and acts as the factory for all JavaFX properties.
         final ComponentBase<ColorChooserModel> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, new LoggingMiddleware<>());
+
+        // Setup the ReduxFX-view passing the view-function and this as the root node for the generated Scenegraph
         final ReduxFXView<ColorChooserModel> view = ReduxFXView.create(ColorChooserView::view, this);
-        view.connect(componentBase.createActionSubscriber(), componentBase.getStatePublisher());
+
+        // Connect componentBase and view
+        view.connect(componentBase.getStatePublisher(), componentBase.createActionSubscriber());
 
         // This sets up the JavaFX property of this component. The value can be changed by dispatching
         // ObjectChangedCommands in the ColorChooserUpdater (alongside any required state changes). The VChangeListener

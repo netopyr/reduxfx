@@ -76,7 +76,7 @@ public class ReduxFXView<STATE> {
         connect(store, store);
     }
 
-    public void connect(Subscriber<Object> actionStream, Publisher<STATE> statePublisher) {
+    public void connect(Publisher<STATE> statePublisher, Subscriber<Object> actionSubscriber) {
         final Flowable<Option<VNode>> vScenegraphStream =
                 Flowable.fromPublisher(statePublisher)
                         .map(view::apply)
@@ -100,7 +100,7 @@ public class ReduxFXView<STATE> {
                                 }
                         ),
                 BackpressureStrategy.BUFFER
-        ).subscribe(actionStream);
+        ).subscribe(actionSubscriber);
     }
 
     private static class PatchParams {

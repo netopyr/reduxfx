@@ -20,6 +20,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> extends VBoxBuilder<BUILDER> {
 
+    private static String COLOR = "color";
+
     ColorChooserBuilder(Class<?> nodeClass,
                         Map<String, Array<VNode>> childrenMap,
                         Map<String, Option<VNode>> singleChildMap,
@@ -43,21 +45,21 @@ public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> e
      * With this method, the {@code color} property of this component can be set and a listener can be attached
      *
      * @param value the value that the {@code color} property should be set to
-     * @param listener the {@link VChangeListener} that should be called if the value of {@code color} changes
+     * @param listener the {@link VChangeListener} that should be called when the value of {@code color} changes
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
     public BUILDER color(Color value, VChangeListener<? super Color> listener) {
-        return property("color", value, listener);
+        return property(COLOR, value, listener);
     }
 
     /**
-     * With this method, the {@code color} property of this component can be set and a listener can be attached
+     * With this method, a listener can be attached to the {@code color} property of this component
      *
-     * @param listener the {@link VChangeListener} that should be called if the value of {@code color} changes
+     * @param listener the {@link VChangeListener} that should be called when the value of {@code color} changes
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
     public BUILDER color(VChangeListener<? super Color> listener) {
-        return property("color", listener);
+        return property(COLOR, listener);
     }
 
 

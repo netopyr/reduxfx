@@ -8,7 +8,9 @@ import java.util.Objects;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Button;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Scene;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.StackPane;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stage;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
 /**
@@ -39,10 +41,10 @@ public class MainView {
      * <p>
      * It creates a new {@code StackPane}, which contains a {@code VBox} with a {@code Label} and a {@code Button}.
      * The {@code Label} shows how often the button was clicked.
-     *
+     * <p>
      * Please note that we do not have to deal with the old state of the Scenegraph at all. For example we do not
      * have to decide when the Label needs to be updated. We simply set it according to the given state.
-     *
+     * <p>
      * When the Button is clicked, the event handler {@code onAction} returns an instance of
      * {@link com.netopyr.reduxfx.examples.helloworld.actions.IncCounterAction}, which will be passed to the
      * {@link com.netopyr.reduxfx.examples.helloworld.updater.Updater} to perform the actual change.
@@ -53,21 +55,28 @@ public class MainView {
     public static VNode view(AppModel state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
-        return
-                StackPane()
-                        .padding(50, 100)
-                        .children(
-                                VBox()
-                                        .spacing(20)
-                                        .children(
-                                                Label()
-                                                        .prefWidth(210)
-                                                        .text(String.format("You clicked the button %d times", state.getCounter())),
-                                                Button()
-                                                        .text("Click Me!")
-                                                        .onAction(e -> Actions.incCounterAction())
-                                        )
-                        );
+        return Stage()
+                .title("HelloWorld - ReduxFX")
+                .showing(true)
+                .scene(
+                        Scene()
+                                .root(
+                                        StackPane()
+                                                .padding(50, 100)
+                                                .children(
+                                                        VBox()
+                                                                .spacing(20)
+                                                                .children(
+                                                                        Label()
+                                                                                .prefWidth(210)
+                                                                                .text(String.format("You clicked the button %d times", state.getCounter())),
+                                                                        Button()
+                                                                                .text("Click Me!")
+                                                                                .onAction(e -> Actions.incCounterAction())
+                                                                )
+                                                )
+                                )
+                );
     }
 
 }

@@ -6,12 +6,12 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.ContextMenu;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.MenuItem;
 
-public class ContextMenuView {
+class ContextMenuView {
 
     private ContextMenuView() {
     }
 
-    public static VNode view(AppModel state) {
+    static VNode view(AppModel state) {
         return ContextMenu()
                 .items(
                         MenuItem()

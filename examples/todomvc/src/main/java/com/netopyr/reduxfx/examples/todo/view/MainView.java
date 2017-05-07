@@ -10,6 +10,8 @@ import java.util.Objects;
 import static com.netopyr.reduxfx.examples.todo.view.AddItemView.AddItemView;
 import static com.netopyr.reduxfx.examples.todo.view.ItemOverviewView.ItemOverviewView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Scene;
+import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stage;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
 /**
@@ -49,22 +51,29 @@ public class MainView {
     public static VNode view(AppModel state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
-        return
-                VBox()
-                        .alignment(Pos.CENTER)
-                        .minWidth(Region.USE_PREF_SIZE)
-                        .minHeight(Region.USE_PREF_SIZE)
-                        .maxWidth(Double.MAX_VALUE)
-                        .maxHeight(Double.MAX_VALUE)
-                        .stylesheets(MainView.class.getResource("main.css").toString())
+        return Stage()
+                .title("TodoMVCFX - ReduxFX")
+                .showing(true)
+                .scene(
+                        Scene()
+                                .root(
+                                        VBox()
+                                                .alignment(Pos.CENTER)
+                                                .minWidth(Region.USE_PREF_SIZE)
+                                                .minHeight(Region.USE_PREF_SIZE)
+                                                .maxWidth(Double.MAX_VALUE)
+                                                .maxHeight(Double.MAX_VALUE)
+                                                .stylesheets(MainView.class.getResource("main.css").toString())
 
-                        .children(
-                                Label()
-                                        .id("title")
-                                        .text("todos"),
-                                AddItemView(state),
-                                ItemOverviewView(state),
-                                ControlsView.ControlsView(state)
-                        );
+                                                .children(
+                                                        Label()
+                                                                .id("title")
+                                                                .text("todos"),
+                                                        AddItemView(state),
+                                                        ItemOverviewView(state),
+                                                        ControlsView.ControlsView(state)
+                                                )
+                                )
+                );
     }
 }

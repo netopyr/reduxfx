@@ -12,30 +12,35 @@ import io.reactivex.processors.PublishProcessor;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * This is the launcher of the application.
+ */
 public class ExternalStore extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Create a store with redux-java
         final Store<AppModel> store = (Store<AppModel>) Store.createStore(Reducer::reduce, AppModel.create(), null);
 
-        final PublishProcessor<Object> actionStream = PublishProcessor.create();
-        actionStream.subscribe(store::dispatch);
-
-        final Flowable<AppModel> stateStream = Flowable.create(
+        // ReduxFX uses reactive streams to handle its inputs and outputs
+        // To handle the input, we create a Publisher that contains all elements emitted by the store
+        final Flowable<AppModel> statePublisher = Flowable.create(
                 emitter -> store.subscribe(() -> emitter.onNext(store.getState())),
                 BackpressureStrategy.BUFFER
         );
 
-        final ReduxFXView<AppModel> view = ReduxFXView.create(
-                MainView::view,
-                primaryStage
-        );
-        view.connect(actionStream, stateStream);
+        // To handle the output of the ReduxFView, we create a Subscriber that calls store.dispatch() for each action
+        final PublishProcessor<Object> actionSubscriber = PublishProcessor.create();
+        actionSubscriber.subscribe(store::dispatch);
 
+        // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
+        final ReduxFXView<AppModel> view = ReduxFXView.createStage(MainView::view, primaryStage);
+
+        // Connect store and view
+        view.connect(statePublisher, actionSubscriber);
+
+        // To initialize redux-java, we have to send an init-action
         store.dispatch(Actions.initAction());
-
-        primaryStage.setTitle("Example with Redux Java Store");
-        primaryStage.show();
     }
 
     public static void main(String[] args) {

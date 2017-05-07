@@ -7,18 +7,18 @@ import javafx.scene.control.Alert;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Alert;
 
-public class AlertView {
+class AlertView {
 
     private AlertView() {
     }
 
-    public static VNode view(AppModel state) {
+    static VNode view(AppModel state) {
         return Alert()
                 .alertType(Alert.AlertType.INFORMATION)
                 .modal(state.getAlertModality())
                 .headerText("This is the header")
                 .contentText("This is the content")
-                .showing(state.getAlertVisible(), (oldValue, newValue) -> newValue? Actions.noOp() : Actions.alertWasClosed());
+                .showing(state.getAlertVisible(), (oldValue, newValue) -> newValue ? Actions.noOp() : Actions.alertWasClosed());
     }
 
 }

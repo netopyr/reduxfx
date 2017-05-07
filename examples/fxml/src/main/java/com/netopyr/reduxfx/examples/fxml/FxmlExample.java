@@ -12,6 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * This is the launcher of the application.
+ */
 public class FxmlExample extends Application {
 
     @Override
@@ -20,18 +23,19 @@ public class FxmlExample extends Application {
         // Setup the initial state
         final AppModel initialState = AppModel.create();
 
-        // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
-        // the stage to use with the resulting SceneGraph.
+        // Setup the ReduxFX-store passing the initialState and the update-function
         final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
+
+        // To setup ReduxJavaFX, we have to connect it with the store
         ReduxJavaFX.connect(store.createActionSubscriber(), store.getStatePublisher());
 
+        // ViewLoader.load() loads the FXML-file and sets up the controller
+        final Parent root = ViewLoader.load(MainView.class);
 
-        Parent root = ViewLoader.load(MainView.class);
-
+        // Setup the stage and show it
         primaryStage.setScene(new Scene(root));
         primaryStage.setTitle("FXML Example");
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {

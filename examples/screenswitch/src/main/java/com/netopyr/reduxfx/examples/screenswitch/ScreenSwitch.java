@@ -9,18 +9,25 @@ import com.netopyr.reduxfx.vscenegraph.ReduxFXView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * This is the launcher of the application.
+ */
 public class ScreenSwitch extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         // Setup the initial state
         final AppModel initialState = AppModel.create();
 
-        // Start the ReduxFX application by passing the initial state, the update-function, the view-function, and
-        // the stage to use with the resulting SceneGraph.
+        // Setup the ReduxFX-store passing the initialState and the update-function
         final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
+
+        // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
         final ReduxFXView<AppModel> view = ReduxFXView.createStages(ViewManager::view, primaryStage);
-        view.connect(store.createActionSubscriber(), store.getStatePublisher());
+
+        // Connect store and view
+        view.connect(store.getStatePublisher(), store.createActionSubscriber());
     }
 
     public static void main(String[] args) {

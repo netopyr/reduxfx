@@ -9,7 +9,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stages;
 
 public class ViewManager {
 
-    private ViewManager() {}
+    private ViewManager() {
+    }
 
     public static VNode view(AppModel state) {
         return Stages()
