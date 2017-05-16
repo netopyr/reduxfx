@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.examples.todo.view;
 
-import com.netopyr.reduxfx.examples.todo.state.AppModel;
+import com.netopyr.reduxfx.examples.todo.state.AppState;
 import com.netopyr.reduxfx.examples.todo.state.TodoEntry;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.scene.layout.Region;
@@ -24,7 +24,7 @@ class ItemOverviewView {
      * @param state the current state
      * @return the root {@link VNode} of the created part of the VirtualScenegraph
      */
-    static VNode ItemOverviewView(AppModel state) {
+    static VNode ItemOverviewView(AppState state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return AnchorPane()

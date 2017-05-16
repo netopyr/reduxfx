@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.examples.externalstore.view;
 
 import com.netopyr.reduxfx.examples.externalstore.actions.Actions;
-import com.netopyr.reduxfx.examples.externalstore.state.AppModel;
+import com.netopyr.reduxfx.examples.externalstore.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import java.util.Objects;
@@ -16,7 +16,7 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 @SuppressWarnings("WeakerAccess")
 public class MainView {
 
-    public static VNode view(AppModel state) {
+    public static VNode view(AppState state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return Stage()

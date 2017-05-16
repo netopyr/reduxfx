@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.examples.colorchooser.component.view;
 
-import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserModel;
+import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserState;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChooserActions;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
@@ -9,9 +9,9 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
 /**
  * The class {@code ColorChooserView} is responsible for mapping the current state of the component, an instance of
- * {@link ColorChooserModel}, to the respective VirtualScenegraph, which is then used to update the UI.
+ * {@link ColorChooserState}, to the respective VirtualScenegraph, which is then used to update the UI.
  * <p>
- * Every time a new application state becomes available, the method {@link #view(ColorChooserModel)} is called and
+ * Every time a new application state becomes available, the method {@link #view(ColorChooserState)} is called and
  * a new VirtualScenegraph created. A VirtualScenegraph is a data structure that describes the state of the real
  * JavaFX Scenegraph. The ReduxFX runtime analyzes the VirtualScenegraph, calculates the difference between the
  * current Scenegraph and the new Scenegraph and applies the changes. This is done transparently without the developer
@@ -38,7 +38,7 @@ public class ColorChooserView {
      * @param state the current state
      * @return the root {@link VNode} of the created VirtualScenegraph
      */
-    public static VNode view(ColorChooserModel state) {
+    public static VNode view(ColorChooserState state) {
 
         return VBox()
                 .spacing(10.0)

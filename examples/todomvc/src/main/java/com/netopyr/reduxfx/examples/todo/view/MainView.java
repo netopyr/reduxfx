@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.examples.todo.view;
 
-import com.netopyr.reduxfx.examples.todo.state.AppModel;
+import com.netopyr.reduxfx.examples.todo.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
@@ -16,9 +16,9 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
 /**
  * The class {@code MainView} is responsible for mapping the current state of the application, an instance of
- * {@link AppModel}, to the respective VirtualScenegraph, which is then used to update the UI.
+ * {@link AppState}, to the respective VirtualScenegraph, which is then used to update the UI.
  * <p>
- * Every time a new application state becomes available, the method {@link MainView#view(AppModel)} is called and
+ * Every time a new application state becomes available, the method {@link MainView#view(AppState)} is called and
  * a new VirtualScenegraph created. A VirtualScenegraph is a data structure that describes the state of the real
  * JavaFX Scenegraph. The ReduxFX runtime analyzes the VirtualScenegraph, calculates the difference between the
  * current Scenegraph and the new Scenegraph and applies the changes. This is done transparently without the developer
@@ -48,7 +48,7 @@ public class MainView {
      * @param state the current state
      * @return the root {@link VNode} of the created VirtualScenegraph
      */
-    public static VNode view(AppModel state) {
+    public static VNode view(AppState state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return Stage()

@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.examples.menus.view;
 
-import com.netopyr.reduxfx.examples.menus.state.AppModel;
+import com.netopyr.reduxfx.examples.menus.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Scene;
@@ -12,7 +12,7 @@ public class ViewManager {
     private ViewManager() {
     }
 
-    public static VNode view(AppModel state) {
+    public static VNode view(AppState state) {
         return Stages()
                 .children(
                         Stage()

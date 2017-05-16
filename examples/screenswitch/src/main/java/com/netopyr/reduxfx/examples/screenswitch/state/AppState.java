@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Objects;
 
 /**
- * An instance of the class {@code AppModel} is the root node of the state-tree.
+ * An instance of the class {@code AppState} is the root node of the state-tree.
  * <p>
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
  * in the {@link Updater}. The {@code Updater} gets the current state together with the action that should be performed
@@ -16,23 +16,23 @@ import java.util.Objects;
  * <p>
  * The new state is passed to the {@link ViewManager}-function, which calculates the new virtual Scenegraph.
  */
-public final class AppModel {
+public final class AppState {
 
     private final Screen screen;
 
-    private AppModel(Screen screen) {
-        this.screen = screen;
+    private AppState(Screen screen) {
+        this.screen = Objects.requireNonNull(screen, "The parameter 'screen' must not be null");;
     }
 
 
     /**
-     * The method {@code create} returns a new instance of {@code AppModel} with the {@code screen}-property set
+     * The method {@code create} returns a new instance of {@code AppState} with the {@code screen}-property set
      * to its default value {@code Screen.SCREEN_1}.
      *
-     * @return the new {@code AppModel}
+     * @return the new {@code AppState}
      */
-    public static AppModel create() {
-        return new AppModel(Screen.SCREEN_1);
+    public static AppState create() {
+        return new AppState(Screen.SCREEN_1);
     }
 
 
@@ -46,16 +46,15 @@ public final class AppModel {
     }
 
     /**
-     * The method {@code withScreen} creates a copy of this {@code AppModel} with the {@code screen} set to
+     * The method {@code withScreen} creates a copy of this {@code AppState} with the {@code screen} set to
      * the given value.
      *
      * @param screen the new {@code Screen}
-     * @return the created {@code AppModel}
+     * @return the created {@code AppState}
      * @throws NullPointerException if {@code screen} is {@code null}
      */
-    public AppModel withScreen(Screen screen) {
-        Objects.requireNonNull(screen, "The parameter 'screen' must not be null");
-        return new AppModel(screen);
+    public AppState withScreen(Screen screen) {
+        return new AppState(screen);
     }
 
 

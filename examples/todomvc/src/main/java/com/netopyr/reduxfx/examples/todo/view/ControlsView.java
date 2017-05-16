@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.examples.todo.view;
 
 import com.netopyr.reduxfx.examples.todo.state.Filter;
 import com.netopyr.reduxfx.examples.todo.actions.Actions;
-import com.netopyr.reduxfx.examples.todo.state.AppModel;
+import com.netopyr.reduxfx.examples.todo.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Region;
@@ -28,7 +28,7 @@ class ControlsView {
      * @param state the current state
      * @return the root {@link VNode} of the created part of the VirtualScenegraph
      */
-    static VNode ControlsView(AppModel state) {
+    static VNode ControlsView(AppState state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         // Calculate the number of active todo-entries

@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.examples.menus.view;
 
-import com.netopyr.reduxfx.examples.menus.state.AppModel;
+import com.netopyr.reduxfx.examples.menus.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.ContextMenu;
@@ -11,7 +11,7 @@ class ContextMenuView {
     private ContextMenuView() {
     }
 
-    static VNode view(AppModel state) {
+    static VNode view(AppState state) {
         return ContextMenu()
                 .items(
                         MenuItem()

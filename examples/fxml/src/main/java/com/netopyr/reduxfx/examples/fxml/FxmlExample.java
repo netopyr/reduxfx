@@ -3,7 +3,7 @@ package com.netopyr.reduxfx.examples.fxml;
 import com.netopyr.reduxfx.middleware.LoggingMiddleware;
 import com.netopyr.reduxfx.examples.fxml.reduxjavafx.ReduxJavaFX;
 import com.netopyr.reduxfx.examples.fxml.reduxjavafx.ViewLoader;
-import com.netopyr.reduxfx.examples.fxml.state.AppModel;
+import com.netopyr.reduxfx.examples.fxml.state.AppState;
 import com.netopyr.reduxfx.examples.fxml.updater.Updater;
 import com.netopyr.reduxfx.examples.fxml.view.MainView;
 import com.netopyr.reduxfx.store.SimpleReduxFXStore;
@@ -21,10 +21,10 @@ public class FxmlExample extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // Setup the initial state
-        final AppModel initialState = AppModel.create();
+        final AppState initialState = AppState.create();
 
         // Setup the ReduxFX-store passing the initialState and the update-function
-        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
+        final SimpleReduxFXStore<AppState> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
 
         // To setup ReduxJavaFX, we have to connect it with the store
         ReduxJavaFX.connect(store.createActionSubscriber(), store.getStatePublisher());

@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.examples.menus;
 
-import com.netopyr.reduxfx.examples.menus.state.AppModel;
+import com.netopyr.reduxfx.examples.menus.state.AppState;
 import com.netopyr.reduxfx.examples.menus.updater.Updater;
 import com.netopyr.reduxfx.examples.menus.view.ViewManager;
 import com.netopyr.reduxfx.middleware.LoggingMiddleware;
@@ -18,13 +18,13 @@ public class Menus extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // Setup the initial state
-        final AppModel initialState = AppModel.create();
+        final AppState initialState = AppState.create();
 
         // Setup the ReduxFX-store passing the initialState and the update-function
-        final SimpleReduxFXStore<AppModel> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
+        final SimpleReduxFXStore<AppState> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
 
         // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
-        final ReduxFXView<AppModel> view = ReduxFXView.createStages(ViewManager::view, primaryStage);
+        final ReduxFXView<AppState> view = ReduxFXView.createStages(ViewManager::view, primaryStage);
 
         // Connect store and view
         view.connect(store.getStatePublisher(), store.createActionSubscriber());

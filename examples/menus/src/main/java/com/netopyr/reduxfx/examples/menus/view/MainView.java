@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.examples.menus.view;
 
 import com.netopyr.reduxfx.examples.menus.actions.Actions;
-import com.netopyr.reduxfx.examples.menus.state.AppModel;
+import com.netopyr.reduxfx.examples.menus.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
@@ -16,7 +16,7 @@ class MainView {
     private MainView() {
     }
 
-    static VNode view(AppModel state) {
+    static VNode view(AppState state) {
         return VBox()
                 .children(
                         MenuBar()

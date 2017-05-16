@@ -7,7 +7,7 @@ import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChangedA
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateBlueAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateGreenAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateRedAction;
-import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserModel;
+import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserState;
 import com.netopyr.reduxfx.updater.Update;
 import javafx.scene.paint.Color;
 
@@ -22,8 +22,8 @@ import static javaslang.Predicates.instanceOf;
  * The {@code ColorChooserUpdater} is the heart of the
  * {@link ColorChooserComponent}. This is where the main logic resides.
  * <p>
- * A {@code ColorChooserUpdater} consists of a single function ({@link #update(ColorChooserModel, Object)}
- * in this class), which takes the current state (an instance of {@link ColorChooserModel}) and an
+ * A {@code ColorChooserUpdater} consists of a single function ({@link #update(ColorChooserState, Object)}
+ * in this class), which takes the current state (an instance of {@link ColorChooserState}) and an
  * action and calculates the new state from that.
  * <p>
  * Optionally it can also create an arbitrary number of commands, which are processed by a
@@ -44,7 +44,7 @@ public class ColorChooserUpdater {
      * The method {@code update} is the central piece of the
      * {@link ColorChooserComponent}. The whole logic is implemented here.
      * <p>
-     * This method takes the current state (an instance of {@link ColorChooserModel}) and an action
+     * This method takes the current state (an instance of {@link ColorChooserState}) and an action
      * and calculates the new state from that and optionally all of the commands which are needed to speak to the
      * outside world.
      * <p>
@@ -59,7 +59,7 @@ public class ColorChooserUpdater {
      * @return the new state
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static Update<ColorChooserModel> update(ColorChooserModel state, Object action) {
+    public static Update<ColorChooserState> update(ColorChooserState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 

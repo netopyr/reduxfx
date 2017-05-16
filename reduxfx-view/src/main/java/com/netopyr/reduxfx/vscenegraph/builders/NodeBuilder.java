@@ -5,6 +5,7 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.Accessors;
 import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.FocusedAccessor;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.StyleClassAccessor;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Insets;
@@ -31,6 +32,8 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     private static final String RIGHT_ANCHOR = "rightAnchor";
     private static final String ROW_INDEX = "rowIndex";
     private static final String COLUMN_INDEX = "columnIndex";
+    private static final String ROW_SPAN = "rowSpan";
+    private static final String COLUMN_SPAN = "columnSpan";
     private static final String HOVER = "hover";
     private static final String FOCUSED = "focused";
     private static final String MARGIN = "margin";
@@ -92,6 +95,7 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     }
 
     public BUILDER styleClass(String... value) {
+        Accessors.registerAccessor(getNodeClass(), STYLE_CLASS, StyleClassAccessor::new);
         return property(STYLE_CLASS, value == null ? Array.empty() : Array.of(value));
     }
 
@@ -143,6 +147,14 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
 
     public BUILDER columnIndex(int value) {
         return property(COLUMN_INDEX, value);
+    }
+
+    public BUILDER columnSpan(int value) {
+        return property(COLUMN_SPAN, value);
+    }
+
+    public BUILDER rowSpan(int value) {
+        return property(ROW_SPAN, value);
     }
 
 

@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.examples.colorchooser.component;
 
-import com.netopyr.reduxfx.examples.colorchooser.app.state.AppModel;
+import com.netopyr.reduxfx.examples.colorchooser.app.state.AppState;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChooserActions;
-import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserModel;
+import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserState;
 import com.netopyr.reduxfx.examples.colorchooser.component.updater.ColorChooserUpdater;
 import com.netopyr.reduxfx.examples.colorchooser.component.view.ColorChooserView;
 import com.netopyr.reduxfx.component.ComponentBase;
@@ -27,7 +27,7 @@ import javaslang.collection.HashMap;
 public class ColorChooserComponent extends VBox {
 
     /**
-     * This is a helper function, to make the code in {@link MainView#view(AppModel)} more readable.
+     * This is a helper function, to make the code in {@link MainView#view(AppState)} more readable.
      *
      * @param <CLASS> Parameter required to implement inheritable builders
      * @return the VirtualScenegraph-node of a {@code ColorChooserComponent}, which is also a {@link ColorChooserBuilder}
@@ -45,14 +45,14 @@ public class ColorChooserComponent extends VBox {
     public ColorChooserComponent() {
 
         // Setup the initial state
-        final ColorChooserModel initialData = new ColorChooserModel();
+        final ColorChooserState initialData = new ColorChooserState();
 
         // A ComponentBase is the central piece of every component implemented with ReduxFX. It creates a separate
         // ReduxFX-store for the component and acts as the factory for all JavaFX properties.
-        final ComponentBase<ColorChooserModel> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, new LoggingMiddleware<>());
+        final ComponentBase<ColorChooserState> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, new LoggingMiddleware<>());
 
         // Setup the ReduxFX-view passing the view-function and this as the root node for the generated Scenegraph
-        final ReduxFXView<ColorChooserModel> view = ReduxFXView.create(ColorChooserView::view, this);
+        final ReduxFXView<ColorChooserState> view = ReduxFXView.create(ColorChooserView::view, this);
 
         // Connect componentBase and view
         view.connect(componentBase.getStatePublisher(), componentBase.createActionSubscriber());

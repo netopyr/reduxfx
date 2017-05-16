@@ -18,7 +18,7 @@ public final class TodoEntry {
 
     private TodoEntry(int id, String text, boolean completed, boolean hover, boolean editMode) {
         this.id = id;
-        this.text = text;
+        this.text = Objects.requireNonNull(text, "The parameter 'text' must not be null");
         this.completed = completed;
         this.hover = hover;
         this.editMode = editMode;
@@ -26,7 +26,7 @@ public final class TodoEntry {
 
 
     /**
-     * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
+     * The method {@code create} returns a new instance of {@code AppState} with all properties set to their default values.
      * <p>
      * Default values are: {id: 0, text: "", completed: false, hover: false, editMode: false}
      *
@@ -71,10 +71,9 @@ public final class TodoEntry {
      *
      * @param text the new {@code text}
      * @return the created {@code TodoEntry}
-     * @throws NullPointerException if {@code newText} is {@code null}
+     * @throws NullPointerException if {@code text} is {@code null}
      */
     public TodoEntry withText(String text) {
-        Objects.requireNonNull(text, "The parameter 'newText' must not be null");
         return new TodoEntry(this.id, text, this.completed, this.hover, this.editMode);
     }
 

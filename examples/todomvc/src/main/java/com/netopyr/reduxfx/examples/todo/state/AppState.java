@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Objects;
 
 /**
- * An instance of the class {@code AppModel} is the root node of the state-tree.
+ * An instance of the class {@code AppState} is the root node of the state-tree.
  * <p>
  * In ReduxFX the whole application state is kept in a single, immutable data structure. This data structure is created
  * in the {@link Updater}. The {@code Updater} gets the current state together with the action that should be performed
@@ -18,28 +18,28 @@ import java.util.Objects;
  * <p>
  * The new state is passed to the {@link MainView}-function, which calculates the new virtual Scenegraph.
  */
-public final class AppModel {
+public final class AppState {
 
     private final String newTodoText;
     private final Seq<TodoEntry> todos;
     private final Filter filter;
 
-    private AppModel(String newTodoText, Seq<TodoEntry> todos, Filter filter) {
-        this.newTodoText = newTodoText;
-        this.todos = todos;
-        this.filter = filter;
+    private AppState(String newTodoText, Seq<TodoEntry> todos, Filter filter) {
+        this.newTodoText = Objects.requireNonNull(newTodoText, "The parameter 'newTodoText' must not be null");
+        this.todos = Objects.requireNonNull(todos, "The parameter 'todos' must not be null");
+        this.filter = Objects.requireNonNull(filter, "The parameter 'filter' must not be null");
     }
 
 
     /**
-     * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
+     * The method {@code create} returns a new instance of {@code AppState} with all properties set to their default values.
      * <p>
      * Default values are: {newTodoText: "", todos: Array.empty(), filter: Filter.ALL}
      *
-     * @return the new {@code AppModel}
+     * @return the new {@code AppState}
      */
-    public static AppModel create() {
-        return new AppModel("", Array.empty(), Filter.ALL);
+    public static AppState create() {
+        return new AppState("", Array.empty(), Filter.ALL);
     }
 
 
@@ -55,16 +55,15 @@ public final class AppModel {
     }
 
     /**
-     * The method {@code withNewTodoText} creates a copy of this {@code AppModel} with the {@code newTodoText} set to
+     * The method {@code withNewTodoText} creates a copy of this {@code AppState} with the {@code newTodoText} set to
      * the given value.
      *
-     * @param newNewTodoText the new {@code newNewTodoText}
-     * @return the created {@code AppModel}
-     * @throws NullPointerException if {@code newNewTodoText} is {@code null}
+     * @param newTodoText the new {@code newTodoText}
+     * @return the created {@code AppState}
+     * @throws NullPointerException if {@code newTodoText} is {@code null}
      */
-    public AppModel withNewTodoText(String newNewTodoText) {
-        Objects.requireNonNull(newNewTodoText, "The parameter 'newNewTodoText' must not be null");
-        return new AppModel(newNewTodoText, this.todos, this.filter);
+    public AppState withNewTodoText(String newTodoText) {
+        return new AppState(newTodoText, this.todos, this.filter);
     }
 
 
@@ -78,16 +77,15 @@ public final class AppModel {
     }
 
     /**
-     * The method {@code withTodos} creates a copy of this {@code AppModel} with the {@code todos} set to the given
+     * The method {@code withTodos} creates a copy of this {@code AppState} with the {@code todos} set to the given
      * value.
      *
-     * @param newTodos the new {@code todos}
-     * @return the created {@code AppModel}
-     * @throws NullPointerException if {@code newTodos} is {@code null}
+     * @param todos the new {@code todos}
+     * @return the created {@code AppState}
+     * @throws NullPointerException if {@code todos} is {@code null}
      */
-    public AppModel withTodos(Seq<TodoEntry> newTodos) {
-        Objects.requireNonNull(newTodos, "The parameter 'newTodos' must not be null");
-        return new AppModel(this.newTodoText, newTodos, this.filter);
+    public AppState withTodos(Seq<TodoEntry> todos) {
+        return new AppState(this.newTodoText, todos, this.filter);
     }
 
 
@@ -101,16 +99,15 @@ public final class AppModel {
     }
 
     /**
-     * The method {@code withFilter} creates a copy of this {@code AppModel} with the {@code filter} set to the given
+     * The method {@code withFilter} creates a copy of this {@code AppState} with the {@code filter} set to the given
      * value.
      *
-     * @param newFilter the new {@code filter}
-     * @return the created {@code AppModel}
+     * @param filter the new {@code filter}
+     * @return the created {@code AppState}
      * @throws NullPointerException if {@code newFilter} is {@code null}
      */
-    public AppModel withFilter(Filter newFilter) {
-        Objects.requireNonNull(newFilter, "The parameter 'newFilter' must not be null");
-        return new AppModel(this.newTodoText, this.todos, newFilter);
+    public AppState withFilter(Filter filter) {
+        return new AppState(this.newTodoText, this.todos, filter);
     }
 
 

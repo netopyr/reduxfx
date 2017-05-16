@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.examples.screenswitch.view;
 
 import com.netopyr.reduxfx.examples.screenswitch.state.Screen;
 import com.netopyr.reduxfx.examples.screenswitch.actions.Actions;
-import com.netopyr.reduxfx.examples.screenswitch.state.AppModel;
+import com.netopyr.reduxfx.examples.screenswitch.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Button;
@@ -14,7 +14,7 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stages;
 
 public class ViewManager {
 
-    public static VNode view(AppModel state) {
+    public static VNode view(AppState state) {
         return Stages()
                 .children(
                         Stage()

@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.examples.fxml.updater;
 
 import com.netopyr.reduxfx.examples.fxml.actions.IncCounterAction;
-import com.netopyr.reduxfx.examples.fxml.state.AppModel;
+import com.netopyr.reduxfx.examples.fxml.state.AppState;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ public class Updater {
     private Updater() {
     }
 
-    public static AppModel update(AppModel state, Object action) {
+    public static AppState update(AppState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 

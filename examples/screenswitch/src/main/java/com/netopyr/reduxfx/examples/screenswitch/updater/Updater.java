@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.examples.screenswitch.updater;
 
 import com.netopyr.reduxfx.examples.screenswitch.actions.SwitchScreenAction;
-import com.netopyr.reduxfx.examples.screenswitch.state.AppModel;
+import com.netopyr.reduxfx.examples.screenswitch.state.AppState;
 import javaslang.API;
 
 import java.util.Objects;
@@ -14,8 +14,8 @@ import static javaslang.Predicates.instanceOf;
 /**
  * The {@code Updater} is the heart of every ReduxFX-application. This is where the main application logic resides.
  * <p>
- * An {@code Updater} consists of a single function ({@link #update(AppModel, Object)} in this class), which takes
- * the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the new state from that.
+ * An {@code Updater} consists of a single function ({@link #update(AppState, Object)} in this class), which takes
+ * the current state (an instance of {@link AppState}) and an {@link Action} and calculates the new state from that.
  * <p>
  * Please note that {@code Updater} has no internal state. Everything that is needed for {@code update} is passed in
  * the parameters.
@@ -29,21 +29,21 @@ public class Updater {
      * The method {@code update} is the central piece of the TodoMVC-application. The whole application logic is
      * implemented here.
      * <p>
-     * This method takes the current state (an instance of {@link AppModel}) and an {@link Action} and calculates the
+     * This method takes the current state (an instance of {@link AppState}) and an {@link Action} and calculates the
      * new state from that.
      * <p>
      * Please note that {@code update} does not require any internal state. Everything that is needed, is passed in the
      * parameters. Also {@code update} has no side effects. It is a pure function.
      * <p>
-     * Also please note, that {@code AppModel} is an immutable data structure. This means that {@code update} does not
-     * modify the old state, but instead creates a new instance of {@code AppModel}, if anything changes.
+     * Also please note, that {@code AppState} is an immutable data structure. This means that {@code update} does not
+     * modify the old state, but instead creates a new instance of {@code AppState}, if anything changes.
      *
      * @param state  the current state
      * @param action the {@code Action} that needs to be performed
      * @return the new state
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static AppModel update(AppModel state, Object action) {
+    public static AppState update(AppState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
@@ -53,7 +53,7 @@ public class Updater {
         // to newState.
         return Match(action).of(
 
-                // If the action is a NewTextFieldChangedAction, we return a new AppModel with the
+                // If the action is a NewTextFieldChangedAction, we return a new AppState with the
                 // property newTodoText set to the new value
                 API.Case(instanceOf(SwitchScreenAction.class),
                         switchScreenAction ->

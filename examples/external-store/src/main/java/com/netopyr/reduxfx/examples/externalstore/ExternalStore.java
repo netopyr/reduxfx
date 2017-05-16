@@ -4,7 +4,7 @@ import com.glung.redux.Store;
 import com.netopyr.reduxfx.examples.externalstore.reducer.Reducer;
 import com.netopyr.reduxfx.examples.externalstore.view.MainView;
 import com.netopyr.reduxfx.examples.externalstore.actions.Actions;
-import com.netopyr.reduxfx.examples.externalstore.state.AppModel;
+import com.netopyr.reduxfx.examples.externalstore.state.AppState;
 import com.netopyr.reduxfx.vscenegraph.ReduxFXView;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
@@ -20,11 +20,11 @@ public class ExternalStore extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Create a store with redux-java
-        final Store<AppModel> store = (Store<AppModel>) Store.createStore(Reducer::reduce, AppModel.create(), null);
+        final Store<AppState> store = (Store<AppState>) Store.createStore(Reducer::reduce, AppState.create(), null);
 
         // ReduxFX uses reactive streams to handle its inputs and outputs
         // To handle the input, we create a Publisher that contains all elements emitted by the store
-        final Flowable<AppModel> statePublisher = Flowable.create(
+        final Flowable<AppState> statePublisher = Flowable.create(
                 emitter -> store.subscribe(() -> emitter.onNext(store.getState())),
                 BackpressureStrategy.BUFFER
         );
@@ -34,7 +34,7 @@ public class ExternalStore extends Application {
         actionSubscriber.subscribe(store::dispatch);
 
         // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
-        final ReduxFXView<AppModel> view = ReduxFXView.createStage(MainView::view, primaryStage);
+        final ReduxFXView<AppState> view = ReduxFXView.createStage(MainView::view, primaryStage);
 
         // Connect store and view
         view.connect(statePublisher, actionSubscriber);

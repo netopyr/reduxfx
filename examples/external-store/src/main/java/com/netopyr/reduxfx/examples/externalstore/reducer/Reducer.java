@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.examples.externalstore.reducer;
 
 import com.netopyr.reduxfx.examples.externalstore.actions.IncCounterAction;
-import com.netopyr.reduxfx.examples.externalstore.state.AppModel;
+import com.netopyr.reduxfx.examples.externalstore.state.AppState;
 import javaslang.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +21,12 @@ public class Reducer {
     private Reducer() {
     }
 
-    public static AppModel reduce(AppModel state, Object action) {
+    public static AppState reduce(AppState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
         // Here we assign the new state
-        final AppModel newState =
+        final AppState newState =
 
                 // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
                 // in Java, except that it is much more flexible and that it can be used as an expression.
@@ -34,7 +34,7 @@ public class Reducer {
                 // will be assigned to newState.
                 Match(action).of(
 
-                        // If the action is a UpdateColorAction, we return a new AppModel with the
+                        // If the action is a UpdateColorAction, we return a new AppState with the
                         // property color set to the new value.
                         API.Case(instanceOf(IncCounterAction.class),
                                 incCounterAction -> state.withCounter(state.getCounter() + 1)

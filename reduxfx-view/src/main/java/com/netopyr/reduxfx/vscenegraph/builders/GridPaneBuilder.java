@@ -4,6 +4,8 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
 import javaslang.collection.Array;
 import javaslang.collection.Map;
 import javaslang.control.Option;
@@ -15,6 +17,8 @@ public class GridPaneBuilder<BUILDER extends GridPaneBuilder<BUILDER>> extends P
 
     private static final String HGAP = "hgap";
     private static final String VGAP = "vgap";
+    private static final String COLUMN_CONSTRAINTS = "columnConstraints";
+    private static final String ROW_CONSTRAINTS = "rowConstraints";
 
     public GridPaneBuilder(Class<?> nodeClass,
                            Map<String, Array<VNode>> childrenMap,
@@ -40,6 +44,20 @@ public class GridPaneBuilder<BUILDER extends GridPaneBuilder<BUILDER>> extends P
 
     public BUILDER vgap(double value) {
         return property(VGAP, value);
+    }
+
+    public BUILDER columnContraints(ColumnConstraints... values) {
+        return property(COLUMN_CONSTRAINTS, values == null? Array.empty() : Array.of(values));
+    }
+    public BUILDER columnContraints(Iterable<ColumnConstraints> constraints) {
+        return property(COLUMN_CONSTRAINTS, constraints == null? Array.empty() : Array.ofAll(constraints));
+    }
+
+    public BUILDER rowConstraints(RowConstraints... values) {
+        return property(ROW_CONSTRAINTS, values == null? Array.empty() : Array.of(values));
+    }
+    public BUILDER rowConstraints(Iterable<RowConstraints> constraints) {
+        return property(ROW_CONSTRAINTS, constraints == null? Array.empty() : Array.ofAll(constraints));
     }
 
     @Override
