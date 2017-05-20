@@ -4,9 +4,22 @@
 
     <groupId>com.netopyr.reduxfx</groupId>
     <artifactId>reduxfx-all</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
+
+    <modules>
+        <module>reduxfx-lib</module>
+        <module>reduxfx-jfoenix</module>
+        <module>reduxfx-fontawesomefx</module>
+        <module>samples</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <licenses>
         <license>
@@ -16,33 +29,13 @@
         </license>
     </licenses>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-        <maven.deploy.skip>true</maven.deploy.skip>
-    </properties>
-
-    <modules>
-        <module>reduxfx-lib</module>
-        <module>reduxfx-jfoenix</module>
-        <module>reduxfx-fontawesomefx</module>
-        <module>samples</module>
-    </modules>
-
     <developers>
         <developer>
             <name>Michael Heinrichs</name>
             <email>michael.heinrichs@netopyr.com</email>
-            <url>http://blog.netopyr.com</url>
+            <url>https://netopyr.com</url>
         </developer>
     </developers>
-
-    <repositories>
-        <repository>
-            <id>bintray</id>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
 
     <scm>
         <connection>scm:git:https://github.com/netopyr/reduxfx.git</connection>
@@ -109,5 +102,12 @@
             </build>
         </profile>
     </profiles>
+
+    <repositories>
+        <repository>
+            <id>bintray</id>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
 
 </project>
