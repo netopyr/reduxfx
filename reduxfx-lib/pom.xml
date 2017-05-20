@@ -4,7 +4,7 @@
 
     <groupId>com.netopyr.reduxfx</groupId>
     <artifactId>reduxfx</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2-SNAPSHOT</version>
 
     <name>ReduxFX</name>
     <description>Redux Architecture for JavaFX</description>
@@ -35,7 +35,7 @@
         <connection>scm:git:https://github.com/netopyr/reduxfx.git</connection>
         <developerConnection>scm:git:git@github.com:netopyr/reduxfx.git</developerConnection>
         <url>https://github.com/netopyr/reduxfx</url>
-        <tag>0.3.1</tag>
+        <tag>0.3.0</tag>
     </scm>
 
     <distributionManagement>
