@@ -17,6 +17,7 @@ public final class Actions {
      * This {@link Action} is passed to the {@link com.netopyr.reduxfx.todo.updater.Updater} when a new
      * {@link com.netopyr.reduxfx.todo.state.TodoEntry} should be created and added to the list.
      *
+     * @param screen The {@link Screen} to switch to
      * @return the {@code AddTodoAction}
      */
     public static Action switchScreen(Screen screen) {

@@ -26,9 +26,11 @@ public final class TodoEntry {
 
 
     /**
-     * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
+     * The method {@code create} returns a new instance of {@code TodoEntry} with all properties set to their default values.
      *
      * Default values are: {id: 0, text: "", completed: false, hover: false, editMode: false}
+     *
+     * @return the new {@code TodoEntry}
      */
     public static TodoEntry create() {
         return new TodoEntry(0, "", false, false, false);

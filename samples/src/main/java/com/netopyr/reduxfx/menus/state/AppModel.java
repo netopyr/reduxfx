@@ -29,6 +29,8 @@ public final class AppModel {
      * The method {@code create} returns a new instance of {@code AppModel} with all properties set to their default values.
      *
      * Default values are: {newTodoText: "", todos: Array.empty(), filter: Filter.ALL}
+     *
+     * @return the new {@code AppModel}
      */
     public static AppModel create() {
         return new AppModel(false, Modality.APPLICATION_MODAL);
