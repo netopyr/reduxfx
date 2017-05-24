@@ -13,7 +13,10 @@ import static javaslang.API.Case;
 import static javaslang.API.Match;
 import static javaslang.Predicates.instanceOf;
 
-@SuppressWarnings("WeakerAccess")
+/**
+ * This class implements a reducer as defined by the Redux-architecture. It consists of a single method that
+ * takes the current {@link AppState} and an action and returns the new {@code AppState}.
+ */
 public class Reducer {
 
     private static final Logger LOG = LoggerFactory.getLogger(Reducer.class);
@@ -21,6 +24,14 @@ public class Reducer {
     private Reducer() {
     }
 
+    /**
+     * This method implements the reduce-functionality required for a Redux-store. It takes the current
+     * {@link AppState} and an action and returns the new {@code AppState}
+     *
+     * @param state the current {@code AppState}
+     * @param action the action
+     * @return the new {@code AppState}
+     */
     public static AppState reduce(AppState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
@@ -29,20 +40,20 @@ public class Reducer {
         final AppState newState =
 
                 // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
-                // in Java, except that it is much more flexible and that it can be used as an expression.
+                // in Java, except that it is much more flexible and returns a value.
                 // We check which kind of action was received and in that case-branch we specify the value that
                 // will be assigned to newState.
                 Match(action).of(
 
-                        // If the action is a UpdateColorAction, we return a new AppState with the
-                        // property color set to the new value.
+                        // If the action is a IncCounterAction, we return a new AppState with the
+                        // counter increased by one.
                         API.Case(instanceOf(IncCounterAction.class),
                                 incCounterAction -> state.withCounter(state.getCounter() + 1)
                         ),
 
-                        // This is the default branch of this switch-case. If an unknown Action was passed to the
-                        // updater, we simple return the old state. This is a convention, that is not needed right
-                        // now, but will help once you start to decompose your updater.
+                        // This is the default branch of this switch-case. If an unknown action was passed to the
+                        // updater, we simply return the old state. This is a convention, that is not needed right
+                        // now, but will help once you start to decompose your reducer.
                         Case($(), state)
                 );
 

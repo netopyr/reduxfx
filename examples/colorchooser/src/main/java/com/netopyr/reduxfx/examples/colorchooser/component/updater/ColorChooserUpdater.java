@@ -33,7 +33,7 @@ import static javaslang.Predicates.instanceOf;
  * See {@link ColorChooserComponent} for more details.
  * <p>
  * Please note that {@code ColorChooserUpdater} has no internal state. Everything that is needed for {@code update}
- * is passed in the parameters.
+ * is passed in the parameters. This makes it very easy to understand the code and write tests for it.
  */
 public class ColorChooserUpdater {
 
@@ -41,22 +41,23 @@ public class ColorChooserUpdater {
     }
 
     /**
-     * The method {@code update} is the central piece of the
-     * {@link ColorChooserComponent}. The whole logic is implemented here.
+     * The method {@code update} is the central piece of the application. The whole application logic is implemented
+     * here.
      * <p>
-     * This method takes the current state (an instance of {@link ColorChooserState}) and an action
-     * and calculates the new state from that and optionally all of the commands which are needed to speak to the
-     * outside world.
+     * This method takes the current state (an instance of {@link ColorChooserState}) and an action and calculates the
+     * new state from that.
      * <p>
      * Please note that {@code update} does not require any internal state. Everything that is needed, is passed in the
-     * parameters. Also {@code update} has no side effects. It is a pure function.
+     * parameters. Also {@code update} has no side effects. It is a pure function. This makes it very easy to understand
+     * the code and write tests for it.
      * <p>
-     * Also please note, that {@code ColorChooserModel} is an immutable data structure. This means that {@code update}
-     * does not modify the old state, but instead creates a new instance of {@code ColorChooserModel}, if anything changes.
+     * Also please note, that {@code ColorChooserState} is an immutable data structure. This means that {@code update}
+     * does not modify the old state, but instead creates a new instance of {@code ColorChooserState}, if anything
+     * changes.
      *
-     * @param state  the current state
-     * @param action the {@code ColorChooserAction} that needs to be performed
-     * @return the new state
+     * @param state  the current {@code ColorChooserState}
+     * @param action the action that needs to be performed
+     * @return the new {@code ColorChooserState}
      * @throws NullPointerException if state or action are {@code null}
      */
     public static Update<ColorChooserState> update(ColorChooserState state, Object action) {
@@ -64,9 +65,8 @@ public class ColorChooserUpdater {
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
         // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
-        // in Java, except that it is much more flexible and that it can be used as an expression.
-        // We check which kind of action was received and in that case-branch we specify the value that
-        // will be assigned to newState.
+        // in Java, except that it is much more flexible and returns a value.
+        // We check which of the cases is true and in that branch we specify the newState.
         return Match(action).of(
 
                 // If the action is a UpdateRedAction, we return a new ColorChooserModel with the
@@ -120,8 +120,8 @@ public class ColorChooserUpdater {
                             );
                         }),
 
-                // This is the default branch of this switch-case. If an unknown Action was passed to the
-                // updater, we simple return the old state. This is a convention, that is not needed right
+                // This is the default branch of this switch-case. If an unknown action was passed to the
+                // updater, we simply return the old state. This is a convention, that is not needed right
                 // now, but will help once you start to decompose your updater.
                 Case($(), Update.of(state))
 
