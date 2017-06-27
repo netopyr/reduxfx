@@ -17,13 +17,13 @@ public class HelloWorld extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // Setup the initial state
-        final AppState initialState = AppState.create();
+        final Integer initialCounter = 0;
 
         // Setup the ReduxFX-store passing the initialState and the update-function
-        final SimpleReduxFXStore<AppState> store = new SimpleReduxFXStore<>(initialState, Updater::update);
+        final SimpleReduxFXStore<Integer> store = new SimpleReduxFXStore<>(initialCounter, Updater::update);
 
         // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
-        final ReduxFXView<AppState> view = ReduxFXView.createStage(MainView::view, primaryStage);
+        final ReduxFXView<Integer> view = ReduxFXView.createStage(MainView::view, primaryStage);
 
         // Connect store and view
         view.connect(store.getStatePublisher(), store.createActionSubscriber());

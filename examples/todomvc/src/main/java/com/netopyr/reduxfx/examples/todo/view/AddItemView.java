@@ -19,6 +19,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.TextField;
  */
 class AddItemView {
 
+    private AddItemView() {}
+
     /**
      * The method {@code AddItemView} calculates a new AddItem-component for the given state.
      * <p>
@@ -26,6 +28,7 @@ class AddItemView {
      *
      * @param state the current state
      * @return the root {@link VNode} of the created part of the VirtualScenegraph
+     * @throws NullPointerException if {@code state} is {@code null}
      */
     static VNode AddItemView(AppState state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");

@@ -23,6 +23,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.TextField;
  */
 class ItemView {
 
+    private ItemView() {}
+
     /**
      * The method {@code ItemView} calculates a new visual component for the given {@link TodoEntry}.
      * <p>
@@ -33,6 +35,7 @@ class ItemView {
      *
      * @param todoEntry the {@code TodoEntry} that contains the data of this element
      * @return the root {@link VNode} of the created VirtualScenegraph
+     * @throws NullPointerException if {@code state} is {@code null}
      */
     static VNode ItemView(TodoEntry todoEntry) {
         Objects.requireNonNull(todoEntry, "The parameter 'todoEntry' must not be null");

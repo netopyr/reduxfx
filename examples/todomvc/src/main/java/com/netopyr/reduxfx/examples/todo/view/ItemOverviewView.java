@@ -15,6 +15,8 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.ListView;
  */
 class ItemOverviewView {
 
+    private ItemOverviewView() {}
+
     /**
      * The method {@code ItemOverviewView} calculates a new ItemOverview-component for the given state.
      * <p>
@@ -23,6 +25,7 @@ class ItemOverviewView {
      *
      * @param state the current state
      * @return the root {@link VNode} of the created part of the VirtualScenegraph
+     * @throws NullPointerException if {@code state} is {@code null}
      */
     static VNode ItemOverviewView(AppState state) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");

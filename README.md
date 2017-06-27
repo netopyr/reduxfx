@@ -36,6 +36,27 @@ dependencies {
 }
 ```
 
+ReduxFX in 5 minutes
+--------------------
+Every ReduxFX application is structured in a simple, unidirectional cycle.
+The cycle consists of four components and four data-structures which are passed between the components.
+All communication flows in a single direction only.
+The following picture gives you an overview over the architeture of a ReduxFX application.
+
+### ADD architecture picture
+
+To understand how a ReduxFX application works, we will look at a simple "Hello World"-application.
+It contains a single window with a button and a label that shows how often the button was clicked.
+
+### ADD hello world screenshot
+
+
+
+
+
+
+The architecture of a ReduxFX application can be seen in the following
+
 Functional Reactive UI Programming
 ----------------------------------
 > The following section is a brief introduction of the core concepts of functional reactive UI programming taken from my article ["MVC is dead - what comes next?"][mvc is dead] If you are familiar with functional reactive UI programming and already bought into it, you can jump straight to the [TodoMVC JavaFX example](#todomvc-javafx-example).

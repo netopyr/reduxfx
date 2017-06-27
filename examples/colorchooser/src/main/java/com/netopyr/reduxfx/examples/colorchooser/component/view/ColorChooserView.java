@@ -1,29 +1,31 @@
 package com.netopyr.reduxfx.examples.colorchooser.component.view;
 
-import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserState;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.ColorChooserActions;
+import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserState;
 import com.netopyr.reduxfx.vscenegraph.VNode;
+
+import java.util.Objects;
 
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Slider;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
 
 /**
- * The class {@code ColorChooserView} is responsible for mapping the current state of the component, an instance of
+ * The class {@code MainView} is responsible for mapping the current state of the application, an instance of
  * {@link ColorChooserState}, to the respective VirtualScenegraph, which is then used to update the UI.
  * <p>
- * Every time a new application state becomes available, the method {@link #view(ColorChooserState)} is called and
- * a new VirtualScenegraph created. A VirtualScenegraph is a data structure that describes the state of the real
+ * Every time a new application state becomes available, the method {@link #view(ColorChooserState)} is called, which creates
+ * a new VirtualScenegraph. A VirtualScenegraph is a data structure that describes the state of the real
  * JavaFX Scenegraph. The ReduxFX runtime analyzes the VirtualScenegraph, calculates the difference between the
- * current Scenegraph and the new Scenegraph and applies the changes. This is done transparently without the developer
- * being aware of it.
+ * current VirtualScenegraph and the new VirtualScenegraph and applies the changes. This is done transparently without
+ * the developer being aware of it.
  * <p>
- * The advantage of this approach is, that the user does not have to worry about the current state of the Scenegraph
- * and eventual state changes, but can simply define a fresh UI with no past. This is a lot simpler than working with
- * a mutable Scenegraph directly.
+ * The advantage of this approach is, that an application developer does not have to worry about the current state of
+ * the Scenegraph and eventual state changes. Instead he can simply define a fresh UI with no past. This is a lot
+ * simpler than working with a mutable Scenegraph directly.
  * <p>
- * The ReduxFX-API dealing with creating the creation of the VirtualScenegraph was designed to allow a declarative
- * definition of the VirtualScenegraph. Methods starting with a capital letter create {@code Node}s while methods starting
- * with a small letter setup properties of the {@code Node}s.
+ * The ReduxFX-API was designed to allow a declarative definition of the VirtualScenegraph. Methods starting with a
+ * capital letter create {@code Node}s while methods starting with a small letter define properties and events of the
+ * {@code Node}s.
  */
 public class ColorChooserView {
 
@@ -37,8 +39,10 @@ public class ColorChooserView {
      *
      * @param state the current state
      * @return the root {@link VNode} of the created VirtualScenegraph
+     * @throws NullPointerException if {@code state} is {@code null}
      */
     public static VNode view(ColorChooserState state) {
+        Objects.requireNonNull(state, "The parameter 'state' must not be null");
 
         return VBox()
                 .spacing(10.0)
