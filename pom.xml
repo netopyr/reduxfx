@@ -13,6 +13,7 @@
         <module>reduxfx-view</module>
         <module>reduxfx-jfoenix</module>
         <module>reduxfx-fontawesomefx</module>
+        <module>reduxfx-fxml</module>
 
         <module>examples/colorchooser</module>
         <module>examples/menus</module>

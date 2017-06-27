@@ -25,6 +25,16 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.netopyr.reduxfx</groupId>
+            <artifactId>reduxfx-fxml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.lestard</groupId>
+            <artifactId>easy-di</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
