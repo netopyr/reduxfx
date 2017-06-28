@@ -36,6 +36,7 @@ dependencies {
 }
 ```
 
+<!--
 ReduxFX in 5 minutes
 --------------------
 Every ReduxFX application is structured in a simple, unidirectional cycle.
@@ -49,7 +50,7 @@ To understand how a ReduxFX application works, we will look at a simple "Hello W
 It contains a single window with a button and a label that shows how often the button was clicked.
 
 ### ADD hello world screenshot
-
+-->
 
 
 
