@@ -7,9 +7,9 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

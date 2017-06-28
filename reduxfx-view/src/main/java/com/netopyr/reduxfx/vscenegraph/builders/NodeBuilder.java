@@ -11,9 +11,9 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

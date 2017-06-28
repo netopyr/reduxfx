@@ -6,7 +6,7 @@ import com.netopyr.reduxfx.vscenegraph.impl.patcher.NodeBuilder;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javaslang.control.Option;
+import io.vavr.control.Option;
 
 import java.util.function.Consumer;
 

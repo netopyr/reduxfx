@@ -2,9 +2,9 @@ package com.netopyr.reduxfx.vscenegraph.impl.patcher.property;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.impl.patcher.NodeBuilder;
-import javaslang.Tuple;
-import javaslang.Tuple2;
-import javaslang.collection.Array;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.collection.Array;
 
 import java.lang.invoke.MethodHandle;
 import java.util.List;

@@ -17,7 +17,7 @@ import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import de.jensd.fx.glyphs.materialstackicons.MaterialStackIconView;
 import de.jensd.fx.glyphs.octicons.OctIconView;
 import de.jensd.fx.glyphs.weathericons.WeatherIconView;
-import javaslang.collection.HashMap;
+import io.vavr.collection.HashMap;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class FontAwesomeFX {

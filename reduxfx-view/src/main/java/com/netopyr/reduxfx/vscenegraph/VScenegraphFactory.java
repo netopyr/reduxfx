@@ -37,8 +37,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javaslang.collection.Array;
-import javaslang.collection.HashMap;
+import io.vavr.collection.Array;
+import io.vavr.collection.HashMap;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class VScenegraphFactory {

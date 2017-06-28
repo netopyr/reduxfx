@@ -3,10 +3,10 @@ package com.netopyr.reduxfx.vscenegraph.impl.differ.patches;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.collection.Vector;
-import javaslang.control.Option;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
+import io.vavr.collection.Vector;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

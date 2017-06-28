@@ -6,7 +6,7 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.scene.control.Dialog;
 import javafx.stage.Modality;
-import javaslang.control.Option;
+import io.vavr.control.Option;
 
 import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;

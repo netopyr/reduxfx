@@ -1,6 +1,6 @@
 package com.netopyr.reduxfx.vscenegraph.property;
 
-import javaslang.control.Option;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

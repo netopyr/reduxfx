@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.vscenegraph.impl.differ.patches;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javaslang.collection.Vector;
-import javaslang.control.Option;
+import io.vavr.collection.Vector;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

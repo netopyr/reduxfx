@@ -8,9 +8,9 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

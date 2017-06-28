@@ -10,11 +10,11 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javaslang.Tuple;
-import javaslang.Tuple2;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

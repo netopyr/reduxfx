@@ -2,14 +2,13 @@ package com.netopyr.reduxfx.examples.colorchooser.app.updater;
 
 import com.netopyr.reduxfx.examples.colorchooser.app.actions.UpdateColorAction;
 import com.netopyr.reduxfx.examples.colorchooser.app.state.AppState;
-import javaslang.API;
 
 import java.util.Objects;
 
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 /**
  * The {@code Updater} is the heart of every ReduxFX-application. This is where the main application logic resides.
@@ -48,14 +47,14 @@ public class Updater {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
+        // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
         // in Java, except that it is much more flexible and returns a value.
         // We check which of the cases is true and in that branch we specify the newState.
         return Match(action).of(
 
                 // If the action is a UpdateColorAction, we return a new AppState with the
                 // property color set to the new value.
-                API.Case(instanceOf(UpdateColorAction.class),
+                Case($(instanceOf(UpdateColorAction.class)),
                         updateColorAction -> state.withColor(updateColorAction.getValue())
                 ),
 

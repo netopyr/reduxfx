@@ -8,9 +8,9 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.stage.WindowEvent;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.CLOSE_REQUEST;
 

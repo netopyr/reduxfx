@@ -7,7 +7,7 @@ import com.netopyr.reduxfx.jfoenix.builders.JFXButtonBuilder;
 import com.netopyr.reduxfx.jfoenix.builders.JFXProgressBarBuilder;
 import com.netopyr.reduxfx.jfoenix.builders.JFXTextFieldBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.Factory;
-import javaslang.collection.HashMap;
+import io.vavr.collection.HashMap;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class JFoenix {

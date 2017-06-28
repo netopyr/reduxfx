@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.vscenegraph.impl.patcher.property;
 
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.collections.ObservableList;
-import javaslang.collection.Seq;
+import io.vavr.collection.Seq;
 
 import java.lang.invoke.MethodHandle;
 import java.util.Collections;

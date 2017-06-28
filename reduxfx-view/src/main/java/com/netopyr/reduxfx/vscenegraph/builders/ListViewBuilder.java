@@ -6,10 +6,10 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.collection.Seq;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

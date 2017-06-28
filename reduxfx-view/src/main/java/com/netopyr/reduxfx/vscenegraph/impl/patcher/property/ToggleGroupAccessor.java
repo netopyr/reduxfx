@@ -6,9 +6,9 @@ import javafx.beans.property.ReadOnlyProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 
 import java.util.function.Consumer;
 

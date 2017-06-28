@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.vscenegraph.impl.patcher;
 
+import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.AppendPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.AttributesPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.Patch;
@@ -8,11 +9,11 @@ import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.SetChildrenPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.SetSingleChildPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.UpdateRootPatch;
-import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
-import javaslang.collection.Map;
-import javaslang.collection.Vector;
-import javaslang.control.Option;
+import io.vavr.API;
+import io.vavr.collection.Map;
+import io.vavr.collection.Vector;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +21,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.netopyr.reduxfx.vscenegraph.impl.patcher.NodeUtilities.getProperty;
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.API.run;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.API.run;
+import static io.vavr.Predicates.instanceOf;
 
 public class Patcher {
 
@@ -48,57 +49,60 @@ public class Patcher {
                     continue;
                 }
 
+                //noinspection RedundantTypeArguments
                 Match(patch).of(
 
-                        Case(instanceOf(AppendPatch.class),
+                        Case($(instanceOf(AppendPatch.class)),
                                 appendPatch -> run(() ->
                                         doAppend(dispatcher, node, appendPatch)
                                 )
                         ),
 
-                        Case(instanceOf(ReplacePatch.class),
+                        Case($(instanceOf(ReplacePatch.class)),
                                 replacePatch -> run(() ->
                                         doReplace(dispatcher, node, replacePatch)
                                 )
                         ),
 
-                        Case(instanceOf(RemovePatch.class),
+                        Case($(instanceOf(RemovePatch.class)),
                                 removePatch -> run(() ->
                                         doRemove(node, removePatch)
                                 )
                         ),
 
-                        Case(instanceOf(AttributesPatch.class),
+                        Case($(instanceOf(AttributesPatch.class)),
                                 attributesPatch -> run(() ->
                                         doAttributes(dispatcher, node, attributesPatch)
                                 )
                         ),
 
-//                    Case(instanceOf(OrderPatch.class),
+//                    Case($(instanceOf(OrderPatch.class)),
 //                            replacePatch -> run(() -> doReplace(node, replacePatch))
 //                    ),
 
-                        Case(instanceOf(SetSingleChildPatch.class),
+                        Case($(instanceOf(SetSingleChildPatch.class)),
                                 setSingleChildPatch -> run(() ->
                                         doSetSingleChild(dispatcher, node, setSingleChildPatch)
                                 )
                         ),
 
-                        Case(instanceOf(SetChildrenPatch.class),
+                        Case($(instanceOf(SetChildrenPatch.class)),
                                 setChildrenPatch -> run(() ->
                                         doSetChildren(dispatcher, node, setChildrenPatch)
                                 )
                         ),
 
-                        Case(instanceOf(UpdateRootPatch.class),
+                        Case($(instanceOf(UpdateRootPatch.class)),
                                 updateRootPatch -> run(() ->
                                         doUpdateRoot(dispatcher, node, updateRootPatch)
                                 )
                         ),
 
-                        Case($(), o -> run(() -> {
-                            throw new IllegalArgumentException("Unknown patch received " + patch);
-                        }))
+                        Case(API.<Patch>$(),
+                                o -> run(() -> {
+                                    throw new IllegalArgumentException("Unknown patch received " + patch);
+                                })
+                        )
                 );
             }
         }
@@ -107,7 +111,7 @@ public class Patcher {
 
     @SuppressWarnings("unchecked")
     private static void doAppend(Consumer<Object> dispatcher, Object parent, AppendPatch patch) {
-        if (! (parent instanceof List)) {
+        if (!(parent instanceof List)) {
             LOG.error("Unable to add node to parent class {}", parent.getClass());
             return;
         }
@@ -125,7 +129,7 @@ public class Patcher {
 
     @SuppressWarnings("unchecked")
     private static void doReplace(Consumer<Object> dispatcher, Object parent, ReplacePatch patch) {
-        if (! (parent instanceof List)) {
+        if (!(parent instanceof List)) {
             LOG.error("Unable to replace node from parent class {}", parent.getClass());
             return;
         }
@@ -142,7 +146,7 @@ public class Patcher {
     }
 
     private static void doRemove(Object parent, RemovePatch patch) {
-        if (! (parent instanceof List)) {
+        if (!(parent instanceof List)) {
             LOG.error("Unable to add node to parent class {}", parent.getClass());
             return;
         }
