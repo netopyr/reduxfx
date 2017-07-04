@@ -26,6 +26,7 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     private static final String STYLE_CLASS = "styleClass";
     private static final String VISIBLE = "visible";
     private static final String HGROW = "hgrow";
+    private static final String VGROW = "vgrow";
     private static final String TOP_ANCHOR = "topAnchor";
     private static final String BOTTOM_ANCHOR = "bottomAnchor";
     private static final String LEFT_ANCHOR = "leftAnchor";
@@ -108,9 +109,12 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
         return onEvent(MOUSE_CLICKED, eventHandler);
     }
 
-
     public BUILDER hgrow(Priority value) {
         return property(HGROW, value);
+    }
+
+    public BUILDER vgrow(Priority value) {
+        return property(VGROW, value);
     }
 
     public BUILDER bottomAnchor(double value) {
