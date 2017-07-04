@@ -21,6 +21,7 @@
         <module>examples/external-store</module>
         <module>examples/fxml</module>
         <module>examples/helloworld</module>
+        <module>examples/treeview</module>
     </modules>
 
     <properties>
