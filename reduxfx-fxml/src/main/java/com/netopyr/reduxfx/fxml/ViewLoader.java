@@ -1,4 +1,4 @@
-package com.netopyr.reduxfx.examples.fxml.reduxjavafx;
+package com.netopyr.reduxfx.fxml;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,9 +8,32 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * {@link ViewLoader} is a generic JavaFX FXML util that can load
+ * FXML hierarchies based on a root Controller class.
+ * <p/>
+ * The standard JavaFX {@link FXMLLoader} uses {@link java.net.URL} to define
+ * the FXML file that should be loaded. However, this results in Code that
+ * has to handle the path of the FXML file with Strings.
+ * This can be error-prone and annoying.
+ * <p/>
+ * In contrast to the {@link FXMLLoader} the {@link ViewLoader} don't uses
+ * Strings to define the FXML file that should be loaded.
+ * Instead it is based on a naming convention and the usage of {@link Class} references.
+ * <p/>
+ * To load an FXML file you use a class reference of the Controller class of this FXML file
+ * as argument to the {@link ViewLoader#load(Class)}.
+ * In order to get this to work the FXML file has to be placed in the same package as the
+ * Controller class and the Controller class has to have the same name as the FXML file (excluding file extension).
+ * <p/>
+ * For example imagine a controller class <code>com.netopyr.reduxfx.fxml.MyView</code>.
+ * The Fxml file has to be <code>/com/netopyr/reduxfx/fxml/MyView.fxml</code>.
+ *
+ */
 public class ViewLoader {
 
-    public static class Tuple <T extends View> {
+    public static class Tuple <T> {
         private Parent parent;
         private T controller;
 
@@ -44,11 +67,22 @@ public class ViewLoader {
         ViewLoader.injector = injector;
     }
 
-    public static void setResourceBundle(ResourceBundle resourceBundle) {
+	/**
+	 * Set the resource bundle that is used by the {@link ViewLoader}.
+	 * @param resourceBundle the resource bundle to use.
+	 */
+	public static void setResourceBundle(ResourceBundle resourceBundle) {
         ViewLoader.resourceBundle = resourceBundle;
     }
 
-    public static <T extends Parent> T load(Class<? extends View> viewClass) {
+	/**
+	 * Load the FXML file for the given controller class reference.
+	 *
+	 * @param viewClass a reference to the controller class. The class name and package has to match the FXML filename and path.
+	 * @param <T> The type of the root element in the FXML file or any parent class.
+	 * @return the loading JavaFX node.
+	 */
+    public static <T extends Parent> T load(Class<?> viewClass) {
         final FXMLLoader fxmlLoader = createFxmlLoader(viewClass);
 
         try {
@@ -59,8 +93,16 @@ public class ViewLoader {
     }
 
 
-    @SuppressWarnings("unchecked")
-    public static <T extends View> Tuple<T> loadTuple(Class<T> viewClass) {
+	/**
+	 * This method is similar to {@link #load(Class)} with the exception that
+	 * this method returns a tuple that not only contains the loaded root element
+	 * but also the controller instance of the root view.
+	 *
+	 * @param viewClass a reference to the controller class. The class name and package has to match the FXML filename and path.
+	 * @param <T> The type of the root element in the FXML file or any parent class.
+	 * @return a tuple of the controller class and the root node.
+	 */
+    public static <T> Tuple<T> loadTuple(Class<T> viewClass) {
         final FXMLLoader fxmlLoader = createFxmlLoader(viewClass);
 
         try {
@@ -70,7 +112,7 @@ public class ViewLoader {
         }
     }
 
-    private static FXMLLoader createFxmlLoader(Class<? extends View> viewClass) {
+    private static FXMLLoader createFxmlLoader(Class<?> viewClass) {
         final String fxmlPathAsString = createFxmlPath(viewClass);
         final URL fxmlPath = ViewLoader.class.getResource(fxmlPathAsString);
 
