@@ -117,7 +117,8 @@ public class NodeUtilities {
                     .filter(method -> setterName.equals(method.getName()))
                     .filter(method -> method.getParameterCount() == 1)
                     .headOption()
-                    .flatMap(NodeUtilities::convertToMethodHandle);
+                    .flatMap(NodeUtilities::convertToMethodHandle)
+                    .map(MethodHandle::asFixedArity);
         } catch (Exception ex) {
             return Option.none();
         }
