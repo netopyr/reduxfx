@@ -17,6 +17,7 @@ import com.netopyr.reduxfx.vscenegraph.builders.ProgressBarBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ProgressIndicatorBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ScrollPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.SliderBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.SplitPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextFieldBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextInputControlBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TitledPaneBuilder;
@@ -211,6 +212,10 @@ public class VScenegraphFactory {
         return Factory.node(ContextMenu.class, () -> new ContextMenuBuilder<>(ContextMenu.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
+
+    public static <CLASS extends SplitPaneBuilder<CLASS>> SplitPaneBuilder<CLASS> SplitPane() {
+        return Factory.node(SplitPane.class, () -> new SplitPaneBuilder<CLASS>(SplitPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
 
 
 //    @SafeVarargs

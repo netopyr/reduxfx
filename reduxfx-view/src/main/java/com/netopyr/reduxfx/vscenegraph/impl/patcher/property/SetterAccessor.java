@@ -17,7 +17,19 @@ public class SetterAccessor implements Accessor {
     public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
         if (vProperty.isValueDefined()) {
             try {
-                setter.invoke(node, vProperty.getValue());
+                final Object value = vProperty.getValue();
+
+                if (value instanceof int[]) {
+                    setter.invoke(node, (int[]) value);
+                } else if (value instanceof double[]) {
+                    setter.invoke(node, (double[]) value);
+                } else if (value instanceof long[]) {
+                    setter.invoke(node, (long[]) value);
+                } else if (value instanceof float[]) {
+                    setter.invoke(node, (float[]) value);
+                } else {
+                    setter.invoke(node, value);
+                }
             } catch (Throwable throwable) {
                 throw new IllegalStateException("Unable to set property " + name + " from Node-class " + node.getClass(), throwable);
             }
