@@ -18,6 +18,10 @@
     <description>Example demonstrating a menu, a popup menu, and a dialog</description>
     <url>https://github.com/netopyr/reduxfx</url>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
