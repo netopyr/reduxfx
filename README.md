@@ -3,6 +3,7 @@ ReduxFX
 
 Functional Reactive Programming (FRP) for JavaFX
 
+[![Build Status](https://travis-ci.org/netopyr/reduxfx.svg?branch=master)](https://travis-ci.org/netopyr/reduxfx)
 [![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx/reduxfx)
 [![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
 
