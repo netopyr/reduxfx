@@ -13,8 +13,8 @@ Functional Reactive Programming (FRP) for JavaFX
 [![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=vulnerabilities)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Code Smells](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=code_smells)](https://sonarcloud.io/project/issues?id=com.netopyr.reduxfx%3Areduxfx-all&resolved=false&types=CODE_SMELL) 
 [![Duplicated Lines](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures/domain/Duplications?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Technical Dept Ratio](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/?id=nlog) 
-[![Code Coverage](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=coverage)](https://sonarcloud.io/dashboard/?id=nlog) 
+[![Technical Dept Ratio](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Code Coverage](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=coverage)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 
 ReduxFX in 1 minute
 -------------------
