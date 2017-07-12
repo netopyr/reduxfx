@@ -70,12 +70,12 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     }
 
     public BUILDER focused(boolean value, VChangeListener<? super Boolean> listener) {
-        Accessors.registerAccessor(getNodeClass(), "focused", FocusedAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), FOCUSED, FocusedAccessor::new);
         return property(FOCUSED, value, listener);
     }
 
     public BUILDER focused(boolean value) {
-        Accessors.registerAccessor(getNodeClass(), "focused", FocusedAccessor::new);
+        Accessors.registerAccessor(getNodeClass(), FOCUSED, FocusedAccessor::new);
         return property(FOCUSED, value);
     }
 

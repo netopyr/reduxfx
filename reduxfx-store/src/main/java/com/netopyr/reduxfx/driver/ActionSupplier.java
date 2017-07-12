@@ -4,6 +4,6 @@ import org.reactivestreams.Publisher;
 
 public interface ActionSupplier {
 
-    Publisher<?> getActionPublisher();
+    Publisher<Object> getActionPublisher();
 
 }

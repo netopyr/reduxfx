@@ -16,8 +16,8 @@ import io.vavr.control.Option;
 @SuppressWarnings("unused")
 public class DialogBuilder<BUILDER extends DialogBuilder<BUILDER>> extends Builder<BUILDER> {
 
-    public static final String CONTENT_TEXT = "contentText";
-    public static final String HEADER_TEXT = "headerText";
+    private static final String CONTENT_TEXT = "contentText";
+    private static final String HEADER_TEXT = "headerText";
     public static final String MODAL = "modal";
     public static final String SHOWING = "showing";
 

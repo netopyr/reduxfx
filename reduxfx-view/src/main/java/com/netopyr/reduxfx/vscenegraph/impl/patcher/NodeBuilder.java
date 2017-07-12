@@ -29,19 +29,25 @@ public class NodeBuilder {
 
     private static final Logger LOG = LoggerFactory.getLogger(NodeBuilder.class);
 
+    private static final String DISPATCHER_MUST_NOT_BE_NULL = "Dispatcher must not be null";
+    private static final String NODE_MUST_NOT_BE_NULL = "Node must not be null";
+    private static final String VNODE_MUST_NOT_BE_NULL = "VNode must not be null";
+    private static final String PARENT_MUST_NOT_BE_NULL = "Parent must not be null";
+    private static final String NAME_MUST_NOT_BE_NULL = "Name must not be null";
+
     private NodeBuilder() {}
 
     @SuppressWarnings("unchecked")
     public static Option<Object> create(VNode vNode) {
-        Objects.requireNonNull(vNode, "VNode must not be null");
+        Objects.requireNonNull(vNode, VNODE_MUST_NOT_BE_NULL);
         return vNode.produce();
     }
 
     @SuppressWarnings("unchecked")
     public static void init(Consumer<Object> dispatcher, Object node, VNode vNode) {
-        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
-        Objects.requireNonNull(node, "Node must not be null");
-        Objects.requireNonNull(vNode, "VNode must not be null");
+        Objects.requireNonNull(dispatcher, DISPATCHER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(node, NODE_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(vNode, VNODE_MUST_NOT_BE_NULL);
 
         updateProperties(dispatcher, node, vNode.getProperties());
         updateEventHandlers(dispatcher, node, vNode.getEventHandlers().map((name, eventHandler) -> Tuple.of(name, Option.of(eventHandler))));
@@ -51,9 +57,9 @@ public class NodeBuilder {
     }
 
     public static void setSingleChild(Consumer<Object> dispatcher, Object parent, String name, Option<VNode> child) {
-        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
-        Objects.requireNonNull(parent, "Parent must not be null");
-        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(dispatcher, DISPATCHER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(parent, PARENT_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
         Objects.requireNonNull(child, "Child must not be null");
 
         final Option<NodeAccessor> accessor = Accessors.getNodeAccessor(parent, name);
@@ -65,9 +71,9 @@ public class NodeBuilder {
     }
 
     public static void setChildren(Consumer<Object> dispatcher, Object parent, String name, Array<VNode> children) {
-        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
-        Objects.requireNonNull(parent, "Parent must not be null");
-        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(dispatcher, DISPATCHER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(parent, PARENT_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
         Objects.requireNonNull(children, "Children must not be null");
 
         final Option<NodeListAccessor> accessor = Accessors.getNodeListAccessor(parent, name);
@@ -80,8 +86,8 @@ public class NodeBuilder {
 
     @SuppressWarnings("unchecked")
     public static void updateProperties(Consumer<Object> dispatcher, Object node, Map<String, VProperty> properties) {
-        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
-        Objects.requireNonNull(node, "Node must not be null");
+        Objects.requireNonNull(dispatcher, DISPATCHER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(node, NODE_MUST_NOT_BE_NULL);
         Objects.requireNonNull(properties, "Properties must not be null");
 
         for (final Tuple2<String, VProperty> entry : properties) {
@@ -96,8 +102,8 @@ public class NodeBuilder {
 
     @SuppressWarnings("unchecked")
     public static void updateEventHandlers(Consumer<Object> dispatcher, Object node, Map<VEventType, Option<VEventHandler>> eventHandlers) {
-        Objects.requireNonNull(dispatcher, "Dispatcher must not be null");
-        Objects.requireNonNull(node, "Node must not be null");
+        Objects.requireNonNull(dispatcher, DISPATCHER_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(node, NODE_MUST_NOT_BE_NULL);
         Objects.requireNonNull(eventHandlers, "EventHandlers must not be null");
 
         for (final Tuple2<VEventType, Option<VEventHandler>> entry : eventHandlers) {

@@ -26,7 +26,7 @@ All data structures of a ReduxFX application are immutable and all functions are
 This simplifies the creation, testing, and maintenance of code compared to imperative programming, which ultimately leads to faster development and fewer bugs.
 
 All changes and messages "flow" in a single circular stream, which makes it perfectly clear what is going on in your application and helps to quickly find the source of any bug.
-On top of it enables advanced development tools like a "time travelling debugger" that can be used to step back and forth in your application, which again makes it easier to find bugs.
+On top of it, this architecture enables advanced development tools like a "time travelling debugger" that can be used to step back and forth in your application, which again makes it easier to understand the application code and find bugs.
 
 Adding ReduxFX to your project
 ------------------------------

@@ -43,7 +43,7 @@ public class ActionDriver implements Driver {
     }
 
     @Override
-    public Publisher<?> getActionPublisher() {
+    public Publisher<Object> getActionPublisher() {
         return actions;
     }
 }
