@@ -67,6 +67,15 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.11.4</version>
+                <configuration>
+                    <organisation>reduxfx</organisation>
+                    <team>Owners</team>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
