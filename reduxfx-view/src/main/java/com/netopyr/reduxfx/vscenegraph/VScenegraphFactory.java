@@ -50,546 +50,170 @@ public class VScenegraphFactory {
         return new StagesBuilder(Array.empty());
     }
 
-    public static <CLASS extends StageBuilder<CLASS>> StageBuilder<CLASS> Stage() {
+    public static <B extends StageBuilder<B>> StageBuilder<B> Stage() {
         return Factory.node(Stage.class, () -> new StageBuilder<>(Stage.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends SceneBuilder<CLASS>> SceneBuilder<CLASS> Scene() {
+    public static <B extends SceneBuilder<B>> SceneBuilder<B> Scene() {
         return Factory.node(Scene.class, () -> new SceneBuilder<>(Scene.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends NodeBuilder<CLASS>> NodeBuilder<CLASS> customNode(Class<? extends Node> nodeClass) {
+    public static <B extends NodeBuilder<B>> NodeBuilder<B> customNode(Class<? extends Node> nodeClass) {
         return Factory.node(nodeClass, () -> new NodeBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends GroupBuilder<CLASS>> GroupBuilder<CLASS> Group() {
+    public static <B extends GroupBuilder<B>> GroupBuilder<B> Group() {
         return Factory.node(Group.class, () -> new GroupBuilder<>(Group.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends AccordionBuilder<CLASS>> AccordionBuilder<CLASS> Accordion() {
-        return Factory.node(Accordion.class, () -> new AccordionBuilder<CLASS>(Accordion.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    public static <B extends AccordionBuilder<B>> AccordionBuilder<B> Accordion() {
+        return Factory.node(Accordion.class, () -> new AccordionBuilder<B>(Accordion.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends AnchorPaneBuilder<CLASS>> AnchorPaneBuilder<CLASS> AnchorPane() {
-        return Factory.node(AnchorPane.class, () -> new AnchorPaneBuilder<CLASS>(AnchorPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    public static <B extends AnchorPaneBuilder<B>> AnchorPaneBuilder<B> AnchorPane() {
+        return Factory.node(AnchorPane.class, () -> new AnchorPaneBuilder<B>(AnchorPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane(Class<? extends BorderPane> nodeClass) {
+    public static <B extends BorderPaneBuilder<B>> BorderPaneBuilder<B> BorderPane(Class<? extends BorderPane> nodeClass) {
         return Factory.node(nodeClass, () -> new BorderPaneBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends BorderPaneBuilder<CLASS>> BorderPaneBuilder<CLASS> BorderPane() {
+    public static <B extends BorderPaneBuilder<B>> BorderPaneBuilder<B> BorderPane() {
         return BorderPane(BorderPane.class);
     }
 
-    public static <CLASS extends ButtonBaseBuilder<CLASS>> ButtonBaseBuilder<CLASS> ButtonBase() {
+    public static <B extends ButtonBaseBuilder<B>> ButtonBaseBuilder<B> ButtonBase() {
         return Factory.node(ButtonBase.class, () -> new ButtonBaseBuilder<>(ButtonBase.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button(Class<? extends Button> nodeClass) {
+    public static <B extends ButtonBuilder<B>> ButtonBuilder<B> Button(Class<? extends Button> nodeClass) {
         return Factory.node(nodeClass, () -> new ButtonBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends ButtonBuilder<CLASS>> ButtonBuilder<CLASS> Button() {
+    public static <B extends ButtonBuilder<B>> ButtonBuilder<B> Button() {
         return Button(Button.class);
     }
 
-    public static <CLASS extends CheckBoxBuilder<CLASS>> CheckBoxBuilder<CLASS> CheckBox(Class<? extends CheckBox> nodeClass) {
+    public static <B extends CheckBoxBuilder<B>> CheckBoxBuilder<B> CheckBox(Class<? extends CheckBox> nodeClass) {
         return Factory.node(nodeClass, () -> new CheckBoxBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends CheckBoxBuilder<CLASS>> CheckBoxBuilder<CLASS> CheckBox() {
+    public static <B extends CheckBoxBuilder<B>> CheckBoxBuilder<B> CheckBox() {
         return CheckBox(CheckBox.class);
     }
 
-    public static <CLASS extends ControlBuilder<CLASS>> ControlBuilder<CLASS> Control() {
+    public static <B extends ControlBuilder<B>> ControlBuilder<B> Control() {
         return Factory.node(Control.class, () -> new ControlBuilder<>(Control.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends HBoxBuilder<CLASS>> HBoxBuilder<CLASS> HBox() {
+    public static <B extends HBoxBuilder<B>> HBoxBuilder<B> HBox() {
         return Factory.node(HBox.class, () -> new HBoxBuilder<>(HBox.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends LabelBuilder<CLASS>> LabelBuilder<CLASS> Label() {
+    public static <B extends LabelBuilder<B>> LabelBuilder<B> Label() {
         return Factory.node(Label.class, () -> new LabelBuilder<>(Label.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends LabeledBuilder<CLASS>> LabeledBuilder<CLASS> Labeled() {
+    public static <B extends LabeledBuilder<B>> LabeledBuilder<B> Labeled() {
         return Factory.node(Labeled.class, () -> new LabeledBuilder<>(Labeled.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ListViewBuilder<CLASS, ELEMENT>, ELEMENT> ListViewBuilder<CLASS, ELEMENT> ListView(Class<ELEMENT> elementClass) {
+    public static <B extends ListViewBuilder<B, ELEMENT>, ELEMENT> ListViewBuilder<B, ELEMENT> ListView(Class<ELEMENT> elementClass) {
         return Factory.node(ListView.class, () -> new ListViewBuilder<>(ListView.class, elementClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends PaneBuilder<CLASS>> PaneBuilder<CLASS> Pane() {
+    public static <B extends PaneBuilder<B>> PaneBuilder<B> Pane() {
         return Factory.node(Pane.class, () -> new PaneBuilder<>(Pane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ParentBuilder<CLASS>> ParentBuilder<CLASS> Parent() {
+    public static <B extends ParentBuilder<B>> ParentBuilder<B> Parent() {
         return Factory.node(Parent.class, () -> new ParentBuilder<>(Parent.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar(Class<? extends ProgressBar> nodeClass) {
+    public static <B extends ProgressBarBuilder<B>> ProgressBarBuilder<B> ProgressBar(Class<? extends ProgressBar> nodeClass) {
         return Factory.node(nodeClass, () -> new ProgressBarBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends ProgressBarBuilder<CLASS>> ProgressBarBuilder<CLASS> ProgressBar() {
+    public static <B extends ProgressBarBuilder<B>> ProgressBarBuilder<B> ProgressBar() {
         return ProgressBar(ProgressBar.class);
     }
 
-    public static <CLASS extends ProgressIndicatorBuilder<CLASS>> ProgressIndicatorBuilder<CLASS> ProgressIndicator() {
+    public static <B extends ProgressIndicatorBuilder<B>> ProgressIndicatorBuilder<B> ProgressIndicator() {
         return Factory.node(ProgressIndicator.class, () -> new ProgressIndicatorBuilder<>(ProgressIndicator.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends RegionBuilder<CLASS>> RegionBuilder<CLASS> Region() {
+    public static <B extends RegionBuilder<B>> RegionBuilder<B> Region() {
         return Factory.node(Region.class, () -> new RegionBuilder<>(Region.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends SliderBuilder<CLASS>> SliderBuilder<CLASS> Slider() {
+    public static <B extends SliderBuilder<B>> SliderBuilder<B> Slider() {
         return Factory.node(Slider.class, () -> new SliderBuilder<>(Slider.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends StackPaneBuilder<CLASS>> StackPaneBuilder<CLASS> StackPane() {
+    public static <B extends StackPaneBuilder<B>> StackPaneBuilder<B> StackPane() {
         return Factory.node(StackPane.class, () -> new StackPaneBuilder<>(StackPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends TitledPaneBuilder<CLASS>> TitledPaneBuilder<CLASS> TitledPane() {
+    public static <B extends TitledPaneBuilder<B>> TitledPaneBuilder<B> TitledPane() {
         return Factory.node(TitledPane.class, () -> new TitledPaneBuilder<>(TitledPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends GridPaneBuilder<CLASS>> GridPaneBuilder<CLASS> GridPane() {
+    public static <B extends GridPaneBuilder<B>> GridPaneBuilder<B> GridPane() {
         return Factory.node(GridPane.class, () -> new GridPaneBuilder<>(GridPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ScrollPaneBuilder<CLASS>> ScrollPaneBuilder<CLASS> ScrollPane() {
+    public static <B extends ScrollPaneBuilder<B>> ScrollPaneBuilder<B> ScrollPane() {
         return Factory.node(ScrollPane.class, () -> new ScrollPaneBuilder<>(ScrollBar.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text(Class<? extends Text> nodeClass) {
+    public static <B extends TextBuilder<B>> TextBuilder<B> Text(Class<? extends Text> nodeClass) {
         return Factory.node(nodeClass, () -> new TextBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends TextBuilder<CLASS>> TextBuilder<CLASS> Text() {
+    public static <B extends TextBuilder<B>> TextBuilder<B> Text() {
         return Text(Text.class);
     }
 
-    public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField(Class<? extends TextField> nodeClass) {
+    public static <B extends TextFieldBuilder<B>> TextFieldBuilder<B> TextField(Class<? extends TextField> nodeClass) {
         return Factory.node(nodeClass, () -> new TextFieldBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends TextFieldBuilder<CLASS>> TextFieldBuilder<CLASS> TextField() {
+    public static <B extends TextFieldBuilder<B>> TextFieldBuilder<B> TextField() {
         return TextField(TextField.class);
     }
 
-    public static <CLASS extends TextInputControlBuilder<CLASS>> TextInputControlBuilder<CLASS> TextInputControl() {
+    public static <B extends TextInputControlBuilder<B>> TextInputControlBuilder<B> TextInputControl() {
         return Factory.node(TextInputControl.class, () -> new TextInputControlBuilder<>(TextInputControl.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ToggleButtonBuilder<CLASS>> ToggleButtonBuilder<CLASS> ToggleButton() {
+    public static <B extends ToggleButtonBuilder<B>> ToggleButtonBuilder<B> ToggleButton() {
         return Factory.node(ToggleButton.class, () -> new ToggleButtonBuilder<>(ToggleButton.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends VBoxBuilder<CLASS>> VBoxBuilder<CLASS> VBox() {
+    public static <B extends VBoxBuilder<B>> VBoxBuilder<B> VBox() {
         return Factory.node(VBox.class, () -> new VBoxBuilder<>(VBox.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends RectangleBuilder<CLASS>> RectangleBuilder<CLASS> Rectangle() {
+    public static <B extends RectangleBuilder<B>> RectangleBuilder<B> Rectangle() {
         return Factory.node(Rectangle.class, () -> new RectangleBuilder<>(Rectangle.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends MenuBarBuilder<CLASS>> MenuBarBuilder<CLASS> MenuBar() {
+    public static <B extends MenuBarBuilder<B>> MenuBarBuilder<B> MenuBar() {
         return Factory.node(MenuBar.class, () -> new MenuBarBuilder<>(MenuBar.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends MenuBuilder<CLASS>> MenuBuilder<CLASS> Menu() {
+    public static <B extends MenuBuilder<B>> MenuBuilder<B> Menu() {
         return Factory.node(Menu.class, () -> new MenuBuilder<>(Menu.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends MenuItemBuilder<CLASS>> MenuItemBuilder<CLASS> MenuItem() {
+    public static <B extends MenuItemBuilder<B>> MenuItemBuilder<B> MenuItem() {
         return Factory.node(MenuItem.class, () -> new MenuItemBuilder<>(MenuItem.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends AlertBuilder<CLASS>> AlertBuilder<CLASS> Alert() {
+    public static <B extends AlertBuilder<B>> AlertBuilder<B> Alert() {
         return Factory.node(Alert.class, () -> new AlertBuilder<>(Alert.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <CLASS extends ContextMenuBuilder<CLASS>> ContextMenuBuilder<CLASS> ContextMenu() {
+    public static <B extends ContextMenuBuilder<B>> ContextMenuBuilder<B> ContextMenu() {
         return Factory.node(ContextMenu.class, () -> new ContextMenuBuilder<>(ContextMenu.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-
-    public static <CLASS extends SplitPaneBuilder<CLASS>> SplitPaneBuilder<CLASS> SplitPane() {
-        return Factory.node(SplitPane.class, () -> new SplitPaneBuilder<CLASS>(SplitPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    public static <B extends SplitPaneBuilder<B>> SplitPaneBuilder<B> SplitPane() {
+        return Factory.node(SplitPane.class, () -> new SplitPaneBuilder<B>(SplitPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-
-//    @SafeVarargs
-//    @SuppressWarnings("unchecked")
-//    public static <ACTION> VNode<ACTION> node(Class<? extends Node> nodeClass, VElement<ACTION>... elements) {
-//        return NODE_CACHE.create(nodeClass, elements);
-//    }
-//
-//
-//    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, TYPE value, VChangeListener<? super TYPE, ACTION> changeListener, VInvalidationListener<ACTION> invalidationListener) {
-//        return PROPERTY_FACTORY.create(name, value, changeListener, invalidationListener);
-//    }
-//    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, TYPE value, VChangeListener<? super TYPE, ACTION> listener) {
-//        return PROPERTY_FACTORY.create(name, value, listener);
-//    }
-//
-//    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, VChangeListener<? super TYPE, ACTION> changeListener, VInvalidationListener<ACTION> invalidationListener) {
-//        return PROPERTY_FACTORY.create(name, changeListener, invalidationListener);
-//    }
-//    public static <TYPE, ACTION> VProperty<TYPE, ACTION> property(String name, VChangeListener<? super TYPE, ACTION> listener) {
-//        return PROPERTY_FACTORY.create(name, listener);
-//    }
-//    public static <T, ACTION> VProperty<T, ACTION> property(String name, T value) {
-//        return PROPERTY_FACTORY.create(name, value);
-//    }
-//
-//
-//    public static <EVENT extends Event, ACTION> VEventHandlerElement<EVENT, ACTION> onEvent(VEventType type, VEventHandler<EVENT, ACTION> eventHandler) {
-//        return EVENT_HANDLER_FACTORY.create(type, eventHandler);
-//    }
-//
-//
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> StackPane(VElement<ACTION>... elements) {
-//        return node(StackPane.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> VBox(VElement<ACTION>... elements) {
-//        return node(VBox.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> HBox(VElement<ACTION>... elements) {
-//        return node(HBox.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> AnchorPane(VElement<ACTION>... elements) {
-//        return node(AnchorPane.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> Button(VElement<ACTION>... elements) {
-//        return node(Button.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> TextField(VElement<ACTION>... elements) {
-//        return node(TextField.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> ListView(VElement<ACTION>... elements) {
-//        return node(ReduxFXListView.class, elements);
-//    }
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> ListView(Class<?> clazz, VElement<ACTION>... elements) {
-//        return node(ReduxFXListView.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> TableView(Class<?> clazz, VElement<ACTION>... elements) {
-//        return node(TableView.class, elements);
-//    }
-//
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> Label(VElement<ACTION>... elements) {
-//        return node(Label.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> ToggleButton(VElement<ACTION>... elements) {
-//        return node(ToggleButton.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> CheckBox(VElement<ACTION>... elements) {
-//        return node(CheckBox.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> BorderPane(VElement<ACTION>... elements) {
-//        return node(BorderPane.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> GridPane(VElement<ACTION>... elements) {
-//        return node(GridPane.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> ProgressBar(VElement<ACTION>... elements) {
-//        return node(ProgressBar.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> Slider(VElement<ACTION>... elements) {
-//        return node(Slider.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> Region(VElement<ACTION>... elements) {
-//        return node(Region.class, elements);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VNode<ACTION> Circle(VElement<ACTION>... elements) {
-//        return node(Circle.class, elements);
-//    }
-//
-//
-//
-//
-//    public static <ACTION> VProperty<String, ACTION> id(String value) {
-//        return property("id", value);
-//    }
-//
-//    public static <ACTION> VProperty<Insets, ACTION> padding(double top, double rightLeft, double bottom) {
-//        return property("padding", new Insets(top, rightLeft, bottom, rightLeft));
-//    }
-//    public static <ACTION> VProperty<Insets, ACTION> padding(double topBottom, double rightLeft) {
-//        return property("padding", new Insets(topBottom, rightLeft, topBottom, rightLeft));
-//    }
-//    public static <ACTION> VProperty<Insets, ACTION> padding(double value) {
-//        return property("padding", new Insets(value, value, value, value));
-//    }
-//
-//    public static <ACTION> VProperty<Insets, ACTION> margin(double top, double rightLeft, double bottom) {
-//        return property("margin", new Insets(top, rightLeft, bottom, rightLeft));
-//    }
-//    public static <ACTION> VProperty<Insets, ACTION> margin(double topBottom, double rightLeft) {
-//        return property("margin", new Insets(topBottom, rightLeft, topBottom, rightLeft));
-//    }
-//    public static <ACTION> VProperty<Insets, ACTION> margin(double value) {
-//        return property("margin", new Insets(value, value, value, value));
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> spacing(double value) {
-//        return property("spacing", value);
-//    }
-//
-//    public static <ACTION> VProperty<String, ACTION> text(String value, VChangeListener<? super String, ACTION> listener) {
-//        return property("text", value, listener);
-//    }
-//
-//    public static <ACTION> VProperty<String, ACTION> text(VChangeListener<? super String, ACTION> listener) {
-//        return property("text", listener);
-//    }
-//
-//    public static <ACTION> VProperty<String, ACTION> text(String value) {
-//        return text(value, null);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> selected(boolean value) {
-//        return property("selected", value);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> disable(boolean value) {
-//        return property("disable", value);
-//    }
-//
-//    public static <ACTION> VProperty<ObservableList<?>, ACTION> items(Seq<?> value) {
-//        return property("data", value == null? FXCollections.emptyObservableList() : FXCollections.observableList(value.toJavaList()));
-//    }
-//
-//    public static <ACTION> VProperty<String, ACTION> toggleGroup(String value) {
-//        return property("toggleGroup", value);
-//    }
-//
-//    @SafeVarargs
-//    public static <ACTION> VProperty<Array<VNode<ACTION>>, ACTION> columns(VNode<ACTION>... value) {
-//        return property("columns", value != null? Array.of(value) : Array.empty());
-//    }
-//
-//    public static <ACTION> VProperty<Function<Object, Object>, ACTION> cellFactory(Function<Object, Object> value) {
-//        return property("mapping", value);
-//    }
-//
-//    public static <ACTION> VProperty<Pos, ACTION> alignment(Pos value) {
-//        return property("alignment", value);
-//    }
-//
-//    public static <ACTION> VProperty<ObservableList<String>, ACTION> styleClass(String... value) {
-//        return property("styleClass", value == null? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
-//    }
-//
-//    public static <ACTION> VProperty<String, ACTION> style(String value) {
-//        return property("style", value);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> mnemonicParsing(boolean value) {
-//        return property("mnemonicParsing", value);
-//    }
-//
-//    public static <ACTION> VProperty<String, ACTION> promptText(String value) {
-//        return property("promptText", value);
-//    }
-//
-//    public static <ACTION> VProperty<ObservableList<String>, ACTION> stylesheets(String... value) {
-//        return property("stylesheets", value == null? FXCollections.emptyObservableList() : FXCollections.observableArrayList(value));
-//    }
-//
-//    public static <ACTION> VProperty<Priority, ACTION> hgrow(Priority value) {
-//        return property("hgrow", value);
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> minHeight(double value) {
-//        return property("minHeight", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> prefHeight(double value) {
-//        return property("prefHeight", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> maxHeight(double value) {
-//        return property("maxHeight", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> minWidth(double value) {
-//        return property("minWidth", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> prefWidth(double value) {
-//        return property("prefWidth", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> maxWidth(double value) {
-//        return property("maxWidth", value);
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> topAnchor(double value) {
-//        return property("topAnchor", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> rightAnchor(double value) {
-//        return property("rightAnchor", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> bottomAnchor(double value) {
-//        return property("bottomAnchor", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> leftAnchor(double value) {
-//        return property("leftAnchor", value);
-//    }
-//
-//    public static <ACTION> VProperty<VNode<ACTION>, ACTION> graphic(VNode<ACTION> value) {
-//        return property("graphic", value);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> hover(VChangeListener<? super Boolean, ACTION> listener) {
-//        return property("hover", listener);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> visible(boolean value) {
-//        return property("visible", value);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> focused(boolean value, VChangeListener<? super Boolean, ACTION> listener) {
-//        return property("focused", value, listener);
-//    }
-//    public static <ACTION> VProperty<Boolean, ACTION> focused(boolean value) {
-//        return property("focused", value);
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> progress(double value, VChangeListener<? super Double, ACTION> listener) {
-//        return property("progress", value, listener);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> progress(double value) {
-//        return property("progress", value);
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> value(double value, VChangeListener<? super Double, ACTION> listener) {
-//        return property("value", value, listener);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> value(double value) {
-//        return property("value", value);
-//    }
-//
-//    public static <ACTION> VProperty<VNode, ACTION> top(VNode value) {
-//        return property("top", value);
-//    }
-//    public static <ACTION> VProperty<VNode, ACTION> right(VNode value) {
-//        return property("right", value);
-//    }
-//    public static <ACTION> VProperty<VNode, ACTION> bottom(VNode value) {
-//        return property("bottom", value);
-//    }
-//    public static <ACTION> VProperty<VNode, ACTION> left(VNode value) {
-//        return property("left", value);
-//    }
-//    public static <ACTION> VProperty<VNode, ACTION> center(VNode value) {
-//        return property("center", value);
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> hgap(double value) {
-//        return property("hgap", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> vgap(double value) {
-//        return property("vgap", value);
-//    }
-//
-//    public static <ACTION> VProperty<Integer, ACTION> columnIndex(int value) {
-//        return property("columnIndex", value);
-//    }
-//    public static <ACTION> VProperty<Integer, ACTION> rowIndex(int value) {
-//        return property("rowIndex", value);
-//    }
-//
-//    public static <ACTION> VProperty<Integer, ACTION> columnSpan(int value) {
-//        return property("columnSpan", value);
-//    }
-//    public static <ACTION> VProperty<Integer, ACTION> rowSpan(int value) {
-//        return property("rowSpan", value);
-//    }
-//
-//
-//    public static <ACTION> VProperty<HPos, ACTION> halignment(HPos value) {
-//        return property("halignment", value);
-//    }
-//    public static <ACTION> VProperty<VPos, ACTION> valignment(VPos value) {
-//        return property("valignment", value);
-//    }
-//
-//    public static <ACTION> VProperty<Border, ACTION> border(Border value) {
-//        return property("border", value);
-//    }
-//    public static <ACTION> VProperty<Border, ACTION> border(Color color, double width) {
-//        return border(new Border(new BorderStroke(color, null, null, new BorderWidths(width))));
-//    }
-//
-//    public static <ACTION> VProperty<Background, ACTION> background(Background value) {
-//        return property("background", value);
-//    }
-//    public static <ACTION> VProperty<Background, ACTION> background(Color fill) {
-//        return background(new Background(new BackgroundFill(fill, null, null)));
-//    }
-//
-//    public static <ACTION> VProperty<Double, ACTION> max(double value) {
-//        return property("max", value);
-//    }
-//    public static <ACTION> VProperty<Double, ACTION> min(double value) {
-//        return property("min", value);
-//    }
-//
-//
-//    public static <ACTION> VProperty<Double, ACTION> opacity(double value) {
-//        return property("opacity", value);
-//    }
-//
-//
-//    public static <ACTION> VProperty<Paint, ACTION> fill(Paint value) {
-//        return property("fill", value);
-//    }
-//    public static <ACTION> VProperty<Paint, ACTION> textFill(Paint value) {
-//        return property("textFill", value);
-//    }
-//
-//    public static <ACTION> VProperty<Boolean, ACTION> defaultButton(boolean value) {
-//        return property("defaultButton", value);
-//    }
-//
-//
-//
-//    public static <ACTION> VEventHandlerElement<ActionEvent, ACTION> onAction(VEventHandler<ActionEvent, ACTION> eventHandler) {
-//        return onEvent(ACTION, eventHandler);
-//    }
-//
-//    public static <ACTION> VEventHandlerElement<MouseEvent, ACTION> onMouseClicked(VEventHandler<MouseEvent, ACTION> eventHandler) {
-//        return onEvent(MOUSE_CLICKED, eventHandler);
-//    }
 }
