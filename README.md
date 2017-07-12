@@ -6,6 +6,7 @@ Functional Reactive Programming (FRP) for JavaFX
 [![Build Status](https://travis-ci.org/netopyr/reduxfx.svg?branch=master)](https://travis-ci.org/netopyr/reduxfx)
 [![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx/reduxfx)
 [![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
+[![Dependency Status](https://www.versioneye.com/user/projects/596695536725bd005eeb82ee/badge.svg)](https://www.versioneye.com/user/projects/596695536725bd005eeb82ee)
 [![License](https://img.shields.io/github/license/netopyr/reduxfx.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 [![Lines of Code](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=ncloc)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
