@@ -72,6 +72,7 @@
                 <artifactId>versioneye-maven-plugin</artifactId>
                 <version>3.11.4</version>
                 <configuration>
+                    <projectId>596695536725bd005eeb82ee</projectId>
                     <organisation>reduxfx</organisation>
                     <team>Owners</team>
                 </configuration>
