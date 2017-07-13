@@ -129,7 +129,6 @@ public class NodeBuilder {
     }
 
     private static Option<MethodHandle> getEventSetter(Class<?> clazz, VEventType eventType) {
-        // TODO: Cache the getter
         final String eventName = eventType.getName();
         final String setterName = "setOn" + eventName.substring(0, 1).toUpperCase() + eventName.substring(1);
 

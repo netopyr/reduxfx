@@ -15,15 +15,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.function.Function;
 
-public class ListViewBuilder<B extends ListViewBuilder<B, ELEMENT>, ELEMENT> extends ControlBuilder<B> {
+public class ListViewBuilder<B extends ListViewBuilder<B, T>, T> extends ControlBuilder<B> {
 
     private static final String ITEMS = "items";
     private static final String CELL_FACTORY = "cellFactory";
 
-    private final Class<ELEMENT> elementClass;
+    private final Class<T> elementClass;
 
     public ListViewBuilder(Class<?> nodeClass,
-                           Class<ELEMENT> elementClass,
+                           Class<T> elementClass,
                            Map<String, Array<VNode>> childrenMap,
                            Map<String, Option<VNode>> singleChildMap,
                            Map<String, VProperty> properties,
@@ -43,12 +43,12 @@ public class ListViewBuilder<B extends ListViewBuilder<B, ELEMENT>, ELEMENT> ext
     }
 
 
-    public B cellFactory(Function<? super ELEMENT, VNode> value) {
+    public B cellFactory(Function<? super T, VNode> value) {
         Accessors.registerAccessor(getNodeClass(), "cellFactory", ListViewCellFactoryAccessor::new);
         return property(CELL_FACTORY, value);
     }
 
-    public B items(Seq<? extends ELEMENT> value) {
+    public B items(Seq<? extends T> value) {
         return property(ITEMS, value);
     }
 

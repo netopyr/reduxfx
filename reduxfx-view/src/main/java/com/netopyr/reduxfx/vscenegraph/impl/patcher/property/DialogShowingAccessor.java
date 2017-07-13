@@ -36,8 +36,9 @@ public class DialogShowingAccessor extends ListenerHandlingAccessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object originalNode, String name, VProperty vProperty) {
 
+        Object node = originalNode;
         final Dialog dialog = (Dialog) node;
 
         final ReadOnlyProperty property;

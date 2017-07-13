@@ -30,16 +30,21 @@ public class Differ {
 
     private static final Logger LOG = LoggerFactory.getLogger(Differ.class);
 
+    private Differ() {}
+
     public static Map<Phase, Vector<Patch>> diff(Option<VNode> a, Option<VNode> b) {
         if (!a.isEmpty() && b.isEmpty()) {
             LOG.error("Tried to remove root node");
             return HashMap.empty();
         }
 
-        final Map<Phase, Vector<Patch>> patches =
-                a.isEmpty() ?
-                        b.isEmpty() ? HashMap.empty() : HashMap.of(Phase.STRUCTURE, Vector.of(new UpdateRootPatch(b.get())))
-                        : doDiff(Vector.empty(), a.get(), b.get());
+        final Map<Phase, Vector<Patch>> patches;
+        if (a.isEmpty()) {
+            patches = b.isEmpty() ? HashMap.empty() : HashMap.of(Phase.STRUCTURE, Vector.of(new UpdateRootPatch(b.get())));
+        } else {
+            patches = doDiff(Vector.empty(), a.get(), b.get());
+        }
+
         LOG.trace("Diff:\na:\n{}\nb:\n{}\nresult:\n{}", a, b, patches);
         return patches;
     }

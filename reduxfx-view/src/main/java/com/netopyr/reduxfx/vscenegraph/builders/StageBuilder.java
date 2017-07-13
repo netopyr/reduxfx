@@ -36,6 +36,7 @@ public class StageBuilder<B extends StageBuilder<B>> extends WindowBuilder<B> {
     }
 
 
+    @Override
     public B showing(boolean value) {
         Accessors.registerAccessor(getNodeClass(), "showing", WindowShowingAccessor::new);
         return super.showing(value);

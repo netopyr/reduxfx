@@ -52,6 +52,7 @@ public class NodeBuilder<B extends NodeBuilder<B>> extends Builder<B> {
 
 
     @SuppressWarnings("unchecked")
+    @Override
     protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,

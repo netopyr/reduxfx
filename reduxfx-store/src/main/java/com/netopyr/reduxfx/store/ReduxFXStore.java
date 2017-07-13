@@ -32,7 +32,7 @@ public class ReduxFXStore<S> {
 
         final Publisher<Object> actionPublisher =
                 Flowable.mergeDelayError(
-                        Flowable.create(emitter -> this.emitter = emitter, BackpressureStrategy.BUFFER)
+                        Flowable.create(actionPublisherEmitter -> this.emitter = actionPublisherEmitter, BackpressureStrategy.BUFFER)
                 );
 
         final FlowableProcessor<Update<S>> updateProcessor = BehaviorProcessor.create();

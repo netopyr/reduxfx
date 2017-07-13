@@ -115,7 +115,7 @@ public class VScenegraphFactory {
         return Factory.node(Labeled.class, () -> new LabeledBuilder<>(Labeled.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
-    public static <B extends ListViewBuilder<B, ELEMENT>, ELEMENT> ListViewBuilder<B, ELEMENT> ListView(Class<ELEMENT> elementClass) {
+    public static <B extends ListViewBuilder<B, T>, T> ListViewBuilder<B, T> ListView(Class<T> elementClass) {
         return Factory.node(ListView.class, () -> new ListViewBuilder<>(ListView.class, elementClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 

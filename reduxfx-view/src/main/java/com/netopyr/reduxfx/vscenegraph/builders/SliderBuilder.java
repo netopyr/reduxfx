@@ -27,6 +27,7 @@ public class SliderBuilder<B extends SliderBuilder<B>> extends NodeBuilder<B> {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,

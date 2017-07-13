@@ -43,7 +43,7 @@ public class ReduxFXView<S> {
     public static <S> ReduxFXView<S> create(
             Function<S, VNode> view,
             Stage primaryStage) {
-        final Function<S, VNode> stageView = S -> Stage().scene(Scene().root(view.apply(S)));
+        final Function<S, VNode> stageView = state -> Stage().scene(Scene().root(view.apply(state)));
         return new ReduxFXView<>(Option.none(), stageView, primaryStage);
     }
 

@@ -172,7 +172,10 @@ public class Patcher {
         NodeBuilder.init(dispatcher, rootNode, patch.getRootNode());
     }
 
-    private static Object findNode(Vector<Object> path, Object node) {
+    private static Object findNode(Vector<Object> fullPath, Object root) {
+
+        Vector<Object> path = fullPath;
+        Object node = root;
 
         while (!path.isEmpty()) {
 

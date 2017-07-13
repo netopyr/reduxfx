@@ -40,7 +40,6 @@ public class VNode {
 
     public Option<Object> produce() {
         try {
-            final Class<?> nodeClass = getNodeClass();
             final Object node = nodeClass.newInstance();
             return Option.of(node);
         } catch (InstantiationException | IllegalAccessException e) {
