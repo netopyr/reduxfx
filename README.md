@@ -6,8 +6,8 @@ Functional Reactive Programming (FRP) for JavaFX
 [![Build Status](https://travis-ci.org/netopyr/reduxfx.svg?branch=master)](https://travis-ci.org/netopyr/reduxfx)
 [![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx/reduxfx)
 [![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
-[![Dependency Status](https://www.versioneye.com/user/projects/596695536725bd005eeb82ee/badge.svg)](https://www.versioneye.com/user/projects/596695536725bd005eeb82ee)
 [![License](https://img.shields.io/github/license/netopyr/reduxfx.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Javadocs](https://www.javadoc.io/badge/com.netopyr.reduxfx/reduxfx.svg)](https://www.javadoc.io/doc/com.netopyr.reduxfx/reduxfx)
 
 [![Lines of Code](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=ncloc)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Bugs](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=bugs)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
@@ -16,6 +16,7 @@ Functional Reactive Programming (FRP) for JavaFX
 [![Duplicated Lines](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures/domain/Duplications?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Technical Dept Ratio](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Code Coverage](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=coverage)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Dependency Status](https://www.versioneye.com/user/projects/596734206725bd003c57c197/badge.svg)](https://www.versioneye.com/user/projects/596695536725bd005eeb82ee)
 
 ReduxFX in 1 minute
 -------------------
