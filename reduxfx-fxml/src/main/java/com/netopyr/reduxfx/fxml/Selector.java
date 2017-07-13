@@ -48,9 +48,9 @@ import java.util.function.Function;
  * an instance into your Controller class. The dependency injection library has to use the {@link ReduxFxml} instance
  * in this case. {@link ReduxFxml} implements this interface and connects it to the ReduxFX store.
  *
- * @param <STATE>
+ * @param <S>
  */
-public interface Selector<STATE> {
+public interface Selector<S> {
 
 	/**
 	 * Create an {@link ObservableValue} that will get the value returned by the given
@@ -58,10 +58,10 @@ public interface Selector<STATE> {
 	 * When the state updates, this observable value will also get updated.
 	 *
 	 * @param selector a function that returns a slice of data from the ReduxFX state.
-	 * @param <VALUE> the generic type of the value that is returned by the selector function
+	 * @param <V> the generic type of the value that is returned by the selector function
 	 * @return an observable value
 	 */
-	<VALUE> ObservableValue<VALUE> select(Function<STATE, VALUE> selector);
+	<V> ObservableValue<V> select(Function<S, V> selector);
 
 	/**
 	 * Create an {@link ObservableList} that will get the list of values returned by the
@@ -69,9 +69,9 @@ public interface Selector<STATE> {
 	 * When the state updates, this observable list will also get updated.
 	 *
 	 * @param selector a function that returns a slice of data from the ReduxFX state.
-	 * @param <VALUE> the generic type of the value that is returned by the selector function
+	 * @param <V> the generic type of the value that is returned by the selector function
 	 * @return an observable list
 	 */
-	<VALUE> ObservableList<VALUE> selectList(Function<STATE, List<VALUE>> selector);
+	<V> ObservableList<V> selectList(Function<S, List<V>> selector);
 
 }

@@ -19,23 +19,23 @@ import java.util.function.Function;
 /**
  * This class is a util to enable the usage of FXML files together with ReduxFX.
  *
- * @param <STATE>
+ * @param <S>
  */
-public class ReduxFxml<STATE> implements Selector<STATE>, Dispatcher {
+public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 
-	private Publisher<STATE> statePublisher;
+	private Publisher<S> statePublisher;
 
 	private final PublishProcessor<Object> actionProcessor = PublishProcessor.create();
 
-	public static <STATE> ReduxFxml<STATE> create() {
-		return new ReduxFxml<STATE>();
+	public static <S> ReduxFxml<S> create() {
+		return new ReduxFxml<S>();
 	}
 
-	public void connect(Processor<Object, STATE> store) {
+	public void connect(Processor<Object, S> store) {
 		connect(store, store);
 	}
 
-	public void connect(Publisher<STATE> statePublisher, Subscriber<Object> actionStream) {
+	public void connect(Publisher<S> statePublisher, Subscriber<Object> actionStream) {
 		this.statePublisher = statePublisher;
 
 		actionProcessor.subscribe(actionStream);
@@ -51,13 +51,13 @@ public class ReduxFxml<STATE> implements Selector<STATE>, Dispatcher {
 
 
 	@Override
-	public <VALUE> ObservableValue<VALUE> select(Function<STATE, VALUE> selector) {
+	public <V> ObservableValue<V> select(Function<S, V> selector) {
 		checkConnected();
 
-		ObjectProperty<VALUE> observableValue = new SimpleObjectProperty<>();
+		ObjectProperty<V> observableValue = new SimpleObjectProperty<>();
 
 		addSubscriber(newState -> {
-			VALUE newValue = selector.apply(newState);
+			V newValue = selector.apply(newState);
 
 			observableValue.setValue(newValue);
 		});
@@ -66,13 +66,13 @@ public class ReduxFxml<STATE> implements Selector<STATE>, Dispatcher {
 	}
 
 	@Override
-	public <VALUE> ObservableList<VALUE> selectList(Function<STATE, List<VALUE>> selector) {
+	public <V> ObservableList<V> selectList(Function<S, List<V>> selector) {
 		checkConnected();
 
-		ObservableList<VALUE> list = FXCollections.observableArrayList();
+		ObservableList<V> list = FXCollections.observableArrayList();
 
 		addSubscriber(newState -> {
-			List<VALUE> newValues = selector.apply(newState);
+			List<V> newValues = selector.apply(newState);
 
 			list.setAll(newValues);
 		});
@@ -87,8 +87,8 @@ public class ReduxFxml<STATE> implements Selector<STATE>, Dispatcher {
 	}
 
 
-	protected void addSubscriber(Consumer<STATE> subscriber) {
-		statePublisher.subscribe(new Subscriber<STATE>() {
+	protected void addSubscriber(Consumer<S> subscriber) {
+		statePublisher.subscribe(new Subscriber<S>() {
 
 			@Override
 			public void onSubscribe(Subscription s) {
@@ -96,7 +96,7 @@ public class ReduxFxml<STATE> implements Selector<STATE>, Dispatcher {
 			}
 
 			@Override
-			public void onNext(STATE state) {
+			public void onNext(S state) {
 				if (Platform.isFxApplicationThread()) {
 					subscriber.accept(state);
 				} else {

@@ -24,59 +24,59 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stage;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stages;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class ReduxFXView<STATE> {
+public class ReduxFXView<S> {
 
-    public static <STATE> ReduxFXView<STATE> createStages(
-            Function<STATE, VNode> view,
+    public static <S> ReduxFXView<S> createStages(
+            Function<S, VNode> view,
             Stage primaryStage) {
         final Stages stages = new Stages(primaryStage);
         final Option<VNode> initialVNode = Option.of(Stages().children(Stage()));
         return new ReduxFXView<>(initialVNode, view, stages);
     }
 
-    public static <STATE> ReduxFXView<STATE> createStage(
-            Function<STATE, VNode> view,
+    public static <S> ReduxFXView<S> createStage(
+            Function<S, VNode> view,
             Stage primaryStage) {
         return new ReduxFXView<>(Option.none(), view, primaryStage);
     }
 
-    public static <STATE> ReduxFXView<STATE> create(
-            Function<STATE, VNode> view,
+    public static <S> ReduxFXView<S> create(
+            Function<S, VNode> view,
             Stage primaryStage) {
-        final Function<STATE, VNode> stageView = STATE -> Stage().scene(Scene().root(view.apply(STATE)));
+        final Function<S, VNode> stageView = S -> Stage().scene(Scene().root(view.apply(S)));
         return new ReduxFXView<>(Option.none(), stageView, primaryStage);
     }
 
-    public static <STATE> ReduxFXView<STATE> create(
-            Function<STATE, VNode> view,
+    public static <S> ReduxFXView<S> create(
+            Function<S, VNode> view,
             Group group) {
         return new ReduxFXView<>(Option.none(), view, group);
     }
 
-    public static <STATE> ReduxFXView<STATE> create(
-            Function<STATE, VNode> view,
+    public static <S> ReduxFXView<S> create(
+            Function<S, VNode> view,
             Pane pane) {
         return new ReduxFXView<>(Option.none(), view, pane);
     }
 
     private final Option<VNode> initialVNode;
-    private final Function<STATE, VNode> view;
+    private final Function<S, VNode> view;
     private final Object javaFXRoot;
 
     private ReduxFXView(
             Option<VNode> initialVNode,
-            Function<STATE, VNode> view,
+            Function<S, VNode> view,
             Object javaFXRoot) {
         this.initialVNode = initialVNode;
         this.view = view;
         this.javaFXRoot = javaFXRoot;
     }
 
-    public void connect(Processor<Object, STATE> store) {
+    public void connect(Processor<Object, S> store) {
         connect(store, store);
     }
 
-    public void connect(Publisher<STATE> statePublisher, Subscriber<Object> actionSubscriber) {
+    public void connect(Publisher<S> statePublisher, Subscriber<Object> actionSubscriber) {
         final Flowable<Option<VNode>> vScenegraphStream =
                 Flowable.fromPublisher(statePublisher)
                         .map(view::apply)
