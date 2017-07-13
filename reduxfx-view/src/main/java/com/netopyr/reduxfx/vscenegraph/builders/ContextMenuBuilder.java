@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class ContextMenuBuilder<BUILDER extends ContextMenuBuilder<BUILDER>> extends PopupControlBuilder<BUILDER> {
+public class ContextMenuBuilder<B extends ContextMenuBuilder<B>> extends PopupControlBuilder<B> {
 
     private static final String ITEMS = "items";
 
@@ -25,16 +25,16 @@ public class ContextMenuBuilder<BUILDER extends ContextMenuBuilder<BUILDER>> ext
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ContextMenuBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new ContextMenuBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER items(VNode... items) {
+    public B items(VNode... items) {
         return children(ITEMS, items == null? Array.empty() : Array.of(items));
     }
 

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class JFXTextFieldBuilder<BUILDER extends JFXTextFieldBuilder<BUILDER>> extends TextFieldBuilder<BUILDER> {
+public class JFXTextFieldBuilder<B extends JFXTextFieldBuilder<B>> extends TextFieldBuilder<B> {
 
     public JFXTextFieldBuilder(Class<?> nodeClass,
                                Map<String, Array<VNode>> childrenMap,
@@ -24,12 +24,12 @@ public class JFXTextFieldBuilder<BUILDER extends JFXTextFieldBuilder<BUILDER>> e
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new JFXTextFieldBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new JFXTextFieldBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

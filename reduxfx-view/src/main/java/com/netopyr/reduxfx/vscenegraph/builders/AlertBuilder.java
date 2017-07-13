@@ -10,7 +10,7 @@ import io.vavr.collection.Map;
 import io.vavr.control.Option;
 
 @SuppressWarnings("unused")
-public class AlertBuilder<BUILDER extends AlertBuilder<BUILDER>> extends DialogBuilder<BUILDER> {
+public class AlertBuilder<B extends AlertBuilder<B>> extends DialogBuilder<B> {
 
     private static final String ALERT_TYPE = "alertType";
 
@@ -26,12 +26,12 @@ public class AlertBuilder<BUILDER extends AlertBuilder<BUILDER>> extends DialogB
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new AlertBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new AlertBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class AlertBuilder<BUILDER extends AlertBuilder<BUILDER>> extends DialogB
     }
 
 
-    public BUILDER alertType(Alert.AlertType value) {
+    public B alertType(Alert.AlertType value) {
         return property(ALERT_TYPE, value);
     }
 }

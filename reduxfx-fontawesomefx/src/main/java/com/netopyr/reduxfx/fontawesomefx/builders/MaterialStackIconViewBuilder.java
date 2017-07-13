@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class MaterialStackIconViewBuilder<BUILDER extends MaterialStackIconViewBuilder<BUILDER>> extends GlyphIconBuilder<BUILDER> {
+public class MaterialStackIconViewBuilder<B extends MaterialStackIconViewBuilder<B>> extends GlyphIconBuilder<B> {
 
     public MaterialStackIconViewBuilder(Class<?> nodeClass,
                                         Map<String, Array<VNode>> childrenMap,
@@ -24,16 +24,16 @@ public class MaterialStackIconViewBuilder<BUILDER extends MaterialStackIconViewB
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new MaterialStackIconViewBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new MaterialStackIconViewBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER icon(MaterialStackIcons value) {
+    public B icon(MaterialStackIcons value) {
         return property(ICON, value);
     }
 

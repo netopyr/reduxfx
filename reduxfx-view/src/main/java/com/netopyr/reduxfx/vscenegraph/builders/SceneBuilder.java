@@ -12,7 +12,7 @@ import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class SceneBuilder<BUILDER extends SceneBuilder<BUILDER>> extends Builder<BUILDER> {
+public class SceneBuilder<B extends SceneBuilder<B>> extends Builder<B> {
 
     private static final String ROOT = "root";
 
@@ -26,12 +26,12 @@ public class SceneBuilder<BUILDER extends SceneBuilder<BUILDER>> extends Builder
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new SceneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new SceneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SceneBuilder<BUILDER extends SceneBuilder<BUILDER>> extends Builder
     }
 
 
-    public BUILDER root(VNode value) {
+    public B root(VNode value) {
         return child(ROOT, value);
     }
 

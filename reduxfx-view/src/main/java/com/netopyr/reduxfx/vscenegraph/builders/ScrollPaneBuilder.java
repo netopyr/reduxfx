@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class ScrollPaneBuilder<BUILDER extends ScrollPaneBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
+public class ScrollPaneBuilder<B extends ScrollPaneBuilder<B>> extends ControlBuilder<B> {
 
     private static final String CONTENT = "content";
 
@@ -25,16 +25,16 @@ public class ScrollPaneBuilder<BUILDER extends ScrollPaneBuilder<BUILDER>> exten
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ScrollPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new ScrollPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER content(VNode value) {
+    public B content(VNode value) {
         return property(CONTENT, value);
     }
 

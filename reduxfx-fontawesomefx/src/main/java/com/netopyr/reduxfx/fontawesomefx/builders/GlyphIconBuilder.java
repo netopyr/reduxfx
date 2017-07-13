@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue"})
-public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>> extends TextBuilder<BUILDER> {
+public abstract class GlyphIconBuilder<B extends GlyphIconBuilder<B>> extends TextBuilder<B> {
 
     private static final String GLYPH_NAME = "glyphName";
     private static final String GLYPH_SIZE = "glyphSize";
@@ -30,19 +30,19 @@ public abstract class GlyphIconBuilder<BUILDER extends GlyphIconBuilder<BUILDER>
     }
 
 
-    public BUILDER glyphName(String value) {
+    public B glyphName(String value) {
         return property(GLYPH_NAME, value);
     }
 
-    public BUILDER glyphSize(Number value) {
+    public B glyphSize(Number value) {
         return property(GLYPH_SIZE, value);
     }
 
-    public BUILDER glyphStyle(String value) {
+    public B glyphStyle(String value) {
         return property(GLYPH_STYLE, value);
     }
 
-    public BUILDER size(String value) {
+    public B size(String value) {
         return property(SIZE, value);
     }
 

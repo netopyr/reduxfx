@@ -114,17 +114,17 @@ public class ComponentDriver implements Driver {
 
 
     @SuppressWarnings("unchecked")
-    public <EVENT extends Event> ObjectProperty<EventHandler<EVENT>> createEventHandlerProperty(Object bean, String name) {
+    public <E extends Event> ObjectProperty<EventHandler<E>> createEventHandlerProperty(Object bean, String name) {
         Objects.requireNonNull(bean, BEAN_MUST_NOT_BE_NULL);
         Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
 
-        final ObjectProperty<EventHandler<EVENT>> property = new SimpleObjectProperty<>(bean, name);
+        final ObjectProperty<EventHandler<E>> property = new SimpleObjectProperty<>(bean, name);
         getFireEventCommandFlowable()
                 .filter(command -> name.equals(command.getEventName()))
                 .forEach(command -> {
-                    final EventHandler<EVENT> eventHandler = property.get();
+                    final EventHandler<E> eventHandler = property.get();
                     if (eventHandler != null) {
-                        eventHandler.handle((EVENT) command.getEvent());
+                        eventHandler.handle((E) command.getEvent());
                     }
                 });
 

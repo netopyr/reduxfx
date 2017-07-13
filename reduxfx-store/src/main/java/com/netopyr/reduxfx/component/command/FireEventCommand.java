@@ -5,12 +5,12 @@ import javafx.event.Event;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class FireEventCommand<EVENT extends Event> implements Command {
+public class FireEventCommand<E extends Event> implements Command {
 
     private final String eventName;
-    private final EVENT event;
+    private final E event;
 
-    public FireEventCommand(String eventName, EVENT event) {
+    public FireEventCommand(String eventName, E event) {
         this.eventName = eventName;
         this.event = event;
     }
@@ -19,7 +19,7 @@ public class FireEventCommand<EVENT extends Event> implements Command {
         return eventName;
     }
 
-    public EVENT getEvent() {
+    public E getEvent() {
         return event;
     }
 

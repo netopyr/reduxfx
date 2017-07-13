@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class RectangleBuilder<BUILDER extends RectangleBuilder<BUILDER>> extends ShapeBuilder<BUILDER> {
+public class RectangleBuilder<B extends RectangleBuilder<B>> extends ShapeBuilder<B> {
 
     private static final String HEIGHT = "height";
     private static final String WIDTH = "width";
@@ -28,28 +28,28 @@ public class RectangleBuilder<BUILDER extends RectangleBuilder<BUILDER>> extends
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new RectangleBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new RectangleBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER height(double value) {
+    public B height(double value) {
         return property(HEIGHT, value);
     }
 
-    public BUILDER width(double value) {
+    public B width(double value) {
         return property(WIDTH, value);
     }
 
-    public BUILDER x(double value) {
+    public B x(double value) {
         return property(X, value);
     }
 
-    public BUILDER y(double value) {
+    public B y(double value) {
         return property(Y, value);
     }
 

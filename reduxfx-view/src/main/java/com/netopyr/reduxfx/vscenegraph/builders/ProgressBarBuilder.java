@@ -10,7 +10,7 @@ import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class ProgressBarBuilder<BUILDER extends ProgressBarBuilder<BUILDER>> extends ProgressIndicatorBuilder<BUILDER> {
+public class ProgressBarBuilder<B extends ProgressBarBuilder<B>> extends ProgressIndicatorBuilder<B> {
 
     public ProgressBarBuilder(Class<?> nodeClass,
                               Map<String, Array<VNode>> childrenMap,
@@ -22,12 +22,12 @@ public class ProgressBarBuilder<BUILDER extends ProgressBarBuilder<BUILDER>> ext
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ProgressBarBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new ProgressBarBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

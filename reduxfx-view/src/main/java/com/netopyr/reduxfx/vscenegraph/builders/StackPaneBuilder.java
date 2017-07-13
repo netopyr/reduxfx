@@ -11,7 +11,7 @@ import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class StackPaneBuilder<BUILDER extends StackPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
+public class StackPaneBuilder<B extends StackPaneBuilder<B>> extends PaneBuilder<B> {
 
     private static final String ALIGNMENT = "alignment";
 
@@ -25,16 +25,16 @@ public class StackPaneBuilder<BUILDER extends StackPaneBuilder<BUILDER>> extends
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new StackPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new StackPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER alignment(Pos value) {
+    public B alignment(Pos value) {
         return property(ALIGNMENT, value);
     }
 

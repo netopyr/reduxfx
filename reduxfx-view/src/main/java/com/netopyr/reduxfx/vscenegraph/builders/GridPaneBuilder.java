@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class GridPaneBuilder<BUILDER extends GridPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
+public class GridPaneBuilder<B extends GridPaneBuilder<B>> extends PaneBuilder<B> {
 
     private static final String HGAP = "hgap";
     private static final String VGAP = "vgap";
@@ -30,33 +30,33 @@ public class GridPaneBuilder<BUILDER extends GridPaneBuilder<BUILDER>> extends P
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new GridPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new GridPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
-    public BUILDER hgap(double value) {
+    public B hgap(double value) {
         return property(HGAP, value);
     }
 
-    public BUILDER vgap(double value) {
+    public B vgap(double value) {
         return property(VGAP, value);
     }
 
-    public BUILDER columnContraints(ColumnConstraints... values) {
+    public B columnContraints(ColumnConstraints... values) {
         return property(COLUMN_CONSTRAINTS, values == null? Array.empty() : Array.of(values));
     }
-    public BUILDER columnContraints(Iterable<ColumnConstraints> constraints) {
+    public B columnContraints(Iterable<ColumnConstraints> constraints) {
         return property(COLUMN_CONSTRAINTS, constraints == null? Array.empty() : Array.ofAll(constraints));
     }
 
-    public BUILDER rowConstraints(RowConstraints... values) {
+    public B rowConstraints(RowConstraints... values) {
         return property(ROW_CONSTRAINTS, values == null? Array.empty() : Array.of(values));
     }
-    public BUILDER rowConstraints(Iterable<RowConstraints> constraints) {
+    public B rowConstraints(Iterable<RowConstraints> constraints) {
         return property(ROW_CONSTRAINTS, constraints == null? Array.empty() : Array.ofAll(constraints));
     }
 

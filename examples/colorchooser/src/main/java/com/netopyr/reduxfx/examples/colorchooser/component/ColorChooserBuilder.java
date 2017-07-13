@@ -16,9 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * Builder for the custom component {@link ColorChooserComponent}
  *
- * @param <BUILDER> Parameter required to implement inheritable builders
+ * @param <B> Parameter required to implement inheritable builders
  */
-public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> extends VBoxBuilder<BUILDER> {
+public class ColorChooserBuilder<B extends ColorChooserBuilder<B>> extends VBoxBuilder<B> {
 
     private static String COLOR = "color";
 
@@ -32,12 +32,12 @@ public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> e
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ColorChooserBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new ColorChooserBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
@@ -48,7 +48,7 @@ public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> e
      * @param listener the {@link VChangeListener} that should be called when the value of {@code color} changes
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
-    public BUILDER color(Color value, VChangeListener<? super Color> listener) {
+    public B color(Color value, VChangeListener<? super Color> listener) {
         return property(COLOR, value, listener);
     }
 
@@ -58,7 +58,7 @@ public class ColorChooserBuilder<BUILDER extends ColorChooserBuilder<BUILDER>> e
      * @param listener the {@link VChangeListener} that should be called when the value of {@code color} changes
      * @return the new VirtualScenegraph-node of a {@link ColorChooserComponent} with the property {@code color} set
      */
-    public BUILDER color(VChangeListener<? super Color> listener) {
+    public B color(VChangeListener<? super Color> listener) {
         return property(COLOR, listener);
     }
 

@@ -11,7 +11,7 @@ import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class CheckBoxBuilder<BUILDER extends CheckBoxBuilder<BUILDER>> extends ButtonBaseBuilder<BUILDER> {
+public class CheckBoxBuilder<B extends CheckBoxBuilder<B>> extends ButtonBaseBuilder<B> {
 
     private static final String SELECTED = "selected";
 
@@ -25,22 +25,22 @@ public class CheckBoxBuilder<BUILDER extends CheckBoxBuilder<BUILDER>> extends B
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new CheckBoxBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new CheckBoxBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER selected(boolean value, VChangeListener<Boolean> changeListener) {
+    public B selected(boolean value, VChangeListener<Boolean> changeListener) {
         return property(SELECTED, value, changeListener);
     }
-    public BUILDER selected(boolean value) {
+    public B selected(boolean value) {
         return property(SELECTED, value);
     }
-    public BUILDER selected(VChangeListener<Boolean> changeListener) {
+    public B selected(VChangeListener<Boolean> changeListener) {
         return property(SELECTED, changeListener);
     }
 

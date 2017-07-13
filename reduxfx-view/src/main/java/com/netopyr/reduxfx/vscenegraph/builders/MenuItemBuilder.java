@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.ACTION;
 
 @SuppressWarnings("unused")
-public class MenuItemBuilder<BUILDER extends MenuItemBuilder<BUILDER>> extends Builder<BUILDER> {
+public class MenuItemBuilder<B extends MenuItemBuilder<B>> extends Builder<B> {
 
     private static final String DISABLE = "disable";
     private static final String TEXT = "text";
@@ -30,25 +30,25 @@ public class MenuItemBuilder<BUILDER extends MenuItemBuilder<BUILDER>> extends B
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new MenuItemBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new MenuItemBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER disable(boolean value) {
+    public B disable(boolean value) {
         return property(DISABLE, value);
     }
 
-    public BUILDER text(String value) {
+    public B text(String value) {
         return property(TEXT, value);
     }
 
 
-    public BUILDER onAction(VEventHandler<ActionEvent> eventHandler) {
+    public B onAction(VEventHandler<ActionEvent> eventHandler) {
         return onEvent(ACTION, eventHandler);
     }
 

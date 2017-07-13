@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class ProgressIndicatorBuilder<BUILDER extends ProgressIndicatorBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
+public class ProgressIndicatorBuilder<B extends ProgressIndicatorBuilder<B>> extends ControlBuilder<B> {
 
     private static final String PROGRESS = "progress";
 
@@ -25,16 +25,16 @@ public class ProgressIndicatorBuilder<BUILDER extends ProgressIndicatorBuilder<B
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ProgressIndicatorBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new ProgressIndicatorBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER progress(double value) {
+    public B progress(double value) {
         return property(PROGRESS, value);
     }
 

@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class ControlBuilder<BUILDER extends ControlBuilder<BUILDER>> extends RegionBuilder<BUILDER> {
+public class ControlBuilder<B extends ControlBuilder<B>> extends RegionBuilder<B> {
 
     private static final String CONTEXT_MENU = "contextMenu";
 
@@ -25,16 +25,16 @@ public class ControlBuilder<BUILDER extends ControlBuilder<BUILDER>> extends Reg
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new ControlBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new ControlBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER contextMenu(VNode value) {
+    public B contextMenu(VNode value) {
         return child(CONTEXT_MENU, value);
     }
 

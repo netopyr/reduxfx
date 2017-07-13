@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class AccordionBuilder<BUILDER extends AccordionBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
+public class AccordionBuilder<B extends AccordionBuilder<B>> extends ControlBuilder<B> {
 
     private static final String PANES = "panes";
 
@@ -25,19 +25,19 @@ public class AccordionBuilder<BUILDER extends AccordionBuilder<BUILDER>> extends
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new AccordionBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new AccordionBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public final BUILDER panes(VNode... nodes) {
+    public final B panes(VNode... nodes) {
         return children(PANES, nodes == null? Array.empty() : Array.of(nodes));
     }
-    public final BUILDER panes(Iterable<VNode> nodes) {
+    public final B panes(Iterable<VNode> nodes) {
         return children(PANES, nodes == null? Array.empty() : Array.ofAll(nodes));
     }
 

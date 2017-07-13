@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
-public class RegionBuilder<BUILDER extends RegionBuilder<BUILDER>> extends ParentBuilder<BUILDER> {
+public class RegionBuilder<B extends RegionBuilder<B>> extends ParentBuilder<B> {
 
     private static final String BACKGROUND = "background";
     private static final String MAX_HEIGHT = "maxHeight";
@@ -36,53 +36,53 @@ public class RegionBuilder<BUILDER extends RegionBuilder<BUILDER>> extends Paren
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new RegionBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new RegionBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER background(Background value) {
+    public B background(Background value) {
         return property(BACKGROUND, value);
     }
-    public BUILDER background(Color fill) {
+    public B background(Color fill) {
         return property(BACKGROUND, new Background(new BackgroundFill(fill, null, null)));
     }
 
-    public BUILDER maxHeight(double value) {
+    public B maxHeight(double value) {
         return property(MAX_HEIGHT, value);
     }
 
-    public BUILDER maxWidth(double value) {
+    public B maxWidth(double value) {
         return property(MAX_WIDTH, value);
     }
 
-    public BUILDER minHeight(double value) {
+    public B minHeight(double value) {
         return property(MIN_HEIGHT, value);
     }
 
-    public BUILDER minWidth(double value) {
+    public B minWidth(double value) {
         return property(MIN_WIDTH, value);
     }
 
-    public BUILDER prefHeight(double value) {
+    public B prefHeight(double value) {
         return property(PREF_HEIGHT, value);
     }
 
-    public BUILDER prefWidth(double value) {
+    public B prefWidth(double value) {
         return property(PREF_WIDTH, value);
     }
 
-    public BUILDER padding(double top, double rightLeft, double bottom) {
+    public B padding(double top, double rightLeft, double bottom) {
         return property(PADDING, new Insets(top, rightLeft, bottom, rightLeft));
     }
-    public BUILDER padding(double topBottom, double rightLeft) {
+    public B padding(double topBottom, double rightLeft) {
         return property(PADDING, new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
-    public BUILDER padding(double value) {
+    public B padding(double value) {
         return property(PADDING, new Insets(value, value, value, value));
     }
 

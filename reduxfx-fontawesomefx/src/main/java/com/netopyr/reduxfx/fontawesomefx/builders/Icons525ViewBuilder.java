@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class Icons525ViewBuilder<BUILDER extends Icons525ViewBuilder<BUILDER>> extends GlyphIconBuilder<BUILDER> {
+public class Icons525ViewBuilder<B extends Icons525ViewBuilder<B>> extends GlyphIconBuilder<B> {
 
     public Icons525ViewBuilder(Class<?> nodeClass,
                                Map<String, Array<VNode>> childrenMap,
@@ -24,16 +24,16 @@ public class Icons525ViewBuilder<BUILDER extends Icons525ViewBuilder<BUILDER>> e
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new Icons525ViewBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new Icons525ViewBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER icon(Icons525 value) {
+    public B icon(Icons525 value) {
         return property(ICON, value);
     }
 

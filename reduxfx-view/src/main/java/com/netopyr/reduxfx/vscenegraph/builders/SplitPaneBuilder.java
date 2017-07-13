@@ -11,7 +11,7 @@ import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class SplitPaneBuilder<BUILDER extends SplitPaneBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
+public class SplitPaneBuilder<B extends SplitPaneBuilder<B>> extends ControlBuilder<B> {
 
 	private static final String ORIENTATION = "orientation";
 	private static final String ITEMS = "items";
@@ -27,27 +27,27 @@ public class SplitPaneBuilder<BUILDER extends SplitPaneBuilder<BUILDER>> extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected BUILDER create(
+	protected B create(
 		Map<String, Array<VNode>> childrenMap,
 		Map<String, Option<VNode>> singleChildMap,
 		Map<String, VProperty> properties,
 		Map<VEventType, VEventHandler> eventHandlers) {
-		return (BUILDER) new SplitPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+		return (B) new SplitPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
 	}
 
-	public BUILDER orientation(Orientation orientation) {
+	public B orientation(Orientation orientation) {
 		return property(ORIENTATION, orientation);
 	}
 
-	public BUILDER items(VNode... nodes) {
+	public B items(VNode... nodes) {
 		return children(ITEMS, nodes == null ? Array.empty() : Array.of(nodes));
 	}
 
-	public BUILDER items(Iterable<VNode> nodes) {
+	public B items(Iterable<VNode> nodes) {
 		return children(ITEMS, nodes == null ? Array.empty() : Array.ofAll(nodes));
 	}
 
-	public BUILDER dividerPositions(double... positions) {
+	public B dividerPositions(double... positions) {
 		return property(DIVIDER_POSITIONS, positions);
 	}
 

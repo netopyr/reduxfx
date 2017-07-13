@@ -11,7 +11,7 @@ import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class HBoxBuilder<BUILDER extends HBoxBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
+public class HBoxBuilder<B extends HBoxBuilder<B>> extends PaneBuilder<B> {
 
     private static final String SPACING = "spacing";
     private static final String ALIGNMENT = "alignment";
@@ -26,19 +26,19 @@ public class HBoxBuilder<BUILDER extends HBoxBuilder<BUILDER>> extends PaneBuild
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new HBoxBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new HBoxBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
-    public BUILDER alignment(Pos value) {
+    public B alignment(Pos value) {
         return property(ALIGNMENT, value);
     }
 
-    public BUILDER spacing(double value) {
+    public B spacing(double value) {
         return property(SPACING, value);
     }
 
