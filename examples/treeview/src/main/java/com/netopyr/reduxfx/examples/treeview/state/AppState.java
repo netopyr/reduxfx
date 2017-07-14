@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.examples.treeview.state;
 
-import javaslang.Tuple;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
+import io.vavr.Tuple;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

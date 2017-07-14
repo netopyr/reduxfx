@@ -15,10 +15,10 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Label;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.TreeItem;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.TreeView;
 import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.VBox;
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 
 /**
@@ -51,8 +51,8 @@ public class SprintsTreeView {
 					.cellFactory(item -> Label().text(
 						// pattern-match to decide how each type of object is rendered
 						Match(item).of(
-							Case(instanceOf(Sprint.class), Sprint::getTitle),
-							Case(instanceOf(Story.class), Story::getTitle),
+							Case($(instanceOf(Sprint.class)), Sprint::getTitle),
+							Case($(instanceOf(Story.class)), Story::getTitle),
 							Case($(), Object::toString)
 						))
 					)
