@@ -11,6 +11,24 @@
 
     <artifactId>reduxfx-fxml</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.11.4</version>
+                <configuration>
+                    <projectId>59686e896725bd000eab632d</projectId>
+                    <organisation>reduxfx</organisation>
+                    <team>Owners</team>
+                    <visibility>public</visibility>
+                    <parentGroupId>com.netopyr.reduxfx</parentGroupId>
+                    <parentArtifactId>reduxfx-all</parentArtifactId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
@@ -18,6 +36,5 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-
 
 </project>
