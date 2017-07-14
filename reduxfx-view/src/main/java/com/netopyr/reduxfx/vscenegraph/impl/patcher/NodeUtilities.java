@@ -10,7 +10,6 @@ import javafx.stage.Window;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +62,7 @@ public class NodeUtilities {
                                 .computeIfAbsent("dialog", key -> new HashMap<>())
                 ),
 
-                Case($(), Collections.emptyMap())
+                Case($(), new HashMap<>())
         );
 
     }

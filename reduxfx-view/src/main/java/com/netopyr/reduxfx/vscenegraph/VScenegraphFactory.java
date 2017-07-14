@@ -22,6 +22,8 @@ import com.netopyr.reduxfx.vscenegraph.builders.TextFieldBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TextInputControlBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TitledPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ToggleButtonBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TreeItemBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TreeViewBuilder;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -210,6 +212,14 @@ public class VScenegraphFactory {
 
     public static <B extends ContextMenuBuilder<B>> ContextMenuBuilder<B> ContextMenu() {
         return Factory.node(ContextMenu.class, () -> new ContextMenuBuilder<>(ContextMenu.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends TreeViewBuilder<CLASS, ELEMENT>, ELEMENT> TreeViewBuilder<CLASS, ELEMENT> TreeView(Class<ELEMENT> elementClass) {
+        return Factory.node(TreeView.class, () -> new TreeViewBuilder<CLASS, ELEMENT>(TreeView.class, elementClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <CLASS extends TreeItemBuilder<CLASS, ELEMENT>, ELEMENT> TreeItemBuilder<CLASS, ELEMENT> TreeItem(Class<ELEMENT> elementClass) {
+        return Factory.node(TreeItem.class, () -> new TreeItemBuilder<CLASS, ELEMENT>(TreeItem.class, elementClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
     public static <B extends SplitPaneBuilder<B>> SplitPaneBuilder<B> SplitPane() {
