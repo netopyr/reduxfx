@@ -5,14 +5,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("SameParameterValue")
-public class TextInputControlBuilder<BUILDER extends TextInputControlBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
+public class TextInputControlBuilder<B extends TextInputControlBuilder<B>> extends ControlBuilder<B> {
 
     private static final String PROMPT_TEXT = "promptText";
     private static final String TEXT = "text";
@@ -27,26 +27,26 @@ public class TextInputControlBuilder<BUILDER extends TextInputControlBuilder<BUI
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new TextInputControlBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new TextInputControlBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER promptText(String value) {
+    public B promptText(String value) {
         return property(PROMPT_TEXT, value);
     }
 
-    public BUILDER text(String value, VChangeListener<? super String> listener) {
+    public B text(String value, VChangeListener<? super String> listener) {
         return property(TEXT, value, listener);
     }
-    public BUILDER text(String value) {
+    public B text(String value) {
         return property(TEXT, value);
     }
-    public BUILDER text(VChangeListener<? super String> listener) {
+    public B text(VChangeListener<? super String> listener) {
         return property(TEXT, listener);
     }
 

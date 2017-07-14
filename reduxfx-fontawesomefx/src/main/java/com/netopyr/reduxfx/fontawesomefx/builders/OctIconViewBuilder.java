@@ -5,14 +5,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import de.jensd.fx.glyphs.octicons.OctIcon;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class OctIconViewBuilder<BUILDER extends OctIconViewBuilder<BUILDER>> extends GlyphIconBuilder<BUILDER> {
+public class OctIconViewBuilder<B extends OctIconViewBuilder<B>> extends GlyphIconBuilder<B> {
 
     public OctIconViewBuilder(Class<?> nodeClass,
                               Map<String, Array<VNode>> childrenMap,
@@ -24,16 +24,16 @@ public class OctIconViewBuilder<BUILDER extends OctIconViewBuilder<BUILDER>> ext
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new OctIconViewBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new OctIconViewBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER icon(OctIcon value) {
+    public B icon(OctIcon value) {
         return property(ICON, value);
     }
 

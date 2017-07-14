@@ -12,14 +12,14 @@ import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import javafx.event.Event;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("WeakerAccess")
-public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
+public class Builder<B extends Builder<B>> extends VNode {
 
     public Builder(Class<?> nodeClass,
                    Map<String, Array<VNode>> childrenMap,
@@ -31,15 +31,15 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
 
 
     @SuppressWarnings("unchecked")
-    protected BUILDER create(Map<String, Array<VNode>> childrenMap,
+    protected B create(Map<String, Array<VNode>> childrenMap,
                              Map<String, Option<VNode>> singleChildMap,
                              Map<String, VProperty> properties,
                              Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new Builder(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new Builder(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER children(String name, Array<VNode> children) {
+    public B children(String name, Array<VNode> children) {
         Accessors.registerNodeListAccessor(getNodeClass(), name, () -> new DefaultNodeListAccessor(NodeUtilities.getGetterMethodHandle(getNodeClass(), name).get()));
         return Factory.node(
                 this,
@@ -50,7 +50,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
         );
     }
 
-    public BUILDER child(String name, VNode child) {
+    public B child(String name, VNode child) {
         Accessors.registerNodeAccessor(getNodeClass(), name, () -> new DefaultNodeAccessor(NodeUtilities.getSetter(getNodeClass(), name).get()));
         return Factory.node(
                 this,
@@ -61,7 +61,7 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
         );
     }
 
-    public <TYPE> BUILDER property(Phase phase, String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+    public <T> B property(Phase phase, String name, T value, VChangeListener<? super T> changeListener, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -70,11 +70,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+    public <T> B property(String name, T value, VChangeListener<? super T> changeListener, VInvalidationListener invalidationListener) {
         return property(Phase.DEFAULT, name, value, changeListener, invalidationListener);
     }
 
-    public <TYPE> BUILDER property(Phase phase, String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
+    public <T> B property(Phase phase, String name, T value, VChangeListener<? super T> changeListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -83,11 +83,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public <TYPE> BUILDER property(String name, TYPE value, VChangeListener<? super TYPE> changeListener) {
+    public <T> B property(String name, T value, VChangeListener<? super T> changeListener) {
         return property(Phase.DEFAULT, name, value, changeListener);
     }
 
-    public BUILDER property(Phase phase, String name, Object value, VInvalidationListener invalidationListener) {
+    public B property(Phase phase, String name, Object value, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -96,11 +96,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public <TYPE> BUILDER property(String name, TYPE value, VInvalidationListener invalidationListener) {
+    public <T> B property(String name, T value, VInvalidationListener invalidationListener) {
         return property(Phase.DEFAULT, name, value, invalidationListener);
     }
 
-    public BUILDER property(Phase phase, String name, Object value) {
+    public B property(Phase phase, String name, Object value) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -109,11 +109,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public BUILDER property(String name, Object value) {
+    public B property(String name, Object value) {
         return property(Phase.DEFAULT, name, value);
     }
 
-    public BUILDER property(Phase phase, String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
+    public B property(Phase phase, String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -122,11 +122,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public BUILDER property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
+    public B property(String name, VChangeListener<?> changeListener, VInvalidationListener invalidationListener) {
         return property(Phase.DEFAULT, name, changeListener, invalidationListener);
     }
 
-    public BUILDER property(Phase phase, String name, VChangeListener<?> changeListener) {
+    public B property(Phase phase, String name, VChangeListener<?> changeListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -135,11 +135,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public BUILDER property(String name, VChangeListener<?> changeListener) {
+    public B property(String name, VChangeListener<?> changeListener) {
         return property(Phase.DEFAULT, name, changeListener);
     }
 
-    public BUILDER property(Phase phase, String name, VInvalidationListener invalidationListener) {
+    public B property(Phase phase, String name, VInvalidationListener invalidationListener) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -148,11 +148,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public BUILDER property(String name, VInvalidationListener invalidationListener) {
+    public B property(String name, VInvalidationListener invalidationListener) {
         return property(Phase.DEFAULT, name, invalidationListener);
     }
 
-    public BUILDER property(Phase phase, String name) {
+    public B property(Phase phase, String name) {
         return Factory.node(
                 this,
                 getChildrenMap(),
@@ -161,11 +161,11 @@ public class Builder<BUILDER extends Builder<BUILDER>> extends VNode {
                 getEventHandlers()
         );
     }
-    public BUILDER property(String name) {
+    public B property(String name) {
         return property(Phase.DEFAULT, name);
     }
 
-    public <EVENT extends Event> BUILDER onEvent(VEventType type, VEventHandler<EVENT> eventHandler) {
+    public <E extends Event> B onEvent(VEventType type, VEventHandler<E> eventHandler) {
         return Factory.node(
                 this,
                 getChildrenMap(),

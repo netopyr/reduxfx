@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.BiFunction;
 
-public class LoggingMiddleware<STATE> implements Middleware<STATE> {
+public class LoggingMiddleware<S> implements Middleware<S> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoggingMiddleware.class);
 
     @Override
-    public BiFunction<STATE, Object, Update<STATE>> apply(BiFunction<STATE, Object, Update<STATE>> next) {
+    public BiFunction<S, Object, Update<S>> apply(BiFunction<S, Object, Update<S>> next) {
         return (oldState, action) -> {
-            final Update<STATE> newState = next.apply(oldState, action);
+            final Update<S> newState = next.apply(oldState, action);
 
             LOG.debug("prev state: {}", oldState);
             LOG.debug("action:     {}", action);

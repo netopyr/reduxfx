@@ -6,7 +6,7 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.scene.control.Dialog;
 import javafx.stage.Modality;
-import javaslang.control.Option;
+import io.vavr.control.Option;
 
 import java.lang.invoke.MethodHandle;
 import java.util.ArrayList;
@@ -36,8 +36,9 @@ public class DialogShowingAccessor extends ListenerHandlingAccessor {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
+    public void set(Consumer<Object> dispatcher, Object originalNode, String name, VProperty vProperty) {
 
+        Object node = originalNode;
         final Dialog dialog = (Dialog) node;
 
         final ReadOnlyProperty property;

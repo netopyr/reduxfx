@@ -7,31 +7,33 @@ import com.netopyr.reduxfx.jfoenix.builders.JFXButtonBuilder;
 import com.netopyr.reduxfx.jfoenix.builders.JFXProgressBarBuilder;
 import com.netopyr.reduxfx.jfoenix.builders.JFXTextFieldBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.Factory;
-import javaslang.collection.HashMap;
+import io.vavr.collection.HashMap;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class JFoenix {
 
-    public static <CLASS extends JFXButtonBuilder<CLASS>> JFXButtonBuilder<CLASS> JFXButton(Class<? extends JFXButton> nodeClass) {
+    private JFoenix() {}
+
+    public static <B extends JFXButtonBuilder<B>> JFXButtonBuilder<B> JFXButton(Class<? extends JFXButton> nodeClass) {
         return Factory.node(nodeClass, () -> new JFXButtonBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends JFXButtonBuilder<CLASS>> JFXButtonBuilder<CLASS> JFXButton() {
+    public static <B extends JFXButtonBuilder<B>> JFXButtonBuilder<B> JFXButton() {
         return JFXButton(JFXButton.class);
     }
 
 
-    public static <CLASS extends JFXProgressBarBuilder<CLASS>> JFXProgressBarBuilder<CLASS> JFXProgressBar(Class<? extends JFXProgressBar> nodeClass) {
+    public static <B extends JFXProgressBarBuilder<B>> JFXProgressBarBuilder<B> JFXProgressBar(Class<? extends JFXProgressBar> nodeClass) {
         return Factory.node(nodeClass, () -> new JFXProgressBarBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends JFXProgressBarBuilder<CLASS>> JFXProgressBarBuilder<CLASS> JFXProgressBar() {
+    public static <B extends JFXProgressBarBuilder<B>> JFXProgressBarBuilder<B> JFXProgressBar() {
         return JFXProgressBar(JFXProgressBar.class);
     }
 
 
-    public static <CLASS extends JFXTextFieldBuilder<CLASS>> JFXTextFieldBuilder<CLASS> JFXTextField(Class<? extends JFXTextField> nodeClass) {
+    public static <B extends JFXTextFieldBuilder<B>> JFXTextFieldBuilder<B> JFXTextField(Class<? extends JFXTextField> nodeClass) {
         return Factory.node(nodeClass, () -> new JFXTextFieldBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends JFXTextFieldBuilder<CLASS>> JFXTextFieldBuilder<CLASS> JFXTextField() {
+    public static <B extends JFXTextFieldBuilder<B>> JFXTextFieldBuilder<B> JFXTextField() {
         return JFXTextField(JFXTextField.class);
     }
 

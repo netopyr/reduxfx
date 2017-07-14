@@ -11,14 +11,13 @@ import com.netopyr.reduxfx.examples.todo.actions.SetFilterAction;
 import com.netopyr.reduxfx.examples.todo.actions.SetTodoHoverAction;
 import com.netopyr.reduxfx.examples.todo.state.AppState;
 import com.netopyr.reduxfx.examples.todo.state.TodoEntry;
-import javaslang.API;
 
 import java.util.Objects;
 
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 /**
  * The {@code Updater} is the heart of every ReduxFX-application. This is where the main application logic resides.
@@ -57,14 +56,14 @@ public class Updater {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
+        // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
         // in Java, except that it is much more flexible and returns a value.
         // We check which of the cases is true and in that branch we specify the newState.
         return Match(action).of(
 
                 // If the action is a NewTextFieldChangedAction, we return a new AppState with the
                 // property newTodoText set to the new value
-                API.Case(instanceOf(NewTextFieldChangedAction.class),
+                Case($(instanceOf(NewTextFieldChangedAction.class)),
                         newTextFieldChangedAction ->
                                 state.withNewTodoText(newTextFieldChangedAction.getText())
                 ),
@@ -73,7 +72,7 @@ public class Updater {
                 // The new TodoEntry will get an id that is the maximum of all used ids plus one and the
                 // text will be set to the value stored in property newTodoText of the current AppState.
                 // In addition we clear the property newTodoText.
-                Case(instanceOf(AddTodoAction.class),
+                Case($(instanceOf(AddTodoAction.class)),
                         state
                                 .withNewTodoText("")
                                 .withTodos(
@@ -92,7 +91,7 @@ public class Updater {
 
                 // If the action is a DeleteTodoAction, we create a new AppState, where the TodoEntry that
                 // should be deleted is filtered out of the list of todo-entries.
-                Case(instanceOf(DeleteTodoAction.class),
+                Case($(instanceOf(DeleteTodoAction.class)),
                         deleteTodoAction -> state.withTodos(
                                 state.getTodos().filter(
                                         todoEntry -> todoEntry.getId() != deleteTodoAction.getId()
@@ -105,7 +104,7 @@ public class Updater {
                 // We do that by mapping all items in the todos-list. If the item-id does not match we re-use
                 // the old entry. But if the id matches, we replace the TodoEntry with one that has the text
                 // set to the given value.
-                API.Case(instanceOf(EditTodoAction.class),
+                Case($(instanceOf(EditTodoAction.class)),
                         editTodoAction -> state.withTodos(
                                 state.getTodos()
                                         .map(entry -> entry.getId() != editTodoAction.getId() ?
@@ -119,7 +118,7 @@ public class Updater {
                 // We do that by mapping all items in the todos-list. If the item-id does not match
                 // we re-use the old entry. But if the id matches, we replace the TodoEntry with one
                 // where the completed flag is toggled.
-                API.Case(instanceOf(CompleteTodoAction.class),
+                Case($(instanceOf(CompleteTodoAction.class)),
                         completeTodoAction -> state.withTodos(
                                 state.getTodos()
                                         .map(entry -> entry.getId() != completeTodoAction.getId() ?
@@ -132,7 +131,7 @@ public class Updater {
                 // First we calculate, if the completed-flags need to be set or cleared. This will be stored in
                 // the variable areAllMarked. The completed-flags need to be set, if at least one of them
                 // is not set. If all of the flags are set already, we need to clear them.
-                API.Case(instanceOf(CompleteAllAction.class),
+                Case($(instanceOf(CompleteAllAction.class)),
                         completeAllAction -> {
                             final boolean areAllMarked = state.getTodos().find(entry -> !entry.isCompleted()).isEmpty();
                             return state.withTodos(
@@ -143,7 +142,7 @@ public class Updater {
 
                 // If the action is a SetFilterAction, we need to return a new AppState where the filter is
                 // set to the given value.
-                Case(instanceOf(SetFilterAction.class),
+                Case($(instanceOf(SetFilterAction.class)),
                         setFilterAction -> state.withFilter(setFilterAction.getFilter())
                 ),
 
@@ -152,7 +151,7 @@ public class Updater {
                 // We do that by mapping all items in the todos-list. If the item-id does not match we re-use
                 // the old entry. But if the id matches, we replace the TodoEntry with one that has the
                 // hover-flag set to the given value.
-                API.Case(instanceOf(SetTodoHoverAction.class),
+                Case($(instanceOf(SetTodoHoverAction.class)),
                         (SetTodoHoverAction setTodoHoverAction) -> state.withTodos(
                                 state.getTodos()
                                         .map(entry -> entry.getId() != setTodoHoverAction.getId() ?
@@ -166,7 +165,7 @@ public class Updater {
                 // We do that by mapping all items in the todos-list. If the item-id does not match we re-use
                 // the old entry. But if the id matches, we replace the TodoEntry with one that has the
                 // editMode-flag set to the given value.
-                API.Case(instanceOf(SetEditModeAction.class),
+                Case($(instanceOf(SetEditModeAction.class)),
                         (SetEditModeAction setEditModeAction) -> state.withTodos(
                                 state.getTodos()
                                         .map(entry -> entry.getId() != setEditModeAction.getId() ?

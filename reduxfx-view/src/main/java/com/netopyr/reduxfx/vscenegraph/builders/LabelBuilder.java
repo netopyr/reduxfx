@@ -4,13 +4,13 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class LabelBuilder<BUILDER extends LabelBuilder<BUILDER>> extends LabeledBuilder<BUILDER> {
+public class LabelBuilder<B extends LabelBuilder<B>> extends LabeledBuilder<B> {
 
     public LabelBuilder(Class<?> nodeClass,
                         Map<String, Array<VNode>> childrenMap,
@@ -22,12 +22,12 @@ public class LabelBuilder<BUILDER extends LabelBuilder<BUILDER>> extends Labeled
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new LabelBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new LabelBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 

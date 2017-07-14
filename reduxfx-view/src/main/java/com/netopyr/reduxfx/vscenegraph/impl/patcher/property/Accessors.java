@@ -5,9 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -164,10 +164,10 @@ public class Accessors {
         }
     }
 
-    private static <ACCESSOR> Option<ACCESSOR> searchInCache(Map<PropertyKey, ACCESSOR> map, PropertyKey propertyKey) {
+    private static <T> Option<T> searchInCache(Map<PropertyKey, T> map, PropertyKey propertyKey) {
         final String propertyName = propertyKey.name;
         for (Class<?> clazz = propertyKey.clazz.getSuperclass(); clazz != null; clazz = clazz.getSuperclass()) {
-            final Option<ACCESSOR> accessor = map.get(new PropertyKey(clazz, propertyName));
+            final Option<T> accessor = map.get(new PropertyKey(clazz, propertyName));
             if (accessor.isDefined()) {
                 return accessor;
             }
@@ -175,7 +175,8 @@ public class Accessors {
         return Option.none();
     }
 
-    private static <ACCESSOR> Map<PropertyKey, ACCESSOR> cacheAccessor(Map<PropertyKey, ACCESSOR> map, Class<?> nodeClass, String propertyName, ACCESSOR accessor) {
+    private static <T> Map<PropertyKey, T> cacheAccessor(Map<PropertyKey, T> oldMap, Class<?> nodeClass, String propertyName, T accessor) {
+        Map<PropertyKey, T> map = oldMap;
         final Option<Method> getter = NodeUtilities.getGetterMethod(nodeClass, propertyName);
         map = map.put(new PropertyKey(nodeClass, propertyName), accessor);
         if (getter.isDefined()) {

@@ -6,14 +6,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
-public class SliderBuilder<BUILDER extends SliderBuilder<BUILDER>> extends NodeBuilder<BUILDER> {
+public class SliderBuilder<B extends SliderBuilder<B>> extends NodeBuilder<B> {
 
     private static final String MAX = "max";
     private static final String VALUE = "value";
@@ -27,38 +27,39 @@ public class SliderBuilder<BUILDER extends SliderBuilder<BUILDER>> extends NodeB
     }
 
     @SuppressWarnings("unchecked")
-    protected BUILDER create(
+    @Override
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new SliderBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new SliderBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER max(double value) {
+    public B max(double value) {
         return property(MAX, value);
     }
-    public BUILDER max(double value, VChangeListener<Double> changeListener) {
+    public B max(double value, VChangeListener<Double> changeListener) {
         return property(MAX, value, changeListener);
     }
-    public BUILDER max(double value, VInvalidationListener invalidationListener) {
+    public B max(double value, VInvalidationListener invalidationListener) {
         return property(MAX, value, invalidationListener);
     }
-    public BUILDER max(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
+    public B max(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
         return property(MAX, value, changeListener, invalidationListener);
     }
 
-    public BUILDER value(double value) {
+    public B value(double value) {
         return property(VALUE, value);
     }
-    public BUILDER value(double value, VChangeListener<Double> changeListener) {
+    public B value(double value, VChangeListener<Double> changeListener) {
         return property(VALUE, value, changeListener);
     }
-    public BUILDER value(double value, VInvalidationListener invalidationListener) {
+    public B value(double value, VInvalidationListener invalidationListener) {
         return property(VALUE, value, invalidationListener);
     }
-    public BUILDER value(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
+    public B value(double value, VChangeListener<Double> changeListener, VInvalidationListener invalidationListener) {
         return property(VALUE, value, changeListener, invalidationListener);
     }
 

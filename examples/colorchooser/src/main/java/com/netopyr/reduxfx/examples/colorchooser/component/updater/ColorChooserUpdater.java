@@ -13,10 +13,10 @@ import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 /**
  * The {@code ColorChooserUpdater} is the heart of the
@@ -64,7 +64,7 @@ public class ColorChooserUpdater {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
+        // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
         // in Java, except that it is much more flexible and returns a value.
         // We check which of the cases is true and in that branch we specify the newState.
         return Match(action).of(
@@ -73,7 +73,7 @@ public class ColorChooserUpdater {
                 // property red set to the new value.
                 // We also return an ObjectChangedCommand, which makes sure the color-property of this
                 // component is updated.
-                Case(instanceOf(UpdateRedAction.class),
+                Case($(instanceOf(UpdateRedAction.class)),
                         updateRedAction -> {
                             final Color color = Color.rgb(updateRedAction.getValue(), state.getGreen(), state.getBlue());
                             return Update.of(
@@ -86,7 +86,7 @@ public class ColorChooserUpdater {
                 // property green set to the new value.
                 // We also return an ObjectChangedCommand, which makes sure the color-property of this
                 // component is updated.
-                Case(instanceOf(UpdateGreenAction.class),
+                Case($(instanceOf(UpdateGreenAction.class)),
                         updateGreenAction -> {
                             final Color color = Color.rgb(state.getRed(), updateGreenAction.getValue(), state.getBlue());
                             return Update.of(
@@ -99,7 +99,7 @@ public class ColorChooserUpdater {
                 // property blue set to the new value.
                 // We also return an ObjectChangedCommand, which makes sure the color-property of this
                 // component is updated.
-                Case(instanceOf(UpdateBlueAction.class),
+                Case($(instanceOf(UpdateBlueAction.class)),
                         updateBlueAction -> {
                             final Color color = Color.rgb(state.getRed(), state.getGreen(), updateBlueAction.getValue());
                             return Update.of(
@@ -110,7 +110,7 @@ public class ColorChooserUpdater {
 
                 // A ColorChangedAction is received, when the color-property of this component was changed
                 // from the outside. We return a new ColorChooserModel with all color values updated accordingly.
-                Case(instanceOf(ColorChangedAction.class),
+                Case($(instanceOf(ColorChangedAction.class)),
                         colorChangedAction -> {
                             final Color newColor = colorChangedAction.getNewColor();
                             return Update.of(

@@ -6,8 +6,8 @@ import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import javafx.animation.Animation;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 
 public class TimerDriver<T> {
 

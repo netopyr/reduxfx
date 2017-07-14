@@ -1,11 +1,11 @@
 package com.netopyr.reduxfx.vscenegraph.impl.patcher;
 
+import io.vavr.collection.Array;
+import io.vavr.control.Option;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
 import javafx.stage.Window;
-import javaslang.collection.Array;
-import javaslang.control.Option;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -13,32 +13,16 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 @SuppressWarnings("WeakerAccess")
 public class NodeUtilities {
 
     private NodeUtilities() {
     }
-
-
-//    public static Object getChild(Object obj, int index) {
-//
-//        return Match(obj).of(
-//
-//                Case(instanceOf(Parent.class),
-//                        parent -> parent.getChildrenUnmodifiable().get(index)
-//                ),
-//
-//                Case(instanceOf(Stages.class),
-//                        stages -> stages.getChildren().get(index)
-//                )
-//
-//        );
-//    }
 
 
     public static Object getProperty(Object obj, String name) {
@@ -56,136 +40,24 @@ public class NodeUtilities {
     }
 
 
-//    public static boolean appendNode(Object parent, Object obj) {
-//
-//        if (obj instanceof Node) {
-//            final Node node = (Node) obj;
-//
-//            return Match(parent).of(
-//
-//                    Case(instanceOf(Pane.class),
-//                            pane -> pane.getChildren().add(node)
-//                    ),
-//
-//                    Case(instanceOf(Group.class),
-//                            group -> group.getChildren().add(node)
-//                    ),
-//
-//                    Case($(), false)
-//            );
-//
-//        } else if (obj instanceof Stage && parent instanceof Stages) {
-//            return ((Stages) parent).getChildren().add((Stage) obj);
-//        }
-//
-//        return false;
-//    }
-
-
-//    public static boolean replaceNode(Object oldObj, Object newObj) {
-//
-//        if (oldObj instanceof Node && newObj instanceof Node) {
-//            final Node oldChild = (Node) oldObj;
-//            final Node newChild = (Node) newObj;
-//
-//            final Parent parent = oldChild.getParent();
-//
-//            return Match(parent).of(
-//
-//                    Case(instanceOf(Pane.class),
-//                            pane -> {
-//                                final List<Node> children = pane.getChildren();
-//                                final int index = children.indexOf(oldChild);
-//                                if (index >= 0) {
-//                                    children.set(index, newChild);
-//                                    return true;
-//                                }
-//                                return false;
-//                            }
-//                    ),
-//
-//                    Case(instanceOf(Group.class),
-//                            group -> {
-//                                final List<Node> children = group.getChildren();
-//                                final int index = children.indexOf(oldChild);
-//                                if (index >= 0) {
-//                                    children.set(index, newChild);
-//                                    return true;
-//                                }
-//                                return false;
-//                            }
-//                    ),
-//
-//                    Case($(), false)
-//            );
-//
-//
-//        } else if (oldObj instanceof Stage && newObj instanceof Stage) {
-//
-//            final Object parent = ((Stage) oldObj).getProperties().get("stages");
-//
-//            if (parent instanceof Stages) {
-//                final List<Stage> children = ((Stages) parent).getChildren();
-//                final int index = children.indexOf(oldObj);
-//                if (index >= 0) {
-//                    children.set(index, (Stage) newObj);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        }
-//
-//        return false;
-//    }
-
-//    public static boolean removeNode(Object obj) {
-//
-//        if (obj instanceof Node) {
-//            final Node node = (Node) obj;
-//            final Parent parent = node.getParent();
-//
-//            return Match(parent).of(
-//
-//                    Case(instanceOf(Pane.class),
-//                            pane -> pane.getChildren().remove(node)
-//                    ),
-//
-//                    Case(instanceOf(Group.class),
-//                            group -> group.getChildren().remove(node)
-//                    ),
-//
-//                    Case($(), false)
-//            );
-//
-//
-//        } else if (obj instanceof Stage) {
-//            final Object stages = ((Stage) obj).getProperties().get("stages");
-//            if (stages instanceof Stages) {
-//                return ((Stages) stages).getChildren().remove(obj);
-//            }
-//        }
-//
-//        return false;
-//    }
-
     @SuppressWarnings("unchecked")
     public static Map<Object, Object> getProperties(Object obj) {
 
         return Match(obj).of(
 
-                Case(instanceOf(Node.class),
+                Case($(instanceOf(Node.class)),
                         Node::getProperties
                 ),
 
-                Case(instanceOf(Scene.class),
+                Case($(instanceOf(Scene.class)),
                         Scene::getProperties
                 ),
 
-                Case(instanceOf(Window.class),
+                Case($(instanceOf(Window.class)),
                         Window::getProperties
                 ),
 
-                Case(instanceOf(Dialog.class),
+                Case($(instanceOf(Dialog.class)),
                         dialog -> (Map<Object, Object>) dialog.getDialogPane().getProperties()
                                 .computeIfAbsent("dialog", key -> new HashMap<>())
                 ),
@@ -244,7 +116,8 @@ public class NodeUtilities {
                     .filter(method -> setterName.equals(method.getName()))
                     .filter(method -> method.getParameterCount() == 1)
                     .headOption()
-                    .flatMap(NodeUtilities::convertToMethodHandle);
+                    .flatMap(NodeUtilities::convertToMethodHandle)
+                    .map(MethodHandle::asFixedArity);
         } catch (Exception ex) {
             return Option.none();
         }

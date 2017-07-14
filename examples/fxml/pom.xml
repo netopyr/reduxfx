@@ -18,11 +18,25 @@
     <description>Example of using ReduxFX with FXML</description>
     <url>https://github.com/netopyr/reduxfx</url>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx-store</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netopyr.reduxfx</groupId>
+            <artifactId>reduxfx-fxml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.lestard</groupId>
+            <artifactId>easy-di</artifactId>
+            <version>0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

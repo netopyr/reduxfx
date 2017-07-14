@@ -18,6 +18,10 @@
     <description>Example of using ReduxFX-View with with a 3rd-party store</description>
     <url>https://github.com/netopyr/reduxfx</url>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <repositories>
         <repository>
             <id>jitpack.io</id>

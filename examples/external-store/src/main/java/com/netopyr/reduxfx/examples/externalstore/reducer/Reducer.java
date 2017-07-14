@@ -2,16 +2,15 @@ package com.netopyr.reduxfx.examples.externalstore.reducer;
 
 import com.netopyr.reduxfx.examples.externalstore.actions.IncCounterAction;
 import com.netopyr.reduxfx.examples.externalstore.state.AppState;
-import javaslang.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 /**
  * This class implements a reducer as defined by the Redux-architecture. It consists of a single method that
@@ -39,7 +38,7 @@ public class Reducer {
         // Here we assign the new state
         final AppState newState =
 
-                // This is part of Javaslang's pattern-matching API. It works similar to the regular switch-case
+                // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
                 // in Java, except that it is much more flexible and returns a value.
                 // We check which kind of action was received and in that case-branch we specify the value that
                 // will be assigned to newState.
@@ -47,7 +46,7 @@ public class Reducer {
 
                         // If the action is a IncCounterAction, we return a new AppState with the
                         // counter increased by one.
-                        API.Case(instanceOf(IncCounterAction.class),
+                        Case($(instanceOf(IncCounterAction.class)),
                                 incCounterAction -> state.withCounter(state.getCounter() + 1)
                         ),
 

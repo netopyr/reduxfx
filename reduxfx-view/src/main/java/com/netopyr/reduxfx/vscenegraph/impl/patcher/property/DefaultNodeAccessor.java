@@ -2,7 +2,7 @@ package com.netopyr.reduxfx.vscenegraph.impl.patcher.property;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.impl.patcher.NodeBuilder;
-import javaslang.control.Option;
+import io.vavr.control.Option;
 
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;

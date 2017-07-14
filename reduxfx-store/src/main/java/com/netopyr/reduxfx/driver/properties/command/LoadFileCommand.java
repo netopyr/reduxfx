@@ -1,8 +1,8 @@
 package com.netopyr.reduxfx.driver.properties.command;
 
 import com.netopyr.reduxfx.updater.Command;
-import javaslang.collection.Map;
-import javaslang.control.Try;
+import io.vavr.collection.Map;
+import io.vavr.control.Try;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

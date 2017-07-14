@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class ReadOnlyPropertyAccessor extends AbstractNoConversionAccessor {
 
-    private final Logger LOG = LoggerFactory.getLogger(ReadOnlyPropertyAccessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ReadOnlyPropertyAccessor.class);
 
     ReadOnlyPropertyAccessor(MethodHandle propertyGetter) {
         super(propertyGetter);

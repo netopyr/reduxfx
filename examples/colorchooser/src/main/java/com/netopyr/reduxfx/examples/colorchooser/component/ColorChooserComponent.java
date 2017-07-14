@@ -13,7 +13,7 @@ import com.netopyr.reduxfx.vscenegraph.builders.Factory;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javaslang.collection.HashMap;
+import io.vavr.collection.HashMap;
 
 /**
  * The class {@code ColorChooserComponent} is the main class of this component.

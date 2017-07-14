@@ -3,9 +3,9 @@ package com.netopyr.reduxfx.vscenegraph;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -40,7 +40,6 @@ public class VNode {
 
     public Option<Object> produce() {
         try {
-            final Class<?> nodeClass = getNodeClass();
             final Object node = nodeClass.newInstance();
             return Option.of(node);
         } catch (InstantiationException | IllegalAccessException e) {

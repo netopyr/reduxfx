@@ -43,7 +43,7 @@ abstract class ListenerHandlingAccessor implements Accessor {
     }
 
     protected void setInvalidationListener(Consumer<Object> dispatcher, Object node, ReadOnlyProperty property, VInvalidationListener listener) {
-        final InvalidationListener newListener = (source) -> {
+        final InvalidationListener newListener = source -> {
             final Object action = listener.onInvalidation();
             if (action != null) {
                 dispatcher.accept(action);

@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.vscenegraph.impl.patcher.property;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javaslang.control.Option;
+import io.vavr.control.Option;
 
 import java.util.function.Consumer;
 

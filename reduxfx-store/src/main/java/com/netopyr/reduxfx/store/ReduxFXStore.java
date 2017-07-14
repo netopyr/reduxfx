@@ -19,23 +19,23 @@ import org.reactivestreams.Subscriber;
 import java.util.function.BiFunction;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class ReduxFXStore<STATE> {
+public class ReduxFXStore<S> {
 
-    private final Flowable<STATE> statePublisher;
+    private final Flowable<S> statePublisher;
     private final Flowable<Command> commandPublisher;
     private FlowableEmitter<Publisher<?>> emitter;
 
 
     @SafeVarargs
-    public ReduxFXStore(STATE initialState, BiFunction<STATE, Object, Update<STATE>> updater, Middleware<STATE>... middlewares) {
-        final BiFunction<STATE, Object, Update<STATE>> chainedUpdater = applyMiddlewares(updater, middlewares);
+    public ReduxFXStore(S initialState, BiFunction<S, Object, Update<S>> updater, Middleware<S>... middlewares) {
+        final BiFunction<S, Object, Update<S>> chainedUpdater = applyMiddlewares(updater, middlewares);
 
         final Publisher<Object> actionPublisher =
                 Flowable.mergeDelayError(
-                        Flowable.create(emitter -> this.emitter = emitter, BackpressureStrategy.BUFFER)
+                        Flowable.create(actionPublisherEmitter -> this.emitter = actionPublisherEmitter, BackpressureStrategy.BUFFER)
                 );
 
-        final FlowableProcessor<Update<STATE>> updateProcessor = BehaviorProcessor.create();
+        final FlowableProcessor<Update<S>> updateProcessor = BehaviorProcessor.create();
 
         statePublisher = updateProcessor.map(Update::getState)
                 .startWith(initialState);
@@ -50,9 +50,9 @@ public class ReduxFXStore<STATE> {
         registerDefaultDrivers();
     }
 
-    private BiFunction<STATE, Object, Update<STATE>> applyMiddlewares(BiFunction<STATE, Object, Update<STATE>> updater, Middleware<STATE>[] middlewares) {
-        BiFunction<STATE, Object, Update<STATE>> result = updater;
-        for (final Middleware<STATE> middleware : middlewares) {
+    private BiFunction<S, Object, Update<S>> applyMiddlewares(BiFunction<S, Object, Update<S>> updater, Middleware<S>[] middlewares) {
+        BiFunction<S, Object, Update<S>> result = updater;
+        for (final Middleware<S> middleware : middlewares) {
             result = middleware.apply(result);
         }
         return result;
@@ -65,7 +65,7 @@ public class ReduxFXStore<STATE> {
         return actionSubscriber;
     }
 
-    public Publisher<STATE> getStatePublisher() {
+    public Publisher<S> getStatePublisher() {
         return statePublisher;
     }
 

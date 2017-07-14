@@ -7,14 +7,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.scene.paint.Paint;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class JFXButtonBuilder<BUILDER extends JFXButtonBuilder<BUILDER>> extends ButtonBuilder<BUILDER> {
+public class JFXButtonBuilder<B extends JFXButtonBuilder<B>> extends ButtonBuilder<B> {
 
     private static final String BUTTON_TYPE = "buttonType";
     private static final String RIPPLER_FILL = "ripplerFill";
@@ -29,20 +29,20 @@ public class JFXButtonBuilder<BUILDER extends JFXButtonBuilder<BUILDER>> extends
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new JFXButtonBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new JFXButtonBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER buttonType(JFXButton.ButtonType value) {
+    public B buttonType(JFXButton.ButtonType value) {
         return property(BUTTON_TYPE, value);
     }
 
-    public BUILDER ripplerFill(Paint value) {
+    public B ripplerFill(Paint value) {
         return property(RIPPLER_FILL, value);
     }
 

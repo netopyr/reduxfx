@@ -7,8 +7,8 @@ import com.netopyr.reduxfx.vscenegraph.impl.patcher.NodeBuilder;
 import javafx.scene.control.Dialog;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javaslang.collection.Array;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

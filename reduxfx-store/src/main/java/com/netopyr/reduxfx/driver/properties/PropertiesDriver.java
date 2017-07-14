@@ -5,10 +5,10 @@ import com.netopyr.reduxfx.driver.properties.command.LoadFileCommand;
 import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
-import javaslang.Tuple;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.control.Try;
+import io.vavr.Tuple;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
+import io.vavr.control.Try;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
@@ -43,7 +43,7 @@ public class PropertiesDriver implements Driver {
     }
 
     @Override
-    public Publisher<?> getActionPublisher() {
+    public Publisher<Object> getActionPublisher() {
         return actions;
     }
 

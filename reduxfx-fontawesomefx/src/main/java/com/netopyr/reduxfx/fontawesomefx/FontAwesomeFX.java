@@ -17,73 +17,74 @@ import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import de.jensd.fx.glyphs.materialstackicons.MaterialStackIconView;
 import de.jensd.fx.glyphs.octicons.OctIconView;
 import de.jensd.fx.glyphs.weathericons.WeatherIconView;
-import javaslang.collection.HashMap;
+import io.vavr.collection.HashMap;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class FontAwesomeFX {
 
-    public static <CLASS extends FontAwesomeIconViewBuilder<CLASS>> FontAwesomeIconViewBuilder<CLASS> FontAwesomeIconView(Class<? extends FontAwesomeIconView> nodeClass) {
+    private FontAwesomeFX() {}
+
+    public static <B extends FontAwesomeIconViewBuilder<B>> FontAwesomeIconViewBuilder<B> FontAwesomeIconView(Class<? extends FontAwesomeIconView> nodeClass) {
         return Factory.node(nodeClass, () -> new FontAwesomeIconViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends FontAwesomeIconViewBuilder<CLASS>> FontAwesomeIconViewBuilder<CLASS> FontAwesomeIconView() {
+    public static <B extends FontAwesomeIconViewBuilder<B>> FontAwesomeIconViewBuilder<B> FontAwesomeIconView() {
         return FontAwesomeIconView(FontAwesomeIconView.class);
     }
 
 
-    public static <CLASS extends EmojiOneViewBuilder<CLASS>> EmojiOneViewBuilder<CLASS> EmojiOneView(Class<? extends EmojiOneView> nodeClass) {
+    public static <B extends EmojiOneViewBuilder<B>> EmojiOneViewBuilder<B> EmojiOneView(Class<? extends EmojiOneView> nodeClass) {
         return Factory.node(nodeClass, () -> new EmojiOneViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends EmojiOneViewBuilder<CLASS>> EmojiOneViewBuilder<CLASS> EmojiOneView() {
+    public static <B extends EmojiOneViewBuilder<B>> EmojiOneViewBuilder<B> EmojiOneView() {
         return EmojiOneView(EmojiOneView.class);
     }
 
 
-    public static <CLASS extends Icons525ViewBuilder<CLASS>> Icons525ViewBuilder<CLASS> Icons525View(Class<? extends Icons525View> nodeClass) {
+    public static <B extends Icons525ViewBuilder<B>> Icons525ViewBuilder<B> Icons525View(Class<? extends Icons525View> nodeClass) {
         return Factory.node(nodeClass, () -> new Icons525ViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends Icons525ViewBuilder<CLASS>> Icons525ViewBuilder<CLASS> Icons525View() {
+    public static <B extends Icons525ViewBuilder<B>> Icons525ViewBuilder<B> Icons525View() {
         return Icons525View(Icons525View.class);
     }
 
 
-    public static <CLASS extends MaterialDesignIconViewBuilder<CLASS>> MaterialDesignIconViewBuilder<CLASS> MaterialDesignIconView(Class<? extends MaterialDesignIconView> nodeClass) {
+    public static <B extends MaterialDesignIconViewBuilder<B>> MaterialDesignIconViewBuilder<B> MaterialDesignIconView(Class<? extends MaterialDesignIconView> nodeClass) {
         return Factory.node(nodeClass, () -> new MaterialDesignIconViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends MaterialDesignIconViewBuilder<CLASS>> MaterialDesignIconViewBuilder<CLASS> MaterialDesignIconView() {
+    public static <B extends MaterialDesignIconViewBuilder<B>> MaterialDesignIconViewBuilder<B> MaterialDesignIconView() {
         return MaterialDesignIconView(MaterialDesignIconView.class);
     }
 
 
-    public static <CLASS extends MaterialIconViewBuilder<CLASS>> MaterialIconViewBuilder<CLASS> MaterialIconView(Class<? extends MaterialIconView> nodeClass) {
+    public static <B extends MaterialIconViewBuilder<B>> MaterialIconViewBuilder<B> MaterialIconView(Class<? extends MaterialIconView> nodeClass) {
         return Factory.node(nodeClass, () -> new MaterialIconViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends MaterialIconViewBuilder<CLASS>> MaterialIconViewBuilder<CLASS> MaterialIconView() {
+    public static <B extends MaterialIconViewBuilder<B>> MaterialIconViewBuilder<B> MaterialIconView() {
         return MaterialIconView(MaterialIconView.class);
     }
 
 
-    public static <CLASS extends MaterialStackIconViewBuilder<CLASS>> MaterialStackIconViewBuilder<CLASS> MaterialStackIconView(Class<? extends MaterialStackIconView> nodeClass) {
+    public static <B extends MaterialStackIconViewBuilder<B>> MaterialStackIconViewBuilder<B> MaterialStackIconView(Class<? extends MaterialStackIconView> nodeClass) {
         return Factory.node(nodeClass, () -> new MaterialStackIconViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends MaterialStackIconViewBuilder<CLASS>> MaterialStackIconViewBuilder<CLASS> MaterialStackIconView() {
+    public static <B extends MaterialStackIconViewBuilder<B>> MaterialStackIconViewBuilder<B> MaterialStackIconView() {
         return MaterialStackIconView(MaterialStackIconView.class);
     }
 
 
-    public static <CLASS extends OctIconViewBuilder<CLASS>> OctIconViewBuilder<CLASS> OctIconView(Class<? extends OctIconView> nodeClass) {
+    public static <B extends OctIconViewBuilder<B>> OctIconViewBuilder<B> OctIconView(Class<? extends OctIconView> nodeClass) {
         return Factory.node(nodeClass, () -> new OctIconViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends OctIconViewBuilder<CLASS>> OctIconViewBuilder<CLASS> OctIconView() {
+    public static <B extends OctIconViewBuilder<B>> OctIconViewBuilder<B> OctIconView() {
         return OctIconView(OctIconView.class);
     }
 
 
-    public static <CLASS extends WeatherIconViewBuilder<CLASS>> WeatherIconViewBuilder<CLASS> WeatherIconView(Class<? extends WeatherIconView> nodeClass) {
+    public static <B extends WeatherIconViewBuilder<B>> WeatherIconViewBuilder<B> WeatherIconView(Class<? extends WeatherIconView> nodeClass) {
         return Factory.node(nodeClass, () -> new WeatherIconViewBuilder<>(nodeClass, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
-    public static <CLASS extends WeatherIconViewBuilder<CLASS>> WeatherIconViewBuilder<CLASS> WeatherIconView() {
+    public static <B extends WeatherIconViewBuilder<B>> WeatherIconViewBuilder<B> WeatherIconView() {
         return WeatherIconView(WeatherIconView.class);
     }
-
 
 }

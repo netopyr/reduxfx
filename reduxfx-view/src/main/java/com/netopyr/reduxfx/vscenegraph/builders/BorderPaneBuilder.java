@@ -4,14 +4,14 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class BorderPaneBuilder<BUILDER extends BorderPaneBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
+public class BorderPaneBuilder<B extends BorderPaneBuilder<B>> extends PaneBuilder<B> {
 
     private static final String BOTTOM = "bottom";
     private static final String CENTER = "center";
@@ -29,32 +29,32 @@ public class BorderPaneBuilder<BUILDER extends BorderPaneBuilder<BUILDER>> exten
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new BorderPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new BorderPaneBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER bottom(VNode value) {
+    public B bottom(VNode value) {
         return child(BOTTOM, value);
     }
 
-    public BUILDER center(VNode value) {
+    public B center(VNode value) {
         return child(CENTER, value);
     }
 
-    public BUILDER left(VNode value) {
+    public B left(VNode value) {
         return child(LEFT, value);
     }
 
-    public BUILDER right(VNode value) {
+    public B right(VNode value) {
         return child(RIGHT, value);
     }
 
-    public BUILDER top(VNode value) {
+    public B top(VNode value) {
         return child(TOP, value);
     }
 

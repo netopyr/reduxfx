@@ -14,13 +14,13 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
-import javaslang.Tuple;
-import javaslang.collection.Array;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.collection.Seq;
-import javaslang.collection.Vector;
-import javaslang.control.Option;
+import io.vavr.Tuple;
+import io.vavr.collection.Array;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Vector;
+import io.vavr.control.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,16 +30,21 @@ public class Differ {
 
     private static final Logger LOG = LoggerFactory.getLogger(Differ.class);
 
+    private Differ() {}
+
     public static Map<Phase, Vector<Patch>> diff(Option<VNode> a, Option<VNode> b) {
         if (!a.isEmpty() && b.isEmpty()) {
             LOG.error("Tried to remove root node");
             return HashMap.empty();
         }
 
-        final Map<Phase, Vector<Patch>> patches =
-                a.isEmpty() ?
-                        b.isEmpty() ? HashMap.empty() : HashMap.of(Phase.STRUCTURE, Vector.of(new UpdateRootPatch(b.get())))
-                        : doDiff(Vector.empty(), a.get(), b.get());
+        final Map<Phase, Vector<Patch>> patches;
+        if (a.isEmpty()) {
+            patches = b.isEmpty() ? HashMap.empty() : HashMap.of(Phase.STRUCTURE, Vector.of(new UpdateRootPatch(b.get())));
+        } else {
+            patches = doDiff(Vector.empty(), a.get(), b.get());
+        }
+
         LOG.trace("Diff:\na:\n{}\nb:\n{}\nresult:\n{}", a, b, patches);
         return patches;
     }

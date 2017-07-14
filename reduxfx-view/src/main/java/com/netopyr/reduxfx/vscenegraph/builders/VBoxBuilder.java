@@ -5,14 +5,14 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Pos;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("SameParameterValue")
-public class VBoxBuilder<BUILDER extends VBoxBuilder<BUILDER>> extends PaneBuilder<BUILDER> {
+public class VBoxBuilder<B extends VBoxBuilder<B>> extends PaneBuilder<B> {
 
     private static final String ALIGNMENT = "alignment";
     private static final String SPACING = "spacing";
@@ -27,20 +27,20 @@ public class VBoxBuilder<BUILDER extends VBoxBuilder<BUILDER>> extends PaneBuild
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new VBoxBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new VBoxBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER alignment(Pos value) {
+    public B alignment(Pos value) {
         return property(ALIGNMENT, value);
     }
 
-    public BUILDER spacing(double value) {
+    public B spacing(double value) {
         return property(SPACING, value);
     }
 

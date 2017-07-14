@@ -15,16 +15,16 @@ import javafx.scene.layout.Pane;
 import java.util.function.BiFunction;
 
 @SuppressWarnings("unused")
-public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
+public class ComponentBase<S> extends ReduxFXStore<S> {
 
     private final ComponentDriver componentDriver = new ComponentDriver();
 
     @SafeVarargs
     public ComponentBase(
             Group component,
-            STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Middleware<STATE>... middlewares
+            S initialState,
+            BiFunction<S, Object, Update<S>> updater,
+            Middleware<S>... middlewares
     ) {
         super(initialState, updater, middlewares);
         register(componentDriver);
@@ -33,9 +33,9 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
     @SafeVarargs
     public ComponentBase(
             Pane component,
-            STATE initialState,
-            BiFunction<STATE, Object, Update<STATE>> updater,
-            Middleware<STATE>... middlewares
+            S initialState,
+            BiFunction<S, Object, Update<S>> updater,
+            Middleware<S>... middlewares
     ) {
         super(initialState, updater);
         register(componentDriver);
@@ -55,14 +55,14 @@ public class ComponentBase<STATE> extends ReduxFXStore<STATE> {
     }
 
 
-    public <EVENT extends Event> ObjectProperty<EventHandler<EVENT>> createEventHandlerProperty(Object bean, String name) {
+    public <E extends Event> ObjectProperty<EventHandler<E>> createEventHandlerProperty(Object bean, String name) {
         return componentDriver.createEventHandlerProperty(bean, name);
     }
 
     @FunctionalInterface
-    public interface ChangeListener<TYPE> {
+    public interface ChangeListener<T> {
 
-        Object onChange(TYPE oldValue, TYPE newValue);
+        Object onChange(T oldValue, T newValue);
 
     }
 }

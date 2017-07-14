@@ -2,8 +2,8 @@ package com.netopyr.reduxfx.vscenegraph.builders;
 
 import com.netopyr.reduxfx.vscenegraph.Stages;
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javaslang.collection.Array;
-import javaslang.collection.HashMap;
+import io.vavr.collection.Array;
+import io.vavr.collection.HashMap;
 
 public class StagesBuilder extends VNode {
 

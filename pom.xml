@@ -13,6 +13,7 @@
         <module>reduxfx-view</module>
         <module>reduxfx-jfoenix</module>
         <module>reduxfx-fontawesomefx</module>
+        <module>reduxfx-fxml</module>
 
         <module>examples/colorchooser</module>
         <module>examples/menus</module>
@@ -28,8 +29,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <commons.lang3.version>3.4</commons.lang3.version>
-        <slf4j.version>1.7.21</slf4j.version>
+        <commons.lang3.version>3.6</commons.lang3.version>
+        <slf4j.version>1.7.25</slf4j.version>
     </properties>
 
     <licenses>
@@ -60,7 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.6.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -68,11 +69,26 @@
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>2.5.3</version>
                 <configuration>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.3.0.603</version>
+            </plugin>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.11.4</version>
+                <configuration>
+                    <projectId>5967d55f368b08000eec0d0b</projectId>
+                    <organisation>reduxfx</organisation>
+                    <team>Owners</team>
                 </configuration>
             </plugin>
         </plugins>

@@ -18,6 +18,10 @@
     <description>Example of a custom component and how to use it</description>
     <url>https://github.com/netopyr/reduxfx</url>
 
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>

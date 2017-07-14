@@ -7,20 +7,20 @@ import org.reactivestreams.Subscriber;
 
 import java.util.function.BiFunction;
 
-public class SimpleReduxFXStore<STATE> {
+public class SimpleReduxFXStore<S> {
 
-    private final ReduxFXStore<STATE> store;
+    private final ReduxFXStore<S> store;
 
     @SafeVarargs
-    public SimpleReduxFXStore(STATE initialState, BiFunction<STATE, Object, STATE> updater, Middleware<STATE>... middlewares) {
-        this.store = new ReduxFXStore<>(initialState, (STATE state, Object action) -> Update.of(updater.apply(state, action)), middlewares);
+    public SimpleReduxFXStore(S initialState, BiFunction<S, Object, S> updater, Middleware<S>... middlewares) {
+        this.store = new ReduxFXStore<>(initialState, (S state, Object action) -> Update.of(updater.apply(state, action)), middlewares);
     }
 
     public Subscriber<Object> createActionSubscriber() {
         return store.createActionSubscriber();
     }
 
-    public Publisher<STATE> getStatePublisher() {
+    public Publisher<S> getStatePublisher() {
         return store.getStatePublisher();
     }
 

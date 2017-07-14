@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.vscenegraph.impl.patcher.property;
 
 import com.netopyr.reduxfx.vscenegraph.VNode;
-import javaslang.collection.Array;
+import io.vavr.collection.Array;
 
 import java.util.function.Consumer;
 

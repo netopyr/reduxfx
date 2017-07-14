@@ -23,6 +23,9 @@ import java.util.function.BiConsumer;
 
 public class ComponentDriver implements Driver {
 
+    private static final String BEAN_MUST_NOT_BE_NULL = "Bean must not be null";
+    private static final String NAME_MUST_NOT_BE_NULL = "Name must not be null";
+
     private final FlowableProcessor<Command> commandProcessor = PublishProcessor.create();
     private final FlowableProcessor<Object> actionProcessor = PublishProcessor.create();
 
@@ -80,8 +83,8 @@ public class ComponentDriver implements Driver {
 
 
     public ReadOnlyIntegerProperty createReadOnlyIntegerProperty(Object bean, String name) {
-        Objects.requireNonNull(bean, "Bean must not be null");
-        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(bean, BEAN_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
 
         final Publisher<IntegerChangedCommand> propertyPublisher =
                 getIntegerChangedCommandFlowable().filter(command -> name.equals(command.getPropertyName()));
@@ -89,8 +92,8 @@ public class ComponentDriver implements Driver {
     }
 
     public <T> ReadOnlyObjectProperty<T> createReadOnlyObjectProperty(Object bean, String name) {
-        Objects.requireNonNull(bean, "Bean must not be null");
-        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(bean, BEAN_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
 
         final Publisher<ObjectChangedCommand<?>> propertyObervable =
                 getObjectChangedCommandFlowable().filter(command -> name.equals(command.getPropertyName()));
@@ -99,8 +102,8 @@ public class ComponentDriver implements Driver {
 
 
     public <T> ObjectProperty<T> createObjectProperty(Object bean, String name, ComponentBase.ChangeListener<T> listener) {
-        Objects.requireNonNull(bean, "Bean must not be null");
-        Objects.requireNonNull(name, "Name must not be null");
+        Objects.requireNonNull(bean, BEAN_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
         Objects.requireNonNull(listener, "Listener must not be null");
 
         final Publisher<ObjectChangedCommand<?>> propertyObervable =
@@ -111,17 +114,17 @@ public class ComponentDriver implements Driver {
 
 
     @SuppressWarnings("unchecked")
-    public <EVENT extends Event> ObjectProperty<EventHandler<EVENT>> createEventHandlerProperty(Object bean, String name) {
-        Objects.requireNonNull(bean, "Bean must not be null");
-        Objects.requireNonNull(name, "Name must not be null");
+    public <E extends Event> ObjectProperty<EventHandler<E>> createEventHandlerProperty(Object bean, String name) {
+        Objects.requireNonNull(bean, BEAN_MUST_NOT_BE_NULL);
+        Objects.requireNonNull(name, NAME_MUST_NOT_BE_NULL);
 
-        final ObjectProperty<EventHandler<EVENT>> property = new SimpleObjectProperty<>(bean, name);
+        final ObjectProperty<EventHandler<E>> property = new SimpleObjectProperty<>(bean, name);
         getFireEventCommandFlowable()
                 .filter(command -> name.equals(command.getEventName()))
                 .forEach(command -> {
-                    final EventHandler<EVENT> eventHandler = property.get();
+                    final EventHandler<E> eventHandler = property.get();
                     if (eventHandler != null) {
-                        eventHandler.handle((EVENT) command.getEvent());
+                        eventHandler.handle((E) command.getEvent());
                     }
                 });
 

@@ -11,16 +11,16 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Insets;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static com.netopyr.reduxfx.vscenegraph.event.VEventType.MOUSE_CLICKED;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
-public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<BUILDER> {
+public class NodeBuilder<B extends NodeBuilder<B>> extends Builder<B> {
 
     private static final String ID = "id";
     private static final String STYLE_CLASS = "styleClass";
@@ -52,12 +52,13 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
 
 
     @SuppressWarnings("unchecked")
-    protected BUILDER create(
+    @Override
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new NodeBuilder(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new NodeBuilder(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     protected Object getTypeKey() {
@@ -65,99 +66,99 @@ public class NodeBuilder<BUILDER extends NodeBuilder<BUILDER>> extends Builder<B
     }
 
 
-    public BUILDER disable(boolean value) {
+    public B disable(boolean value) {
         return property(DISABLE, value);
     }
 
-    public BUILDER focused(boolean value, VChangeListener<? super Boolean> listener) {
-        Accessors.registerAccessor(getNodeClass(), "focused", FocusedAccessor::new);
+    public B focused(boolean value, VChangeListener<? super Boolean> listener) {
+        Accessors.registerAccessor(getNodeClass(), FOCUSED, FocusedAccessor::new);
         return property(FOCUSED, value, listener);
     }
 
-    public BUILDER focused(boolean value) {
-        Accessors.registerAccessor(getNodeClass(), "focused", FocusedAccessor::new);
+    public B focused(boolean value) {
+        Accessors.registerAccessor(getNodeClass(), FOCUSED, FocusedAccessor::new);
         return property(FOCUSED, value);
     }
 
-    public BUILDER hover(VChangeListener<? super Boolean> listener) {
+    public B hover(VChangeListener<? super Boolean> listener) {
         return property(HOVER, listener);
     }
 
-    public BUILDER id(String value) {
+    public B id(String value) {
         return property(ID, value);
     }
 
-    public BUILDER opacity(double value) {
+    public B opacity(double value) {
         return property(OPACITY, value);
     }
 
-    public BUILDER style(String value) {
+    public B style(String value) {
         return property(STYLE, value);
     }
 
-    public BUILDER styleClass(String... value) {
+    public B styleClass(String... value) {
         Accessors.registerAccessor(getNodeClass(), STYLE_CLASS, StyleClassAccessor::new);
         return property(STYLE_CLASS, value == null ? Array.empty() : Array.of(value));
     }
 
-    public BUILDER visible(boolean value) {
+    public B visible(boolean value) {
         return property(VISIBLE, value);
     }
 
 
-    public BUILDER onMouseClicked(VEventHandler<MouseEvent> eventHandler) {
+    public B onMouseClicked(VEventHandler<MouseEvent> eventHandler) {
         return onEvent(MOUSE_CLICKED, eventHandler);
     }
 
-    public BUILDER hgrow(Priority value) {
+    public B hgrow(Priority value) {
         return property(HGROW, value);
     }
 
-    public BUILDER vgrow(Priority value) {
+    public B vgrow(Priority value) {
         return property(VGROW, value);
     }
 
-    public BUILDER bottomAnchor(double value) {
+    public B bottomAnchor(double value) {
         return property(BOTTOM_ANCHOR, value);
     }
 
-    public BUILDER leftAnchor(double value) {
+    public B leftAnchor(double value) {
         return property(LEFT_ANCHOR, value);
     }
 
-    public BUILDER rightAnchor(double value) {
+    public B rightAnchor(double value) {
         return property(RIGHT_ANCHOR, value);
     }
 
-    public BUILDER topAnchor(double value) {
+    public B topAnchor(double value) {
         return property(TOP_ANCHOR, value);
     }
 
-    public BUILDER margin(double top, double rightLeft, double bottom) {
+    public B margin(double top, double rightLeft, double bottom) {
         return property(MARGIN, new Insets(top, rightLeft, bottom, rightLeft));
     }
 
-    public BUILDER margin(double topBottom, double rightLeft) {
+    public B margin(double topBottom, double rightLeft) {
         return property(MARGIN, new Insets(topBottom, rightLeft, topBottom, rightLeft));
     }
 
-    public BUILDER margin(double value) {
+    public B margin(double value) {
         return property(MARGIN, new Insets(value, value, value, value));
     }
 
-    public BUILDER rowIndex(int value) {
+    public B rowIndex(int value) {
         return property(ROW_INDEX, value);
     }
 
-    public BUILDER columnIndex(int value) {
+    public B columnIndex(int value) {
         return property(COLUMN_INDEX, value);
     }
 
-    public BUILDER columnSpan(int value) {
+    public B columnSpan(int value) {
         return property(COLUMN_SPAN, value);
     }
 
-    public BUILDER rowSpan(int value) {
+    public B rowSpan(int value) {
         return property(ROW_SPAN, value);
     }
 

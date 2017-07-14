@@ -6,14 +6,14 @@ import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings("unused")
-public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends WindowBuilder<BUILDER> {
+public class StageBuilder<B extends StageBuilder<B>> extends WindowBuilder<B> {
 
     private static final String TITLE = "title";
 
@@ -27,21 +27,22 @@ public class StageBuilder<BUILDER extends StageBuilder<BUILDER>> extends WindowB
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new StageBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new StageBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER showing(boolean value) {
+    @Override
+    public B showing(boolean value) {
         Accessors.registerAccessor(getNodeClass(), "showing", WindowShowingAccessor::new);
         return super.showing(value);
     }
 
-    public BUILDER title(String value) {
+    public B title(String value) {
         return property(TITLE, value);
     }
 

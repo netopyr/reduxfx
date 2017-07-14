@@ -3,8 +3,8 @@ package com.netopyr.reduxfx.vscenegraph.event;
 import javafx.event.Event;
 
 @FunctionalInterface
-public interface VEventHandler<EVENT extends Event> {
+public interface VEventHandler<E extends Event> {
 
-    Object onChange(EVENT event);
+    Object onChange(E event);
 
 }

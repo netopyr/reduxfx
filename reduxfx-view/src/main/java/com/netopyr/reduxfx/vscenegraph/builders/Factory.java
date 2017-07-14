@@ -9,13 +9,13 @@ import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VInvalidationListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
-import javaslang.Tuple;
-import javaslang.Tuple2;
-import javaslang.Tuple5;
-import javaslang.collection.Array;
-import javaslang.collection.HashMap;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.Tuple5;
+import io.vavr.collection.Array;
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -41,33 +41,33 @@ public class Factory {
 
 
     @SuppressWarnings("unchecked")
-    public static <BUILDER extends Builder<BUILDER>> BUILDER node(
-            Builder<BUILDER> builder,
+    public static <B extends Builder<B>> B node(
+            Builder<B> builder,
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
         return eventHandlers.isEmpty() && properties.filter(p -> p._2.getChangeListener().isDefined() || p._2.getInvalidationListener().isDefined()).isEmpty() ?
-                (BUILDER) nodeCache.get(
+                (B) nodeCache.get(
                         Tuple.of(builder.getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers),
                         tuple -> builder.create(childrenMap, singleChildMap, properties, eventHandlers)
                 ) : builder.create(childrenMap, singleChildMap, properties, eventHandlers);
     }
 
     @SuppressWarnings("unchecked")
-    public static <BUILDER extends VNode> BUILDER node(Object typeKey, Supplier<BUILDER> factory) {
-        return (BUILDER) nodeCache.get(
+    public static <B extends VNode> B node(Object typeKey, Supplier<B> factory) {
+        return (B) nodeCache.get(
                 Tuple.of(typeKey, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()),
                 tuple -> factory.get()
         );
     }
 
 
-    public static <TYPE> VProperty property(Phase phase, TYPE value, VChangeListener<? super TYPE> changeListener, VInvalidationListener invalidationListener) {
+    public static <T> VProperty property(Phase phase, T value, VChangeListener<? super T> changeListener, VInvalidationListener invalidationListener) {
         return new VProperty(phase, value, Option.of(changeListener), Option.of(invalidationListener));
     }
 
-    public static <TYPE> VProperty property(Phase phase, TYPE value, VChangeListener<? super TYPE> changeListener) {
+    public static <T> VProperty property(Phase phase, T value, VChangeListener<? super T> changeListener) {
         return new VProperty(phase, value, Option.of(changeListener), Option.none());
     }
 

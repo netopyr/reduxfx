@@ -6,7 +6,7 @@ import com.netopyr.reduxfx.driver.http.command.HttpPutCommand;
 import com.netopyr.reduxfx.updater.Command;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
-import javaslang.control.Try;
+import io.vavr.control.Try;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -53,7 +53,7 @@ public class HttpDriver implements Driver {
     }
 
     @Override
-    public Publisher<?> getActionPublisher() {
+    public Publisher<Object> getActionPublisher() {
         return actions;
     }
 

@@ -7,14 +7,14 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.TextAlignment;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
-public class LabeledBuilder<BUILDER extends LabeledBuilder<BUILDER>> extends ControlBuilder<BUILDER> {
+public class LabeledBuilder<B extends LabeledBuilder<B>> extends ControlBuilder<B> {
 
     private static final String GRAPHIC = "graphic";
 
@@ -35,40 +35,40 @@ public class LabeledBuilder<BUILDER extends LabeledBuilder<BUILDER>> extends Con
 
     @SuppressWarnings("unchecked")
     @Override
-    protected BUILDER create(
+    protected B create(
             Map<String, Array<VNode>> childrenMap,
             Map<String, Option<VNode>> singleChildMap,
             Map<String, VProperty> properties,
             Map<VEventType, VEventHandler> eventHandlers) {
-        return (BUILDER) new LabeledBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
+        return (B) new LabeledBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
 
-    public BUILDER graphic(VNode value) {
+    public B graphic(VNode value) {
         return child(GRAPHIC, value);
     }
 
-    public BUILDER alignment(Pos value) {
+    public B alignment(Pos value) {
         return property(ALIGNMENT, value);
     }
 
-    public BUILDER mnemonicParsing(boolean value) {
+    public B mnemonicParsing(boolean value) {
         return property(MNEMONIC_PARSING, value);
     }
 
-    public BUILDER text(String value) {
+    public B text(String value) {
         return property(TEXT, value);
     }
 
-    public BUILDER textAlignment(TextAlignment value) {
+    public B textAlignment(TextAlignment value) {
         return property(TEXT_ALIGNMENT, value);
     }
 
-    public BUILDER textFill(Paint value) {
+    public B textFill(Paint value) {
         return property(TEXT_FILL, value);
     }
 
-    public BUILDER wrapText(boolean value) {
+    public B wrapText(boolean value) {
         return property(WRAP_TEXT, value);
     }
 
