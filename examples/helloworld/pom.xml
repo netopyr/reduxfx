@@ -22,6 +22,24 @@
         <sonar.skip>true</sonar.skip>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.11.4</version>
+                <configuration>
+                    <projectId>59686e90368b08001a805ed1</projectId>
+                    <organisation>reduxfx</organisation>
+                    <team>Owners</team>
+                    <visibility>public</visibility>
+                    <parentGroupId>com.netopyr.reduxfx</parentGroupId>
+                    <parentArtifactId>reduxfx-all</parentArtifactId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
