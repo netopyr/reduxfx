@@ -1,7 +1,7 @@
 package com.netopyr.reduxfx.examples.treeview.state;
 
-import javaslang.collection.Array;
-import javaslang.collection.Seq;
+import io.vavr.collection.Array;
+import io.vavr.collection.Seq;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

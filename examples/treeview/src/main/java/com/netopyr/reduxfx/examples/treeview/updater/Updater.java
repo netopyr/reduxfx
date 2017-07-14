@@ -8,15 +8,15 @@ import com.netopyr.reduxfx.examples.treeview.state.Project;
 import com.netopyr.reduxfx.examples.treeview.state.Sprint;
 import com.netopyr.reduxfx.examples.treeview.state.Story;
 import com.netopyr.reduxfx.examples.treeview.state.TextFieldID;
-import javaslang.collection.Seq;
-import javaslang.control.Option;
+import io.vavr.collection.Seq;
+import io.vavr.control.Option;
 
 import java.util.Objects;
 
-import static javaslang.API.$;
-import static javaslang.API.Case;
-import static javaslang.API.Match;
-import static javaslang.Predicates.instanceOf;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.instanceOf;
 
 public class Updater {
 
@@ -62,7 +62,7 @@ public class Updater {
 		Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
 		return Match(action).of(
-			Case(instanceOf(AddSprintAction.class),
+			Case($(instanceOf(AddSprintAction.class)),
 				addSprintAction -> {
 					// get the text value from the UI
 					final String title = state.getTextFieldValue(TextFieldID.SPRINT_TITLE);
@@ -83,7 +83,7 @@ public class Updater {
 						.withTextFieldValue(TextFieldID.SPRINT_TITLE, "");
 				}),
 
-			Case(instanceOf(AddStoryToSprintAction.class),
+			Case($(instanceOf(AddStoryToSprintAction.class)),
 				addStoryToSprintAction -> {
 					// new stories are always added to the current/last sprint
 					final Option<Sprint> currentSprintOption = state.getProject().getSprints().lastOption();
@@ -124,7 +124,7 @@ public class Updater {
 				}
 			),
 
-			Case(instanceOf(UpdateTextFieldAction.class),
+			Case($(instanceOf(UpdateTextFieldAction.class)),
 				updateTextFieldAction -> {
 					final TextFieldID textFieldID = updateTextFieldAction.getTextFieldID();
 					final String value = updateTextFieldAction.getValue();

@@ -5,22 +5,22 @@ import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import javaslang.collection.Array;
-import javaslang.collection.Map;
-import javaslang.control.Option;
+import io.vavr.collection.Array;
+import io.vavr.collection.Map;
+import io.vavr.control.Option;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class TreeItemBuilder<BUILDER extends TreeItemBuilder<BUILDER, ELEMENT>, ELEMENT> extends Builder<BUILDER> {
+public class TreeItemBuilder<B extends TreeItemBuilder<B, E>, E> extends Builder<B> {
 
 	private static final String VALUE = "value";
 	private static final String EXPANDED = "expanded";
 	private static final String CHILDREN = "children";
 
-	private final Class<ELEMENT> elementClass;
+	private final Class<E> elementClass;
 
 	public TreeItemBuilder(Class<?> nodeClass,
-		Class<ELEMENT> elementClass,
+		Class<E> elementClass,
 		Map<String, Array<VNode>> childrenMap,
 		Map<String, Option<VNode>> singleChildMap,
 		Map<String, VProperty> properties,
@@ -31,37 +31,37 @@ public class TreeItemBuilder<BUILDER extends TreeItemBuilder<BUILDER, ELEMENT>, 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected BUILDER create(
+	protected B create(
 		Map<String, Array<VNode>> childrenMap,
 		Map<String, Option<VNode>> singleChildMap,
 		Map<String, VProperty> properties,
 		Map<VEventType, VEventHandler> eventHandlers) {
-		return (BUILDER) new TreeItemBuilder<>(getNodeClass(), elementClass, childrenMap, singleChildMap, properties,
+		return (B) new TreeItemBuilder<>(getNodeClass(), elementClass, childrenMap, singleChildMap, properties,
 			eventHandlers);
 	}
 
 	@SafeVarargs
-	public final BUILDER children(TreeItemBuilder<?, ELEMENT>... children) {
+	public final B children(TreeItemBuilder<?, E>... children) {
 		return children(CHILDREN, children == null ? Array.empty() : Array.of(children));
 	}
 
-	public final BUILDER children(Iterable<TreeItemBuilder<?, ELEMENT>> children) {
+	public final B children(Iterable<TreeItemBuilder<?, E>> children) {
 		return children(CHILDREN, children == null ? Array.empty() : Array.ofAll(children));
 	}
 
-	public BUILDER value(ELEMENT value) {
+	public B value(E value) {
 		return property(VALUE, value);
 	}
 
-	public BUILDER expanded(boolean expanded) {
+	public B expanded(boolean expanded) {
 		return property(EXPANDED, expanded);
 	}
 
-	public BUILDER expanded(boolean expanded, VChangeListener<Boolean> listener) {
+	public B expanded(boolean expanded, VChangeListener<Boolean> listener) {
 		return property(EXPANDED, expanded, listener);
 	}
 
-	public BUILDER expanded(VChangeListener<? super Boolean> listener) {
+	public B expanded(VChangeListener<? super Boolean> listener) {
 		return property(EXPANDED, listener);
 	}
 

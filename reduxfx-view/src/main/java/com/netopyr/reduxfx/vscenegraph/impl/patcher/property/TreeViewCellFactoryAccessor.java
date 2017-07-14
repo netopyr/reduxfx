@@ -10,9 +10,9 @@ import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeView;
 import javafx.util.Callback;
-import javaslang.collection.Map;
-import javaslang.collection.Vector;
-import javaslang.control.Option;
+import io.vavr.collection.Map;
+import io.vavr.collection.Vector;
+import io.vavr.control.Option;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
