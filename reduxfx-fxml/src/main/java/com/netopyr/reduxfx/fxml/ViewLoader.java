@@ -33,6 +33,8 @@ import java.util.ResourceBundle;
  */
 public class ViewLoader {
 
+    private ViewLoader() {}
+
     public static class Tuple <T> {
         private Parent parent;
         private T controller;

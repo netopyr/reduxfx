@@ -121,8 +121,10 @@ public class NodeBuilder {
                                             }
                             ).getOrElse((EventHandler) null);
                     setter.get().invoke(node, eventHandler);
+                } catch (Exception e) {
+                    LOG.error("Unable to set JavaFX EventHandler " + entry._1() + " for class " + node.getClass(), e);
                 } catch (Throwable throwable) {
-                    LOG.error("Unable to set JavaFX EventHandler " + entry._1() + " for class " + node.getClass(), throwable);
+                    throw new Error("Unexpected error occurred", throwable);
                 }
             }
         }

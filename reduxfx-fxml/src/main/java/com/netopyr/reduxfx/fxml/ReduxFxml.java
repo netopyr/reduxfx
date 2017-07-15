@@ -11,6 +11,8 @@ import org.reactivestreams.Processor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -23,12 +25,14 @@ import java.util.function.Function;
  */
 public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ReduxFxml.class);
+
 	private Publisher<S> statePublisher;
 
 	private final PublishProcessor<Object> actionProcessor = PublishProcessor.create();
 
 	public static <S> ReduxFxml<S> create() {
-		return new ReduxFxml<S>();
+		return new ReduxFxml<>();
 	}
 
 	public void connect(Processor<Object, S> store) {
@@ -106,10 +110,12 @@ public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 
 			@Override
 			public void onError(Throwable t) {
+				LOG.error("Exception in state-stream", t);
 			}
 
 			@Override
 			public void onComplete() {
+				LOG.error("The state-stream was completed. This should not happen");
 			}
 		});
 	}

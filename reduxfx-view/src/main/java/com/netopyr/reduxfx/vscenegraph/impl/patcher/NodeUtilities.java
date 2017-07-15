@@ -1,5 +1,6 @@
 package com.netopyr.reduxfx.vscenegraph.impl.patcher;
 
+import com.netopyr.reduxfx.vscenegraph.javafx.TreeItemWrapper;
 import io.vavr.collection.Array;
 import io.vavr.control.Option;
 import javafx.scene.Node;
@@ -60,6 +61,10 @@ public class NodeUtilities {
                 Case($(instanceOf(Dialog.class)),
                         dialog -> (Map<Object, Object>) dialog.getDialogPane().getProperties()
                                 .computeIfAbsent("dialog", key -> new HashMap<>())
+                ),
+
+                Case($(instanceOf(TreeItemWrapper.class)),
+                        TreeItemWrapper::getProperties
                 ),
 
                 Case($(), new HashMap<>())
