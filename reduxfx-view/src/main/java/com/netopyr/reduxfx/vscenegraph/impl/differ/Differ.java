@@ -105,7 +105,7 @@ public class Differ {
                                 : result.merge(doDiff(currentPath.append(i), aChild, bChild), Vector::appendAll);
                     }
 
-                    for (int i = n; i < nA; i++) {
+                    for (int i = nA-1; i >= n; i--) {
                         result = result.merge(HashMap.of(Phase.STRUCTURE, Vector.of(new RemovePatch(currentPath, i))), Vector::appendAll);
                     }
 
