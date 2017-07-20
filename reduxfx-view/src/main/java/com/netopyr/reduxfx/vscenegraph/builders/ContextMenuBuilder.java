@@ -34,7 +34,7 @@ public class ContextMenuBuilder<B extends ContextMenuBuilder<B>> extends PopupCo
     }
 
 
-    public B items(VNode... items) {
+    public B items(MenuItemBuilder... items) {
         return children(ITEMS, items == null? Array.empty() : Array.of(items));
     }
 
