@@ -6,6 +6,7 @@ import io.vavr.control.Option;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.Tab;
 import javafx.stage.Window;
 
 import java.lang.invoke.MethodHandle;
@@ -65,6 +66,10 @@ public class NodeUtilities {
 
                 Case($(instanceOf(TreeItemWrapper.class)),
                         TreeItemWrapper::getProperties
+                ),
+
+                Case($(instanceOf(Tab.class)),
+                    Tab::getProperties
                 ),
 
                 Case($(), new HashMap<>())
