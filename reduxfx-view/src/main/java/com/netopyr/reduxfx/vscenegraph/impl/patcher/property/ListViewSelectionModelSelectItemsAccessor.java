@@ -12,7 +12,7 @@ public class ListViewSelectionModelSelectItemsAccessor extends ListenerHandlingA
 	@Override
 	public void set(Consumer<Object> dispatcher, Object node, String name, VProperty vProperty) {
 		if(! (node instanceof ListView)) {
-			throw new IllegalStateException("Trying to set cellFactory of node " + node);
+			throw new IllegalStateException("Trying to set selectionModel of node " + node);
 		}
 
 		final ListView listView = (ListView) node;
