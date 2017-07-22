@@ -10,11 +10,9 @@ addons:
   sonarcloud:
     organization: "netopyr-github"
 script:
-  -
-  - if [ "TRAVIS_PULL_REQUEST" == false ]; then
-      mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
-    else
-      mvn clean verify
+  - if [ "TRAVIS_PULL_REQUEST" == false ];
+    then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
+    else mvn clean verify
     fi
 cache:
   directories:
