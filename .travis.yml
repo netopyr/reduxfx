@@ -11,8 +11,8 @@ addons:
     organization: "netopyr-github"
 script:
   - if [ "$TRAVIS_PULL_REQUEST" == false ];
-    then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar
-    else mvn clean verify
+    then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar;
+    else mvn clean verify;
     fi
 cache:
   directories:
