@@ -151,7 +151,7 @@ public class Patcher {
             return;
         }
 
-        ((List) parent).remove(patch.getIndex());
+        ((List) parent).subList(patch.getStartRange(), patch.getEndRange()).clear();
     }
 
     @SuppressWarnings("unchecked")

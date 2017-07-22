@@ -4,23 +4,31 @@ import io.vavr.collection.Vector;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class RemovePatch extends Patch {
+public final class RemovePatch extends Patch {
 
-    private final int index;
+    private final int startRange;
+    private final int endRange;
 
-    public RemovePatch(Vector<Object> path, int index) {
+    public RemovePatch(Vector<Object> path, int startRange, int endRange) {
         super(path);
-        this.index = index;
+        this.startRange = startRange;
+        this.endRange = endRange;
     }
 
-    public int getIndex() {
-        return index;
+    public int getStartRange() {
+        return startRange;
+    }
+
+    public int getEndRange() {
+        return endRange;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("index", index)
+                .appendSuper(super.toString())
+                .append("startRange", startRange)
+                .append("endRange", endRange)
                 .toString();
     }
 }
