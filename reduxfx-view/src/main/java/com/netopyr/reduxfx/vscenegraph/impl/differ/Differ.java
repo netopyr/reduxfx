@@ -1,5 +1,9 @@
 package com.netopyr.reduxfx.vscenegraph.impl.differ;
 
+import com.netopyr.reduxfx.vscenegraph.VNode;
+import com.netopyr.reduxfx.vscenegraph.builders.Factory;
+import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
+import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.AppendPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.AttributesPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.Patch;
@@ -8,10 +12,6 @@ import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.ReplacePatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.SetChildrenPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.SetSingleChildPatch;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.UpdateRootPatch;
-import com.netopyr.reduxfx.vscenegraph.VNode;
-import com.netopyr.reduxfx.vscenegraph.builders.Factory;
-import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
-import com.netopyr.reduxfx.vscenegraph.event.VEventType;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty.Phase;
 import io.vavr.Tuple;
@@ -105,8 +105,8 @@ public class Differ {
                                 : result.merge(doDiff(currentPath.append(i), aChild, bChild), Vector::appendAll);
                     }
 
-                    for (int i = n; i < nA; i++) {
-                        result = result.merge(HashMap.of(Phase.STRUCTURE, Vector.of(new RemovePatch(currentPath, i))), Vector::appendAll);
+                    if (nA > n) {
+                        result = result.merge(HashMap.of(Phase.STRUCTURE, Vector.of(new RemovePatch(currentPath, n, nA))), Vector::appendAll);
                     }
 
                     for (int i = n; i < nB; i++) {
