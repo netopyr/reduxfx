@@ -5,6 +5,8 @@ import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.ListViewCellFactory
 import com.netopyr.reduxfx.vscenegraph.VNode;
 import com.netopyr.reduxfx.vscenegraph.event.VEventHandler;
 import com.netopyr.reduxfx.vscenegraph.event.VEventType;
+import com.netopyr.reduxfx.vscenegraph.impl.patcher.property.ListViewSelectionModelSelectItemsAccessor;
+import com.netopyr.reduxfx.vscenegraph.property.VChangeListener;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
 import io.vavr.collection.Array;
 import io.vavr.collection.Map;
@@ -21,6 +23,7 @@ public class ListViewBuilder<B extends ListViewBuilder<B, T>, T> extends Control
     private static final String CELL_FACTORY = "cellFactory";
 
     private final Class<T> elementClass;
+    private static final String SELECTION_MODEL = "selectionModel";
 
     public ListViewBuilder(Class<?> nodeClass,
                            Class<T> elementClass,
@@ -52,6 +55,23 @@ public class ListViewBuilder<B extends ListViewBuilder<B, T>, T> extends Control
         return property(ITEMS, value);
     }
 
+    public B selectedItem(T item) {
+        Accessors.registerAccessor(getNodeClass(), SELECTION_MODEL, ListViewSelectionModelSelectItemsAccessor::new);
+
+        return property(SELECTION_MODEL, item);
+    }
+
+    public B selectedItem(T item, VChangeListener<? super T> listener) {
+        Accessors.registerAccessor(getNodeClass(), SELECTION_MODEL, ListViewSelectionModelSelectItemsAccessor::new);
+
+        return property(SELECTION_MODEL, item, listener);
+    }
+
+    public B selectedItem(VChangeListener<? super T> listener) {
+        Accessors.registerAccessor(getNodeClass(), SELECTION_MODEL, ListViewSelectionModelSelectItemsAccessor::new);
+
+        return property(SELECTION_MODEL, listener);
+    }
 
     @Override
     public String toString() {
