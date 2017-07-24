@@ -21,8 +21,9 @@ public class TabPaneSelectionModelAccessor extends ListenerHandlingAccessor {
 
 		clearListeners(node, selectedIndexProperty);
 
-		final Object value = vProperty.isValueDefined() ? vProperty.getValue() : null;
-		tabPane.getSelectionModel().select((int) value);
+		if (vProperty.isValueDefined()) {
+			tabPane.getSelectionModel().select((int) vProperty.getValue());
+		}
 
 		if(vProperty.getChangeListener().isDefined()) {
 			setChangeListener(dispatcher, node, selectedIndexProperty, vProperty.getChangeListener().get());
