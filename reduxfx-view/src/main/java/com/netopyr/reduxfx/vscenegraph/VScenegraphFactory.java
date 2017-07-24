@@ -24,6 +24,8 @@ import com.netopyr.reduxfx.vscenegraph.builders.TitledPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.ToggleButtonBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TreeItemBuilder;
 import com.netopyr.reduxfx.vscenegraph.builders.TreeViewBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TabBuilder;
+import com.netopyr.reduxfx.vscenegraph.builders.TabPaneBuilder;
 import com.netopyr.reduxfx.vscenegraph.javafx.TreeItemWrapper;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -225,6 +227,14 @@ public class VScenegraphFactory {
 
     public static <B extends SplitPaneBuilder<B>> SplitPaneBuilder<B> SplitPane() {
         return Factory.node(SplitPane.class, () -> new SplitPaneBuilder<B>(SplitPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <B extends TabBuilder<B>> TabBuilder<B> Tab() {
+        return Factory.node(Tab.class, () -> new TabBuilder<>(Tab.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
+    }
+
+    public static <B extends TabPaneBuilder<B>> TabPaneBuilder<B> TabPane() {
+        return Factory.node(TabPane.class, () -> new TabPaneBuilder<>(TabPane.class, HashMap.empty(), HashMap.empty(), HashMap.empty(), HashMap.empty()));
     }
 
 }
