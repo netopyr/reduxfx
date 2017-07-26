@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>reduxfx-all</artifactId>
+        <artifactId>reduxfx-parent</artifactId>
         <groupId>com.netopyr.reduxfx</groupId>
         <version>0.4.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
@@ -20,6 +20,7 @@
 
     <properties>
         <sonar.skip>true</sonar.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <repositories>
@@ -51,17 +52,11 @@
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx-view</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.glung</groupId>
             <artifactId>redux-java</artifactId>
             <version>1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
     </dependencies>
 

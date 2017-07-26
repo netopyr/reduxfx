@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>reduxfx-all</artifactId>
+        <artifactId>reduxfx-parent</artifactId>
         <groupId>com.netopyr.reduxfx</groupId>
         <version>0.4.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
@@ -17,6 +17,11 @@
     <name>ReduxFX: TreeView Example</name>
     <description>Example shows how to use a TreeView with ReduxFX</description>
     <url>https://github.com/netopyr/reduxfx</url>
+
+    <properties>
+        <sonar.skip>true</sonar.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <build>
         <plugins>
@@ -40,17 +45,10 @@
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx-store</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx-view</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons.lang3.version}</version>
         </dependency>
     </dependencies>
 
