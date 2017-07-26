@@ -67,7 +67,7 @@
         <repository>
             <id>bintray</id>
             <name>netopyr-reduxfx</name>
-            <url>https://api.bintray.com/maven/netopyr/reduxfx/reduxfx-all/;publish=1</url>
+            <url>https://api.bintray.com/maven/netopyr/reduxfx/reduxfx-parent/;publish=1</url>
         </repository>
     </distributionManagement>
 
