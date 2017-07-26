@@ -11,7 +11,7 @@
     <artifactId>reduxfx-all</artifactId>
     <packaging>pom</packaging>
 
-    <name>ReduxFX</name>
+    <name>ReduxFX All</name>
     <description>All ReduxFX libraries</description>
 
     <distributionManagement>
@@ -21,6 +21,24 @@
             <url>https://api.bintray.com/maven/netopyr/reduxfx/reduxfx-all/;publish=1</url>
         </repository>
     </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.versioneye</groupId>
+                <artifactId>versioneye-maven-plugin</artifactId>
+                <version>3.11.4</version>
+                <configuration>
+                    <projectId>59791149368b08000e6eeade</projectId>
+                    <organisation>reduxfx</organisation>
+                    <team>Owners</team>
+                    <visibility>public</visibility>
+                    <parentGroupId>com.netopyr.reduxfx</parentGroupId>
+                    <parentArtifactId>reduxfx-parent</parentArtifactId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>

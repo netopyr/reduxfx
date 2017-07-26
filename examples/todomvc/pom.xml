@@ -35,7 +35,7 @@
                     <team>Owners</team>
                     <visibility>public</visibility>
                     <parentGroupId>com.netopyr.reduxfx</parentGroupId>
-                    <parentArtifactId>reduxfx-all</parentArtifactId>
+                    <parentArtifactId>reduxfx-parent</parentArtifactId>
                 </configuration>
             </plugin>
         </plugins>
