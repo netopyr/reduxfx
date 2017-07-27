@@ -4,7 +4,7 @@
 
     <groupId>com.netopyr.reduxfx</groupId>
     <artifactId>reduxfx-parent</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2-SNAPSHOT</version>
 
     <name>ReduxFX</name>
     <description>Functional reactive programming with JavaFX</description>
@@ -60,7 +60,7 @@
         <connection>scm:git:https://github.com/netopyr/reduxfx.git</connection>
         <developerConnection>scm:git:git@github.com:netopyr/reduxfx.git</developerConnection>
         <url>https://github.com/netopyr/reduxfx</url>
-        <tag>0.4.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
