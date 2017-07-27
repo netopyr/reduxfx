@@ -12,21 +12,21 @@ import java.util.ResourceBundle;
 /**
  * {@link ViewLoader} is a generic JavaFX FXML util that can load
  * FXML hierarchies based on a root Controller class.
- * <p/>
+ * <p>
  * The standard JavaFX {@link FXMLLoader} uses {@link java.net.URL} to define
  * the FXML file that should be loaded. However, this results in Code that
  * has to handle the path of the FXML file with Strings.
  * This can be error-prone and annoying.
- * <p/>
+ * <p>
  * In contrast to the {@link FXMLLoader} the {@link ViewLoader} don't uses
  * Strings to define the FXML file that should be loaded.
  * Instead it is based on a naming convention and the usage of {@link Class} references.
- * <p/>
+ * <p>
  * To load an FXML file you use a class reference of the Controller class of this FXML file
  * as argument to the {@link ViewLoader#load(Class)}.
  * In order to get this to work the FXML file has to be placed in the same package as the
  * Controller class and the Controller class has to have the same name as the FXML file (excluding file extension).
- * <p/>
+ * <p>
  * For example imagine a controller class <code>com.netopyr.reduxfx.fxml.MyView</code>.
  * The Fxml file has to be <code>/com/netopyr/reduxfx/fxml/MyView.fxml</code>.
  *

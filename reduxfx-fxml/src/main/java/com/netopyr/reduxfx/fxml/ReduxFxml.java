@@ -21,7 +21,7 @@ import java.util.function.Function;
 /**
  * This class is a util to enable the usage of FXML files together with ReduxFX.
  *
- * @param <S>
+ * @param <S> the state
  */
 public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 

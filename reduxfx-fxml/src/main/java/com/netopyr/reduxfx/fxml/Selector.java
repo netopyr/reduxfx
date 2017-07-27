@@ -11,11 +11,11 @@ import java.util.function.Function;
  * This approach is inspired by the
  * <a href="http://redux.js.org/docs/recipes/ComputingDerivedData.html">Selector pattern from the original redux.js</a>
  * and the <a href="https://github.com/angular-redux/store#in-depth-usage">Angular redux project</a>.
- * <p/>
+ * <p>
  * You define a "selector function" which is a {@link Function} that takes the current state as argument and returns
  * a value from the state. For example, if your state contains a list of some items you could define the following
  * selector function that returns the number of items:
- * <p/>
+ * <p>
  * <pre>
  * class AppState {
  * 	private List{@code<String>} items = new ArrayList{@code<>}();
@@ -27,28 +27,28 @@ import java.util.function.Function;
  * }
  *
  *
- * Function{@code<AppState, Integer>} selectCount = appState -> appState.getItems().size();
+ * Function{@code<AppState, Integer>} selectCount = appState -&gt; appState.getItems().size();
  * </pre>
- * <p/>
+ * <p>
  * You can now use this selector function to create a JavaFx {@link ObservableValue}:
  *
  * <pre>
  * Selector selector = ...
  *
- * ObservableValue{@link <Integer>} count = selector.select(selectCount);
+ * ObservableValue{@code<Integer>} count = selector.select(selectCount);
  *
  * </pre>
- * <p/>
+ * <p>
  * If the state changes because of dispatched actions this JavaFX Observable will get the new value based on the selector function.
  *
  * This way you can use the selector to connect your JavaFX Controls to the state of ReduxFX.
- * <p/>
+ * <p>
  *
  * To get an instance of the {@link Selector} you will typically use a dependency injection library that can inject
  * an instance into your Controller class. The dependency injection library has to use the {@link ReduxFxml} instance
  * in this case. {@link ReduxFxml} implements this interface and connects it to the ReduxFX store.
  *
- * @param <S>
+ * @param <S> the state
  */
 public interface Selector<S> {
 
