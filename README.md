@@ -4,10 +4,9 @@ ReduxFX
 Functional Reactive Programming (FRP) for JavaFX
 
 [![Build Status](https://travis-ci.org/netopyr/reduxfx.svg?branch=master)](https://travis-ci.org/netopyr/reduxfx)
-[![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx/reduxfx)
-[![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
+[![Bintray](https://img.shields.io/bintray/v/netopyr/reduxfx/reduxfx-all.svg?colorB=0081c4)](https://bintray.com/netopyr/reduxfx)
+[![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx-all.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
 [![License](https://img.shields.io/github/license/netopyr/reduxfx.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Javadocs](https://www.javadoc.io/badge/com.netopyr.reduxfx/reduxfx.svg)](https://www.javadoc.io/doc/com.netopyr.reduxfx/reduxfx)
 
 [![Lines of Code](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=ncloc)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Bugs](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=bugs)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
@@ -30,45 +29,20 @@ This simplifies the creation, testing, and maintenance of code compared to imper
 All changes and messages "flow" in a single circular stream, which makes it perfectly clear what is going on in your application and helps to quickly find the source of any bug.
 On top of it, this architecture enables advanced development tools like a "time travelling debugger" that can be used to step back and forth in your application, which again makes it easier to understand the application code and find bugs.
 
-Adding ReduxFX to your project
-------------------------------
+How to add ReduxFX to your project
+----------------------------------
+ReduxFX consists of several libraries.
+To simplify the start, you can use the aggregate reduxfx-all, which contains all ReduxFX-libraries.
+
 ### Maven
 ```xml
 <dependency>
-  <groupId>com.netopyr.reduxfx</groupId>
-  <artifactId>reduxfx</artifactId>
-  <version>0.3.1</version>
+    <groupId>com.netopyr.reduxfx</groupId>
+    <artifactId>reduxfx-all</artifactId>
+    <version>0.4.1</version>
+    <type>pom</type>
 </dependency>
 ```
-
-### Gradle
-```groovy
-dependencies {
-    compile "com.netopyr.reduxfx:reduxfx:0.3.1"
-}
-```
-
-<!--
-ReduxFX in 5 minutes
---------------------
-Every ReduxFX application is structured in a simple, unidirectional cycle.
-The cycle consists of four components and four data-structures which are passed between the components.
-All communication flows in a single direction only.
-The following picture gives you an overview over the architeture of a ReduxFX application.
-
-### ADD architecture picture
-
-To understand how a ReduxFX application works, we will look at a simple "Hello World"-application.
-It contains a single window with a button and a label that shows how often the button was clicked.
-
-### ADD hello world screenshot
--->
-
-
-
-
-
-The architecture of a ReduxFX application can be seen in the following
 
 Functional Reactive UI Programming
 ----------------------------------
