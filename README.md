@@ -15,7 +15,6 @@ Functional Reactive Programming (FRP) for JavaFX
 [![Duplicated Lines](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures/domain/Duplications?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Technical Dept Ratio](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 [![Code Coverage](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=coverage)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Dependency Status](https://www.versioneye.com/user/projects/59686e886725bd000eab631f/badge.svg)](https://www.versioneye.com/user/projects/596695536725bd005eeb82ee)
 
 ReduxFX in 1 minute
 -------------------

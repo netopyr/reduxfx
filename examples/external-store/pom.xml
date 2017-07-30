@@ -30,24 +30,6 @@
         </repository>
     </repositories>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.versioneye</groupId>
-                <artifactId>versioneye-maven-plugin</artifactId>
-                <version>3.11.4</version>
-                <configuration>
-                    <projectId>59686e8e368b0800126b6ebf</projectId>
-                    <organisation>reduxfx</organisation>
-                    <team>Owners</team>
-                    <visibility>public</visibility>
-                    <parentGroupId>com.netopyr.reduxfx</parentGroupId>
-                    <parentArtifactId>reduxfx-parent</parentArtifactId>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
         <dependency>
             <groupId>com.netopyr.reduxfx</groupId>
