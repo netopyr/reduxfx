@@ -37,7 +37,7 @@
         <vavr.version>0.9.0</vavr.version>
         <slf4j.version>1.7.25</slf4j.version>
         <reactivestreams.version>1.0.0</reactivestreams.version>
-        <reactivex.version>2.1.1</reactivex.version>
+        <reactivex.version>2.1.2</reactivex.version>
     </properties>
 
     <licenses>
