@@ -8,13 +8,13 @@ Functional Reactive Programming (FRP) for JavaFX
 [![Maven](https://img.shields.io/maven-central/v/com.netopyr.reduxfx/reduxfx-all.svg)](https://search.maven.org/#search|ga|1|com.netopyr.reduxfx)
 [![License](https://img.shields.io/github/license/netopyr/reduxfx.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-[![Lines of Code](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=ncloc)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Bugs](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=bugs)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=vulnerabilities)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Code Smells](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=code_smells)](https://sonarcloud.io/project/issues?id=com.netopyr.reduxfx%3Areduxfx-all&resolved=false&types=CODE_SMELL) 
-[![Duplicated Lines](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures/domain/Duplications?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Technical Dept Ratio](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
-[![Code Coverage](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-all&metric=coverage)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Lines of Code](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=ncloc)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Bugs](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=bugs)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Vulnerabilities](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=vulnerabilities)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Code Smells](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=code_smells)](https://sonarcloud.io/project/issues?id=com.netopyr.reduxfx%3Areduxfx-all&resolved=false&types=CODE_SMELL) 
+[![Duplicated Lines](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=duplicated_lines_density)](https://sonarcloud.io/component_measures/domain/Duplications?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Technical Dept Ratio](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
+[![Code Coverage](https://sonarcloud.io/api/badges/measure?key=com.netopyr.reduxfx%3Areduxfx-parent&metric=coverage)](https://sonarcloud.io/dashboard/?id=com.netopyr.reduxfx%3Areduxfx-all) 
 
 ReduxFX in 1 minute
 -------------------
