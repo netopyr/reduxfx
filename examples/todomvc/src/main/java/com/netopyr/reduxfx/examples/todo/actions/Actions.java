@@ -16,6 +16,7 @@ public final class Actions {
     // AddTodoAction and CompleteAllAction are stateless, therefore only a single instance can be reused
     private static final AddTodoAction ADD_TODO_ACTION = new AddTodoAction();
     private static final CompleteAllAction COMPLETE_ALL_ACTION = new CompleteAllAction();
+    private static final InitAction INIT_ACTION = new InitAction();
 
     private Actions() {
     }
@@ -142,5 +143,9 @@ public final class Actions {
      */
     public static SetEditModeAction setEditMode(int id, boolean value) {
         return new SetEditModeAction(id, value);
+    }
+
+    public static InitAction init() {
+        return INIT_ACTION;
     }
 }

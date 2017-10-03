@@ -130,6 +130,12 @@
             <id>bintray</id>
             <url>http://jcenter.bintray.com</url>
         </repository>
+        <repository>
+            <id>snapshots-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
     </repositories>
 
     <dependencyManagement>

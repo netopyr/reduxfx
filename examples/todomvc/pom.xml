@@ -36,6 +36,16 @@
             <groupId>com.netopyr.reduxfx</groupId>
             <artifactId>reduxfx-fontawesomefx</artifactId>
         </dependency>
+        <dependency>
+            <groupId>eu.lestard.redux-javafx-devtool</groupId>
+            <artifactId>devtool</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.lestard.redux-javafx-devtool</groupId>
+            <artifactId>reduxfx-connector</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
