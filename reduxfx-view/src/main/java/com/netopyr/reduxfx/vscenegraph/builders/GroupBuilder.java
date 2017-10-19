@@ -12,6 +12,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class GroupBuilder<B extends GroupBuilder<B>> extends ParentBuilder<B> {
 
+    private static final String CHILDREN = "children";
+
     public GroupBuilder(Class<?> nodeClass,
                         Map<String, Array<VNode>> childrenMap,
                         Map<String, Option<VNode>> singleChildMap,
@@ -30,6 +32,12 @@ public class GroupBuilder<B extends GroupBuilder<B>> extends ParentBuilder<B> {
         return (B) new GroupBuilder<>(getNodeClass(), childrenMap, singleChildMap, properties, eventHandlers);
     }
 
+    public final B children(VNode... nodes) {
+        return children(CHILDREN, nodes == null? Array.empty() : Array.of(nodes));
+    }
+    public final B children(Iterable<VNode> nodes) {
+        return children(CHILDREN, nodes == null? Array.empty() : Array.ofAll(nodes));
+    }
 
     @Override
     public String toString() {
