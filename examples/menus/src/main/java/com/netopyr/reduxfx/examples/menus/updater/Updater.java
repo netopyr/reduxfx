@@ -4,6 +4,7 @@ import com.netopyr.reduxfx.examples.menus.actions.AlertWasClosedAction;
 import com.netopyr.reduxfx.examples.menus.actions.OpenAlertAction;
 import com.netopyr.reduxfx.examples.menus.actions.OpenModalAlertAction;
 import com.netopyr.reduxfx.examples.menus.state.AppState;
+import com.netopyr.reduxfx.updater.Update;
 import javafx.stage.Modality;
 
 import java.util.Objects;
@@ -46,42 +47,45 @@ public class Updater {
      * @return the new {@code AppState}
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static AppState update(AppState state, Object action) {
+    public static Update<AppState> update(AppState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
-        // in Java, except that it is much more flexible and returns a value.
-        // We check which of the cases is true and in that branch we specify the newState.
-        return Match(action).of(
+        return Update.of(
 
-                // If the action is ab OpenAlertAction, we return a new AppState with the
-                // alert-visibility flag set to true and the alert-modality set to NONE.
-                Case($(instanceOf(OpenAlertAction.class)),
-                        openAlertAction ->
-                                state.withAlertVisible(true)
-                                        .withAlertModality(Modality.NONE)
-                ),
+                // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
+                // in Java, except that it is much more flexible and returns a value.
+                // We check which of the cases is true and in that branch we specify the newState.
+                Match(action).of(
 
-                // If the action is ab OpenModalAlertAction, we return a new AppState with the
-                // alert-visibility flag set to true and the alert-modality set to APPLICATION_MODAL.
-                Case($(instanceOf(OpenModalAlertAction.class)),
-                        openModalAlertAction ->
-                                state.withAlertVisible(true)
-                                        .withAlertModality(Modality.APPLICATION_MODAL)
-                ),
+                        // If the action is ab OpenAlertAction, we return a new AppState with the
+                        // alert-visibility flag set to true and the alert-modality set to NONE.
+                        Case($(instanceOf(OpenAlertAction.class)),
+                                openAlertAction ->
+                                        state.withAlertVisible(true)
+                                                .withAlertModality(Modality.NONE)
+                        ),
 
-                // The AlertWasClosedAction is used to signal that the alert was closed. We return a new AppState
-                // with the alert-visibility flag set to false.
-                Case($(instanceOf(AlertWasClosedAction.class)),
-                        alertWasClosedAction ->
-                                state.withAlertVisible(false)
-                ),
+                        // If the action is ab OpenModalAlertAction, we return a new AppState with the
+                        // alert-visibility flag set to true and the alert-modality set to APPLICATION_MODAL.
+                        Case($(instanceOf(OpenModalAlertAction.class)),
+                                openModalAlertAction ->
+                                        state.withAlertVisible(true)
+                                                .withAlertModality(Modality.APPLICATION_MODAL)
+                        ),
 
-                // This is the default branch of this switch-case. If an unknown action was passed to the
-                // updater, we simply return the old state. This is a convention, that is not needed right
-                // now, but will help once you start to decompose your updater.
-                Case($(), state)
+                        // The AlertWasClosedAction is used to signal that the alert was closed. We return a new AppState
+                        // with the alert-visibility flag set to false.
+                        Case($(instanceOf(AlertWasClosedAction.class)),
+                                alertWasClosedAction ->
+                                        state.withAlertVisible(false)
+                        ),
+
+                        // This is the default branch of this switch-case. If an unknown action was passed to the
+                        // updater, we simply return the old state. This is a convention, that is not needed right
+                        // now, but will help once you start to decompose your updater.
+                        Case($(), state)
+                )
         );
     }
 }

@@ -1,14 +1,14 @@
 package com.netopyr.reduxfx.examples.fxml;
 
+import com.netopyr.reduxfx.examples.fxml.state.AppState;
+import com.netopyr.reduxfx.examples.fxml.updater.Updater;
 import com.netopyr.reduxfx.examples.fxml.view.MainView;
 import com.netopyr.reduxfx.fxml.Dispatcher;
 import com.netopyr.reduxfx.fxml.ReduxFxml;
 import com.netopyr.reduxfx.fxml.Selector;
 import com.netopyr.reduxfx.fxml.ViewLoader;
 import com.netopyr.reduxfx.middleware.LoggingMiddleware;
-import com.netopyr.reduxfx.examples.fxml.state.AppState;
-import com.netopyr.reduxfx.examples.fxml.updater.Updater;
-import com.netopyr.reduxfx.store.SimpleReduxFXStore;
+import com.netopyr.reduxfx.store.ReduxFXStore;
 import eu.lestard.easydi.EasyDI;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -27,14 +27,11 @@ public class FxmlExample extends Application {
         final AppState initialState = AppState.create();
 
         // Setup the ReduxFX-store passing the initialState and the update-function
-        final SimpleReduxFXStore<AppState> store = new SimpleReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
+        final ReduxFXStore<AppState> store = new ReduxFXStore<>(initialState, Updater::update, new LoggingMiddleware<>());
 
 
         // Create an instance of ReduxFxml
-		ReduxFxml<AppState> reduxFxml = ReduxFxml.create();
-
-		// To setup ReduxFxml, we have to connect it with the store
-		reduxFxml.connect(store.getStatePublisher(), store.createActionSubscriber());
+		ReduxFxml<AppState> reduxFxml = ReduxFxml.create(store);
 
 
 		// Setup dependency injection context

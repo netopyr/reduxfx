@@ -1,9 +1,5 @@
 package com.netopyr.reduxfx.store;
 
-import com.netopyr.reduxfx.driver.Driver;
-import com.netopyr.reduxfx.driver.action.ActionDriver;
-import com.netopyr.reduxfx.driver.http.HttpDriver;
-import com.netopyr.reduxfx.driver.properties.PropertiesDriver;
 import com.netopyr.reduxfx.middleware.Middleware;
 import com.netopyr.reduxfx.updater.Command;
 import com.netopyr.reduxfx.updater.Update;
@@ -12,18 +8,16 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
-import io.reactivex.processors.PublishProcessor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
 import java.util.function.BiFunction;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
-public class ReduxFXStore<S> {
+public class ReduxFXStore<S> implements Publisher<S> {
 
     private final Flowable<S> statePublisher;
     private final Flowable<Command> commandPublisher;
-    private FlowableEmitter<Publisher<?>> emitter;
+    private FlowableEmitter<Object> actionEmitter;
 
 
     @SafeVarargs
@@ -31,9 +25,7 @@ public class ReduxFXStore<S> {
         final BiFunction<S, Object, Update<S>> chainedUpdater = applyMiddlewares(updater, middlewares);
 
         final Publisher<Object> actionPublisher =
-                Flowable.mergeDelayError(
-                        Flowable.create(actionPublisherEmitter -> this.emitter = actionPublisherEmitter, BackpressureStrategy.BUFFER)
-                );
+                Flowable.create(actionEmitter -> this.actionEmitter = actionEmitter, BackpressureStrategy.BUFFER);
 
         final FlowableProcessor<Update<S>> updateProcessor = BehaviorProcessor.create();
 
@@ -46,8 +38,6 @@ public class ReduxFXStore<S> {
         commandPublisher = updateProcessor
                 .map(Update::getCommands)
                 .flatMapIterable(commands -> commands);
-
-        registerDefaultDrivers();
     }
 
     private BiFunction<S, Object, Update<S>> applyMiddlewares(BiFunction<S, Object, Update<S>> updater, Middleware<S>[] middlewares) {
@@ -59,26 +49,17 @@ public class ReduxFXStore<S> {
     }
 
 
-    public Subscriber<Object> createActionSubscriber() {
-        final PublishProcessor<Object> actionSubscriber = PublishProcessor.create();
-        emitter.onNext(actionSubscriber);
-        return actionSubscriber;
+    public void dispatch(Object action) {
+        actionEmitter.onNext(action);
     }
 
-    public Publisher<S> getStatePublisher() {
-        return statePublisher;
+    @Override
+    public void subscribe(Subscriber<? super S> subscriber) {
+        statePublisher.subscribe(subscriber);
     }
 
     public final void register(Driver driver) {
-        commandPublisher.subscribe(driver.getCommandSubscriber());
-        emitter.onNext(driver.getActionPublisher());
+        Flowable.fromPublisher(driver).subscribe(this::dispatch);
+        commandPublisher.subscribe(driver::dispatch);
     }
-
-
-    private void registerDefaultDrivers() {
-        register(new PropertiesDriver());
-        register(new HttpDriver());
-        register(new ActionDriver());
-    }
-
 }

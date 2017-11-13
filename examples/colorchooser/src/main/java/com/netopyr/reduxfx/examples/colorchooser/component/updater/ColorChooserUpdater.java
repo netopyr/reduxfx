@@ -8,6 +8,7 @@ import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateBlueAct
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateGreenAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.actions.UpdateRedAction;
 import com.netopyr.reduxfx.examples.colorchooser.component.state.ColorChooserState;
+import com.netopyr.reduxfx.store.Driver;
 import com.netopyr.reduxfx.updater.Update;
 import javafx.scene.paint.Color;
 
@@ -27,7 +28,7 @@ import static io.vavr.Predicates.instanceOf;
  * action and calculates the new state from that.
  * <p>
  * Optionally it can also create an arbitrary number of commands, which are processed by a
- * {@link com.netopyr.reduxfx.driver.Driver}. Usually such a {@code Driver} has to be registered with the
+ * {@link Driver}. Usually such a {@code Driver} has to be registered with the
  * {@link com.netopyr.reduxfx.store.ReduxFXStore}-instance explicitly, but {@code ColorChooserComponent} uses a
  * {@link ComponentBase} which registers a driver for component-specific commands and actions automatically.
  * See {@link ColorChooserComponent} for more details.

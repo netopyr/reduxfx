@@ -8,6 +8,7 @@ import com.netopyr.reduxfx.examples.colorchooser.component.view.ColorChooserView
 import com.netopyr.reduxfx.component.ComponentBase;
 import com.netopyr.reduxfx.examples.colorchooser.app.view.MainView;
 import com.netopyr.reduxfx.middleware.LoggingMiddleware;
+import com.netopyr.reduxfx.store.Driver;
 import com.netopyr.reduxfx.vscenegraph.ReduxFXView;
 import com.netopyr.reduxfx.vscenegraph.builders.Factory;
 import javafx.beans.property.ObjectProperty;
@@ -20,7 +21,7 @@ import io.vavr.collection.HashMap;
  *
  * It extends {@code VBox} and adds one additional JavaFX property {@link #colorProperty()}. As usual in ReduxFX,
  * we do not want to modify state directly and this also applies to JavaFX properties of the public interface.
- * Instead we use a {@link com.netopyr.reduxfx.driver.Driver} for that. We can send commands to the driver to update
+ * Instead we use a {@link Driver} for that. We can send commands to the driver to update
  * the value of the JavaFX property. Commands are created in the {@link ColorChooserUpdater} together with the state
  * changes. If the value of a JavaFX property changes, our updater receives an action, which can be specified here.
  */
@@ -47,15 +48,12 @@ public class ColorChooserComponent extends VBox {
         // Setup the initial state
         final ColorChooserState initialData = new ColorChooserState();
 
-        // A ComponentBase is the central piece of every component implemented with ReduxFX. It creates a separate
+        // A component-base is the central piece of every component implemented with ReduxFX. It creates a separate
         // ReduxFX-store for the component and acts as the factory for all JavaFX properties.
         final ComponentBase<ColorChooserState> componentBase = new ComponentBase<>(this, initialData, ColorChooserUpdater::update, new LoggingMiddleware<>());
 
-        // Setup the ReduxFX-view passing the view-function and this as the root node for the generated Scenegraph
-        final ReduxFXView<ColorChooserState> view = ReduxFXView.create(ColorChooserView::view, this);
-
-        // Connect componentBase and view
-        view.connect(componentBase.getStatePublisher(), componentBase.createActionSubscriber());
+        // Setup the ReduxFX-view passing the component-base the view-function and this as the root node for the generated Scenegraph
+        ReduxFXView.create(componentBase, ColorChooserView::view, this);
 
         // This sets up the JavaFX property of this component. The value can be changed by dispatching
         // ObjectChangedCommands in the ColorChooserUpdater (alongside any required state changes). The VChangeListener

@@ -2,6 +2,7 @@ package com.netopyr.reduxfx.examples.screenswitch.updater;
 
 import com.netopyr.reduxfx.examples.screenswitch.actions.SwitchScreenAction;
 import com.netopyr.reduxfx.examples.screenswitch.state.AppState;
+import com.netopyr.reduxfx.updater.Update;
 
 import java.util.Objects;
 
@@ -43,26 +44,29 @@ public class Updater {
      * @return the new {@code AppState}
      * @throws NullPointerException if state or action are {@code null}
      */
-    public static AppState update(AppState state, Object action) {
+    public static Update<AppState> update(AppState state, Object action) {
         Objects.requireNonNull(state, "The parameter 'state' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
-        // in Java, except that it is much more flexible and returns a value.
-        // We check which of the cases is true and in that branch we specify the newState.
-        return Match(action).of(
+        return Update.of(
 
-                // If the action is a SwitchScreenAction, we return a new AppState with the
-                // property screen set to the given value
-                Case($(instanceOf(SwitchScreenAction.class)),
-                        switchScreenAction ->
-                                state.withScreen(switchScreenAction.getScreen())
-                ),
+                // This is part of Vavr's pattern-matching API. It works similar to the regular switch-case
+                // in Java, except that it is much more flexible and returns a value.
+                // We check which of the cases is true and in that branch we specify the newState.
+                Match(action).of(
 
-                // This is the default branch of this switch-case. If an unknown action was passed to the
-                // updater, we simply return the old state. This is a convention, that is not needed right
-                // now, but will help once you start to decompose your updater.
-                Case($(), state)
+                        // If the action is a SwitchScreenAction, we return a new AppState with the
+                        // property screen set to the given value
+                        Case($(instanceOf(SwitchScreenAction.class)),
+                                switchScreenAction ->
+                                        state.withScreen(switchScreenAction.getScreen())
+                        ),
+
+                        // This is the default branch of this switch-case. If an unknown action was passed to the
+                        // updater, we simply return the old state. This is a convention, that is not needed right
+                        // now, but will help once you start to decompose your updater.
+                        Case($(), state)
+                )
         );
     }
 }

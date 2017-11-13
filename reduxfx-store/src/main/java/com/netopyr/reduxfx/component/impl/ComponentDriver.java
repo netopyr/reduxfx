@@ -4,9 +4,11 @@ import com.netopyr.reduxfx.component.ComponentBase;
 import com.netopyr.reduxfx.component.command.FireEventCommand;
 import com.netopyr.reduxfx.component.command.IntegerChangedCommand;
 import com.netopyr.reduxfx.component.command.ObjectChangedCommand;
-import com.netopyr.reduxfx.driver.Driver;
+import com.netopyr.reduxfx.store.Driver;
 import com.netopyr.reduxfx.updater.Command;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
 import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.processors.PublishProcessor;
 import javafx.beans.property.ObjectProperty;
@@ -33,15 +35,21 @@ public class ComponentDriver implements Driver {
     private Flowable<IntegerChangedCommand> integerChangedCommandFlowable;
     private Flowable<ObjectChangedCommand<?>> objectChangedCommandFlowable;
 
+    private FlowableEmitter<Command> commandEmitter;
 
-    @Override
-    public Subscriber<Command> getCommandSubscriber() {
-        return commandProcessor;
+    public ComponentDriver() {
+        final Flowable<Command> commandInBox = Flowable.create(emitter -> commandEmitter = emitter, BackpressureStrategy.BUFFER);
+        commandInBox.subscribe(commandProcessor);
     }
 
     @Override
-    public Publisher<Object> getActionPublisher() {
-        return actionProcessor;
+    public void dispatch(Command command) {
+        commandEmitter.onNext(command);
+    }
+
+    @Override
+    public void subscribe(Subscriber<? super Object> subscriber) {
+        actionProcessor.subscribe(subscriber);
     }
 
 

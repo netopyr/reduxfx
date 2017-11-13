@@ -1,9 +1,8 @@
 package com.netopyr.reduxfx.examples.helloworld;
 
-import com.netopyr.reduxfx.examples.helloworld.view.MainView;
-import com.netopyr.reduxfx.examples.helloworld.state.AppState;
 import com.netopyr.reduxfx.examples.helloworld.updater.Updater;
-import com.netopyr.reduxfx.store.SimpleReduxFXStore;
+import com.netopyr.reduxfx.examples.helloworld.view.MainView;
+import com.netopyr.reduxfx.store.ReduxFXStore;
 import com.netopyr.reduxfx.vscenegraph.ReduxFXView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,13 +19,10 @@ public class HelloWorld extends Application {
         final Integer initialCounter = 0;
 
         // Setup the ReduxFX-store passing the initialState and the update-function
-        final SimpleReduxFXStore<Integer> store = new SimpleReduxFXStore<>(initialCounter, Updater::update);
+        final ReduxFXStore<Integer> store = new ReduxFXStore<>(initialCounter, Updater::update);
 
-        // Setup the ReduxFX-view passing the view-function and the primary stage that should hold the calculated view
-        final ReduxFXView<Integer> view = ReduxFXView.createStage(MainView::view, primaryStage);
-
-        // Connect store and view
-        view.connect(store.getStatePublisher(), store.createActionSubscriber());
+        // Setup the ReduxFX-view passing the store, the view-function and the primary stage that should hold the calculated view
+        ReduxFXView.createStage(store, MainView::view, primaryStage);
     }
 
     public static void main(String[] args) {

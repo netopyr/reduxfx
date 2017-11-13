@@ -23,8 +23,6 @@ public class TreeViewExample extends Application {
 		final ReduxFXStore<AppState> store = new ReduxFXStore<>(initialState,
 			(appState, action) -> Update.of(Updater.update(appState, action)));
 
-		final ReduxFXView<AppState> view = ReduxFXView.createStage(MainView::view, primaryStage);
-
-		view.connect(store.getStatePublisher(), store.createActionSubscriber());
+		ReduxFXView.createStage(store, MainView::view, primaryStage);
 	}
 }

@@ -1,6 +1,7 @@
 package com.netopyr.reduxfx.examples.helloworld.updater;
 
 import com.netopyr.reduxfx.examples.helloworld.actions.IncCounterAction;
+import com.netopyr.reduxfx.updater.Update;
 
 import java.util.Objects;
 
@@ -30,10 +31,12 @@ public class Updater {
      * @return the new {@code AppState}
      * @throws NullPointerException if counter or action are {@code null}
      */
-    public static int update(Integer counter, Object action) {
+    public static Update<Integer> update(Integer counter, Object action) {
         Objects.requireNonNull(counter, "The parameter 'counter' must not be null");
         Objects.requireNonNull(action, "The parameter 'action' must not be null");
 
-        return action instanceof IncCounterAction? counter + 1 : counter;
+        return Update.of(
+                action instanceof IncCounterAction? counter + 1 : counter
+        );
     }
 }

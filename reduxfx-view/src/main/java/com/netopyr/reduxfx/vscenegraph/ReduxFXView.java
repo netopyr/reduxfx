@@ -1,21 +1,18 @@
 package com.netopyr.reduxfx.vscenegraph;
 
+import com.netopyr.reduxfx.store.ReduxFXStore;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.Differ;
 import com.netopyr.reduxfx.vscenegraph.impl.differ.patches.Patch;
 import com.netopyr.reduxfx.vscenegraph.impl.patcher.Patcher;
 import com.netopyr.reduxfx.vscenegraph.property.VProperty;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.vavr.collection.Map;
+import io.vavr.collection.Vector;
+import io.vavr.control.Option;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import io.vavr.collection.Map;
-import io.vavr.collection.Vector;
-import io.vavr.control.Option;
-import org.reactivestreams.Processor;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 
 import java.util.function.Function;
 
@@ -27,58 +24,50 @@ import static com.netopyr.reduxfx.vscenegraph.VScenegraphFactory.Stages;
 public class ReduxFXView<S> {
 
     public static <S> ReduxFXView<S> createStages(
+            ReduxFXStore<S> store,
             Function<S, VNode> view,
             Stage primaryStage) {
         final Stages stages = new Stages(primaryStage);
         final Option<VNode> initialVNode = Option.of(Stages().children(Stage()));
-        return new ReduxFXView<>(initialVNode, view, stages);
+        return new ReduxFXView<>(store, view, stages, initialVNode);
     }
 
     public static <S> ReduxFXView<S> createStage(
+            ReduxFXStore<S> store,
             Function<S, VNode> view,
             Stage primaryStage) {
-        return new ReduxFXView<>(Option.none(), view, primaryStage);
+        return new ReduxFXView<>(store, view, primaryStage, Option.none());
     }
 
     public static <S> ReduxFXView<S> create(
+            ReduxFXStore<S> store,
             Function<S, VNode> view,
             Stage primaryStage) {
         final Function<S, VNode> stageView = state -> Stage().scene(Scene().root(view.apply(state)));
-        return new ReduxFXView<>(Option.none(), stageView, primaryStage);
+        return new ReduxFXView<>(store, stageView, primaryStage, Option.none());
     }
 
     public static <S> ReduxFXView<S> create(
+            ReduxFXStore<S> store,
             Function<S, VNode> view,
             Group group) {
-        return new ReduxFXView<>(Option.none(), view, group);
+        return new ReduxFXView<>(store, view, group, Option.none());
     }
 
     public static <S> ReduxFXView<S> create(
+            ReduxFXStore<S> store,
             Function<S, VNode> view,
             Pane pane) {
-        return new ReduxFXView<>(Option.none(), view, pane);
+        return new ReduxFXView<>(store, view, pane, Option.none());
     }
-
-    private final Option<VNode> initialVNode;
-    private final Function<S, VNode> view;
-    private final Object javaFXRoot;
 
     private ReduxFXView(
-            Option<VNode> initialVNode,
+            ReduxFXStore<S> store,
             Function<S, VNode> view,
-            Object javaFXRoot) {
-        this.initialVNode = initialVNode;
-        this.view = view;
-        this.javaFXRoot = javaFXRoot;
-    }
-
-    public void connect(Processor<Object, S> store) {
-        connect(store, store);
-    }
-
-    public void connect(Publisher<S> statePublisher, Subscriber<Object> actionSubscriber) {
+            Object javaFXRoot,
+            Option<VNode> initialVNode) {
         final Flowable<Option<VNode>> vScenegraphStream =
-                Flowable.fromPublisher(statePublisher)
+                Flowable.fromPublisher(store)
                         .map(view::apply)
                         .map(Option::of)
                         .startWith(initialVNode);
@@ -88,19 +77,15 @@ public class ReduxFXView<S> {
 
         final Flowable<PatchParams> paramsStream = vScenegraphStream.zipWith(patchesStream, PatchParams::new);
 
-        Flowable.create(
-                emitter ->
-                        paramsStream.forEach(
-                                params -> {
-                                    if (Platform.isFxApplicationThread()) {
-                                        Patcher.patch(emitter::onNext, javaFXRoot, params.vRoot, params.patches);
-                                    } else {
-                                        Platform.runLater(() -> Patcher.patch(emitter::onNext, javaFXRoot, params.vRoot, params.patches));
-                                    }
-                                }
-                        ),
-                BackpressureStrategy.BUFFER
-        ).subscribe(actionSubscriber);
+        paramsStream.forEach(
+                params -> {
+                    if (Platform.isFxApplicationThread()) {
+                        Patcher.patch(store::dispatch, javaFXRoot, params.vRoot, params.patches);
+                    } else {
+                        Platform.runLater(() -> Patcher.patch(store::dispatch, javaFXRoot, params.vRoot, params.patches));
+                    }
+                }
+        );
     }
 
     private static class PatchParams {

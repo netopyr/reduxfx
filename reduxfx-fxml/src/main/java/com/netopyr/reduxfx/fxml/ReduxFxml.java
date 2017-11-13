@@ -1,14 +1,12 @@
 package com.netopyr.reduxfx.fxml;
 
-import io.reactivex.processors.PublishProcessor;
+import com.netopyr.reduxfx.store.ReduxFXStore;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.reactivestreams.Processor;
-import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -27,37 +25,25 @@ public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ReduxFxml.class);
 
-	private Publisher<S> statePublisher;
+	private ReduxFXStore<S> store;
 
-	private final PublishProcessor<Object> actionProcessor = PublishProcessor.create();
-
-	public static <S> ReduxFxml<S> create() {
-		return new ReduxFxml<>();
+	private ReduxFxml(ReduxFXStore<S> store) {
+		this.store = store;
 	}
 
-	public void connect(Processor<Object, S> store) {
-		connect(store, store);
-	}
-
-	public void connect(Publisher<S> statePublisher, Subscriber<Object> actionStream) {
-		this.statePublisher = statePublisher;
-
-		actionProcessor.subscribe(actionStream);
+	public static <S> ReduxFxml<S> create(ReduxFXStore<S> store) {
+		return new ReduxFxml<>(store);
 	}
 
 
 	@Override
 	public void dispatch(Object action) {
-		checkConnected();
-
-		actionProcessor.offer(action);
+		store.dispatch(action);
 	}
 
 
 	@Override
 	public <V> ObservableValue<V> select(Function<S, V> selector) {
-		checkConnected();
-
 		ObjectProperty<V> observableValue = new SimpleObjectProperty<>();
 
 		addSubscriber(newState -> {
@@ -71,8 +57,6 @@ public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 
 	@Override
 	public <V> ObservableList<V> selectList(Function<S, List<V>> selector) {
-		checkConnected();
-
 		ObservableList<V> list = FXCollections.observableArrayList();
 
 		addSubscriber(newState -> {
@@ -84,15 +68,9 @@ public class ReduxFxml<S> implements Selector<S>, Dispatcher {
 		return list;
 	}
 
-	private void checkConnected() {
-		if(statePublisher == null) {
-			throw new IllegalStateException("ReduxFxml has not been connected to a ReduxStore yet.");
-		}
-	}
-
 
 	protected void addSubscriber(Consumer<S> subscriber) {
-		statePublisher.subscribe(new Subscriber<S>() {
+		store.subscribe(new Subscriber<S>() {
 
 			@Override
 			public void onSubscribe(Subscription s) {
